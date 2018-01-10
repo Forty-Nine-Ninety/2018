@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	System.out.println("Version 1.3.20.9.03");
+    	System.out.println("Version 1.9.2018.6.33");
     	this.prefs = Preferences.getInstance();
     	
     	this.driveGamepad = new F310Gamepad(1);

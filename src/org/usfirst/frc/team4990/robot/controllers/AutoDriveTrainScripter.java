@@ -9,78 +9,62 @@ import java.util.Queue;
 
 public class AutoDriveTrainScripter {
 	
-	public enum SCRIPTCOMMAND {
-		FORWARD,
-		TURN
+	private interface CommandPackage {
+		public void update();
+		public boolean done();
 	}
 	
-	public class ScriptPackage {
-		public SCRIPTCOMMAND sc;
-		public double milliDuration;
-		public double specialval;
-		public ScriptPackage(SCRIPTCOMMAND ssc, double milli, double spec) {
-			sc = ssc;
-			milliDuration = milli;
-			specialval = spec;
-		}
-	}
-	
-	private void evaluateAndRun(ScriptPackage sp) {
-		switch(sp.sc) {
-		case FORWARD:
-			System.out.println(sp.specialval);
-			dt.setSpeed(sp.specialval, sp.specialval);
-			break;
-		case TURN:
-			dt.setSpeed(sp.specialval, -sp.specialval);
-			break;
-		default:
-			break;
-		
-		}
-	}
+	private Queue<CommandPackage> commands = new LinkedList<>();
 	
 	private DriveTrain dt;
-	
-	private Queue<ScriptPackage> cmdqueue = new LinkedList<ScriptPackage>();
-	private ScriptPackage currcmd;
-	private long starttime;
 
 	public AutoDriveTrainScripter(DriveTrain dtrain) {
 		dt = dtrain;
 	}
 	
-	protected void init() {
-		currcmd = cmdqueue.remove();
-		starttime = System.currentTimeMillis();
+	public void update() {
+		CommandPackage top = commands.peek();
+		if(top == null) return;
+		
+		if(!top.done() ) {
+			top.update();
+		}
+		else {
+			commands.remove();
+			top = commands.peek();
+			top.update();
+		}
 	}
 	
-	public void update() {
-		dt.setSpeed(0, 0);
-		
-		if(currcmd == null) return;
-		
-		if(starttime + currcmd.milliDuration <= System.currentTimeMillis() ) {
-			if(cmdqueue.size() != 0) {
-				currcmd = cmdqueue.remove();
-				starttime = System.currentTimeMillis();
+	public void forwardDistance(double distance) {
+		class F_Package implements CommandPackage {
+			private double value;
+			private DriveTrain dt;
+			private boolean done;
+			
+			public F_Package(DriveTrain d, double v) {
+				this.dt = d;
+				this.value = v;
+				this.done = false;
 			}
-			else {
-				currcmd = null;
-				return;
+			
+			public void update() {
+				if(this.dt.getLeftDistanceTraveled() < this.value) {
+					dt.setLeftSpeed(.8);
+					dt.setRightSpeed(.8);
+				}
+				else {
+					dt.setLeftSpeed(0.0);
+					dt.setRightSpeed(0.0);
+					this.done = true;
+				}
+			}
+			
+			public boolean done() {
+				return this.done;
 			}
 		}
 		
-		evaluateAndRun(currcmd);
-	}
-	
-	//oh boy
-	//here starts the commands that can be implemented in init()!
-	public void forward(double duration, double speed) {
-		cmdqueue.add(new ScriptPackage(SCRIPTCOMMAND.FORWARD, duration, speed) );
-	}
-	
-	public void turn(double duration, double speed) {
-		cmdqueue.add(new ScriptPackage(SCRIPTCOMMAND.TURN, duration, speed) );
+		commands.add(new F_Package(dt, distance));
 	}
 }
