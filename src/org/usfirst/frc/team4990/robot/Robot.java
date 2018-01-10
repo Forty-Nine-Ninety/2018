@@ -26,9 +26,6 @@ public class Robot extends IterativeRobot {
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
-	private Scaler scaler;
-	private BallShooter ballshooter;
-	private ConveyorBelt conveyorbelt;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
@@ -50,10 +47,6 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
-    	
-    	this.scaler = new Scaler(new TalonMotorController(4) );
-    	this.ballshooter = new BallShooter(new TalonMotorController(5), new TalonMotorController(6) );
-    	this.conveyorbelt = new ConveyorBelt(new TalonMotorController(7) );
     }
 
     public void autonomousInit() {
@@ -64,7 +57,6 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	
     	autoScripter.update();
     	driveTrain.update();
     }
