@@ -26,7 +26,7 @@ public class Gearbox {
 		
 		this.robotSide = robotSide;
 		
-		this.encoder = new Encoder(encoderChannelA, encoderChannelB, robotSide == RobotSide.Right, Encoder.EncodingType.k2X);
+		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
 		
 		this.compensate = 1.0;
 		this.fix_backwards = 1.0;

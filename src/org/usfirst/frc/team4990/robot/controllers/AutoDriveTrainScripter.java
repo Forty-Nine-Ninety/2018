@@ -25,7 +25,7 @@ public class AutoDriveTrainScripter {
 	public void update() {
 		CommandPackage top = commands.peek();
 		if(top == null) return;
-		
+
 		if(!top.done() ) {
 			top.update();
 		}
@@ -46,6 +46,7 @@ public class AutoDriveTrainScripter {
 				this.dt = d;
 				this.value = v;
 				this.done = false;
+				this.dt.resetDistanceTraveled();
 			}
 			
 			public void update() {

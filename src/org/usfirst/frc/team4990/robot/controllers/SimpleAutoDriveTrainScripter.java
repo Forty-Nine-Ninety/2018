@@ -8,8 +8,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	protected void init() {
 		forwardDistance(3.0);
 	}
+	
+	// Do not modify below por favor (this means "please" in Spanish)
 	public SimpleAutoDriveTrainScripter(DriveTrain dtrain) {
 		super(dtrain);
+		this.init();
 	}
 	
 	public void update() {

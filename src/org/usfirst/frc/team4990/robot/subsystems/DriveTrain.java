@@ -35,9 +35,6 @@ public class DriveTrain {
 	public void update() {
 		this.leftGearbox.setSpeed(this.leftSetSpeed);
 		this.rightGearbox.setSpeed(this.rightSetSpeed);
-		
-		// Speed/slow down right side to match left
-		this.rightGearbox.updateCompensate(this.leftGearbox.getDistanceTraveled());
 	}
 	
 	//TODO: figure out how to scale PWM value to velocity
