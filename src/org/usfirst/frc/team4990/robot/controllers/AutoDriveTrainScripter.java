@@ -10,7 +10,10 @@ import java.util.Queue;
 public class AutoDriveTrainScripter {
 	
 	private interface CommandPackage {
+		// called every time
 		public void update();
+		
+		// returns true if command is finished
 		public boolean done();
 	}
 	
