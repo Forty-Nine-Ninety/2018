@@ -25,7 +25,7 @@ public class Gearbox {
 		this.motor2 = motor2;
 		
 		this.robotSide = robotSide;
-		
+
 		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
 		
 		this.compensate = 1.0;

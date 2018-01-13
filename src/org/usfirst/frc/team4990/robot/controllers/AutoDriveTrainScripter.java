@@ -31,7 +31,11 @@ public class AutoDriveTrainScripter {
 		}
 		else {
 			commands.remove();
+			
+			// we can use recursion
+			// but I don't want to take the risk
 			top = commands.peek();
+			if(top == null) return;
 			top.update();
 		}
 	}
@@ -50,9 +54,12 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
-				if(this.dt.getLeftDistanceTraveled() < this.value) {
-					dt.setLeftSpeed(.8);
-					dt.setRightSpeed(.8);
+				// only the right side works...
+				// and it's fucking backwards
+				// this entire fucking robot is backwards
+				if(-this.dt.getRightDistanceTraveled() < this.value) {
+					dt.setLeftSpeed(.3);
+					dt.setRightSpeed(.3);
 				}
 				else {
 					dt.setLeftSpeed(0.0);
