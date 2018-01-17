@@ -61,12 +61,23 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousPeriodic() {
 		if (distanceTraveled < distance) {
-			motor1L.setSpeed(velocity);
-			motor1R.setSpeed(velocity);
-			motor2L.setSpeed(velocity);
-			motor2R.setSpeed(velocity);
 			
 			distanceTraveled = encoderLeft.getDistance();
+			
+			double distanceTraveledDifference = encoderLeft.getDistance() - encoderRight.getDistance();
+			double correctionalVelocity = velocity;
+			if (distanceTraveledDifference < 0) {//Right is slower
+				correctionalVelocity += (distanceTraveledDifference * -1) / 12;
+			}
+			else if (distanceTraveledDifference > 0) {//Right is faster
+				correctionalVelocity -= (distanceTraveledDifference * -1) / 12;
+			}
+			motor1L.setSpeed(velocity);
+			motor2L.setSpeed(velocity);
+			motor1R.setSpeed(correctionalVelocity);
+			motor2R.setSpeed(correctionalVelocity);
+			
+			System.out.println("Correctional: "correctionalVelocity + " | Velocity: " + velocity);
 		}
 		
 		motor1L.setSpeed(0);
