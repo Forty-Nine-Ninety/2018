@@ -23,7 +23,7 @@ public class Robot extends IterativeRobot {
 	private int encoderChannel1R = 0;
 	private int encoderChannel2R = 1;
 	
-	private double distance = 3, velocity = 0.25;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
+	private double distance = 3, velocity = 0.95;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
 	private double distanceTraveled = 0;
 	
 	//Motors
@@ -67,19 +67,22 @@ public class Robot extends IterativeRobot {
 			distanceTraveled = encoderLeft.getDistance();
 			
 			double distanceTraveledDifference = encoderLeft.getDistance() - encoderRight.getDistance();
+			System.out.println(encoderLeft.getDistance() + " " + encoderRight.getDistance());
 			double correctionalVelocity = velocity;
+			/*
 			if (distanceTraveledDifference < 0) {//Right is slower
-				correctionalVelocity += (distanceTraveledDifference * -1) / 12;
+				correctionalVelocity += (distanceTraveledDifference * -1) / 144;
 			}
 			else if (distanceTraveledDifference > 0) {//Right is faster
-				correctionalVelocity -= (distanceTraveledDifference * -1) / 12;
+				correctionalVelocity -= (distanceTraveledDifference * -1) / 144;
 			}
+			*/
 			motor1L.setSpeed(velocity);
 			motor2L.setSpeed(velocity);
 			motor1R.setSpeed(correctionalVelocity);
 			motor2R.setSpeed(correctionalVelocity);
 			
-			System.out.println("Correctional: " + correctionalVelocity + " | Velocity: " + velocity);
+			//System.out.println("Correctional: " + correctionalVelocity + " | Velocity: " + velocity + " | Distance Traveled: " + distanceTraveled + " | Distance Traveled Difference: " + distanceTraveledDifference);
 		}
 		
 		motor1L.setSpeed(0);
