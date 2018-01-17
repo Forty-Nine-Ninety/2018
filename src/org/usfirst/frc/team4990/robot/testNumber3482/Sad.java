@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4990.robot.testNumber3482;
 
-import edu.wpi.first.wpilibj.PWMTalonSRX;
+import edu.wpi.first.wpilibj.TalonSRX;
 
-public class Sad extends PWMTalonSRX implements Sad2{
+public class Sad extends TalonSRX implements Sad2{
 
 	public Sad(int channel) {
 		super(channel);
