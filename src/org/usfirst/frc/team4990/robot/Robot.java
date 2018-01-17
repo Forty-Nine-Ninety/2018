@@ -1,80 +1,89 @@
 package org.usfirst.frc.team4990.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Preferences;
 
-import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter;
-import org.usfirst.frc.team4990.robot.controllers.TeleopDriveTrainController;
-import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
-import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
+import java.util.concurrent.TimeUnit;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
+import edu.wpi.first.wpilibj.Encoder;
+
 public class Robot extends IterativeRobot {
-	private Preferences prefs;
-	private F310Gamepad driveGamepad;
-	private DriveTrain driveTrain;
 	
-	private SimpleAutoDriveTrainScripter autoScripter;
+	//Variables
+	private int pulsesPerRevolution = 250;
+	private double feetPerWheelRevolution = 4.0 / 12.0 * Math.PI;
+	private double gearboxEncoderMinRate = 0.0;
+	private int gearboxEncoderSamplesToAvg = 5;
 	
-	private TeleopDriveTrainController teleopDriveTrainController;
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit() {
-    	System.out.println("Version 1.9.2018.6.33");
-    	this.prefs = Preferences.getInstance();
-    	
-    	this.driveGamepad = new F310Gamepad(1);
-    	
-    	this.driveTrain = new DriveTrain( 
-    		new TalonMotorController(0),
-    		new TalonMotorController(1),
-    		new TalonMotorController(2),
-    		new TalonMotorController(3),
-    		0, 1, 2, 3);
-    }
-
-    public void autonomousInit() {
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
-    }
-    
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-    	autoScripter.update();
-    	driveTrain.update();
-    }
-    
-    public void teleopInit() {
-    	this.teleopDriveTrainController = new TeleopDriveTrainController(
-        		this.driveGamepad, 
-        		this.driveTrain, 
-        		this.prefs.getDouble("maxTurnRadius", Constants.defaultMaxTurnRadius),
-        		this.prefs.getBoolean("reverseTurningFlipped", false),
-        		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
-        		this.prefs.getDouble("lowThrottleMultiplier", .25),
-        		this.prefs.getDouble("maxThrottle", 1.0));
-    }
-     
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
-    	
-	    this.teleopDriveTrainController.updateDriveTrainState();
-	    
-	    //ever heard of the tale of last minute code
-	    //I thought not, it is not a tale the chairman will tell to you
-
-    	this.driveTrain.update();
-    }
+	//Encoders
+	private Encoder encoderRight, encoderLeft;
+	
+	//Digital IO Pins
+	private int encoderChannel1L = 2;
+	private int encoderChannel2L = 3;
+	private int encoderChannel1R = 0;
+	private int encoderChannel2R = 1;
+	
+	private double distance = 3, velocity = 0.25;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
+	private double distanceTraveled = 0;
+	
+	//Motors
+	Sad motor1L, motor1R, motor2L, motor2R; 
+	
+	
+	public void robotInit() {
+		//What do I put here?
+	}
+	
+	public void autonomousInit() {
+		encoderLeft.setDistancePerPulse(feetPerWheelRevolution / pulsesPerRevolution);
+		encoderLeft.setMinRate(gearboxEncoderMinRate);
+		encoderLeft.setSamplesToAverage(gearboxEncoderSamplesToAvg);
+		
+		encoderRight.setDistancePerPulse(feetPerWheelRevolution / pulsesPerRevolution);
+		encoderRight.setMinRate(gearboxEncoderMinRate);
+		encoderRight.setSamplesToAverage(gearboxEncoderSamplesToAvg);
+		
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		motor1L = new Sad(2);
+		motor2L = new Sad(3);
+		motor1R = new Sad(0);
+		motor2R = new Sad(1);
+		
+		encoderLeft.reset();
+		encoderRight.reset();
+	}
+	
+	public void autonomousPeriodic() {
+		if (distanceTraveled < distance) {
+			
+			distanceTraveled = encoderLeft.getDistance();
+			
+			double distanceTraveledDifference = encoderLeft.getDistance() - encoderRight.getDistance();
+			double correctionalVelocity = velocity;
+			if (distanceTraveledDifference < 0) {//Right is slower
+				correctionalVelocity += (distanceTraveledDifference * -1) / 12;
+			}
+			else if (distanceTraveledDifference > 0) {//Right is faster
+				correctionalVelocity -= (distanceTraveledDifference * -1) / 12;
+			}
+			motor1L.setSpeed(velocity);
+			motor2L.setSpeed(velocity);
+			motor1R.setSpeed(correctionalVelocity);
+			motor2R.setSpeed(correctionalVelocity);
+			
+			System.out.println("Correctional: " + correctionalVelocity + " | Velocity: " + velocity);
+		}
+		
+		motor1L.setSpeed(0);
+		motor1R.setSpeed(0);
+		motor2L.setSpeed(0);
+		motor2R.setSpeed(0);
+	}
+	
 }

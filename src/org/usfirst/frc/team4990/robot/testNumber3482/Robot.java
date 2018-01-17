@@ -77,7 +77,7 @@ public class Robot extends IterativeRobot {
 			motor1R.setSpeed(correctionalVelocity);
 			motor2R.setSpeed(correctionalVelocity);
 			
-			System.out.println("Correctional: "correctionalVelocity + " | Velocity: " + velocity);
+			System.out.println("Correctional: " + correctionalVelocity + " | Velocity: " + velocity);
 		}
 		
 		motor1L.setSpeed(0);
