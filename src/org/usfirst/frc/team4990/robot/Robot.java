@@ -35,10 +35,12 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void autonomousInit() {
+		encoderLeft = new Encoder(encoderChannel1L, encoderChannel2L);
 		encoderLeft.setDistancePerPulse(feetPerWheelRevolution / pulsesPerRevolution);
 		encoderLeft.setMinRate(gearboxEncoderMinRate);
 		encoderLeft.setSamplesToAverage(gearboxEncoderSamplesToAvg);
 		
+		encoderRight = new Encoder(encoderChannel1R, encoderChannel2R);
 		encoderRight.setDistancePerPulse(feetPerWheelRevolution / pulsesPerRevolution);
 		encoderRight.setMinRate(gearboxEncoderMinRate);
 		encoderRight.setSamplesToAverage(gearboxEncoderSamplesToAvg);
