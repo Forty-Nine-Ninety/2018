@@ -2,9 +2,9 @@ package org.usfirst.frc.team4990.robot;
 
 import edu.wpi.first.wpilibj.TalonSRX;
 
-public class Sad extends TalonSRX implements Sad2{
+public class Motor extends TalonSRX implements MotorInit{
 
-	public Sad(int channel) {
+	public Motor(int channel) {
 		super(channel);
 		// TODO Auto-generated constructor stub
 	}
