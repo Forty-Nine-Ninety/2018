@@ -90,7 +90,6 @@ public class Robot extends IterativeRobot {
 			motor1R.setSpeed(0);
 			motor2L.setSpeed(0);
 			motor2R.setSpeed(0);
-			System.out.println("HI!");
 		}
 	}
 	
