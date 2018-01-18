@@ -52,10 +52,10 @@ public class Robot extends IterativeRobot {
 			e.printStackTrace();
 			return;
 		}
-		motor1L = new Sad(3);
-		motor2L = new Sad(2);
-		motor1R = new Sad(1);
-		motor2R = new Sad(0);
+		motor1L = new Sad(encoderChannel1L);
+		motor2L = new Sad(encoderChannel2L);
+		motor1R = new Sad(encoderChannel1R);
+		motor2R = new Sad(encoderChannel2R);
 		
 		encoderLeft.reset();
 		encoderRight.reset();
