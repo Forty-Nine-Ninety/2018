@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void autonomousPeriodic() {
-		if (distanceTraveled < distance) {
+		if (distanceTraveled < distance || distanceTraveled > distance) {
 			
 			distanceTraveled = encoderLeft.getDistance();
 			
