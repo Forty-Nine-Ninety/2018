@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 import java.util.concurrent.TimeUnit;
 
+import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
+
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Robot extends IterativeRobot {
@@ -28,7 +30,7 @@ public class Robot extends IterativeRobot {
 	private double distanceTraveled = 0;
 	
 	//Motors
-	Sad motor1L, motor1R, motor2L, motor2R; 
+	TalonMotorController motor1L, motor1R, motor2L, motor2R; 
 	
 	
 	public void robotInit() {
@@ -55,10 +57,10 @@ public class Robot extends IterativeRobot {
 			return;
 		}
 		//Defines the motors
-		motor1L = new Sad(encoderChannel1L);
-		motor2L = new Sad(encoderChannel2L);
-		motor1R = new Sad(encoderChannel1R);
-		motor2R = new Sad(encoderChannel2R);
+		motor1L = new TalonMotorController(encoderChannel1L);
+		motor2L = new TalonMotorController(encoderChannel2L);
+		motor1R = new TalonMotorController(encoderChannel1R);
+		motor2R = new TalonMotorController(encoderChannel2R);
 		
 		//Resets the data on both encoders
 		encoderLeft.reset();
