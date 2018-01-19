@@ -26,12 +26,20 @@ public class Robot extends IterativeRobot {
 	private int encoderChannel2R = 0;
 	
 	//HOW FAR WE WANT THE ROBOT TO GO. WE MAY NEED TO CREATE MULTIPLE DISTANCES FOR EACH TURN JUST SAYING (:
-	private double distance = 3, velocity = 0.25;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
+	private double distance = 3, velocity = 0.1;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
 	private double distanceTraveled = 0;
 	
 	//Motors
 	TalonMotorController motor1L, motor1R, motor2L, motor2R; 
 	
+	
+	//I made a function that stops the robot (:
+	public void StopTheRobot() {
+		motor1L.setSpeed(0);
+		motor1R.setSpeed(0);
+		motor2L.setSpeed(0);
+		motor2R.setSpeed(0);
+	}
 	
 	public void robotInit() {
 		//What do I put here?
@@ -67,14 +75,6 @@ public class Robot extends IterativeRobot {
 		encoderRight.reset();
 	}
 	
-	//I made a function that stops the robot (:
-	public void StopTheRobot() {
-		motor1L.setSpeed(0);
-		motor1R.setSpeed(0);
-		motor2L.setSpeed(0);
-		motor2R.setSpeed(0);
-	}
-	
 	//Happens periodically throughout the robots driving
 	public void autonomousPeriodic() {
 		if (distanceTraveled < distance || distanceTraveled > distance) {
@@ -101,8 +101,7 @@ public class Robot extends IterativeRobot {
 			
 			//System.out.println("Correctional: " + correctionalVelocity + " | Velocity: " + velocity + " | Distance Traveled: " + distanceTraveled + " | Distance Traveled Difference: " + distanceTraveledDifference);
 		}
-		//If it has reached distance, stop all the motors
-		else {
+		else {//If it has reached distance, stop all the motors
 			StopTheRobot();
 		}
 	}
