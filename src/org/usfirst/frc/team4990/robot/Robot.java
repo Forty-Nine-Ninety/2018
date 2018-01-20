@@ -84,10 +84,10 @@ public class Robot extends IterativeRobot {
 			
 			double difference = (distanceDifferenceLeft - distanceDifferenceRight) / 2;
 			
-			motor1L.setSpeed(velocity - difference);
-			motor2L.setSpeed(velocity - difference);
-			motor1L.setSpeed(velocity + difference);
-			motor2L.setSpeed(velocity + difference);
+			motor1L.setSpeed(velocity - difference / 12);
+			motor2L.setSpeed(velocity - difference / 12);
+			motor1L.setSpeed(velocity + difference / 12);
+			motor2L.setSpeed(velocity + difference / 12);
 			
 			/*
 			distanceTraveled = encoderLeft.getDistance();
