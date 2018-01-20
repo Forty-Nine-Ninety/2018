@@ -43,7 +43,12 @@ public class AutoDriveTrainScripter {
 		}
 	}
 	
-	public void forwardDistance(double distance) {
+	public void forwardDistance(double distance) { //TODO make it go specified distance
+		/*Test LOG (format date: specified distance | actual distence)
+		 * 1-20-18: 3ft | 3ft+7in
+		 * 
+		 * 
+		 */
 		class F_Package implements CommandPackage {
 			private double value;
 			private DriveTrain dt;
@@ -79,7 +84,7 @@ public class AutoDriveTrainScripter {
 		commands.add(new F_Package(dt, distance));
 	}
 	
-	public void wait(double time) {
+	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
 			private boolean done;
 			private double duration;
@@ -92,7 +97,7 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
-					if (startMillis + duration <= System.currentTimeMillis()) {
+					if (startMillis + duration <= System.currentTimeMillis()) {//done waiting!
 						this.done = true;
 					}
 				}
@@ -103,5 +108,46 @@ public class AutoDriveTrainScripter {
 		}
 		
 		commands.add(new W_Package(time));
+	}
+	
+	public void tankTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right 
+		class T_Package implements CommandPackage {
+			private boolean done;
+			private double degreesTime;
+			private boolean rside;
+			private long startMillis;
+			
+			public T_Package(double d, boolean s) {
+				this.rside = s;
+				this.degreesTime = d; //TODO do math to compute how long it takes to turn d degree
+				this.done = false;
+				this.startMillis = System.currentTimeMillis(); 
+			}
+			
+			public void update() {
+					if (startMillis + degreesTime > System.currentTimeMillis()) { //now turning
+						
+						if (rside) { //turn toward robot's right
+							//TODO make sure this turns RIGHT
+							dt.setLeftSpeed(0.3);//left side forward
+							dt.setRightSpeed(-0.3);//right side backward
+						} else {//turn toward robot's left
+							//TODO make sure this turns LEFT
+							dt.setLeftSpeed(-0.3);//left side backward
+							dt.setRightSpeed(0.3);//right side forward
+						}
+					} else { //robot finished turning
+						this.done = true;
+					}
+					
+					
+				}
+			
+			public boolean done() {
+				return this.done;
+			}
+		}
+		
+		commands.add(new T_Package(degrees, rside));
 	}
 } 

@@ -6,8 +6,7 @@ import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
 	protected void init() {
-		forwardDistance(3.0);
-		wait(2000.0);
+		wait(1000.0);
 		forwardDistance(3.0);
 	}
 	
