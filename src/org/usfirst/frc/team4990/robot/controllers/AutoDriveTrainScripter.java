@@ -78,4 +78,30 @@ public class AutoDriveTrainScripter {
 		
 		commands.add(new F_Package(dt, distance));
 	}
-}
+	
+	public void wait(double time) {
+		class W_Package implements CommandPackage {
+			private boolean done;
+			private double duration;
+			private long startMillis;
+			
+			public W_Package(double t) {
+				this.duration = t;
+				this.done = false;
+				this.startMillis = System.currentTimeMillis(); 
+			}
+			
+			public void update() {
+					if (startMillis + duration <= System.currentTimeMillis()) {
+						this.done = true;
+					}
+				}
+			
+			public boolean done() {
+				return this.done;
+			}
+		}
+		
+		commands.add(new W_Package(time));
+	}
+} 
