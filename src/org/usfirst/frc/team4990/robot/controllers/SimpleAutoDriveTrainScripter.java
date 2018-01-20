@@ -7,6 +7,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
 	protected void init() {
 		forwardDistance(3.0);
+		wait(2000.0);
+		forwardDistance(3.0);
 	}
 	
 	// Do not modify below por favor (this means "please" in Spanish)
