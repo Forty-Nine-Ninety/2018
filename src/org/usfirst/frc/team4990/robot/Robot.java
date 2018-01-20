@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class Robot extends IterativeRobot {
 	
-	//Variables
+	//Constants
 	private int pulsesPerRevolution = 250;
 	private double feetPerWheelRevolution = 4.0 / 12.0 * Math.PI;
 	private double gearboxEncoderMinRate = 0.0;
@@ -26,12 +26,13 @@ public class Robot extends IterativeRobot {
 	private int encoderChannel2R = 0;
 	
 	//HOW FAR WE WANT THE ROBOT TO GO. WE MAY NEED TO CREATE MULTIPLE DISTANCES FOR EACH TURN JUST SAYING (:
-	private double distance = 3, velocity = 0.1;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
+	private double distance = 3, velocity = 0.10;//Distance in feet, velocity is motor power percentage, from 0-1, motor speed 12 ft/s
 	private double distanceTraveled = 0;
 	
 	//Motors
 	TalonMotorController motor1L, motor1R, motor2L, motor2R; 
 	
+	private double lastLeftDistance = 0, lastRightDistance = 0, distanceDifferenceLeft, distanceDifferenceRight;
 	
 	//I made a function that stops the robot (:
 	public void StopTheRobot() {
@@ -78,19 +79,32 @@ public class Robot extends IterativeRobot {
 	//Happens periodically throughout the robots driving
 	public void autonomousPeriodic() {
 		if (distanceTraveled < distance || distanceTraveled > distance) {
-			
+			updateDistances();
 			distanceTraveled = encoderLeft.getDistance();
 			
-			double distanceTraveledDifference = encoderLeft.getDistance() - encoderRight.getDistance(); //The distance variation between the left and right sides
-			System.out.println(encoderLeft.getDistance() + " " + encoderRight.getDistance()); //Prints data to console
+			double difference = (distanceDifferenceLeft - distanceDifferenceRight) / 2;
+			
+			motor1L.setSpeed(velocity - difference);
+			motor2L.setSpeed(velocity - difference);
+			motor1L.setSpeed(velocity + difference);
+			motor2L.setSpeed(velocity + difference);
+			
+			/*
+			distanceTraveled = encoderLeft.getDistance();
+			
+			double distanceTraveledDifference = encoderLeft.getDistance() + encoderRight.getDistance(); //The distance variation between the left and right sides
+			System.out.print("ThiqqBoi\t\t\t\t");
+			System.out.println(encoderLeft.getDistance() + " " + encoderRight.getDistance() * -1); //Prints data to console
 			double correctionalVelocity = velocity; //Correctional Velocity Starts off As Normal Velocity
 			
+			
 			if (distanceTraveledDifference < 0) {//if Right is slower
-				correctionalVelocity += (distanceTraveledDifference * -1) / 144; //Speeds up
+				correctionalVelocity += (distanceTraveledDifference * -1) / 12; //Speeds up
 			}
 			else if (distanceTraveledDifference > 0) {//if Right is faster
-				correctionalVelocity -= (distanceTraveledDifference * -1) / 144; //Slows down
+				correctionalVelocity -= (distanceTraveledDifference * -1) / 12; //Slows down
 			}
+			System.out.println(correctionalVelocity);
 			
 			//Right will correct itself based on the correctional velocity needed. Left never corrects.
 			motor1L.setSpeed(velocity);
@@ -98,12 +112,25 @@ public class Robot extends IterativeRobot {
 			correctionalVelocity *= -1;
 			motor1R.setSpeed(correctionalVelocity); 
 			motor2R.setSpeed(correctionalVelocity);
+			*/
 			
-			//System.out.println("Correctional: " + correctionalVelocity + " | Velocity: " + velocity + " | Distance Traveled: " + distanceTraveled + " | Distance Traveled Difference: " + distanceTraveledDifference);
 		}
 		else {//If it has reached distance, stop all the motors
 			StopTheRobot();
 		}
 	}
 	
+	
+	//Random functions for myself
+	
+	private void updateDistances() {
+		distanceDifferenceLeft = encoderLeft.getDistance() - lastLeftDistance;
+		distanceDifferenceRight = encoderRight.getDistance() * -1 - lastRightDistance;
+		lastLeftDistance = encoderLeft.getDistance();
+		lastRightDistance = encoderRight.getDistance() * -1;
+	}
+	
 }
+
+//NEW ERA CODE
+
