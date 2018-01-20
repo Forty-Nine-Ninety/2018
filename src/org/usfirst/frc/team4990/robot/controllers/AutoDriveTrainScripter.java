@@ -5,7 +5,7 @@ import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import java.util.LinkedList;
 import java.util.Queue;
 
-//You shouldn't fuck with this if you don't know what you're doing
+//You shouldn't mess with this if you don't know what you're doing
 
 public class AutoDriveTrainScripter {
 	
@@ -58,8 +58,8 @@ public class AutoDriveTrainScripter {
 			
 			public void update() {
 				// only the right side works...
-				// and it's fucking backwards
-				// this entire fucking robot is backwards
+				// and it's backwards
+				// this entire robot is backwards
 				if(-this.dt.getRightDistanceTraveled() < this.value) {
 					dt.setLeftSpeed(.3);
 					dt.setRightSpeed(.3);
