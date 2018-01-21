@@ -44,7 +44,7 @@ public class AutoDriveTrainScripter {
 	}
 	
 	public void forwardDistance(double distance) { //TODO make it go specified distance
-		/*Test LOG (format date: specified distance | actual distence)
+		/*Test LOG (format date: specified distance | actual distance)
 		 * 1-20-18: 3ft | 3ft+7in
 		 * 
 		 * 
@@ -110,7 +110,7 @@ public class AutoDriveTrainScripter {
 		commands.add(new W_Package(time));
 	}
 	
-	public void tankTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right 
+	public void timeTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right 
 		class T_Package implements CommandPackage {
 			private boolean done;
 			private double degreesTime;
@@ -139,6 +139,41 @@ public class AutoDriveTrainScripter {
 					} else { //robot finished turning
 						this.done = true;
 					}
+					
+					
+				}
+			
+			public boolean done() {
+				return this.done;
+			}
+		}
+		
+		commands.add(new T_Package(degrees, rside));
+	}
+	
+	public void encoderTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right 
+		class T_Package implements CommandPackage {
+			private boolean done;
+			private boolean rside;
+			private DriveTrain dt;
+			
+			public T_Package(double drivet, double d, boolean s) {
+				this.rside = s;
+				this.dt = drivet;
+				this.dt.resetDistanceTraveled();
+				this.done = false;
+			}
+			
+			public void update() {
+				if (-this.dt.getRightDistanceTraveled() < this.value) {
+					dt.setLeftSpeed(.3);
+					dt.setRightSpeed(.3);
+				}
+				else {
+					dt.setLeftSpeed(0.0);
+					dt.setRightSpeed(0.0);
+					this.done = true;
+				}
 					
 					
 				}

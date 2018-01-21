@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4990.robot.subsystems.motors;
 
-import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Talon;
 
-public class TalonSRXMotorController extends TalonSRX implements Motor {
+public class TalonSRXMotorController extends Talon implements Motor {
 	public TalonSRXMotorController(int pwmPort) {
 		super(pwmPort);
 	}
