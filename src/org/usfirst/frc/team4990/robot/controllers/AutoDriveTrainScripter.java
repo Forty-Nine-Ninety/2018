@@ -156,8 +156,9 @@ public class AutoDriveTrainScripter {
 			private boolean done;
 			private boolean rside;
 			private DriveTrain dt;
+			private double value;
 			
-			public T_Package(double drivet, double d, boolean s) {
+			public T_Package(DriveTrain drivet, double d, boolean s) {
 				this.rside = s;
 				this.dt = drivet;
 				this.dt.resetDistanceTraveled();
@@ -183,6 +184,6 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		
-		commands.add(new T_Package(degrees, rside));
+		commands.add(new T_Package(dt, degrees, rside));
 	}
 } 
