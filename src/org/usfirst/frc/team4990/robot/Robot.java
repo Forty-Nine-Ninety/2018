@@ -35,15 +35,6 @@ public class Robot extends IterativeRobot {
 	//Motors
 	TalonMotorController motor1L, motor1R, motor2L, motor2R; 
 	
-	private double lastLeftDistance = 0, lastRightDistance = 0, distanceDifferenceLeft, distanceDifferenceRight;
-	
-	//I made a function that stops the robot (:
-	public void StopTheRobot() {
-		motor1L.setSpeed(0);
-		motor1R.setSpeed(0);
-		motor2L.setSpeed(0);
-		motor2R.setSpeed(0);
-	}
 	
 	public void robotInit() {
 		//What do I put here?
@@ -67,11 +58,10 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() { //Sets up the two encoders to measure output from two motors on each side
 		
-		try {
-			TimeUnit.SECONDS.sleep(2);
+		try {//Sleep code; needs try-catch so don't delete
+			TimeUnit.SECONDS.sleep(2);//Sleeps 2 seconds
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();//Print if there is error and then leave
 			return;
 		}
 		
@@ -80,69 +70,31 @@ public class Robot extends IterativeRobot {
 		encoderRight.reset();
 	}
 	
-	//Happens periodically throughout the robots driving
+	//Happens periodically throughout the robots driving(Once every 5ms)
 	public void autonomousPeriodic() {
-		if (distanceTraveled * 1.125 < distance /*|| distanceTraveled > distance*/ && this.autoDone == false) {
-			updateDistances();
-			distanceTraveled = encoderLeft.getDistance();
+		if (distanceTraveled * 1.125 < distance && this.autoDone == false) {//Moves specified distance
 			
-			double difference = (distanceDifferenceLeft - distanceDifferenceRight) / 2;
+			distanceTraveled = encoderLeft.getDistance(); /* Sets distanceTraveled to the distance traveled by
+			encoderLeft;I chose left b/c I am left handed, but right can work too.  I just like left better. */
+			
 			/*
-			motor1L.setSpeed(velocity - difference / 12);
-			motor2L.setSpeed(velocity - difference / 12);
-			motor1R.setSpeed(velocity + difference / 12);
-			motor2R.setSpeed(velocity + difference / 12);
-			*/
-			
 			motor1L.setSpeed(velocity * 0.727);
 			motor2L.setSpeed(velocity * 0.727);
 			motor1R.setSpeed(-velocity);
 			motor2R.setSpeed(-velocity);
-			
-			System.out.println(this.distanceTraveled * 1.125+ " " + encoderLeft.getDistance() + " " + encoderRight.getDistance() * -1 + " " + difference);
-			/*
-			distanceTraveled = encoderLeft.getDistance();
-			
-			double distanceTraveledDifference = encoderLeft.getDistance() + encoderRight.getDistance(); //The distance variation between the left and right sides
-			System.out.print("ThiqqBoi\t\t\t\t");
-			System.out.println(encoderLeft.getDistance() + " " + encoderRight.getDistance() * -1); //Prints data to console
-			double correctionalVelocity = velocity; //Correctional Velocity Starts off As Normal Velocity
-			
-			
-			if (distanceTraveledDifference < 0) {//if Right is slower
-				correctionalVelocity += (distanceTraveledDifference * -1) / 12; //Speeds up
-			}
-			else if (distanceTraveledDifference > 0) {//if Right is faster
-				correctionalVelocity -= (distanceTraveledDifference * -1) / 12; //Slows down
-			}
-			System.out.println(correctionalVelocity);
-			
-			//Right will correct itself based on the correctional velocity needed. Left never corrects.
-			motor1L.setSpeed(velocity);
-			motor2L.setSpeed(velocity);
-			correctionalVelocity *= -1;
-			motor1R.setSpeed(correctionalVelocity); 
-			motor2R.setSpeed(correctionalVelocity);
 			*/
 			
-		}
-		else {//If it has reached distance, stop all the motors
-			StopTheRobot();
-			System.out.println("DONE");
-			distanceTraveled = 0;
-			autoDone = true;
+			System.out.println(this.distanceTraveled * 1.125 + " " + encoderLeft.getDistance() + " " + encoderRight.getDistance() * -1);//Prints "debug" info
+			
 			
 		}
-	}
-	
-	
-	//Random functions for myself
-	
-	private void updateDistances() {
-		distanceDifferenceLeft = encoderLeft.getDistance() - lastLeftDistance;
-		distanceDifferenceRight = encoderRight.getDistance() * -1 - lastRightDistance;
-		lastLeftDistance = encoderLeft.getDistance();
-		lastRightDistance = encoderRight.getDistance() * -1;
+		else {
+			//STOP
+			System.out.println("DONE");
+			distanceTraveled = 0;//idk what Wiley was doing
+			autoDone = true;//Makes loop stop
+			
+		}
 	}
 	
 }
