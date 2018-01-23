@@ -6,6 +6,7 @@ import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
 	protected void init() {
+		System.out.println("Initing");
 		wait(1000.0);
 		forwardDistance(3.0);
 	}

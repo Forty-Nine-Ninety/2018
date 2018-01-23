@@ -87,20 +87,22 @@ public class AutoDriveTrainScripter {
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
 			private boolean done;
-			private double duration;
+			private long duration;
 			private long startMillis;
 			
 			public W_Package(double t) {
-				this.duration = t;
+				this.duration = (long) t;
 				this.done = false;
 				this.startMillis = System.currentTimeMillis(); 
 			}
 			
 			public void update() {
-					if (startMillis + duration <= System.currentTimeMillis()) {//done waiting!
-						this.done = true;
-					}
+				System.out.println(startMillis + duration);
+				System.out.println(System.currentTimeMillis());
+				if (startMillis + duration <= System.currentTimeMillis()) {//done waiting!
+					this.done = true;
 				}
+			}
 			
 			public boolean done() {
 				return this.done;
