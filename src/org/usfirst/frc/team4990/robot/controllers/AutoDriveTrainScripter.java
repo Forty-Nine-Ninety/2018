@@ -112,45 +112,72 @@ public class AutoDriveTrainScripter {
 		commands.add(new W_Package(time));
 	}
 	
-	public void timeTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right 
-		class T_Package implements CommandPackage {
+
+	public void turnForDegrees(double degrees, String lr) {
+		//0.01709 feet per 1 degree
+		class turnForDegrees_Package implements CommandPackage {
+			private double feetPer1Degree = 0.01709;
+			private double degrees;
+			private String lr;
 			private boolean done;
-			private double degreesTime;
-			private boolean rside;
-			private long startMillis;
-			
-			public T_Package(double d, boolean s) {
-				this.rside = s;
-				this.degreesTime = d; //TODO do math to compute how long it takes to turn d degree
+			private DriveTrain dt;
+			private boolean right;
+			private double encoderDistanceToStriveFor;
+			private double currentEncoderDistance;
+
+			public turnForDegrees_Package(DriveTrain d, double degrees, String lr) {
+				this.dt = d;
+				this.degrees = degrees;
+				this.lr = lr;
 				this.done = false;
-				this.startMillis = System.currentTimeMillis(); 
-			}
-			
-			public void update() {
-					if (startMillis + degreesTime > System.currentTimeMillis()) { //now turning
-						
-						if (rside) { //turn toward robot's right
-							//TODO make sure this turns RIGHT
-							dt.setLeftSpeed(0.3);//left side forward
-							dt.setRightSpeed(-0.3);//right side backward
-						} else {//turn toward robot's left
-							//TODO make sure this turns LEFT
-							dt.setLeftSpeed(-0.3);//left side backward
-							dt.setRightSpeed(0.3);//right side forward
-						}
-					} else { //robot finished turning
-						this.done = true;
-					}
-					
-					
+				encoderDistanceToStriveFor = this.degrees * feetPer1Degree;
+				this.dt.resetDistanceTraveled();
+				currentEncoderDistance = 0;
+				if (this.lr == "r") {
+					right = true;
 				}
-			
+				else {
+					right = false;
+				}
+			}
+			public void update() {
+				if (right = true) {
+					while (currentEncoderDistance <= encoderDistanceToStriveFor) {
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
+						this.dt.setLeftSpeed(-0.3);
+						this.dt.setRightSpeed(0.3);
+					}
+
+					if (currentEncoderDistance == encoderDistanceToStriveFor) {
+						this.done = true;
+					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
+						while (currentEncoderDistance > encoderDistanceToStriveFor) {
+							this.dt.setLeftSpeed(0.1);
+							this.dt.setRightSpeed(-0.1);
+						}
+					}
+				} else if (right = false) {
+					while (currentEncoderDistance <= encoderDistanceToStriveFor) {
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
+						this.dt.setLeftSpeed(-0.3);
+						this.dt.setRightSpeed(0.3);
+					}
+					if (currentEncoderDistance == encoderDistanceToStriveFor) {
+						this.done = true;
+					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
+						while (currentEncoderDistance > encoderDistanceToStriveFor) {
+							this.dt.setLeftSpeed(0.1);
+							this.dt.setRightSpeed(-0.1);
+						}
+					}
+				}
+				this.done = true;
+			}
 			public boolean done() {
 				return this.done;
 			}
 		}
-		
-		commands.add(new T_Package(degrees, rside));
+		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
 	
 	public void encoderTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right 
