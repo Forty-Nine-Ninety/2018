@@ -18,6 +18,10 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	public Command autoCommand;
+	public SendableChooser autoChooser;
+	
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
@@ -42,10 +46,18 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
+    	
+    	autoChooser = new SendableChooser();
+    	autoChooser.addObject("Left",  new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.LEFT));
+    	autoChooser.addDefault("Middle", new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.MID));
+    	autoChooser.addObject("Right",  new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.RIGHT));
+    	SmartDashboard.putData("Auto Location Chooser", autoChooser);
+    	
     }
 
     public void autonomousInit() {
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, autoRoboStartLoc());
+    	autoCommand = (Command) autoChooser.getSelected();
+    	autoCommand.start();
     }
     
     /**
@@ -54,6 +66,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	autoScripter.update();
     	driveTrain.update();
+    	Scheduler.getInstance().run();
     }
     
     public StartingPosition autoRoboStartLoc() {
