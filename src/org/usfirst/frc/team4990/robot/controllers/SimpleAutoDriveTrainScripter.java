@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {

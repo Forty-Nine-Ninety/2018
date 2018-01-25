@@ -5,12 +5,10 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 
-import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter;
+import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
-import org.usfirst.frc.team4990.robot.controllers.TeleopDriveTrainController;
-import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
-import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
+import org.usfirst.frc.team4990.robot.subsystems.*;
+import org.usfirst.frc.team4990.robot.subsystems.motors.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
