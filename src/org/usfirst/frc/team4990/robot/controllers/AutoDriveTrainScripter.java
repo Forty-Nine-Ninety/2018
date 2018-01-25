@@ -2,6 +2,8 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -20,9 +22,11 @@ public class AutoDriveTrainScripter {
 	private Queue<CommandPackage> commands = new LinkedList<>();
 	
 	private DriveTrain dt;
+	//private Solenoid solenoid;
 
 	public AutoDriveTrainScripter(DriveTrain dtrain) {
 		dt = dtrain;
+		//Solenoid solenoid = solen;
 	}
 	
 	public void update() {
@@ -65,6 +69,7 @@ public class AutoDriveTrainScripter {
 				// only the right side works...
 				// and it's backwards
 				// this entire robot is backwards
+				//System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
 				if(-this.dt.getRightDistanceTraveled() < this.value) {
 					dt.setLeftSpeed(.3);
 					dt.setRightSpeed(.3);
@@ -83,6 +88,37 @@ public class AutoDriveTrainScripter {
 		
 		commands.add(new F_Package(dt, distance));
 	}
+	
+	public void debugEncoders(double speed) { //TODO make it go specified distance
+		class debugEncoders_Package implements CommandPackage {
+			private double speed;
+			private DriveTrain dt;
+			private boolean done;
+			
+			public debugEncoders_Package(DriveTrain d, double s) {
+				this.dt = d;
+				this.speed = s;
+				this.done = false;
+				this.dt.resetDistanceTraveled();
+			}
+			
+			public void update() {
+				// only the right side works...
+				// and it's backwards
+				// this entire robot is backwards
+				System.out.println("expected:"+ (-this.dt.getRightDistanceTraveled()+this.dt.getLeftDistanceTraveled())/2 + "right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
+				
+					dt.setLeftSpeed(speed);
+					dt.setRightSpeed(speed);
+				}
+			
+			public boolean done() {
+				return this.done;
+			}
+		
+		}
+		commands.add(new debugEncoders_Package(dt, speed));
+	} 
 	
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
@@ -251,4 +287,6 @@ public class AutoDriveTrainScripter {
 		commands.add(new T_Package(dt, degrees));
 		
 	}
+	
+
 } 

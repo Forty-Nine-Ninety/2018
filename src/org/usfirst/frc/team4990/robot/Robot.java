@@ -2,6 +2,7 @@ package org.usfirst.frc.team4990.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.*;
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter;
 import org.usfirst.frc.team4990.robot.controllers.TeleopDriveTrainController;
@@ -20,6 +21,7 @@ public class Robot extends IterativeRobot {
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
+	private Solenoid solenoid;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
@@ -41,6 +43,8 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     }
+    
+    //this.solenoid = new Solenoid();
 
     public void autonomousInit() {
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
