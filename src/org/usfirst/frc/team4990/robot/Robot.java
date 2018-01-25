@@ -2,6 +2,7 @@ package org.usfirst.frc.team4990.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter;
@@ -21,7 +22,7 @@ public class Robot extends IterativeRobot {
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
-	private Solenoid solenoid;
+	//private Solenoid solenoid;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
@@ -43,8 +44,6 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     }
-    
-    //this.solenoid = new Solenoid();
 
     public void autonomousInit() {
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
@@ -56,6 +55,23 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	autoScripter.update();
     	driveTrain.update();
+    }
+    
+    public int autoRoboStartLoc() {
+    	int trigger = -1;
+    	for (int i = 1; i < 4; i++) {
+    		if (! SmartDashboard.getBoolean("DB/Button " + i, false)) {
+    			trigger = i;
+    		}
+    	}
+    	if (trigger == -1) { trigger = 0;}
+    	for (int i = 1; i < 4; i++) {
+    		SmartDashboard.putBoolean("DB/Button " + i, false);
+    		SmartDashboard.putBoolean("DB/LED " + i, false);
+    	}
+    	SmartDashboard.putBoolean("DB/LED " + trigger, true);
+    	
+    	return trigger;
     }
     
     public void teleopInit() {
