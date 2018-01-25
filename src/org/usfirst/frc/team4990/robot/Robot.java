@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter;
+import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.controllers.TeleopDriveTrainController;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
@@ -46,7 +47,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, autoRoboStartLoc());
     }
     
     /**
@@ -57,7 +58,7 @@ public class Robot extends IterativeRobot {
     	driveTrain.update();
     }
     
-    public int autoRoboStartLoc() {
+    public StartingPosition autoRoboStartLoc() {
     	int trigger = -1;
     	for (int i = 1; i < 4; i++) {
     		if (! SmartDashboard.getBoolean("DB/Button " + i, false)) {
@@ -71,7 +72,19 @@ public class Robot extends IterativeRobot {
     	}
     	SmartDashboard.putBoolean("DB/LED " + trigger, true);
     	
-    	return trigger;
+    	
+    	switch(trigger) {
+    	case 0:
+    		System.err.println("YA MESSED UP?");
+    		break;
+    	case 1:
+    		return StartingPosition.LEFT;
+    	case 2:
+    		return StartingPosition.MID;
+    	case 3:
+    		return StartingPosition.RIGHT;
+    	}
+    	return StartingPosition.ERROR;
     }
     
     public void teleopInit() {

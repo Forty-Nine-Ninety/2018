@@ -5,16 +5,44 @@ import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
-	protected void init() {
-		System.out.println("Initializing");
-		wait(1000.0);
-		forwardDistance(3.0);
+	public enum StartingPosition {LEFT, MID, RIGHT, ERROR};
+	
+	protected void init(StartingPosition s) {
+		StartingPosition position = StartingPosition.ERROR;
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if (gameData.charAt(0) == 'L') {//Left side is ours
+			switch(position) {
+				case LEFT:
+					break;
+				case MID:
+					break;
+				case RIGHT:
+					break;
+				case ERROR:
+					System.err.println("THAT DOESN'T WORK");
+			}
+		}
+		else if (gameData.charAt(0) == 'R') {//Right 
+			switch(position) {
+				case LEFT:
+					break;
+				case MID:
+					break;
+				case RIGHT:
+					break;
+				case ERROR:
+					System.err.println("THAT DOESN'T WORK");
+			}
+		}
+		else {
+			System.out.println("YA MESSED UP PPL IDK WHAT HAPPENED THO HERE'S WHAT I GOT: " + gameData.charAt(0));
+		}
 	}
 	
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain) {
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition s) {
 		super(dtrain);
-		this.init();
+		this.init(s);
 	}
 	
 	public void update() {
