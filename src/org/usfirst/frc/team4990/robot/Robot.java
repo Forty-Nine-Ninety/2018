@@ -22,12 +22,14 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.*;
  */
 public class Robot extends IterativeRobot {
 	
-	//public Command autoCommand;
-	//public SendableChooser autoChooser;
+	public Command autoCommand;
+	public SendableChooser autoChooser;
+	public StartingPosition startPos;
 	
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
+	//private Solenoid solenoid;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
@@ -49,19 +51,42 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
-    	/*autoChooser = new SendableChooser();
-    	autoChooser.addObject("Left",  new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.LEFT));
-    	autoChooser.addDefault("Middle", new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.MID));
-    	autoChooser.addObject("Right",  new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.RIGHT));
-    	SmartDashboard.putData("Auto Location Chooser", autoChooser);*/
+    	autoChooser = new SendableChooser();
+    	autoChooser.addObject("Left",  new selectAuto(StartingPosition.LEFT));
+    	autoChooser.addDefault("Middle", new selectAuto(StartingPosition.MID));
+    	autoChooser.addObject("Right",  new selectAuto(StartingPosition.RIGHT));
+    	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	
     }
-
+    public class selectAuto extends Command {
+    		boolean isDone = false;
+	    	public selectAuto(StartingPosition startp) {
+	    		super("selectAuto");
+	        }
+	
+	        protected void initialize(StartingPosition startp) {
+	        		startPos = startp;
+	        		System.out.println(startPos);
+	        		isDone = true;
+	        }
+	        protected void execute() {
+	        }
+	
+	 
+	        protected boolean isFinished() {
+	            return isDone;
+	        }
+	
+	        protected void end() {
+	        }
+	
+	        protected void interrupted() {
+	        }
+	    }
+    
     public void autonomousInit() {
-    	/*autoCommand = (Command) autoChooser.getSelected();
-    	autoCommand.start();*/
-    	StartingPosition s = StartingPosition.MID;
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, s);
+    	autoCommand = (Command) autoChooser.getSelected();
+    	autoCommand.start();
     }
     
     /**
@@ -70,7 +95,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	autoScripter.update();
     	driveTrain.update();
-    	Scheduler.getInstance().run();
+    //	Scheduler.getInstance().run();
     }
     
     public StartingPosition autoRoboStartLoc() {
