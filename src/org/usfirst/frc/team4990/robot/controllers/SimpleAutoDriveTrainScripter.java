@@ -7,16 +7,16 @@ import edu.wpi.first.wpilibj.DriverStation;
 import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
-	
+
 	public enum StartingPosition {LEFT, MID, RIGHT, ERROR, STAY, FORWARD};
-	
+
 	public void crossAutoLine() {
 		//go forward and cross auto line
 		//forward 140 in
 		System.out.println("JUST crossing auto line: goDistance((140/12),true)");
 		goDistance((140/12),true);
 	}
-	
+
 	protected void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {//if there is no game message (string) OR just cross auto line
@@ -39,11 +39,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//6th: drop cube
 				break;
 			case RIGHT: //Dominic
-				//1st: forward 230 in
-				//2nd: turn 90º left
-				//3rd: forward 150 in
-				//4th: turn 90º left
-				//5th: forward 30 in
+				goDistance(30/12, true)
+				turnForDegrees(90, "l")
+				goDistance(150/12, true)
+				turnForDegrees(90, "l")
+				goDistance(30/12, true)
 				//6th: drop cube
 				break;
 			case ERROR: //debug/error case
@@ -58,15 +58,15 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				System.out.println("Default case of gameData LEFT activated. Going forward.");
 				crossAutoLine();
 		}
-		} else if (gameData.charAt(0) == 'R') {//Right 
+		} else if (gameData.charAt(0) == 'R') {//Right
 			switch(s) {
-				case LEFT: //Dominic
-					//1st: forward 230 in
-					//2nd: turn 90º right
-					//3rd: forward 150 in
-					//4th: turn 90º right
-					//5th: forward 30 in
-					//6th: drop cube 
+				case LEFT: //Dominic (more like domithiqq)
+					goDistance(230/12, true)
+					turnForDegrees(90, "r")
+					goDistance(150/12, true)
+					turnForDegrees(90, "r")
+					goDistance(30/12, true)
+					//6th: drop cube
 					break;
 				case MID: //Benjamin
 					goDistance((140/12),true);//1st: forward 140 in
@@ -91,9 +91,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		else {
 			System.out.println("YA MESSED UP PPL IDK WHAT HAPPENED THO HERE'S WHAT I GOT: " + gameData.charAt(0));
 		}
-		
+
 	}
-	
+
 	// Do not modify below por favor (this means "please" in Spanish)
 	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition s) {
 		super(dtrain);
@@ -102,7 +102,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		//turnForDegrees(90,"l");
 		//goDistance(3,true);
 	}
-	
+
 	public void update() {
 		super.update();
 	}
