@@ -38,18 +38,19 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	System.out.println("This worky presumably?");
     	System.out.println("Version 1.9.2018.6.33");
     	this.prefs = Preferences.getInstance();
     	
     	this.driveGamepad = new F310Gamepad(1);
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos);
+    	
     	this.driveTrain = new DriveTrain( 
     		new TalonMotorController(0),
     		new TalonMotorController(1),
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
-    	
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos);
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	autoChooser = new SendableChooser();
@@ -71,7 +72,7 @@ public class Robot extends IterativeRobot {
 	    	public selectAuto(StartingPosition start) {
 	    		super("selectAuto");
 	    		System.out.println("Hopefully this too?");
-	    		initialize(start);
+	    		//initialize(start);
 	        }
 	
 	        protected void initialize(StartingPosition startpo) {
@@ -96,12 +97,15 @@ public class Robot extends IterativeRobot {
     
     public class refreshSelectAuto extends Command {
 		boolean isDone = false;
+		
     	public refreshSelectAuto() {
     		super("refreshSelectAuto");
     		initialize();
         }
 
         protected void initialize() {
+        	Object autoSelected = new SendableChooser();
+        	autoSelected = autoChooser.getSelected();
         	SmartDashboard.putString("Selected Auto Pos", startPos.toString());
         	isDone = true;
         }
