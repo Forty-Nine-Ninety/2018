@@ -12,7 +12,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
 	protected void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		//if (gameData.charAt(0) == 'L') {//Left side is ours
+		if (gameData.charAt(0) == 'L') {//Left side is ours
 		switch(s) {
 			case LEFT:
 				//1st: forward ~162 in
@@ -27,21 +27,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//3rd: forward about 60 in
 					//4th: turn 90º right
 					//5th: forward 60 in
-				//OR go behind switch (in between scale and switch)
-					//1st: forward 80 in
-					//2nd: 90º right
-					//3rd: forward about 130 in
-					//4th: forward 150 in
-					//5th: turn 90º left
-					//6th: forward 150 in
-					//7th: turn 90º left
-					//8th: forward 30 in
-					//9th: drop cube
 				break;
 			case RIGHT:
-				//1th: forward 230 in
-				//2th: turn 90º left
-				//3th: forward 150 in
+				//1st: forward 230 in
+				//2nd: turn 90º left
+				//3rd: forward 150 in
 				//4th: turn 90º left
 				//5th: forward 30 in
 				//6th: drop cube
@@ -52,10 +42,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				//turnForDegrees(90, "l");
 				System.err.println("StartingPosition == Error. THAT DOESN'T WORK");
 				break;
-			case STAY:
-				System.out.println("I'm not going to move.");
+			case STAY: //FREEZE!
 				break;
-			case FORWARD:
+			case FORWARD://cross auto line only
 				//forward 140 inches
 				forwardDistance(12);
 				break;
@@ -65,18 +54,30 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		else if (gameData.charAt(0) == 'R') {//Right 
 			switch(s) {
 				case LEFT:
+					//1st: forward 230 in
+					//2nd: turn 90º right
+					//3rd: forward 150 in
+					//4th: turn 90º right
+					//5th: forward 30 in
+					//6th: drop cube 
 					break;
 				case MID:
+					//1st: forward 140 in
+					//2nd: drop cube
 					break;
 				case RIGHT:
+					//1st: forward ~162 in
+					//2nd: 90º turn left
+					//3rd: forward 55in
+					//4th: drop cube
 					break;
-				case ERROR:
-					System.err.println("THAT DOESN'T WORK");
+				case ERROR: //debug/error case
 					break;
-				case STAY:
+				case STAY: //FREEZE!
 					System.out.println("I'm not going to move.  Sucks to be you.");
 					break;
-				case FORWARD:
+				case FORWARD://cross auto line only
+					//forward 140 in
 					forwardDistance(12);
 					break;
 			}
