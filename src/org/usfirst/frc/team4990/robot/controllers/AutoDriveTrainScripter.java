@@ -281,16 +281,30 @@ public class AutoDriveTrainScripter {
 			}
 
 			public void update() {
-				System.out.println(this.dt.getLeftDistanceTraveled() + " " + this.distance);
-				if (this.dt.getLeftDistanceTraveled() < this.distance - (1/6)) {
-					dt.setSpeed(0.2, -0.2);
-				}
-				else if (this.dt.getLeftDistanceTraveled() < this.distance) {
-					dt.setSpeed(0.05, -0.05);
+				System.out.println(this.dt.getLeftDistanceTraveled() + " / " + this.distance);
+				if (this.distance < 0) {
+					if (this.dt.getLeftDistanceTraveled() > this.distance + (1/6)) {
+						dt.setSpeed(-0.2, 0.2);
+					}
+					else if (this.dt.getLeftDistanceTraveled() > this.distance) {
+						dt.setSpeed(-0.05, 0.05);
+					}
+					else {
+						dt.setSpeed(0, 0);
+						this.done = true;
+					}
 				}
 				else {
-					dt.setSpeed(0, 0);
-					this.done = true;
+					if (this.dt.getLeftDistanceTraveled() < this.distance - (1/6)) {
+						dt.setSpeed(0.2, -0.2);
+					}
+					else if (this.dt.getLeftDistanceTraveled() < this.distance) {
+						dt.setSpeed(0.05, -0.05);
+					}
+					else {
+						dt.setSpeed(0, 0);
+						this.done = true;
+					}
 				}
 			}
 			public boolean done() {
