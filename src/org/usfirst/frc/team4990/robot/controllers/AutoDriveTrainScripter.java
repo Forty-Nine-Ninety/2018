@@ -178,11 +178,9 @@ public class AutoDriveTrainScripter {
 			}
 			public void update() {
 				System.out.println(currentEncoderDistance);
-				currentEncoderDistance = (-1*this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled());
 				if (this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						//currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + -1 * this.dt.getRightDistanceTraveled());
-						
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + -1 * this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
@@ -192,7 +190,7 @@ public class AutoDriveTrainScripter {
 					
 				} else if (! this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
+						currentEncoderDistance = (-1*this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
@@ -212,41 +210,7 @@ public class AutoDriveTrainScripter {
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
 
-	public void encoderTurn(double degrees, boolean rside) { //degrees are how it sounds (degrees of a circle), if rside == true then robot will turn to the right
-		class T_Package implements CommandPackage {
-			private boolean done;
-			private boolean rside;
-			private DriveTrain dt;
-			private double value;
-
-			public T_Package(DriveTrain drivet, double d, boolean s) {
-				this.rside = s;
-				this.dt = drivet;
-				this.dt.resetDistanceTraveled();
-				this.done = false;
-			}
-
-			public void update() {
-				if (-this.dt.getRightDistanceTraveled() < this.value) {
-					dt.setLeftSpeed(.3);
-					dt.setRightSpeed(.3);
-				}
-				else {
-					dt.setLeftSpeed(0.0);
-					dt.setRightSpeed(0.0);
-					this.done = true;
-				}
-
-
-				}
-
-			public boolean done() {
-				return this.done;
-			}
-		}
-
-		commands.add(new T_Package(dt, degrees, rside));
-	}
+	
 
 	public void turnDistance(double degrees) {
 		class T_Package implements CommandPackage {//"Container" for turn command
