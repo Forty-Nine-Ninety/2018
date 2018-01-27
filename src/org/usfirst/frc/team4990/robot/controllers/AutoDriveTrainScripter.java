@@ -222,7 +222,7 @@ public class AutoDriveTrainScripter {
 				System.out.println(currentEncoderDistance);
 				if (this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + -1 * this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
