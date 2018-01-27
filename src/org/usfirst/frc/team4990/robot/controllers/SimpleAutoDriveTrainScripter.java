@@ -8,7 +8,7 @@ import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
-	public enum StartingPosition {LEFT, MID, RIGHT, ERROR};
+	public enum StartingPosition {LEFT, MID, RIGHT, ERROR, STAY, FORWARD};
 	
 	protected void init(StartingPosition s) {
 		StartingPosition position = StartingPosition.ERROR;
@@ -26,6 +26,13 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					break;
 				case ERROR:
 					System.err.println("THAT DOESN'T WORK");
+					break;
+				case STAY:
+					System.out.println("I'm not going to move.  Sucks to be you.");
+					break;
+				case FORWARD:
+					forwardDistance(12);
+					break;
 			}
 		}
 		else if (gameData.charAt(0) == 'R') {//Right 
@@ -38,6 +45,13 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					break;
 				case ERROR:
 					System.err.println("THAT DOESN'T WORK");
+					break;
+				case STAY:
+					System.out.println("I'm not going to move.  Sucks to be you.");
+					break;
+				case FORWARD:
+					forwardDistance(12);
+					break;
 			}
 		}
 		else {
