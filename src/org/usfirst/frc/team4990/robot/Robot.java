@@ -29,7 +29,6 @@ public class Robot extends IterativeRobot {
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
-	//private Solenoid solenoid;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
