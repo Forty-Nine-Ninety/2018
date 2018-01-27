@@ -190,16 +190,7 @@ public class AutoDriveTrainScripter {
 					else {
 						this.done = true;
 					}
-					/*
-					if (currentEncoderDistance == encoderDistanceToStriveFor) {
-						this.done = true;
-					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
-						if (currentEncoderDistance > encoderDistanceToStriveFor) {
-							this.dt.setLeftSpeed(0.1);
-							this.dt.setRightSpeed(-0.1);
-						}
-					}
-					*/
+					
 				} else if (! this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
@@ -209,18 +200,8 @@ public class AutoDriveTrainScripter {
 					else {
 						this.done = true;
 					}
-					/*
-					if (currentEncoderDistance == encoderDistanceToStriveFor) {
-						this.done = true;
-					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
-						if (currentEncoderDistance > encoderDistanceToStriveFor) {
-							this.dt.setLeftSpeed(0.1);
-							this.dt.setRightSpeed(-0.1);
-						}
-					}
-					*/
+					
 				}
-				//this.done = true;
 			}
 			public boolean done() {
 				if (this.done) {
