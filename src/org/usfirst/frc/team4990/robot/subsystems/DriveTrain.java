@@ -25,7 +25,7 @@ public class DriveTrain {
 	}
 	
 	public void setLeftSpeed(double leftSpeed) {
-		this.leftSetSpeed = leftSpeed;
+		this.leftSetSpeed = leftSpeed ;//slower?
 	}
 	
 	public void setRightSpeed(double rightSpeed) {

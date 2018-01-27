@@ -152,7 +152,7 @@ public class AutoDriveTrainScripter {
 	public void turnForDegrees(double degrees, String lr) {
 		//0.01709 feet per 1 degree
 		class turnForDegrees_Package implements CommandPackage{
-			private double feetPer1Degree = 0.01709;
+			private double feetPer1Degree = 0.00213625; //0.01709 / 8
 			private double classdegrees;
 			private String classlr;
 			private boolean done;
