@@ -10,11 +10,17 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
 	public enum StartingPosition {LEFT, MID, RIGHT, ERROR, STAY, FORWARD};
 	
+	public void crossAutoLine() {
+		//go forward and cross auto line
+		//forward 140 in
+		System.out.println("JUST crossing auto line: goDistance((140/12),true)");
+		goDistance((140/12),true);
+	}
+	
 	protected void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {//if there is no game message (string) OR just cross auto line
-			//go forward and cross auto line
-			forwardDistance(12,true);
+			crossAutoLine();
 		} else if (gameData.charAt(0) == 'L') {//Left side is ours
 		switch(s) {
 			case LEFT: //Joseph
@@ -25,11 +31,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				break;
 			case MID: //Benjamin
 				//cut in front (in between auto line and exchange)
-					forwardDistance((80/12),true);//1st: forward 80 in
+					goDistance((80/12),true);//1st: forward 80 in
 					turnForDegrees(90,"l");//2nd: turn 90º left
-					forwardDistance((60/12),true);//3rd: forward about 60 in
+					goDistance((60/12),true);//3rd: forward about 60 in
 					turnForDegrees(90,"r");//4th: turn 90º right
-					forwardDistance((60/12),true);//5th: forward 60 in
+					goDistance((60/12),true);//5th: forward 60 in
 					//6th: drop cube
 				break;
 			case RIGHT: //Dominic
@@ -48,6 +54,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				break;
 			case STAY: //FREEZE!
 				break;
+			default:
+				System.out.println("Default case of gameData LEFT activated. Going forward.");
+				crossAutoLine();
 		}
 		} else if (gameData.charAt(0) == 'R') {//Right 
 			switch(s) {
@@ -60,7 +69,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//6th: drop cube 
 					break;
 				case MID: //Benjamin
-					forwardDistance((140/12),true);//1st: forward 140 in
+					goDistance((140/12),true);//1st: forward 140 in
 					//2nd: drop cube
 					break;
 				case RIGHT: //Joseph
@@ -74,12 +83,15 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				case STAY: //FREEZE!
 					System.out.println("I'm not going to move.  Sucks to be you.");
 					break;
+				default:
+					System.out.println("Default case of gameData LEFT activated. Going forward.");
+					crossAutoLine();
 			}
 		}
 		else {
 			System.out.println("YA MESSED UP PPL IDK WHAT HAPPENED THO HERE'S WHAT I GOT: " + gameData.charAt(0));
 		}
-		*/
+		
 	}
 	
 	// Do not modify below por favor (this means "please" in Spanish)
@@ -88,7 +100,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		this.init(s);
 		super.init();
 		//turnForDegrees(90,"l");
-		//forwardDistance(3,true);
+		//goDistance(3,true);
 	}
 	
 	public void update() {
