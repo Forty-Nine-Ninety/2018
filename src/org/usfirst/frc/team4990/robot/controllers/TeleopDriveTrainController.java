@@ -19,7 +19,6 @@ public class TeleopDriveTrainController {
 	private double currentThrottleMultiplier;
 	
 	private final double maxTurnRadius;
-	private final boolean reverseTurningFlipped;
 	private final double accelerationTime;
 	private final double lowThrottleMultiplier;
 	private final double maxThrottle;
@@ -40,7 +39,6 @@ public class TeleopDriveTrainController {
 		this.currentThrottleMultiplier = maxThrottle;
 		
 		this.maxTurnRadius = maxTurnRadius;
-		this.reverseTurningFlipped = reverseTurningFlipped;
 		this.accelerationTime = accelerationTime;
 		this.lowThrottleMultiplier = lowThrottleMultiplier;
 		this.maxThrottle = maxThrottle;
