@@ -88,7 +88,6 @@ public class AutoDriveTrainScripter {
 
 		commands.add(new F_Package(dt, distance));
 	}
-
 	public void debugEncoders(double speed) { //TODO make it go specified distance
 		class debugEncoders_Package implements CommandPackage {
 			private double speed;
@@ -106,7 +105,7 @@ public class AutoDriveTrainScripter {
 				// only the right side works...
 				// and it's backwards
 				// this entire robot is backwards
-				System.out.println("expected:"+ (-this.dt.getRightDistanceTraveled()+this.dt.getLeftDistanceTraveled())/2 + "right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
+				System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
 
 					dt.setLeftSpeed(speed);
 					dt.setRightSpeed(speed);
