@@ -12,7 +12,10 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	
 	protected void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		if (gameData.charAt(0) == 'L') {//Left side is ours
+		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {//if there is no game message (string) OR just cross auto line
+			//go forward and cross auto line
+			forwardDistance(12,false);
+		} else if (gameData.charAt(0) == 'L') {//Left side is ours
 		switch(s) {
 			case LEFT:
 				//1st: forward ~162 in
@@ -44,14 +47,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				break;
 			case STAY: //FREEZE!
 				break;
-			case FORWARD://cross auto line only
-				//forward 140 inches
-				forwardDistance(12);
-				break;
 		}
-		//}
-		/*
-		else if (gameData.charAt(0) == 'R') {//Right 
+		} else if (gameData.charAt(0) == 'R') {//Right 
 			switch(s) {
 				case LEFT:
 					//1st: forward 230 in
@@ -75,10 +72,6 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					break;
 				case STAY: //FREEZE!
 					System.out.println("I'm not going to move.  Sucks to be you.");
-					break;
-				case FORWARD://cross auto line only
-					//forward 140 in
-					forwardDistance(12);
 					break;
 			}
 		}
