@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 	
 	public Command autoCommand;
 	public SendableChooser autoChooser;
-	public StartingPosition startPos = StartingPosition.MID;
+	//public StartingPosition startPos = StartingPosition.MID;
 	
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
@@ -50,24 +50,24 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.LEFT);
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
-    	autoChooser = new SendableChooser();
+    	/*autoChooser = new SendableChooser();
     	System.out.println("This worky presumably?");
     	autoChooser.addObject("Left",  new selectAuto(StartingPosition.LEFT));
     	autoChooser.addDefault("Middle", new selectAuto(StartingPosition.MID));
     	autoChooser.addObject("Right",  new selectAuto(StartingPosition.RIGHT));
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	//refreshSelectAuto refreshSelectAuto_inst = new refreshSelectAuto();
-    	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto()/*refreshSelectAuto_inst*/);
+    	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
     	//Other gauges and data
-    	SmartDashboard.putData(Scheduler.getInstance());
+    	SmartDashboard.putData(Scheduler.getInstance());*/
     	
     	
     	
     }
-    public class selectAuto extends Command {
+    /*public class selectAuto extends Command {
     		boolean isDone = false;
 	    	public selectAuto(StartingPosition start) {
 	    		super("selectAuto");
@@ -104,8 +104,6 @@ public class Robot extends IterativeRobot {
         }
 
         protected void initialize() {
-        	Object autoSelected = new SendableChooser();
-        	autoSelected = autoChooser.getSelected();
         	SmartDashboard.putString("Selected Auto Pos", startPos.toString());
         	isDone = true;
         }
@@ -122,11 +120,12 @@ public class Robot extends IterativeRobot {
 
         protected void interrupted() {
         }
-    }
+    }*/
 
     public void autonomousInit() {
-    	autoCommand = (Command) autoChooser.getSelected();
-    	autoCommand.start();
+    	//autoCommand = (Command) autoChooser.getSelected();
+    	//autoCommand.start();
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.LEFT);
     }
     
     /**
@@ -138,7 +137,7 @@ public class Robot extends IterativeRobot {
     //	Scheduler.getInstance().run();
     }
     
-    public StartingPosition autoRoboStartLoc() {
+    /*public StartingPosition autoRoboStartLoc() {
     	int trigger = -1;
     	for (int i = 1; i < 4; i++) {
     		if (! SmartDashboard.getBoolean("DB/Button " + i, false)) {
@@ -165,7 +164,7 @@ public class Robot extends IterativeRobot {
     		return StartingPosition.RIGHT;
     	}
     	return StartingPosition.ERROR;
-    }
+    }*/
     
     public void teleopInit() {
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
