@@ -12,6 +12,9 @@ import java.util.Queue;
 public class AutoDriveTrainScripter {
 
 	private interface CommandPackage {
+		//called when the command first starts
+		public void init();
+		
 		// called every time
 		public void update();
 
@@ -28,6 +31,14 @@ public class AutoDriveTrainScripter {
 		dt = dtrain;
 		//Solenoid solenoid = solen;
 	}
+	
+	public void init() {
+		// needs to be called once when auto starts
+		CommandPackage top = commands.peek();
+		if(top == null) return;
+		
+		top.init();
+	}
 
 	public void update() {
 		CommandPackage top = commands.peek();
@@ -43,6 +54,7 @@ public class AutoDriveTrainScripter {
 			// but I don't want to take the risk
 			top = commands.peek();
 			if(top == null) return;
+			top.init();
 			top.update();
 		}
 	}
@@ -62,6 +74,9 @@ public class AutoDriveTrainScripter {
 				this.dt = d;
 				this.value = v;
 				this.done = false;
+			}
+			
+			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
 
@@ -98,6 +113,9 @@ public class AutoDriveTrainScripter {
 				this.dt = d;
 				this.speed = s;
 				this.done = false;
+			}
+			
+			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
 
@@ -128,6 +146,9 @@ public class AutoDriveTrainScripter {
 			public W_Package(double t) {
 				this.duration = (long) t;
 				this.done = false;
+			}
+			
+			public void init() {
 				this.startMillis = System.currentTimeMillis();
 			}
 
@@ -157,6 +178,7 @@ public class AutoDriveTrainScripter {
 			private boolean done;
 			private DriveTrain dt;
 			private boolean right;
+			//RESET DISTANCE TRAVELED USED TO BE IN CONSTRUCTOR. MOVE IT BACK IF STUFF GOES WRONG
 			private double encoderDistanceToStriveFor;
 			private double currentEncoderDistance;
 
@@ -167,7 +189,6 @@ public class AutoDriveTrainScripter {
 				this.done = false;
 				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
 				System.out.println(encoderDistanceToStriveFor);
-				this.dt.resetDistanceTraveled();
 				currentEncoderDistance = 0;
 				if (this.classlr == "l") {
 					this.right = true;
@@ -176,6 +197,11 @@ public class AutoDriveTrainScripter {
 					this.right = false;
 				}
 			}
+			
+			public void init() {
+				this.dt.resetDistanceTraveled();
+			}
+			
 			public void update() {
 				System.out.println(currentEncoderDistance);
 				if (this.right) {
@@ -221,6 +247,9 @@ public class AutoDriveTrainScripter {
 				this.dt = d;
 				this.distance = (degrees / 360) * Math.PI * 46.0208333;//Converts degrees to distance based on radius of 23.5 inches
 				this.done = false;
+			}
+			
+			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
 
