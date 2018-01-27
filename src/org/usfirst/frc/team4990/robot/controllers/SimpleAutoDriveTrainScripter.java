@@ -15,24 +15,48 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		//if (gameData.charAt(0) == 'L') {//Left side is ours
 		switch(s) {
 			case LEFT:
-				debugEncoders(0.3);
+				//1st: forward ~162 in
+				//2nd: 90º turn right
+				//3rd: forward 55in
+				//4th: drop cube
 				break;
 			case MID:
-				//forwardDistance(1);
-				turnForDegrees(90, "l"); //turns 90 degrees to the left
+				//cut in front (in between auto line and exchange)
+					//1st: forward 80 in
+					//2nd: turn 90º left
+					//3rd: forward about 60 in
+					//4th: turn 90º right
+					//5th: forward 60 in
+				//OR go behind switch (in between scale and switch)
+					//1st: forward 80 in
+					//2nd: 90º right
+					//3rd: forward about 130 in
+					//4th: forward 150 in
+					//5th: turn 90º left
+					//6th: forward 150 in
+					//7th: turn 90º left
+					//8th: forward 30 in
+					//9th: drop cube
 				break;
 			case RIGHT:
+				//1th: forward 230 in
+				//2th: turn 90º left
+				//3th: forward 150 in
+				//4th: turn 90º left
+				//5th: forward 30 in
+				//6th: drop cube
 				break;
-			case ERROR:
+			case ERROR: //debug/error case
 				//turnDistance(10);
 				debugEncoders(0.2);
 				//turnForDegrees(90, "l");
-				System.err.println("THAT DOESN'T WORK");
+				System.err.println("StartingPosition == Error. THAT DOESN'T WORK");
 				break;
 			case STAY:
-				System.out.println("I'm not going to move.  Sucks to be you.");
+				System.out.println("I'm not going to move.");
 				break;
 			case FORWARD:
+				//forward 140 inches
 				forwardDistance(12);
 				break;
 		}
