@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 	
 	public Command autoCommand;
 	public SendableChooser autoChooser;
-	public StartingPosition startPos;
+	public StartingPosition startPos = StartingPosition.MID;
 	
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
@@ -53,11 +53,13 @@ public class Robot extends IterativeRobot {
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	autoChooser = new SendableChooser();
+    	System.out.println("This worky presumably?");
     	autoChooser.addObject("Left",  new selectAuto(StartingPosition.LEFT));
     	autoChooser.addDefault("Middle", new selectAuto(StartingPosition.MID));
     	autoChooser.addObject("Right",  new selectAuto(StartingPosition.RIGHT));
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
-    	//SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
+    	//refreshSelectAuto refreshSelectAuto_inst = new refreshSelectAuto();
+    	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto()/*refreshSelectAuto_inst*/);
     	//Other gauges and data
     	SmartDashboard.putData(Scheduler.getInstance());
     	
@@ -66,12 +68,14 @@ public class Robot extends IterativeRobot {
     }
     public class selectAuto extends Command {
     		boolean isDone = false;
-	    	public selectAuto(StartingPosition startp) {
+	    	public selectAuto(StartingPosition start) {
 	    		super("selectAuto");
+	    		System.out.println("Hopefully this too?");
+	    		initialize(start);
 	        }
 	
-	        protected void initialize(StartingPosition startp) {
-	        		startPos = startp;
+	        protected void initialize(StartingPosition startpo) {
+	        		startPos = startpo;
 	        		System.out.println(startPos);
 	        		isDone = true;
 	        }

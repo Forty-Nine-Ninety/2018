@@ -16,8 +16,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		if (gameData.charAt(0) == 'L') {//Left side is ours
 			switch(position) {
 				case LEFT:
+					debugEncoders(0.3);
 					break;
 				case MID:
+					forwardDistance(1);
+					turnForDegrees(90, "l"); //turns 90 degrees to the left
 					break;
 				case RIGHT:
 					break;
