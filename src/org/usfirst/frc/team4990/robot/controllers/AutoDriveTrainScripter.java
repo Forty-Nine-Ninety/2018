@@ -59,7 +59,7 @@ public class AutoDriveTrainScripter {
 		}
 	}
 
-	public void forwardDistance(double distance) { //TODO make it go specified distance
+	public void forwardDistance(double distance, boolean backwards) { //TODO make it go specified distance
 		/*Test LOG (format date: specified distance | actual distance)
 		 * 1-20-18: 3ft | 3ft+7in
 		 *
@@ -69,11 +69,13 @@ public class AutoDriveTrainScripter {
 			private double value;
 			private DriveTrain dt;
 			private boolean done;
+			private boolean constbck;
 
-			public F_Package(DriveTrain d, double v) {
+			public F_Package(DriveTrain d, double v, boolean constbck) {
 				this.dt = d;
 				this.value = v;
 				this.done = false;
+				this.constbck = constbck;
 			}
 			
 			public void init() {
@@ -85,14 +87,26 @@ public class AutoDriveTrainScripter {
 				// and it's backwards
 				// this entire robot is backwards
 				//System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
-				if(-this.dt.getRightDistanceTraveled() < this.value) {
-					dt.setLeftSpeed(.3);
-					dt.setRightSpeed(.3);
-				}
-				else {
-					dt.setLeftSpeed(0.0);
-					dt.setRightSpeed(0.0);
-					this.done = true;
+				if (this.constbck == false) {
+					if(this.dt.getRightDistanceTraveled() < this.value) { //THIS MAY NEED TO BE NEGATIVE THIS.DT.GETDISTANCE TRAVELED.. ETC
+						dt.setLeftSpeed(.3);
+						dt.setRightSpeed(.3);
+					}
+					else {
+						dt.setLeftSpeed(0.0);
+						dt.setRightSpeed(0.0);
+						this.done = true;
+					}
+				} else if (this.constbck == true) {
+					if(this.dt.getRightDistanceTraveled() < this.value) {
+						dt.setLeftSpeed(-0.3);
+						dt.setRightSpeed(-0.3);
+					}
+					else {
+						dt.setLeftSpeed(0.0);
+						dt.setRightSpeed(0.0);
+						this.done = true;
+					}
 				}
 			}
 
@@ -101,7 +115,7 @@ public class AutoDriveTrainScripter {
 			}
 		}
 
-		commands.add(new F_Package(dt, distance));
+		commands.add(new F_Package(dt, distance, backwards));
 	}
 	public void debugEncoders(double speed) { //TODO make it go specified distance
 		class debugEncoders_Package implements CommandPackage {
