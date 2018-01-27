@@ -11,6 +11,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public enum StartingPosition {LEFT, MID, RIGHT, ERROR, STAY, FORWARD};
 	
 	protected void init(StartingPosition s) {
+		/*
 		StartingPosition position = StartingPosition.ERROR;
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if (gameData.charAt(0) == 'L') {//Left side is ours
@@ -56,7 +57,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		}
 		else {
 			System.out.println("YA MESSED UP PPL IDK WHAT HAPPENED THO HERE'S WHAT I GOT: " + gameData.charAt(0));
-		}
+		}*/
 	}
 	
 	// Do not modify below por favor (this means "please" in Spanish)

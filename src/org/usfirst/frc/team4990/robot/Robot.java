@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
     	
     	this.driveGamepad = new F310Gamepad(1);
-    	
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos);
     	this.driveTrain = new DriveTrain( 
     		new TalonMotorController(0),
     		new TalonMotorController(1),
