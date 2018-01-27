@@ -2,7 +2,7 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Solenoid; //If we need to implement air compressors
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -88,7 +88,7 @@ public class AutoDriveTrainScripter {
 				// this entire robot is backwards
 				//System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
 				if (this.constbck == false) {
-					if(this.dt.getRightDistanceTraveled() < this.value) { //THIS MAY NEED TO BE NEGATIVE THIS.DT.GETDISTANCE TRAVELED.. ETC
+					if(-this.dt.getRightDistanceTraveled() < this.value) { //THIS MAY NEED TO BE NEGATIVE THIS.DT.GETDISTANCE TRAVELED.. ETC
 						dt.setLeftSpeed(.3);
 						dt.setRightSpeed(.3);
 					}
@@ -98,7 +98,7 @@ public class AutoDriveTrainScripter {
 						this.done = true;
 					}
 				} else if (this.constbck == true) {
-					if(this.dt.getRightDistanceTraveled() < this.value) {
+					if(-this.dt.getRightDistanceTraveled() < this.value) {
 						dt.setLeftSpeed(-0.3);
 						dt.setRightSpeed(-0.3);
 					}
@@ -213,6 +213,8 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void init() {
+				System.out.println("This command was designed by Dominic Pacoe in Hillsborough, California");
+				System.out.println("Copyright 2017");
 				this.dt.resetDistanceTraveled();
 			}
 			
@@ -220,7 +222,7 @@ public class AutoDriveTrainScripter {
 				System.out.println(currentEncoderDistance);
 				if (this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + -1 * this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
@@ -230,7 +232,7 @@ public class AutoDriveTrainScripter {
 					
 				} else if (! this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (-1*this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
+						currentEncoderDistance = (-1*this.dt.getLeftDistanceTraveled() - this.dt.getRightDistanceTraveled()) / 2;
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
