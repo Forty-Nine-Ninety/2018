@@ -50,11 +50,18 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
+    	//~~~~ Smart Dashboard ~~~~
+    	//Auto chooser
     	autoChooser = new SendableChooser();
     	autoChooser.addObject("Left",  new selectAuto(StartingPosition.LEFT));
     	autoChooser.addDefault("Middle", new selectAuto(StartingPosition.MID));
     	autoChooser.addObject("Right",  new selectAuto(StartingPosition.RIGHT));
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
+    	//SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
+    	//Other gauges and data
+    	SmartDashboard.putData(Scheduler.getInstance());
+    	
+    	
     	
     }
     public class selectAuto extends Command {
@@ -83,6 +90,32 @@ public class Robot extends IterativeRobot {
 	        }
 	    }
     
+    public class refreshSelectAuto extends Command {
+		boolean isDone = false;
+    	public refreshSelectAuto() {
+    		super("refreshSelectAuto");
+    		initialize();
+        }
+
+        protected void initialize() {
+        	SmartDashboard.putString("Selected Auto Pos", startPos.toString());
+        	isDone = true;
+        }
+        protected void execute() {
+        }
+
+ 
+        protected boolean isFinished() {
+            return isDone;
+        }
+
+        protected void end() {
+        }
+
+        protected void interrupted() {
+        }
+    }
+
     public void autonomousInit() {
     	autoCommand = (Command) autoChooser.getSelected();
     	autoCommand.start();
