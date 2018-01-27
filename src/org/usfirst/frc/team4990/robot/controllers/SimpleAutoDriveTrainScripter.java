@@ -30,6 +30,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					forwardDistance((60/12),true);//3rd: forward about 60 in
 					turnForDegrees(90,"r");//4th: turn 90º right
 					forwardDistance((60/12),true);//5th: forward 60 in
+					//6th: drop cube
 				break;
 			case RIGHT: //Dominic
 				//1st: forward 230 in
@@ -59,7 +60,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//6th: drop cube 
 					break;
 				case MID: //Benjamin
-					//1st: forward 140 in
+					forwardDistance((140/12),true);//1st: forward 140 in
 					//2nd: drop cube
 					break;
 				case RIGHT: //Joseph
