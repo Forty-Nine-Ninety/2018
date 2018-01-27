@@ -11,33 +11,33 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public enum StartingPosition {LEFT, MID, RIGHT, ERROR, STAY, FORWARD};
 	
 	protected void init(StartingPosition s) {
-		/*
-		StartingPosition position = StartingPosition.ERROR;
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		if (gameData.charAt(0) == 'L') {//Left side is ours
-			switch(position) {
-				case LEFT:
-					debugEncoders(0.3);
-					break;
-				case MID:
-					forwardDistance(1);
-					turnForDegrees(90, "l"); //turns 90 degrees to the left
-					break;
-				case RIGHT:
-					break;
-				case ERROR:
-					System.err.println("THAT DOESN'T WORK");
-					break;
-				case STAY:
-					System.out.println("I'm not going to move.  Sucks to be you.");
-					break;
-				case FORWARD:
-					forwardDistance(12);
-					break;
-			}
+		//if (gameData.charAt(0) == 'L') {//Left side is ours
+		switch(s) {
+			case LEFT:
+				debugEncoders(0.3);
+				break;
+			case MID:
+				forwardDistance(1);
+				turnForDegrees(90, "l"); //turns 90 degrees to the left
+				break;
+			case RIGHT:
+				break;
+			case ERROR:
+				turnForDegrees(45, "L");
+				System.err.println("THAT DOESN'T WORK");
+				break;
+			case STAY:
+				System.out.println("I'm not going to move.  Sucks to be you.");
+				break;
+			case FORWARD:
+				forwardDistance(12);
+				break;
 		}
+		//}
+		/*
 		else if (gameData.charAt(0) == 'R') {//Right 
-			switch(position) {
+			switch(s) {
 				case LEFT:
 					break;
 				case MID:
@@ -57,7 +57,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		}
 		else {
 			System.out.println("YA MESSED UP PPL IDK WHAT HAPPENED THO HERE'S WHAT I GOT: " + gameData.charAt(0));
-		}*/
+		}
+		*/
 	}
 	
 	// Do not modify below por favor (this means "please" in Spanish)
