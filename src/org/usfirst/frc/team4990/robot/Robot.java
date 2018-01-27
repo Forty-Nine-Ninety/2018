@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.LEFT);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	/*autoChooser = new SendableChooser();
@@ -125,7 +125,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	//autoCommand = (Command) autoChooser.getSelected();
     	//autoCommand.start();
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.LEFT);
+    	System.out.println("Auto Init");
     }
     
     /**

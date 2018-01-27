@@ -18,13 +18,15 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				debugEncoders(0.3);
 				break;
 			case MID:
-				forwardDistance(1);
+				//forwardDistance(1);
 				turnForDegrees(90, "l"); //turns 90 degrees to the left
 				break;
 			case RIGHT:
 				break;
 			case ERROR:
-				turnForDegrees(45, "L");
+				//turnDistance(10);
+				debugEncoders(0.2);
+				//turnForDegrees(90, "l");
 				System.err.println("THAT DOESN'T WORK");
 				break;
 			case STAY:
@@ -65,6 +67,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition s) {
 		super(dtrain);
 		this.init(s);
+		turnForDegrees(90,"l");
+		//forwardDistance(3);
 	}
 	
 	public void update() {

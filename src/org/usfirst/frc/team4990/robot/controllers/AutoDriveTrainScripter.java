@@ -148,7 +148,7 @@ public class AutoDriveTrainScripter {
 		commands.add(new W_Package(time));
 	}
 
-
+//DOMINIC'S CODE
 	public void turnForDegrees(double degrees, String lr) {
 		//0.01709 feet per 1 degree
 		class turnForDegrees_Package implements CommandPackage{
@@ -169,7 +169,7 @@ public class AutoDriveTrainScripter {
 				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
 				this.dt.resetDistanceTraveled();
 				currentEncoderDistance = 0;
-				if (this.classlr == "r") {
+				if (this.classlr == "l") {
 					this.right = true;
 				}
 				else {
@@ -177,8 +177,8 @@ public class AutoDriveTrainScripter {
 				}
 			}
 			public void update() {
-				if (this.right = true) {
-					while (currentEncoderDistance <= encoderDistanceToStriveFor) {
+				if (this.right == true) {
+					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
@@ -187,13 +187,13 @@ public class AutoDriveTrainScripter {
 					if (currentEncoderDistance == encoderDistanceToStriveFor) {
 						this.done = true;
 					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
-						while (currentEncoderDistance > encoderDistanceToStriveFor) {
+						if (currentEncoderDistance > encoderDistanceToStriveFor) {
 							this.dt.setLeftSpeed(0.1);
 							this.dt.setRightSpeed(-0.1);
 						}
 					}
-				} else if (this.right = false) {
-					while (currentEncoderDistance <= encoderDistanceToStriveFor) {
+				} else if (this.right == false) {
+					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
@@ -201,7 +201,7 @@ public class AutoDriveTrainScripter {
 					if (currentEncoderDistance == encoderDistanceToStriveFor) {
 						this.done = true;
 					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
-						while (currentEncoderDistance > encoderDistanceToStriveFor) {
+						if (currentEncoderDistance > encoderDistanceToStriveFor) {
 							this.dt.setLeftSpeed(0.1);
 							this.dt.setRightSpeed(-0.1);
 						}
