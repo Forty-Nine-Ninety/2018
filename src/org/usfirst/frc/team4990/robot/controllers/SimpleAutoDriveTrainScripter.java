@@ -39,11 +39,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//6th: drop cube
 				break;
 			case RIGHT: //Dominic
-				goDistance(30/12, true)
-				turnForDegrees(90, "l")
-				goDistance(150/12, true)
-				turnForDegrees(90, "l")
-				goDistance(30/12, true)
+				goDistance(30/12, true);
+				turnForDegrees(90, "l");
+				goDistance(150/12, true);
+				turnForDegrees(90, "l");
+				goDistance(30/12, true);
 				//6th: drop cube
 				break;
 			case ERROR: //debug/error case
@@ -61,11 +61,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		} else if (gameData.charAt(0) == 'R') {//Right
 			switch(s) {
 				case LEFT: //Dominic (more like domithiqq)
-					goDistance(230/12, true)
-					turnForDegrees(90, "r")
-					goDistance(150/12, true)
-					turnForDegrees(90, "r")
-					goDistance(30/12, true)
+					goDistance(230/12, true);
+					turnForDegrees(90, "r");
+					goDistance(150/12, true);
+					turnForDegrees(90, "r");
+					goDistance(30/12, true);
 					//6th: drop cube
 					break;
 				case MID: //Benjamin
