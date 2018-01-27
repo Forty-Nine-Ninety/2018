@@ -148,7 +148,7 @@ public class AutoDriveTrainScripter {
 		commands.add(new W_Package(time));
 	}
 
-//DOMINIC'S CODE
+
 	public void turnForDegrees(double degrees, String lr) {
 		//0.01709 feet per 1 degree
 		class turnForDegrees_Package implements CommandPackage{
@@ -167,6 +167,7 @@ public class AutoDriveTrainScripter {
 				this.classlr = classlr;
 				this.done = false;
 				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
+				System.out.println(encoderDistanceToStriveFor);
 				this.dt.resetDistanceTraveled();
 				currentEncoderDistance = 0;
 				if (this.classlr == "l") {
@@ -177,13 +178,19 @@ public class AutoDriveTrainScripter {
 				}
 			}
 			public void update() {
-				if (this.right == true) {
+				System.out.println(currentEncoderDistance);
+				currentEncoderDistance = (-1*this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled());
+				if (this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
+						//currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + -1 * this.dt.getRightDistanceTraveled());
+						
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
-
+					else {
+						this.done = true;
+					}
+					/*
 					if (currentEncoderDistance == encoderDistanceToStriveFor) {
 						this.done = true;
 					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
@@ -192,12 +199,17 @@ public class AutoDriveTrainScripter {
 							this.dt.setRightSpeed(-0.1);
 						}
 					}
-				} else if (this.right == false) {
+					*/
+				} else if (! this.right) {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2;
 						this.dt.setLeftSpeed(-0.3);
 						this.dt.setRightSpeed(0.3);
 					}
+					else {
+						this.done = true;
+					}
+					/*
 					if (currentEncoderDistance == encoderDistanceToStriveFor) {
 						this.done = true;
 					} else if (currentEncoderDistance > encoderDistanceToStriveFor) {
@@ -206,10 +218,14 @@ public class AutoDriveTrainScripter {
 							this.dt.setRightSpeed(-0.1);
 						}
 					}
+					*/
 				}
-				this.done = true;
+				//this.done = true;
 			}
 			public boolean done() {
+				if (this.done) {
+					this.dt.setSpeed(0.0, 0.0);
+				}
 				return this.done;
 			}
 		}
