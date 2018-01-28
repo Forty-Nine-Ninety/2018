@@ -23,19 +23,19 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			crossAutoLine();
 		} else if (gameData.charAt(0) == 'L') {//Left side is ours
 		switch(s) {
-			case LEFT: //Joseph
-				//1st: forward ~162 in
-				//2nd: 90º turn right
-				//3rd: forward 55in
+			case LEFT: //Joseph (benjamin)
+				goDistance(162/80),true);//1st: forward ~162 in
+				turnForDegrees(90,"r");//2nd: 90º turn right
+				goDistance((55/12),true);//3rd: forward 55in
 				//4th: drop cube
 				break;
 			case MID: //Benjamin
 				//cut in front (in between auto line and exchange)
-					goDistance((80/12),true);//1st: forward 80 in
+					goDistance(80/12,true);//1st: forward 80 in
 					turnForDegrees(90,"l");//2nd: turn 90º left
-					goDistance((60/12),true);//3rd: forward about 60 in
+					goDistance(60/12,true);//3rd: forward about 60 in
 					turnForDegrees(90,"r");//4th: turn 90º right
-					goDistance((60/12),true);//5th: forward 60 in
+					goDistance(60/12,true);//5th: forward 60 in
 					//6th: drop cube
 				break;
 			case RIGHT: //Dominic
@@ -72,10 +72,10 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					goDistance((140/12),true);//1st: forward 140 in
 					//2nd: drop cube
 					break;
-				case RIGHT: //Joseph
-					//1st: forward ~162 in
-					//2nd: 90º turn left
-					//3rd: forward 55in
+				case RIGHT: //Joseph (benjamin)
+					goDistance(162/12,true);//1st: forward ~162 in
+					turnForDegrees(90,"l");//2nd: 90º turn left
+					goDistance(55/12,true);//3rd: forward 55in
 					//4th: drop cube
 					break;
 				case ERROR: //debug/error case
