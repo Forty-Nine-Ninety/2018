@@ -135,9 +135,6 @@ public class AutoDriveTrainScripter {
 			}
 
 			public void update() {
-				// only the right side works...
-				// and it's backwards
-				// this entire robot is backwards
 				System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
 
 					dt.setLeftSpeed(speed);
@@ -214,8 +211,6 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void init() {
-				System.out.println("This command was designed by Dominic Pacoe in Hillsborough, California");
-				System.out.println("Copyright 2017");
 				this.dt.resetDistanceTraveled();
 			}
 			

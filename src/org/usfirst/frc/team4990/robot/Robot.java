@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4990.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,12 +21,14 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.*;
 public class Robot extends IterativeRobot {
 	
 	public Command autoCommand;
-	public SendableChooser autoChooser;
+	//public SendableChooser autoChooser;
 	//public StartingPosition startPos = StartingPosition.MID;
 	
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
+	
+	public Ultrasonic ultrasonicSensor;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
@@ -38,7 +38,6 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	System.out.println("This worky presumably?");
     	System.out.println("Version 1.9.2018.6.33");
     	this.prefs = Preferences.getInstance();
     	
@@ -50,10 +49,16 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
+    	
+    	Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
+    	ultrasonicSensor.setDistanceUnits(Ultrasonic.Unit.kInches);
+    	ultrasonicSensor.setEnabled(true);
+    	//use	ultrasonicSensor.getRangeInches()	to get current distance
+    	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
+    	
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	/*autoChooser = new SendableChooser();
-    	System.out.println("This worky presumably?");
     	autoChooser.addObject("Left",  new selectAuto(StartingPosition.LEFT));
     	autoChooser.addDefault("Middle", new selectAuto(StartingPosition.MID));
     	autoChooser.addObject("Right",  new selectAuto(StartingPosition.RIGHT));
@@ -134,7 +139,6 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	autoScripter.update();
     	driveTrain.update();
-    //	Scheduler.getInstance().run();
     }
     
     /*public StartingPosition autoRoboStartLoc() {
