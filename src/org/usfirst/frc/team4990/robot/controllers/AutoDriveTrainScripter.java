@@ -219,11 +219,11 @@ public class AutoDriveTrainScripter {
 				System.out.println(currentEncoderDistance);
 				if (this.right == true) { // if it's supposed to turn left (I know it's weird just go with it)
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						DONT TOUCH THIS NEXT LINE
+						//DONT TOUCH THIS NEXT LINE
 						currentEncoderDistance = (-this.dt.getLeftDistanceTraveled() - this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
 
 						//DEBUG ENCODER PRINTER
-						System.out.print("LEFT: " + -this.dt.getLeftDistanceTraveled() + "  RIGHT: " + -this.getRightDistanceTraveled );
+						System.out.print("LEFT: " + -this.dt.getLeftDistanceTraveled() + "  RIGHT: " + -this.dt.getRightDistanceTraveled());
 
 						this.dt.setLeftSpeed(-0.3); // left needs to go backwards
 						this.dt.setRightSpeed(0.3); // right needs to go forwards
@@ -238,7 +238,7 @@ public class AutoDriveTrainScripter {
 						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes average of the two encoder distances
 
 						//DEBUG ENCODER PRINTER
-						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.getRightDistanceTraveled );
+						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled());
 
 						this.dt.setLeftSpeed(0.3); // left needs to go forewards
 						this.dt.setRightSpeed(-0.3); // right needs to go backwards
