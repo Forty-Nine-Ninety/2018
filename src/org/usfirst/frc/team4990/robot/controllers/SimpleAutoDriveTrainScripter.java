@@ -24,7 +24,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		} else if (gameData.charAt(0) == 'L') {//Left side is ours
 		switch(s) {
 			case LEFT: //Joseph (benjamin)
-				goDistance(162/80),true);//1st: forward ~162 in
+				goDistance(162/80,true);//1st: forward ~162 in
 				turnForDegrees(90,"r");//2nd: 90º turn right
 				goDistance((55/12),true);//3rd: forward 55in
 				//4th: drop cube
