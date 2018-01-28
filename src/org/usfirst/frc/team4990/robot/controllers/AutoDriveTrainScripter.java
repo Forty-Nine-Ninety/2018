@@ -15,7 +15,7 @@ public class AutoDriveTrainScripter {
 	private interface CommandPackage {
 		//called when the command first starts
 		public void init();
-		
+
 		// called every time
 		public void update();
 
@@ -32,12 +32,12 @@ public class AutoDriveTrainScripter {
 		dt = dtrain;
 		//Solenoid solenoid = solen;
 	}
-	
+
 	public void init() {
 		// needs to be called once when auto starts
 		CommandPackage top = commands.peek();
 		if(top == null) return;
-		
+
 		top.init();
 	}
 
@@ -78,7 +78,7 @@ public class AutoDriveTrainScripter {
 				this.done = false;
 				this.constbck = constbck;
 			}
-			
+
 			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
@@ -129,7 +129,7 @@ public class AutoDriveTrainScripter {
 				this.speed = s;
 				this.done = false;
 			}
-			
+
 			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
@@ -159,7 +159,7 @@ public class AutoDriveTrainScripter {
 				this.duration = (long) t;
 				this.done = false;
 			}
-			
+
 			public void init() {
 				this.startMillis = System.currentTimeMillis();
 			}
@@ -195,6 +195,7 @@ public class AutoDriveTrainScripter {
 			private double currentEncoderDistance;
 
 			public turnForDegrees_Package(DriveTrain d, double classdegrees, String classlr) {
+				// please note that the right encoder is backwards
 				this.dt = d;
 				this.classdegrees = classdegrees;
 				this.classlr = classlr;
@@ -209,33 +210,43 @@ public class AutoDriveTrainScripter {
 					this.right = false;
 				}
 			}
-			
+
 			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
-			
+
 			public void update() {
 				System.out.println(currentEncoderDistance);
-				if (this.right) {
+				if (this.right == true) { // if it's supposed to turn left (I know it's weird just go with it)
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
-						this.dt.setLeftSpeed(-0.3);
-						this.dt.setRightSpeed(0.3);
+						DONT TOUCH THIS NEXT LINE
+						currentEncoderDistance = (-this.dt.getLeftDistanceTraveled() - this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
+
+						//DEBUG ENCODER PRINTER
+						System.out.print("LEFT: " + -this.dt.getLeftDistanceTraveled() + "  RIGHT: " + -this.getRightDistanceTraveled );
+
+						this.dt.setLeftSpeed(-0.3); // left needs to go backwards
+						this.dt.setRightSpeed(0.3); // right needs to go forwards
 					}
 					else {
 						this.done = true;
 					}
-					
-				} else if (! this.right) {
+
+				} else if (this.right == false) { //if it's supposed to turn right
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						currentEncoderDistance = (-1*this.dt.getLeftDistanceTraveled() - this.dt.getRightDistanceTraveled()) / 2;
-						this.dt.setLeftSpeed(-0.3);
-						this.dt.setRightSpeed(0.3);
+						//DONT TOUCH THIS NEXT LINE
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes average of the two encoder distances
+
+						//DEBUG ENCODER PRINTER
+						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.getRightDistanceTraveled );
+
+						this.dt.setLeftSpeed(0.3); // left needs to go forewards
+						this.dt.setRightSpeed(-0.3); // right needs to go backwards
 					}
 					else {
 						this.done = true;
 					}
-					
+
 				}
 			}
 			public boolean done() {
@@ -248,7 +259,7 @@ public class AutoDriveTrainScripter {
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
 
-	
+
 
 	public void turnDistance(double degrees) {
 		class T_Package implements CommandPackage {//"Container" for turn command
@@ -260,7 +271,7 @@ public class AutoDriveTrainScripter {
 				this.distance = (degrees / 360) * Math.PI * 46.0208333;//Converts degrees to distance based on radius of 23.5 inches
 				this.done = false;
 			}
-			
+
 			public void init() {
 				this.dt.resetDistanceTraveled();
 			}
