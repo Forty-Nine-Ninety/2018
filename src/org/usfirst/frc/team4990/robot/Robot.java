@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot {
     	
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
-    	/*TautoChooser = new SendableChooser();
+    	autoChooser = new SendableChooser();
     	autoChooser.addObject("Left", StartingPosition.LEFT);
     	autoChooser.addObject("Middle", StartingPosition.MID);
     	autoChooser.addObject("Right",  StartingPosition.RIGHT);
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	//refreshSelectAuto refreshSelectAuto_inst = new refreshSelectAuto();
     //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
-    	SmartDashboard.a
+    	SmartDashboard.putData("Selected Starting Position", startPos);
     	//Other gauges and data
     	SmartDashboard.putData(Scheduler.getInstance());*/
     }
