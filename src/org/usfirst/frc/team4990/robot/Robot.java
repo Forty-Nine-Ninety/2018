@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
@@ -68,11 +67,11 @@ public class Robot extends IterativeRobot {
     //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
-    	SmartDashboard.putData(Scheduler.getInstance());
+
     }
 
     public void autonomousInit() {
-    	//startPos = (StartingPosition) autoChooser.getSelected();
+    	startPos = (StartingPosition) autoChooser.getSelected();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
     	System.out.println("Auto Init");
     }
