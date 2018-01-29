@@ -3,7 +3,7 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
-import edu.wpi.first.wpilibj.Solenoid; //If we need to implement air compressors
+//import edu.wpi.first.wpilibj.Solenoid; //If we need to implement air compressors
 
 import java.util.LinkedList;
 import java.util.Queue;

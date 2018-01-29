@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
 	
-	public Ultrasonic ultrasonicSensor;
+	//public Ultrasonic ultrasonicSensor;
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
@@ -48,12 +48,12 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
-    	Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
-    	ultrasonicSensor.setDistanceUnits(Ultrasonic.Unit.kInches);
-    	ultrasonicSensor.setEnabled(true);
+    	//Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
+    	//ultrasonicSensor.setDistanceUnits(Ultrasonic.Unit.kInches);
+    	//ultrasonicSensor.setEnabled(true);
     	//use	ultrasonicSensor.getRangeInches()	to get current distance
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
-    	
+    	/*
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	autoChooser = new SendableChooser<StartingPosition>();
@@ -67,12 +67,12 @@ public class Robot extends IterativeRobot {
     //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
-
+*/
     }
 
     public void autonomousInit() {
-    	startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
+    	//startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
+    	//autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
     	System.out.println("Auto Init");
     }
     
