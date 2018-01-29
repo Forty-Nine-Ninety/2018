@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
-    	startPos = (StartingPosition) autoChooser.getSelected();
+    	startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
     	System.out.println("Auto Init");
     }
