@@ -20,7 +20,7 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.*;
  */
 public class Robot extends IterativeRobot {
 	
-	public Command autoCommand;
+	//public Command autoCommand;
 	//public SendableChooser autoChooser;
 	//public StartingPosition startPos = StartingPosition.MID;
 	
@@ -58,77 +58,22 @@ public class Robot extends IterativeRobot {
     	
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
-    	/*autoChooser = new SendableChooser();
-    	autoChooser.addObject("Left",  new selectAuto(StartingPosition.LEFT));
-    	autoChooser.addDefault("Middle", new selectAuto(StartingPosition.MID));
-    	autoChooser.addObject("Right",  new selectAuto(StartingPosition.RIGHT));
+    	/*TautoChooser = new SendableChooser();
+    	autoChooser.addObject("Left", StartingPosition.LEFT);
+    	autoChooser.addObject("Middle", StartingPosition.MID);
+    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
+    	autoChooser.addObject("Stay", StartingPosition.STAY);
+    	autoChooser.addDefault("Cross Line", StartingPosition.FORWARD);
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	//refreshSelectAuto refreshSelectAuto_inst = new refreshSelectAuto();
-    	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
+    //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
+    	SmartDashboard.a
     	//Other gauges and data
     	SmartDashboard.putData(Scheduler.getInstance());*/
-    	
-    	
-    	
     }
-    /*public class selectAuto extends Command {
-    		boolean isDone = false;
-	    	public selectAuto(StartingPosition start) {
-	    		super("selectAuto");
-	    		System.out.println("Hopefully this too?");
-	    		//initialize(start);
-	        }
-	
-	        protected void initialize(StartingPosition startpo) {
-	        		startPos = startpo;
-	        		System.out.println(startPos);
-	        		isDone = true;
-	        }
-	        protected void execute() {
-	        }
-	
-	 
-	        protected boolean isFinished() {
-	            return isDone;
-	        }
-	
-	        protected void end() {
-	        }
-	
-	        protected void interrupted() {
-	        }
-	    }
-    
-    public class refreshSelectAuto extends Command {
-		boolean isDone = false;
-		
-    	public refreshSelectAuto() {
-    		super("refreshSelectAuto");
-    		initialize();
-        }
-
-        protected void initialize() {
-        	SmartDashboard.putString("Selected Auto Pos", startPos.toString());
-        	isDone = true;
-        }
-        protected void execute() {
-        }
-
- 
-        protected boolean isFinished() {
-            return isDone;
-        }
-
-        protected void end() {
-        }
-
-        protected void interrupted() {
-        }
-    }*/
 
     public void autonomousInit() {
-    	//autoCommand = (Command) autoChooser.getSelected();
-    	//autoCommand.start();
+    	//startPos = (StartingPosition) autoChooser.getSelected();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
     	System.out.println("Auto Init");
     }

@@ -232,7 +232,7 @@ public class AutoDriveTrainScripter {
 						this.done = true;
 					}
 
-				} else if (this.right == false) { //if it's supposed to turn right
+				} else if (this.right == false) { //if it's supposed to turn right (I know it's weird just go with it)
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						//DONT TOUCH THIS NEXT LINE
 						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes average of the two encoder distances
