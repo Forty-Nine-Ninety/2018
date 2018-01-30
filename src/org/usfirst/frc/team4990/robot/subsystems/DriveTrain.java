@@ -47,7 +47,7 @@ public class DriveTrain {
 	}
 	
 	public double getLeftDistanceTraveled() {
-		return this.leftGearbox.getDistanceTraveled();
+		return this.leftGearbox.getDistanceTraveled()*-1;
 	}
 	
 	public double getRightDistanceTraveled() {
