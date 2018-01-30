@@ -14,7 +14,7 @@ public class Intake {
 		motor = m;
 	}
 	
-	public void in() {
+	public void in() {//
 		speed = rate;
 	}
 	
