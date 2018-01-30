@@ -184,7 +184,7 @@ public class AutoDriveTrainScripter {
 	public void turnForDegrees(double degrees, String lr) {
 		//0.01709 feet per 1 degree
 		class turnForDegrees_Package implements CommandPackage{
-			private double feetPer1Degree = 0.01709;
+			private double feetPer1Degree = 0.01745329;// = ((24 * pi) inches / 360 degrees) / (12 inches / 1 foot)
 			private double classdegrees;
 			private String classlr;
 			private boolean done;
@@ -200,7 +200,7 @@ public class AutoDriveTrainScripter {
 				this.classdegrees = classdegrees;
 				this.classlr = classlr;
 				this.done = false;
-				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
+				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree * 0.8;//0.8 is the thing that makes it turn right
 				System.out.println(encoderDistanceToStriveFor);
 				currentEncoderDistance = 0;
 				if (this.classlr == "l") {
