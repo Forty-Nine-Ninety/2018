@@ -43,8 +43,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	
-    	System.out.println("Version 1.9.2018.6.33");
+    	System.out.println("Version 1.29.2018.6.18");
     	this.prefs = Preferences.getInstance();
     	
     	this.driveGamepad = new F310Gamepad(1);
@@ -60,11 +59,10 @@ public class Robot extends IterativeRobot {
     	
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
-    	
 //    	gyro = ADXRS450_Gyro(); //needs work
-    	
-    	Ultrasonic ultrasonicSensor = new Ultrasonic(9 /*ping digital io channel*/, 6/*echo digital io channel*/,Ultrasonic.Unit.kInches);
+    	//					  ping digital io channel   echo digital io channel
+    	//											|   |
+    	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6, Ultrasonic.Unit.kInches);
     
     	//use	ultrasonicSensor.getRangeInches()	to get current distance
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
@@ -88,9 +86,8 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
     	//startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
-    	//autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
     	System.out.println("Auto Init");
-    	autoScripter.init();//I didn't want to rebuild every time
     }
     
     /**

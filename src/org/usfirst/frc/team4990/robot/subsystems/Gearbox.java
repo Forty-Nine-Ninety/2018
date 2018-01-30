@@ -9,8 +9,6 @@ public class Gearbox {
 	private Motor motor1;
 	private Motor motor2;
 	
-	private RobotSide robotSide;
-	
 	private Encoder encoder;
 	
 	private double compensate;
@@ -20,11 +18,9 @@ public class Gearbox {
 		Left, Right
 	}
 	
-	public Gearbox(Motor motor1, Motor motor2, int encoderChannelA, int encoderChannelB, RobotSide robotSide) {
+	public Gearbox(Motor motor1, Motor motor2, int encoderChannelA, int encoderChannelB) {
 		this.motor1 = motor1;
 		this.motor2 = motor2;
-		
-		this.robotSide = robotSide;
 
 		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
 		

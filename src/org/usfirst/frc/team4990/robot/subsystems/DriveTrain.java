@@ -12,8 +12,8 @@ public class DriveTrain {
 	public DriveTrain(Motor leftMotor1, Motor leftMotor2, Motor rightMotor1, Motor rightMotor2,
 						int leftEncoderChannelA, int leftEncoderChannelB, 
 						int rightEncoderChannelA, int rightEncoderChannelB) {
-		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB, Gearbox.RobotSide.Left);
-		this.rightGearbox = new Gearbox(rightMotor1, rightMotor2, rightEncoderChannelA, rightEncoderChannelB, Gearbox.RobotSide.Right);
+		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB);
+		this.rightGearbox = new Gearbox(rightMotor1, rightMotor2, rightEncoderChannelA, rightEncoderChannelB);
 		
 		// The gearbox is backwards
 		this.rightGearbox.swapDirection();

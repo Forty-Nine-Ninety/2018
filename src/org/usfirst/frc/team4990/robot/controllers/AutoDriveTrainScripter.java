@@ -59,8 +59,13 @@ public class AutoDriveTrainScripter {
 			top.update();
 		}
 	}
+	
+	public enum Direction {
+		RIGHT,
+		LEFT
+	}
 
-	public void goDistance(double distance, boolean backwards) { //TODO make it go specified distance
+	public void goDistance(double distance, boolean backwards) {
 		/*Test LOG (format date: specified distance | actual distance)
 		 * 1-20-18: 3ft | 3ft+7in
 		 *
@@ -70,13 +75,14 @@ public class AutoDriveTrainScripter {
 			private double value;
 			private DriveTrain dt;
 			private boolean done;
-			private boolean constbck;
+			private boolean backwards;
 
-			public F_Package(DriveTrain d, double v, boolean constbck) {
+			public F_Package(DriveTrain d, double v, boolean backwards) {
 				this.dt = d;
-				this.value = v;
+				// Use abs to make sure a negative number doesn't break anything
+				this.value = Math.abs(v);
 				this.done = false;
-				this.constbck = constbck;
+				this.backwards = backwards;
 			}
 
 			public void init() {
@@ -87,27 +93,19 @@ public class AutoDriveTrainScripter {
 				// only the right side works...
 				// and it's backwards
 				// this entire robot is backwards
-				//System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
-				if (this.constbck == true) {
-					if(-this.dt.getRightDistanceTraveled() < this.value) { //THIS MAY NEED TO BE NEGATIVE THIS.DT.GETDISTANCE TRAVELED.. ETC
-						dt.setLeftSpeed(.3);
-						dt.setRightSpeed(.3);
-					}
-					else {
-						dt.setLeftSpeed(0.0);
-						dt.setRightSpeed(0.0);
-						this.done = true;
-					}
-				} else if (this.constbck == false) {
-					if(-this.dt.getRightDistanceTraveled() < this.value) {
-						dt.setLeftSpeed(-0.3);
-						dt.setRightSpeed(-0.3);
-					}
-					else {
-						dt.setLeftSpeed(0.0);
-						dt.setRightSpeed(0.0);
-						this.done = true;
-					}
+				
+				double speed = .3;
+				if (this.backwards == true) {
+					speed = -speed;
+				}
+				if(-this.dt.getRightDistanceTraveled() < this.value) {
+					dt.setLeftSpeed(speed);
+					dt.setRightSpeed(speed);
+				}
+				else {
+					dt.setLeftSpeed(0.0);
+					dt.setRightSpeed(0.0);
+					this.done = true;
 				}
 			}
 
@@ -118,6 +116,7 @@ public class AutoDriveTrainScripter {
 
 		commands.add(new F_Package(dt, distance, backwards));
 	}
+	
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
 			private boolean done;
@@ -134,9 +133,8 @@ public class AutoDriveTrainScripter {
 			}
 
 			public void update() {
-				System.out.println(startMillis + duration);
-				System.out.println(System.currentTimeMillis());
-				if (startMillis + duration <= System.currentTimeMillis()) {//done waiting!
+				if (startMillis + duration <= System.currentTimeMillis()) {
+					//done waiting!
 					this.done = true;
 				}
 			}
@@ -150,29 +148,29 @@ public class AutoDriveTrainScripter {
 	}
 
 
-	public void turnForDegrees(double degrees, String lr) {
+	public void turnForDegrees(double degrees, Direction lr) {
 		//0.01709 feet per 1 degree
-		class turnForDegrees_Package implements CommandPackage{
-			private double feetPer1Degree = 0.01745329;// = ((24 * pi) inches / 360 degrees) / (12 inches / 1 foot)
+		class turnForDegrees_Package implements CommandPackage {
+			// feetPer1Degree = ((24 * pi) inches / 360 degrees) / (12 inches / 1 foot)
+			// times some other random constant lol
+			private double feetPer1Degree = 0.01745329  * .99;
 			private double classdegrees;
-			private String classlr;
 			private boolean done;
 			private DriveTrain dt;
 			private boolean left;
-			//RESET DISTANCE TRAVELED USED TO BE IN CONSTRUCTOR. MOVE IT BACK IF STUFF GOES WRONG
 			private double encoderDistanceToStriveFor;
 			private double currentEncoderDistance;
 
-			public turnForDegrees_Package(DriveTrain d, double classdegrees, String classlr) {
+			public turnForDegrees_Package(DriveTrain d, double classdegrees, Direction classlr) {
 				// please note that the right encoder is backwards
 				this.dt = d;
 				this.classdegrees = classdegrees;
-				this.classlr = classlr;
 				this.done = false;
-				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree * 0.85;//0.8 is the thing that makes it turn right
-				System.out.println(encoderDistanceToStriveFor);
+				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
+
 				currentEncoderDistance = 0;
-				if (this.classlr == "l") {
+				
+				if (classlr == Direction.LEFT) {
 					this.left = true;
 				}
 				else {
@@ -185,45 +183,34 @@ public class AutoDriveTrainScripter {
 			}
 
 			public void update() {
-				System.out.println(currentEncoderDistance);
-				if (this.left == true) { // if it's supposed to turn left (I know it's weird just go with it)
-					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						//DONT TOUCH THIS NEXT LINE
-						currentEncoderDistance = -this.dt.getRightDistanceTraveled(); //Takes the average of the two encoder distance traveled
-
-						//DEBUG ENCODER PRINTER
-						System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  " + encoderDistanceToStriveFor);
-
-						this.dt.setLeftSpeed(-0.3); // left needs to go backwards
-						this.dt.setRightSpeed(0.3); // right needs to go forwards
-					}
-					else {
-						this.done = true;
-					}
-
-				} else if (this.left == false) { //if it's supposed to turn right (I know it's weird just go with it)
-					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-						//DONT TOUCH THIS NEXT LINE
-
-						currentEncoderDistance = this.dt.getRightDistanceTraveled(); //Takes average of the two encoder distances
-
-						//DEBUG ENCODER PRINTER
-						System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  "+ encoderDistanceToStriveFor);
-
-						this.dt.setLeftSpeed(0.3); // left needs to go forewards
-						this.dt.setRightSpeed(-0.3); // right needs to go backwards
-					}
-					else {
-						this.done = true;
-					}
-
+				double speed = 0.20;
+				if (this.left == true) {
+					// if it's supposed to turn left (I know it's weird just go with it)
+					speed = -speed;
 				}
-			}
-			public boolean done() {
-				if (this.done) {
+
+				if (currentEncoderDistance <= encoderDistanceToStriveFor) {
+					//DONT TOUCH THIS NEXT LINE
+					
+					// Gets the average of each side's distance
+					// Needs abs or else only works one direction
+					currentEncoderDistance = (Math.abs(this.dt.getRightDistanceTraveled()) +
+											  Math.abs(this.dt.getLeftDistanceTraveled())) / 2;
+
+					//DEBUG ENCODER PRINTER
+					System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  "+ encoderDistanceToStriveFor);
+
+					this.dt.setLeftSpeed(speed); // left needs to go forwards
+					this.dt.setRightSpeed(-speed); // right needs to go backwards
+				}
+				else {
 					this.dt.setSpeed(0.0, 0.0);
-					System.out.println("AAAYY BITCHES WE OUTTA HERE");
+					this.done = true;
 				}
+
+			}
+			
+			public boolean done() {
 				return this.done;
 			}
 		}
