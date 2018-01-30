@@ -95,7 +95,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition s) {
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain) {
 		super(dtrain);
 		//this.init(s);
 		super.init();

@@ -36,6 +36,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	
     	System.out.println("Version 1.9.2018.6.33");
     	this.prefs = Preferences.getInstance();
     	
@@ -48,6 +49,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
     	//Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
     	//ultrasonicSensor.setDistanceUnits(Ultrasonic.Unit.kInches);
     	//ultrasonicSensor.setEnabled(true);
