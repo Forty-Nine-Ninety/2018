@@ -46,6 +46,8 @@ public class Robot extends IterativeRobot {
     	System.out.println("Version 1.29.2018.6.18");
     	this.prefs = Preferences.getInstance();
     	
+    	//~~~~ Driving Components ~~~~
+    	
     	this.driveGamepad = new F310Gamepad(1);
     	
     	this.driveTrain = new DriveTrain( 
@@ -59,17 +61,21 @@ public class Robot extends IterativeRobot {
     	
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
-    	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); //use gyro.getAngle() to return heading (returns number 0 to n)
+    	//~~~~ Sensor Init & Details ~~~~
+    	
+    	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); 
+    	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
     	
     	//	(we don't use the) ping digital io channel   echo digital io channel
     	//											|   |
     	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6, Ultrasonic.Unit.kInches);
     	//use ultrasonicSensor.getRangeInches() to get current distance
+    	//NEVER try to use ultrasonicSensor.ping() (It might break everything since there is no ping wire)
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
-    	
+
     	/*
-    	//~~~~ Smart Dashboard ~~~~
+    	//~~~~ Smart Dashboard ~~~~ 
     	//Auto chooser
     	autoChooser = new SendableChooser<StartingPosition>();
     	autoChooser.addObject("Left", StartingPosition.LEFT);
@@ -82,7 +88,7 @@ public class Robot extends IterativeRobot {
     	//Other gauges and data
     SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
     	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
-*/
+	//*/
     
     }
 
@@ -94,49 +100,19 @@ public class Robot extends IterativeRobot {
     }*/
     
     public void autonomousInit() {
-    	//startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
+    	//startPos = (StartingPosition) autoChooser.getSelected();
+    	//SmartDashboard.updateValues();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
     	System.out.println("Auto Init");
     }
     
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
+    public void autonomousPeriodic() { //This function is called periodically during autonomous
     	autoScripter.update();
     	driveTrain.update();
     	teleopIntakeController.update();
     	intake.update();
+	//SmartDashboard.updateValues();
     }
-    
-    /*public StartingPosition autoRoboStartLoc() {
-    	int trigger = -1;
-    	for (int i = 1; i < 4; i++) {
-    		if (! SmartDashboard.getBoolean("DB/Button " + i, false)) {
-    			trigger = i;
-    		}
-    	}
-    	if (trigger == -1) { trigger = 0;}
-    	for (int i = 1; i < 4; i++) {
-    		SmartDashboard.putBoolean("DB/Button " + i, false);
-    		SmartDashboard.putBoolean("DB/LED " + i, false);
-    	}
-    	SmartDashboard.putBoolean("DB/LED " + trigger, true);
-    	
-    	
-    	switch(trigger) {
-    	case 0:
-    		System.err.println("YA MESSED UP?");
-    		break;
-    	case 1:
-    		return StartingPosition.LEFT;
-    	case 2:
-    		return StartingPosition.MID;
-    	case 3:
-    		return StartingPosition.RIGHT;
-    	}
-    	return StartingPosition.ERROR;
-    }*/
     
     public void teleopInit() {
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
@@ -149,10 +125,7 @@ public class Robot extends IterativeRobot {
         		this.prefs.getDouble("maxThrottle", 1.0));
     }
      
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
+    public void teleopPeriodic() { //This function is called periodically during operator control
     	
 	    this.teleopDriveTrainController.updateDriveTrainState();
 	    
@@ -160,5 +133,6 @@ public class Robot extends IterativeRobot {
 	    //I thought not, it is not a tale the chairman will tell to you
 
     	this.driveTrain.update();
+	//SmartDashboard.updateValues();
     }
 }
