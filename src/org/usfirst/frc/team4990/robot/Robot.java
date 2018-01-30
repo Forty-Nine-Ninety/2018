@@ -102,7 +102,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	//startPos = (StartingPosition) autoChooser.getSelected();
     	//SmartDashboard.updateValues();
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
     	System.out.println("Auto Init");
     }
     

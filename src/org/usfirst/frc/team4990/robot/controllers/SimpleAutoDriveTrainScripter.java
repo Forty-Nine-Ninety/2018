@@ -2,6 +2,7 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
@@ -103,8 +104,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain) {
-		super(dtrain);
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro) {
+		super(dtrain, startP, gyro);
+		
 
 		// this is for debugging
 		goDistance(2, false);

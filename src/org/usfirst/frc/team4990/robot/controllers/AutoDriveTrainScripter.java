@@ -1,7 +1,10 @@
 package org.usfirst.frc.team4990.robot.controllers;
 //GODISTANCE
 
+import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 //import edu.wpi.first.wpilibj.Solenoid; //If we need to implement air compressors
 
@@ -26,10 +29,14 @@ public class AutoDriveTrainScripter {
 	private Queue<CommandPackage> commands = new LinkedList<>();
 
 	private DriveTrain dt;
+	private StartingPosition startPos;
+	private ADXRS450_Gyro gyro;
 	//private Solenoid solenoid;
 
-	public AutoDriveTrainScripter(DriveTrain dtrain) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy) {
 		dt = dtrain;
+		startPos = startP;
+		gyro = gy;
 		//Solenoid solenoid = solen;
 	}
 
@@ -215,5 +222,54 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
+	}
+	
+	public void gyroTurn(double degrees, Direction lr) {
+		class gyroTurn_Package implements CommandPackage {
+			private double degrees;
+			private boolean done;
+			private DriveTrain dt;
+			private ADXRS450_Gyro gyro;
+			private Direction dir;
+
+			public gyroTurn_Package(DriveTrain d, ADXRS450_Gyro g, double classdegrees, Direction classlr) {
+				// please note that the right encoder is backwards
+				this.dt = d;
+				this.degrees = classdegrees;
+				this.done = false;
+				gyro = g;
+				dir = classlr;
+			}
+
+			public void init() {
+				this.gyro.reset();
+			}
+
+			public void update() {
+				double speed = 0.20;
+				if (dir == Direction.LEFT) {
+					// if it's supposed to turn left (I know it's weird just go with it)
+					speed = -speed;
+				}
+
+				if (gyro.getAngle() <= this.degrees) {
+					//DEBUG GYRO PRINTER
+					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
+
+					this.dt.setLeftSpeed(speed); // left needs to go forwards
+					this.dt.setRightSpeed(-speed); // right needs to go backwards
+				}
+				else {
+					this.dt.setSpeed(0.0, 0.0);
+					this.done = true;
+				}
+
+			}
+			
+			public boolean done() {
+				return this.done;
+			}
+		}
+		commands.add(new gyroTurn_Package(dt, gyro, degrees, lr));
 	}
 }
