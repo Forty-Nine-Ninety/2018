@@ -90,6 +90,7 @@ public class Robot extends IterativeRobot {
     	//startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
     	//autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
     	System.out.println("Auto Init");
+    	autoScripter.init();//I didn't want to rebuild every time
     }
     
     /**

@@ -118,37 +118,6 @@ public class AutoDriveTrainScripter {
 
 		commands.add(new F_Package(dt, distance, backwards));
 	}
-	public void debugEncoders(double speed) { //TODO make it go specified distance
-		class debugEncoders_Package implements CommandPackage {
-			private double speed;
-			private DriveTrain dt;
-			private boolean done;
-
-			public debugEncoders_Package(DriveTrain d, double s) {
-				this.dt = d;
-				this.speed = s;
-				this.done = false;
-			}
-
-			public void init() {
-				this.dt.resetDistanceTraveled();
-			}
-
-			public void update() {
-				System.out.println("right:"+ -this.dt.getRightDistanceTraveled() + " left:"+ this.dt.getLeftDistanceTraveled());
-
-					dt.setLeftSpeed(speed);
-					dt.setRightSpeed(speed);
-				}
-
-			public boolean done() {
-				return this.done;
-			}
-
-		}
-		commands.add(new debugEncoders_Package(dt, speed));
-	}
-
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
 			private boolean done;
@@ -200,7 +169,7 @@ public class AutoDriveTrainScripter {
 				this.classdegrees = classdegrees;
 				this.classlr = classlr;
 				this.done = false;
-				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree * 0.8;//0.8 is the thing that makes it turn right
+				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree * 0.85;//0.8 is the thing that makes it turn right
 				System.out.println(encoderDistanceToStriveFor);
 				currentEncoderDistance = 0;
 				if (this.classlr == "l") {
@@ -260,61 +229,4 @@ public class AutoDriveTrainScripter {
 		}
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
-
-
-
-	public void turnDistance(double degrees) {
-		class T_Package implements CommandPackage {//"Container" for turn command
-			private double distance;//Distance to turn
-			private DriveTrain dt;//Drivetrain
-			private boolean done;//If it's done or not
-			public T_Package(DriveTrain d, double degrees) {
-				this.dt = d;
-				this.distance = (degrees / 360) * Math.PI * 46.0208333;//Converts degrees to distance based on radius of 23.5 inches
-				this.done = false;
-			}
-
-			public void init() {
-				this.dt.resetDistanceTraveled();
-			}
-
-			public void update() {
-				System.out.println(this.dt.getLeftDistanceTraveled() + " / " + this.distance);
-				if (this.distance < 0) {
-					if (this.dt.getLeftDistanceTraveled() > this.distance + (1/6)) {
-						dt.setSpeed(-0.2, 0.2);
-					}
-					else if (this.dt.getLeftDistanceTraveled() > this.distance) {
-						dt.setSpeed(-0.05, 0.05);
-					}
-					else {
-						dt.setSpeed(0, 0);
-						this.done = true;
-					}
-				}
-				else {
-					if (this.dt.getLeftDistanceTraveled() < this.distance - (1/6)) {
-						dt.setSpeed(0.2, -0.2);
-					}
-					else if (this.dt.getLeftDistanceTraveled() < this.distance) {
-						dt.setSpeed(0.05, -0.05);
-					}
-					else {
-						dt.setSpeed(0, 0);
-						this.done = true;
-					}
-				}
-			}
-			public boolean done() {
-				return this.done;
-
-			}
-
-		}
-
-		commands.add(new T_Package(dt, degrees));
-
-	}
-
-
 }
