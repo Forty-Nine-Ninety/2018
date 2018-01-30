@@ -203,6 +203,7 @@ public class AutoDriveTrainScripter {
 				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
 				System.out.println(encoderDistanceToStriveFor);
 				currentEncoderDistance = 0;
+				this.dt.resetDistanceTraveled();
 				if (this.classlr == "l") {
 					this.right = true;
 				}
@@ -220,10 +221,10 @@ public class AutoDriveTrainScripter {
 				if (this.right == true) { // if it's supposed to turn left (I know it's weird just go with it)
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						//DONT TOUCH THIS NEXT LINE
-						currentEncoderDistance = (-this.dt.getLeftDistanceTraveled() - this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes the average of the two encoder distance traveled
 
 						//DEBUG ENCODER PRINTER
-						System.out.print("LEFT: " + -this.dt.getLeftDistanceTraveled() + "  RIGHT: " + -this.dt.getRightDistanceTraveled());
+						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled());
 
 						this.dt.setLeftSpeed(-0.3); // left needs to go backwards
 						this.dt.setRightSpeed(0.3); // right needs to go forwards
@@ -235,7 +236,7 @@ public class AutoDriveTrainScripter {
 				} else if (this.right == false) { //if it's supposed to turn right (I know it's weird just go with it)
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						//DONT TOUCH THIS NEXT LINE
-						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() + this.dt.getRightDistanceTraveled()) / 2; //Takes average of the two encoder distances
+						currentEncoderDistance = (this.dt.getLeftDistanceTraveled() - this.dt.getRightDistanceTraveled()) / 2; //Takes average of the two encoder distances
 
 						//DEBUG ENCODER PRINTER
 						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled());

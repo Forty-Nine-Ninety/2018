@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
+    	
     	//Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
     	//ultrasonicSensor.setDistanceUnits(Ultrasonic.Unit.kInches);
     	//ultrasonicSensor.setEnabled(true);
@@ -74,12 +74,13 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
     	//startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
-    	//autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, StartingPosition.ERROR);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
+    	
     	System.out.println("Auto Init");
     }
     
     /**
-     * This function is called periodically during autonomous
+      This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
     	autoScripter.update();
