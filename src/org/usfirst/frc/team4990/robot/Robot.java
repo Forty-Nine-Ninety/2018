@@ -59,7 +59,7 @@ public class Robot extends IterativeRobot {
     	
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
-//    	gyro = ADXRS450_Gyro(); //needs work
+    	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); //use gyro.getAngle() to return heading (returns number 0 to n)
     	//					  ping digital io channel   echo digital io channel
     	//											|   |
     	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6, Ultrasonic.Unit.kInches);
@@ -81,7 +81,10 @@ public class Robot extends IterativeRobot {
     //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
+    	
 */
+    	SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches())
+    	SmartDashboard.putNumber("gyro heading", gyro.getAngle())
     }
 
     public void autonomousInit() {
