@@ -74,34 +74,24 @@ public class Robot extends IterativeRobot {
     	//NEVER try to use ultrasonicSensor.ping() (It might break everything since there is no ping wire)
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
 
-    	/*
-    	//~~~~ Smart Dashboard ~~~~ 
-    	//Auto chooser
-    	autoChooser = new SendableChooser<StartingPosition>();
-    	autoChooser.addObject("Left", StartingPosition.LEFT);
-    	autoChooser.addObject("Middle", StartingPosition.MID);
-    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
-    	autoChooser.addObject("Stay", StartingPosition.STAY);
-    	autoChooser.addDefault("Cross Line", StartingPosition.FORWARD);
-    	SmartDashboard.putData("Auto Location Chooser", autoChooser);
-    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
-    	//Other gauges and data
-    SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
-    	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
+    	
+    	
 	//*/
     
     }
 
-    /*public void disabledperiodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
-    		if (System.currentTimeMillis() % 1000 <= 0 && System.currentTimeMillis() % 1000 >= 100) { //runs around every 1 second
-    			startPos = (StartingPosition) autoChooser.getSelected();
+    public void disabledPeriodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
+    		if (System.currentTimeMillis() % 1000 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
+    			//startPos = (StartingPosition) autoChooser.getSelected();
+    			updateDashboard();
     			SmartDashboard.updateValues();
+    			//System.out.println("refreshed SmartDashboard");
     		}
-    }*/
+    }
     
     public void autonomousInit() {
-    	//startPos = (StartingPosition) autoChooser.getSelected();
-    	//SmartDashboard.updateValues();
+    	startPos = (StartingPosition) autoChooser.getSelected();
+    	SmartDashboard.updateValues();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
     	System.out.println("Auto Init");
     }
@@ -111,7 +101,8 @@ public class Robot extends IterativeRobot {
     	driveTrain.update();
     	teleopIntakeController.update();
     	intake.update();
-	//SmartDashboard.updateValues();
+    	updateDashboard();
+    	SmartDashboard.updateValues();
     }
     
     public void teleopInit() {
@@ -134,5 +125,21 @@ public class Robot extends IterativeRobot {
 
     	this.driveTrain.update();
 	//SmartDashboard.updateValues();
+    }
+    
+    public void updateDashboard() {
+    	//~~~~ Smart Dashboard ~~~~ 
+    	//Auto chooser
+    	autoChooser = new SendableChooser<StartingPosition>();
+    	autoChooser.addObject("Left", StartingPosition.LEFT);
+    	autoChooser.addObject("Middle", StartingPosition.MID);
+    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
+    	autoChooser.addObject("Stay", StartingPosition.STAY);
+    	autoChooser.addDefault("Cross Line", StartingPosition.FORWARD);
+    	SmartDashboard.putData("Auto Location Chooser", autoChooser);
+    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
+    	//Other gauges and data
+    	//SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
+    	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
     }
 }

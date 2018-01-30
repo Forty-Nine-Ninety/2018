@@ -252,7 +252,7 @@ public class AutoDriveTrainScripter {
 					speed = -speed;
 				}
 
-				if (gyro.getAngle() <= this.degrees) {
+				if ((Math.abs(gyro.getAngle()) % 360) <= this.degrees - 10 ) {
 					//DEBUG GYRO PRINTER
 					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
 
