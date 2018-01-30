@@ -223,7 +223,7 @@ public class AutoDriveTrainScripter {
 						currentEncoderDistance = this.dt.getRightDistanceTraveled(); //Takes the average of the two encoder distance traveled
 
 						//DEBUG ENCODER PRINTER
-						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled());
+						System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  " + encoderDistanceToStriveFor);
 
 						this.dt.setLeftSpeed(-0.3); // left needs to go backwards
 						this.dt.setRightSpeed(0.3); // right needs to go forwards
@@ -236,10 +236,10 @@ public class AutoDriveTrainScripter {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						//DONT TOUCH THIS NEXT LINE
 
-						currentEncoderDistance = -1 * this.dt.getRightDistanceTraveled(); //Takes average of the two encoder distances
+						currentEncoderDistance = -this.dt.getRightDistanceTraveled(); //Takes average of the two encoder distances
 
 						//DEBUG ENCODER PRINTER
-						System.out.print("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled());
+						System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  "+ encoderDistanceToStriveFor);
 
 						this.dt.setLeftSpeed(0.3); // left needs to go forewards
 						this.dt.setRightSpeed(-0.3); // right needs to go backwards
@@ -253,6 +253,7 @@ public class AutoDriveTrainScripter {
 			public boolean done() {
 				if (this.done) {
 					this.dt.setSpeed(0.0, 0.0);
+					System.out.println("AAAYY BITCHES WE OUTTA HERE");
 				}
 				return this.done;
 			}
