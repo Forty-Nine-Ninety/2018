@@ -26,6 +26,7 @@ public class Robot extends IterativeRobot {
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
+	private Intake intake;
 	
 	//public Ultrasonic ultrasonicSensor;
 	public ADXRS450_Gyro gyro;
@@ -34,6 +35,8 @@ public class Robot extends IterativeRobot {
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
 	private TeleopDriveTrainController teleopDriveTrainController;
+	
+	private TeleopIntakeController teleopIntakeController;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -51,6 +54,10 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
+    	
+    	intake = new Intake(new TalonMotorController(5));
+    	
+    	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
     	//Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
@@ -87,6 +94,8 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	autoScripter.update();
     	driveTrain.update();
+    	teleopIntakeController.update();
+    	intake.update();
     }
     
     /*public StartingPosition autoRoboStartLoc() {

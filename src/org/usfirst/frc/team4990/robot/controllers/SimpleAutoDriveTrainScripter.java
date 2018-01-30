@@ -101,6 +101,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		super.init();
 		turnForDegrees(90,"l");
 		//goDistance(3,true);
+		
 	}
 
 	public void update() {
