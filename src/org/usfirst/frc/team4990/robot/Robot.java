@@ -60,7 +60,9 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
     	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); //use gyro.getAngle() to return heading (returns number 0 to n)
-    	//					  ping digital io channel   echo digital io channel
+    	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
+    	
+    	//	(we don't use the) ping digital io channel   echo digital io channel
     	//											|   |
     	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6, Ultrasonic.Unit.kInches);
     
