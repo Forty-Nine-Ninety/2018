@@ -81,12 +81,18 @@ public class Robot extends IterativeRobot {
     //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
-    	
+    SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
+    	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
 */
-    	SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches())
-    	SmartDashboard.putNumber("gyro heading", gyro.getAngle())
+    
     }
 
+    /*public void disabledperiodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
+    		if (System.currentTimeMillis() % 1000 <= 0 && System.currentTimeMillis() % 1000 >= 100) { //runs around every 1 second
+    			SmartDashboard.updateValues();
+    		}
+    }*/
+    
     public void autonomousInit() {
     	//startPos = (StartingPosition) autoChooser.getSelected(); //needs to run more often (like on a refresh function???)
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
