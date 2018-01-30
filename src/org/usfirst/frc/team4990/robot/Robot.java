@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
@@ -27,6 +28,8 @@ public class Robot extends IterativeRobot {
 	private DriveTrain driveTrain;
 	
 	//public Ultrasonic ultrasonicSensor;
+	public ADXRS450_Gyro gyro;
+	
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
