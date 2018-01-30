@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4990.robot;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
@@ -22,7 +21,7 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.*;
 public class Robot extends IterativeRobot {
 	
 	public SendableChooser<StartingPosition> autoChooser;
-	public StartingPosition startPos = StartingPosition.MID;
+	public StartingPosition startPos = StartingPosition.FORWARD;
 	
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
@@ -43,6 +42,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	
     	System.out.println("Version 1.29.2018.6.18");
     	this.prefs = Preferences.getInstance();
     	
@@ -65,8 +65,7 @@ public class Robot extends IterativeRobot {
     	//	(we don't use the) ping digital io channel   echo digital io channel
     	//											|   |
     	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6, Ultrasonic.Unit.kInches);
-    
-    	//use	ultrasonicSensor.getRangeInches()	to get current distance
+    	//use ultrasonicSensor.getRangeInches() to get current distance
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
     	
     	/*
@@ -79,8 +78,6 @@ public class Robot extends IterativeRobot {
     	autoChooser.addObject("Stay", StartingPosition.STAY);
     	autoChooser.addDefault("Cross Line", StartingPosition.FORWARD);
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
-    	//refreshSelectAuto refreshSelectAuto_inst = new refreshSelectAuto();
-    //	SmartDashboard.putData("Refresh Auto Selector", new refreshSelectAuto());
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
     SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
@@ -91,6 +88,7 @@ public class Robot extends IterativeRobot {
 
     /*public void disabledperiodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
     		if (System.currentTimeMillis() % 1000 <= 0 && System.currentTimeMillis() % 1000 >= 100) { //runs around every 1 second
+    			startPos = (StartingPosition) autoChooser.getSelected();
     			SmartDashboard.updateValues();
     		}
     }*/
