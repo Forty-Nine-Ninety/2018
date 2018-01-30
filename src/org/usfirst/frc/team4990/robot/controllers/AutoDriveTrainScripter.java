@@ -220,7 +220,7 @@ public class AutoDriveTrainScripter {
 				if (this.left == true) { // if it's supposed to turn left (I know it's weird just go with it)
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						//DONT TOUCH THIS NEXT LINE
-						currentEncoderDistance = this.dt.getRightDistanceTraveled(); //Takes the average of the two encoder distance traveled
+						currentEncoderDistance = -this.dt.getRightDistanceTraveled(); //Takes the average of the two encoder distance traveled
 
 						//DEBUG ENCODER PRINTER
 						System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  " + encoderDistanceToStriveFor);
@@ -236,7 +236,7 @@ public class AutoDriveTrainScripter {
 					if (currentEncoderDistance <= encoderDistanceToStriveFor) {
 						//DONT TOUCH THIS NEXT LINE
 
-						currentEncoderDistance = -this.dt.getRightDistanceTraveled(); //Takes average of the two encoder distances
+						currentEncoderDistance = this.dt.getRightDistanceTraveled(); //Takes average of the two encoder distances
 
 						//DEBUG ENCODER PRINTER
 						System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  "+ encoderDistanceToStriveFor);

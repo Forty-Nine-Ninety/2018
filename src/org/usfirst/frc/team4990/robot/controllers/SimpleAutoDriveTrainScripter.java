@@ -99,7 +99,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		super(dtrain);
 		//this.init(s);
 		super.init();
-		turnForDegrees(90,"r");
+		turnForDegrees(90,"l");
 		//goDistance(3,true);
 		
 	}
