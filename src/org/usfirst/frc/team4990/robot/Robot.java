@@ -33,6 +33,8 @@ public class Robot extends IterativeRobot {
 	private SimpleAutoDriveTrainScripter autoScripter;
 	
 	private TeleopDriveTrainController teleopDriveTrainController;
+	
+	private Intake intake;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -43,6 +45,10 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
     	
     	this.driveGamepad = new F310Gamepad(1);
+    	
+    	
+    	
+    	this.intake = new Intake(new TalonMotorController(4));
     	
     	this.driveTrain = new DriveTrain( 
     		new TalonMotorController(0),
@@ -134,6 +140,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	autoScripter.update();
     	driveTrain.update();
+    	intake.update();
     //	Scheduler.getInstance().run();
     }
     
