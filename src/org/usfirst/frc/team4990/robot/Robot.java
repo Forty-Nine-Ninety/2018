@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
@@ -28,8 +29,8 @@ public class Robot extends IterativeRobot {
 	private DriveTrain driveTrain;
 	private Intake intake;
 	
-	//public Ultrasonic ultrasonicSensor;
-	public ADXRS450_Gyro gyro;
+	public Ultrasonic ultrasonicSensor;
+	public ADXRS450_Gyro gyro; //use gyro.
 	
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
@@ -60,11 +61,14 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain);
-    	//Ultrasonic ultrasonicSensor = new Ultrasonic(0 /*ping digital io channel*/, 0/*echo digital io channel*/);
-    	//ultrasonicSensor.setDistanceUnits(Ultrasonic.Unit.kInches);
-    	//ultrasonicSensor.setEnabled(true);
+    	
+//    	gyro = ADXRS450_Gyro(); //needs work
+    	
+    	Ultrasonic ultrasonicSensor = new Ultrasonic(9 /*ping digital io channel*/, 6/*echo digital io channel*/,Ultrasonic.Unit.kInches);
+    
     	//use	ultrasonicSensor.getRangeInches()	to get current distance
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
+    	
     	/*
     	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
