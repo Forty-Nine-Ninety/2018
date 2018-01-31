@@ -25,7 +25,9 @@ public class DriveTrain {
 	}
 	
 	public void setLeftSpeed(double leftSpeed) {
-		this.leftSetSpeed = leftSpeed ;//slower?
+		// the bot swerves to the right, so slow down left side
+		double multiply_constant = 0.86;
+		this.leftSetSpeed = leftSpeed * multiply_constant;
 	}
 	
 	public void setRightSpeed(double rightSpeed) {
