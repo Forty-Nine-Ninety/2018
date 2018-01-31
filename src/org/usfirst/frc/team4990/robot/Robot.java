@@ -69,29 +69,27 @@ public class Robot extends IterativeRobot {
     	
     	//	(we don't use the) ping digital io channel   echo digital io channel
     	//											|   |
-    	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6, Ultrasonic.Unit.kInches);
+    	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6);
+    	ultrasonicSensor.setEnabled(true);
     	//use ultrasonicSensor.getRangeInches() to get current distance
     	//NEVER try to use ultrasonicSensor.ping() (It might break everything since there is no ping wire)
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
 
+    	updateDashboard();
     	
-    	
-	//*/
     
     }
 
     public void disabledPeriodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
     		if (System.currentTimeMillis() % 1000 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
-    			//startPos = (StartingPosition) autoChooser.getSelected();
+    			startPos = autoChooser.getSelected();
     			updateDashboard();
-    			SmartDashboard.updateValues();
     			//System.out.println("refreshed SmartDashboard");
     		}
     }
     
     public void autonomousInit() {
-    	startPos = (StartingPosition) autoChooser.getSelected();
-    	SmartDashboard.updateValues();
+    	startPos = autoChooser.getSelected();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
     	System.out.println("Auto Init");
     }
@@ -102,7 +100,6 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController.update();
     	intake.update();
     	updateDashboard();
-    	SmartDashboard.updateValues();
     }
     
     public void teleopInit() {
@@ -124,7 +121,7 @@ public class Robot extends IterativeRobot {
 	    //I thought not, it is not a tale the chairman will tell to you
 
     	this.driveTrain.update();
-	//SmartDashboard.updateValues();
+
     }
     
     public void updateDashboard() {
@@ -141,5 +138,6 @@ public class Robot extends IterativeRobot {
     	//Other gauges and data
     	//SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
     	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
+    	SmartDashboard.updateValues();
     }
 }

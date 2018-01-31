@@ -100,12 +100,12 @@ public class AutoDriveTrainScripter {
 				// only the right side works...
 				// and it's backwards
 				// this entire robot is backwards
-				
+				System.out.println("LEFT: "+  this.dt.getLeftDistanceTraveled() + " RIGHT: " + this.dt.getRightDistanceTraveled());
 				double speed = .3;
 				if (this.backwards == true) {
 					speed = -speed;
 				}
-				if(-this.dt.getRightDistanceTraveled() < this.value) {
+				if(Math.abs(this.dt.getRightDistanceTraveled()) < this.value) {
 					dt.setLeftSpeed(speed);
 					dt.setRightSpeed(speed);
 				}
