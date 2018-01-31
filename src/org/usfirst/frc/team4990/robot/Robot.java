@@ -97,8 +97,6 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() { //This function is called periodically during autonomous
     	autoScripter.update();
     	driveTrain.update();
-    	teleopIntakeController.update();
-    	intake.update();
     	updateDashboard();
     }
     
@@ -121,6 +119,9 @@ public class Robot extends IterativeRobot {
 	    //I thought not, it is not a tale the chairman will tell to you
 
     	this.driveTrain.update();
+    	
+    	teleopIntakeController.update();
+    	intake.update();
 
     }
     
