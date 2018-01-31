@@ -246,21 +246,21 @@ public class AutoDriveTrainScripter {
 			}
 
 			public void update() {
-				double speed = 0.85;
+				double speed = 0.75;
 				if (dir == Direction.LEFT) speed *= -1;
 				
 				double currentDegreesTraveled = Math.abs(gyro.getAngle());
 				
-				if (currentDegreesTraveled < this.degrees - 10) {
+				if (currentDegreesTraveled < this.degrees - 15) {
 					//DEBUG GYRO PRINTER
 					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
 
 					this.dt.setSpeed(speed, -speed); // left needs to go forwards, right needs to go backwards
 				}
-				else if (currentDegreesTraveled < this.degrees) {
+				else if (currentDegreesTraveled < this.degrees - 1) {
 					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
 					
-					this.dt.setSpeed(speed / 4, -speed / 4);
+					this.dt.setSpeed(speed / 5, -speed / 5);
 				}
 				else {
 					this.dt.setSpeed(0.0, 0.0);
