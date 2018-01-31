@@ -12,8 +12,11 @@ public class DriveTrain {
 	public DriveTrain(Motor leftMotor1, Motor leftMotor2, Motor rightMotor1, Motor rightMotor2,
 						int leftEncoderChannelA, int leftEncoderChannelB, 
 						int rightEncoderChannelA, int rightEncoderChannelB) {
-		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB, Gearbox.RobotSide.Left);
-		this.rightGearbox = new Gearbox(rightMotor1, rightMotor2, rightEncoderChannelA, rightEncoderChannelB, Gearbox.RobotSide.Right);
+		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB);
+		this.rightGearbox = new Gearbox(rightMotor1, rightMotor2, rightEncoderChannelA, rightEncoderChannelB);
+		
+		// The gearbox is backwards
+		this.rightGearbox.swapDirection();
 	}
 	
 	public void setSpeed(double leftSpeed, double rightSpeed) {		
@@ -22,7 +25,9 @@ public class DriveTrain {
 	}
 	
 	public void setLeftSpeed(double leftSpeed) {
-		this.leftSetSpeed = leftSpeed;
+		// the bot swerves to the right, so slow down left side
+		double multiply_constant = 0.86;
+		this.leftSetSpeed = leftSpeed * multiply_constant;
 	}
 	
 	public void setRightSpeed(double rightSpeed) {
@@ -31,7 +36,7 @@ public class DriveTrain {
 	
 	public void update() {
 		this.leftGearbox.setSpeed(this.leftSetSpeed);
-		this.rightGearbox.setSpeed(-this.rightSetSpeed);
+		this.rightGearbox.setSpeed(this.rightSetSpeed);
 	}
 	
 	//TODO: figure out how to scale PWM value to velocity
@@ -44,7 +49,7 @@ public class DriveTrain {
 	}
 	
 	public double getLeftDistanceTraveled() {
-		return this.leftGearbox.getDistanceTraveled();
+		return this.leftGearbox.getDistanceTraveled()*-1;
 	}
 	
 	public double getRightDistanceTraveled() {

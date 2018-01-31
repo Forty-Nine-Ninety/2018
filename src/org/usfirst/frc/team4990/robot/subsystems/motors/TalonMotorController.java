@@ -7,7 +7,7 @@ public class TalonMotorController extends Talon implements Motor {
 		super(pwmPort);
 	}
 	
-	@Override
+	
 	public void setPower(double power) {
 		this.set(power);
 	}

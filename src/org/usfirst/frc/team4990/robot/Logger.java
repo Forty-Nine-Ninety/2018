@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Forklift;
 
+@SuppressWarnings("unused")
 public class Logger {
 	
 	private FileLogger fileLogger;
