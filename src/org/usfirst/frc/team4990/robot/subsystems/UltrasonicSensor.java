@@ -9,7 +9,7 @@ public class UltrasonicSensor {
 	
 	public UltrasonicSensor(AnalogInput inputDevice) {
 		input = inputDevice;
-		voltagePerInch = 5.0 / 512.0;//Found these values at https://github.com/Sparx-Robotics-1126/2015-Season/blob/master/src/org/gosparx/team1126/robot/sensors/MaxSonarEZ1.java
+		voltagePerInch = 0.01431;//Found these values at from testing the sensor
 		resetDefaultVoltage();
 	}
 	
