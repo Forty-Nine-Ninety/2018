@@ -19,55 +19,55 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	
+
 	public SendableChooser<StartingPosition> autoChooser;
 	public StartingPosition startPos = StartingPosition.FORWARD;
-	
+
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
 	private Intake intake;
-	
+
 	public UltrasonicSensor ultrasonicSensor;
 	public ADXRS450_Gyro gyro; //use gyro.
 	public AnalogInput ultrasonicInput;
-	
-	
+
+
 	private SimpleAutoDriveTrainScripter autoScripter;
-	
+
 	private TeleopDriveTrainController teleopDriveTrainController;
-	
+
 	private TeleopIntakeController teleopIntakeController;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-    	
+
     	System.out.println("Version 1.29.2018.6.18");
     	this.prefs = Preferences.getInstance();
-    	
+
     	//~~~~ Driving Components ~~~~
-    	
-    	this.driveGamepad = new F310Gamepad(0);
-    	
-    	this.driveTrain = new DriveTrain( 
+
+    	this.driveGamepad = new F310Gamepad(1);
+
+    	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
     		new TalonMotorController(1),
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
-    	
+
     	intake = new Intake(new TalonMotorController(5));
-    	
+
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
-    	
+
     	//~~~~ Sensor Init & Details ~~~~
-    	
-    	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); 
+
+    	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
-    	
+
     	ultrasonicInput = new AnalogInput(0);
     	ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
     	//use ultrasonicSensor.getRangeInches() to get current distance
@@ -75,8 +75,8 @@ public class Robot extends IterativeRobot {
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
 
     	updateDashboard();
-    	
-    
+
+
     }
 
     public void disabledPeriodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
@@ -86,46 +86,46 @@ public class Robot extends IterativeRobot {
     			//System.out.println("refreshed SmartDashboard");
     		}
     }
-    
+
     public void autonomousInit() {
     	startPos = autoChooser.getSelected();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
     	System.out.println("Auto Init");
     }
-    
+
     public void autonomousPeriodic() { //This function is called periodically during autonomous
     	autoScripter.update();
     	driveTrain.update();
     	updateDashboard();
     }
-    
+
     public void teleopInit() {
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
-        		this.driveGamepad, 
-        		this.driveTrain, 
+        		this.driveGamepad,
+        		this.driveTrain,
         		this.prefs.getDouble("maxTurnRadius", Constants.defaultMaxTurnRadius),
         		this.prefs.getBoolean("reverseTurningFlipped", false),
         		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
         		this.prefs.getDouble("lowThrottleMultiplier", .25),
         		this.prefs.getDouble("maxThrottle", 1.0));
     }
-     
+
     public void teleopPeriodic() { //This function is called periodically during operator control
-    	
+
 	    this.teleopDriveTrainController.updateDriveTrainState();
-	    
+
 	    //ever heard of the tale of last minute code
 	    //I thought not, it is not a tale the chairman will tell to you
 
     	this.driveTrain.update();
-    	
+
     	teleopIntakeController.update();
     	intake.update();
 
     }
-    
+
     public void updateDashboard() {
-    	//~~~~ Smart Dashboard ~~~~ 
+    	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	autoChooser = new SendableChooser<StartingPosition>();
     	autoChooser.addObject("Left", StartingPosition.LEFT);
