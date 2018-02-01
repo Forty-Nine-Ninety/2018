@@ -48,7 +48,6 @@ public class Robot extends IterativeRobot {
     	
     	//~~~~ Driving Components ~~~~
     	
-    	this.driveGamepad = new F310Gamepad(1);
     	this.driveGamepad = new F310Gamepad(0);
     	
     	this.driveTrain = new DriveTrain( 
