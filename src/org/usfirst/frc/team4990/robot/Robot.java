@@ -68,8 +68,8 @@ public class Robot extends IterativeRobot {
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
     	
-    	ultrasonicInput = new AnalogInput(6);
-    	UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
+    	ultrasonicInput = new AnalogInput(0);
+    	ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
     	//use ultrasonicSensor.getRangeInches() to get current distance
     	//NEVER try to use ultrasonicSensor.ping() (It might break everything since there is no ping wire)
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
