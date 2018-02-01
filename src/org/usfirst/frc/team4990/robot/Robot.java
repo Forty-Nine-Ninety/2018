@@ -137,8 +137,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
-    	//SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
-    	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
+    	//SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getRangeInches());
+    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     	SmartDashboard.updateValues();
     }
 }
