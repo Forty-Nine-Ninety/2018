@@ -28,8 +28,9 @@ public class Robot extends IterativeRobot {
 	private DriveTrain driveTrain;
 	private Intake intake;
 	
-	public Ultrasonic ultrasonicSensor;
+	public UltrasonicSensor ultrasonicSensor;
 	public ADXRS450_Gyro gyro; //use gyro.
+	public AnalogInput ultrasonicInput;
 	
 	
 	private SimpleAutoDriveTrainScripter autoScripter;
@@ -67,10 +68,8 @@ public class Robot extends IterativeRobot {
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
     	
-    	//	(we don't use the) ping digital io channel   echo digital io channel
-    	//											|   |
-    	Ultrasonic ultrasonicSensor = new Ultrasonic(9, 6);
-    	ultrasonicSensor.setEnabled(true);
+    	ultrasonicInput = new AnalogInput(6);
+    	UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
     	//use ultrasonicSensor.getRangeInches() to get current distance
     	//NEVER try to use ultrasonicSensor.ping() (It might break everything since there is no ping wire)
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
@@ -137,7 +136,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
-    	//SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getRangeInches());
+    	SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getDistance());
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     	SmartDashboard.updateValues();
     }
