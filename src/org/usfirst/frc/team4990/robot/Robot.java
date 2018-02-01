@@ -97,8 +97,6 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() { //This function is called periodically during autonomous
     	autoScripter.update();
     	driveTrain.update();
-    	teleopIntakeController.update();
-    	intake.update();
     	updateDashboard();
     }
     
@@ -121,6 +119,9 @@ public class Robot extends IterativeRobot {
 	    //I thought not, it is not a tale the chairman will tell to you
 
     	this.driveTrain.update();
+    	
+    	teleopIntakeController.update();
+    	intake.update();
 
     }
     
@@ -136,8 +137,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	//Other gauges and data
-    	//SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getRangeInches());
-    	SmartDashboard.putNumber("gyro heading", gyro.getAngle());
+    	//SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getRangeInches());
+    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     	SmartDashboard.updateValues();
     }
 }

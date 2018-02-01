@@ -21,7 +21,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public void crossAutoLine() {
 		//go forward and cross auto line
 		//forward 140 in
-		System.out.println("JUST crossing auto line: goDistance((140/12), true)");
+		System.out.println("Only Crossing Auto Line: goDistance((140/12), true)");
 		goDistance((140/12), true);
 	}
 
@@ -35,24 +35,24 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			switch(s) {
 				case LEFT: //Joseph (benjamin)
 					goDistance(162/80, true);//1st: forward ~162 in
-					turnForDegrees(90, Direction.RIGHT);//2nd: 90º turn right
+					turnForDegrees(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					goDistance((55/12), true);//3rd: forward 55in
 					//4th: drop cube
 					break;
 				case MID: //Benjamin
 					//cut in front (in between auto line and exchange)
 					goDistance(80/12, true);//1st: forward 80 in
-					turnForDegrees(90, Direction.LEFT);//2nd: turn 90º left
+					turnForDegrees(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					goDistance(60/12, true);//3rd: forward about 60 in
-					turnForDegrees(90, Direction.RIGHT);//4th: turn 90º right
+					turnForDegrees(90, Direction.RIGHT);//4th: 90 degree turn to the right
 					goDistance(60/12, true);//5th: forward 60 in
 					//6th: drop cube
 					break;
 				case RIGHT: //Dominic
 					goDistance(230/12, true);//1st: forward 230 in
-					turnForDegrees(90, Direction.LEFT);	//2nd: turn 90º left
+					turnForDegrees(90, Direction.LEFT);	//2nd: 90 degree turn to the left
 					goDistance(150/12, true);//3rd: forward 150 in
-					turnForDegrees(90, Direction.LEFT);	//4th: turn 90º left
+					turnForDegrees(90, Direction.LEFT);	//4th: 90 degree turn to the left
 					goDistance(30/12, true);	//5th: forward 30 in
 					//6th: drop cube
 					break;
@@ -71,9 +71,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			switch(s) {
 				case LEFT: //Dominic (more like domithiqq)
 					goDistance(230/12, true); //1st: forward 230 in
-					turnForDegrees(90, Direction.RIGHT);	 //2nd: turn 90º right
+					turnForDegrees(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
 					goDistance(150/12, true); //3rd: forward 150 in
-					turnForDegrees(90, Direction.RIGHT);	//4th: turn 90º right
+					turnForDegrees(90, Direction.RIGHT);	//4th: 90 degree turn to the right
 					goDistance(30/12, true);	//5th: forward 30 in
 					//6th: drop cube
 					break;
@@ -83,7 +83,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					break;
 				case RIGHT: //Joseph (benjamin)
 					goDistance(162/12,true);//1st: forward ~162 in
-					turnForDegrees(90, Direction.LEFT);//2nd: 90º turn left
+					turnForDegrees(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					goDistance(55/12,true);//3rd: forward 55in
 					//4th: drop cube
 					break;
@@ -113,11 +113,13 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		//wait(1000.0);
 		//goDistance(2, true);
 		//turnForDegrees(90, Direction.LEFT);
+
 		//gyroTurn(90, Direction.LEFT);
 		//wait(1000.0);
 		gyroTurn(90, Direction.LEFT);
 		//gyroTurn(180, Direction.LEFT);
 		
+
 		// end debugging
 
 		//this.init(); //uncomment this line to use Auto logic
