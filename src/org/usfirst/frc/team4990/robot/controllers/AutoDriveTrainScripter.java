@@ -29,15 +29,15 @@ public class AutoDriveTrainScripter {
 	private Queue<CommandPackage> commands = new LinkedList<>();
 
 	private DriveTrain dt;
-	private StartingPosition startPos;
+	@SuppressWarnings("unused")
+	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
-	//private Solenoid solenoid;
+
 
 	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
-		//Solenoid solenoid = solen;
 	}
 
 	public void init() {

@@ -31,9 +31,10 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			//if there is no game message (string) OR just cross auto line
 			crossAutoLine();
 		} else if (gameData.charAt(0) == 'L') {
+			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			//Left side is ours
 			switch(s) {
-				case LEFT: //Joseph (benjamin)
+				case LEFT: //Joseph (Benjamin)
 					goDistance(162/80, true);//1st: forward ~162 in
 					turnForDegrees(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					goDistance((55/12), true);//3rd: forward 55in
@@ -68,6 +69,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					crossAutoLine();
 			}
 		} else if (gameData.charAt(0) == 'R') {//Right
+			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
 				case LEFT: //Dominic (more like domithiqq)
 					goDistance(230/12, true); //1st: forward 230 in
@@ -98,7 +100,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			}
 		}
 		else {
-			System.out.println("Error: Unknown game data: " + gameData.charAt(0));
+			System.out.println("Error: Unknown game data: " + gameData.charAt(0) + " StartingPostion " + s.toString());
 		}
 
 	}
@@ -109,16 +111,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		
 
 		// this is for debugging
-		//goDistance(8, false);
-		//wait(1000.0);
-		//goDistance(2, true);
-		//turnForDegrees(90, Direction.LEFT);
 
-		//gyroTurn(90, Direction.LEFT);
-		//wait(1000.0);
 		gyroTurn(90, Direction.LEFT);
-		//gyroTurn(180, Direction.LEFT);
-		
 
 		// end debugging
 

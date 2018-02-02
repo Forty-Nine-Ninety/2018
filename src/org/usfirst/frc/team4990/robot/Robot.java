@@ -24,11 +24,13 @@ public class Robot extends IterativeRobot {
 
 	private Preferences prefs;
 	private F310Gamepad driveGamepad;
+	private F310Gamepad opGamepad;
 	private DriveTrain driveTrain;
 	private Intake intake;
+	private Elevator elevator;
 
 	public UltrasonicSensor ultrasonicSensor;
-	public ADXRS450_Gyro gyro; //use gyro.
+	public ADXRS450_Gyro gyro;
 	public AnalogInput ultrasonicInput;
 
 
@@ -37,18 +39,16 @@ public class Robot extends IterativeRobot {
 	private TeleopDriveTrainController teleopDriveTrainController;
 
 	private TeleopIntakeController teleopIntakeController;
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit() {
+
+    public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
     	System.out.println("Version 1.29.2018.6.18");
     	this.prefs = Preferences.getInstance();
 
-    	//~~~~ Driving Components ~~~~
+    	//~~~~ Driving/Operator Components ~~~~
 
     	this.driveGamepad = new F310Gamepad(1);
+    	this.opGamepad = new F310Gamepad(2);
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -60,6 +60,13 @@ public class Robot extends IterativeRobot {
     	intake = new Intake(new TalonMotorController(5));
 
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
+    	
+    	/*elevator = new Elevator(
+    			Motor elevatorMotor, 
+    			int topSwitchChannel, 
+    			int topSwitchCounterSensitivity, 
+    			int bottomSwitchChannel, 
+    			int bottomSwitchCounterSensitivity);*/
 
     	//~~~~ Sensor Init & Details ~~~~
 
@@ -69,16 +76,14 @@ public class Robot extends IterativeRobot {
 
     	ultrasonicInput = new AnalogInput(0);
     	ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
-    	//use ultrasonicSensor.getRangeInches() to get current distance
-    	//NEVER try to use ultrasonicSensor.ping() (It might break everything since there is no ping wire)
+    	//use ultrasonicSensor.getDistance() to get current distance
     	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
 
     	updateDashboard();
 
-
     }
 
-    public void disabledPeriodic() { //just an idea, @wiley, what do you think for updating SmartDashboard?
+    public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
     		if (System.currentTimeMillis() % 1000 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
     			updateDashboard();
@@ -86,7 +91,7 @@ public class Robot extends IterativeRobot {
     		}
     }
 
-    public void autonomousInit() {
+    public void autonomousInit() { //This function is called at the start of autonomous
     	startPos = autoChooser.getSelected();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
     	System.out.println("Auto Init");
@@ -98,7 +103,7 @@ public class Robot extends IterativeRobot {
     	updateDashboard();
     }
 
-    public void teleopInit() {
+    public void teleopInit() { //This function is called at the start of teleop
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
         		this.driveGamepad,
         		this.driveTrain,
@@ -109,7 +114,7 @@ public class Robot extends IterativeRobot {
         		this.prefs.getDouble("maxThrottle", 1.0));
     }
 
-    public void teleopPeriodic() { //This function is called periodically during operator control
+    public void teleopPeriodic() { //This function is called periodically during teleop
 
 	    this.teleopDriveTrainController.updateDriveTrainState();
 
@@ -124,7 +129,6 @@ public class Robot extends IterativeRobot {
     }
 
     public void updateDashboard() {
-    	//~~~~ Smart Dashboard ~~~~
     	//Auto chooser
     	autoChooser = new SendableChooser<StartingPosition>();
     	autoChooser.addObject("Left", StartingPosition.LEFT);
@@ -134,7 +138,8 @@ public class Robot extends IterativeRobot {
     	autoChooser.addDefault("Cross Line", StartingPosition.FORWARD);
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
-    	//Other gauges and data
+    	
+    	//Other sensor gauges and data
     	SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getDistance());
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     	SmartDashboard.updateValues();

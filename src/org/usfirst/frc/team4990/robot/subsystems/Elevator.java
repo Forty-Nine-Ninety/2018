@@ -4,6 +4,7 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
 
 public class Elevator {
 	private Motor elevatorMotor;
+	@SuppressWarnings("unused")
 	private double currMotorPower;
 	
 	private LimitSwitch topSwitch;
