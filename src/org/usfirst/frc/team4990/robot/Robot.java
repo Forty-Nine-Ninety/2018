@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 
 
 	private SimpleAutoDriveTrainScripter autoScripter;
+	private AutoDriveTrainScripter testScripter;
 
 	private TeleopDriveTrainController teleopDriveTrainController;
 
@@ -126,6 +127,15 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController.update();
     	intake.update();
 
+    } 
+    
+    public void testInit() { //TODO add commands for testing
+    		testScripter = new AutoDriveTrainScripter(driveTrain, startPos, gyro);
+    		testScripter.init();
+    }
+    
+    public void testPeriodic() {
+    		testScripter.update();
     }
 
     public void updateDashboard() {

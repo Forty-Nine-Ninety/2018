@@ -112,11 +112,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 
 		// this is for debugging
 
-		gyroTurn(90, Direction.LEFT);
+		//gyroTurn(90, Direction.LEFT);
 
 		// end debugging
 
-		//this.init(); //uncomment this line to use Auto logic
+		this.init(); //uncomment this line to use Auto logic
 		
 		// super.init should be last
 		super.init();
