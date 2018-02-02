@@ -82,6 +82,10 @@ public class Robot extends IterativeRobot {
     	updateDashboard();
 
     }
+    
+    public void disabledInit() {
+    	System.out.println("ROBOT DISABLED.");
+    }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
     		if (System.currentTimeMillis() % 1000 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
@@ -94,7 +98,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() { //This function is called at the start of autonomous
     	startPos = autoChooser.getSelected();
     	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
-    	System.out.println("Auto Init");
+    	System.out.println("Auto Init complete");
     }
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
@@ -135,13 +139,15 @@ public class Robot extends IterativeRobot {
     	autoChooser.addObject("Middle", StartingPosition.MID);
     	autoChooser.addObject("Right",  StartingPosition.RIGHT);
     	autoChooser.addObject("Stay", StartingPosition.STAY);
-    	autoChooser.addDefault("Cross Line", StartingPosition.FORWARD);
+    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
     	SmartDashboard.putData("Auto Location Chooser", autoChooser);
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	
     	//Other sensor gauges and data
     	SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getDistance());
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
+    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
+    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
     	SmartDashboard.updateValues();
     }
 }

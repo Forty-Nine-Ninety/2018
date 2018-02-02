@@ -94,13 +94,14 @@ public class AutoDriveTrainScripter {
 
 			public void init() {
 				this.dt.resetDistanceTraveled();
+				System.out.println("goDistance(" + value + ")");
 			}
 
 			public void update() {
 				// only the right side works...
 				// and it's backwards
 				// this entire robot is backwards
-				System.out.println("LEFT: "+  this.dt.getLeftDistanceTraveled() + " RIGHT: " + this.dt.getRightDistanceTraveled());
+				//System.out.println("LEFT: "+  this.dt.getLeftDistanceTraveled() + " RIGHT: " + this.dt.getRightDistanceTraveled());
 				double speed = .3;
 				if (this.backwards == true) {
 					speed = -speed;
@@ -137,6 +138,7 @@ public class AutoDriveTrainScripter {
 
 			public void init() {
 				this.startMillis = System.currentTimeMillis();
+				System.out.println("wait(" + duration + ")");
 			}
 
 			public void update() {
@@ -187,6 +189,7 @@ public class AutoDriveTrainScripter {
 
 			public void init() {
 				this.dt.resetDistanceTraveled();
+				System.out.println("turnForDegrees(" + degrees + ", Left:" + left + ")");
 			}
 
 			public void update() {
@@ -243,6 +246,7 @@ public class AutoDriveTrainScripter {
 
 			public void init() {
 				this.gyro.reset();
+				System.out.println("gyroTurn(" + degrees + ", " + dir + ")");
 			}
 
 			public void update() {
@@ -253,7 +257,7 @@ public class AutoDriveTrainScripter {
 				
 				if (currentDegreesTraveled < this.degrees * 0.67) {
 					//DEBUG GYRO PRINTER
-					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
+					//System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
 
 					this.dt.setSpeed(speed, -speed); // left needs to go forwards, right needs to go backwards
 				}

@@ -27,15 +27,16 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 
 	protected void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		System.out.println("Auto Logic INIT");
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
 			//if there is no game message (string) OR just cross auto line
 			crossAutoLine();
 		} else if (gameData.charAt(0) == 'L') {
-			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
+			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			//Left side is ours
 			switch(s) {
 				case LEFT: //Joseph (actually Benjamin)
-					goDistance(162/80, true);//1st: forward ~162 in
+					goDistance(162/12, true);//1st: forward ~162 in
 					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					goDistance((55/12), true);//3rd: forward 55in
 					//4th: drop cube
@@ -89,7 +90,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//4th: drop cube
 					break;
 				case ERROR: //debug/error case
-					System.err.println("StartingPosition == Error. THAT DOESN'T WORK");
+					System.out.println("StartingPosition == Error. THAT DOESN'T WORK");
 					break;
 				case STAY: //FREEZE!
 					System.out.println("Case STAY, Side right. I'm not going to move. Sucks to be you.");
@@ -112,11 +113,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 
 		// this is for debugging
 
-		gyroTurn(90, Direction.LEFT);
+		//gyroTurn(90, Direction.LEFT);
 
 		// end debugging
 
-		//this.init(); //uncomment this line to use Auto logic
+		this.init(startP); //uncomment this line to use Auto logic
 		
 		// super.init should be last
 		super.init();
