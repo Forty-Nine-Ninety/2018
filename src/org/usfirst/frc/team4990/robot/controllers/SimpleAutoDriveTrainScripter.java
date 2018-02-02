@@ -34,35 +34,34 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			//Left side is ours
 			switch(s) {
-				case LEFT: //Joseph (Benjamin)
+				case LEFT: //Joseph (actually Benjamin)
 					goDistance(162/80, true);//1st: forward ~162 in
-					turnForDegrees(90, Direction.RIGHT);//2nd: 90 degree turn to the right
+					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					goDistance((55/12), true);//3rd: forward 55in
 					//4th: drop cube
 					break;
 				case MID: //Benjamin
 					//cut in front (in between auto line and exchange)
 					goDistance(80/12, true);//1st: forward 80 in
-					turnForDegrees(90, Direction.LEFT);//2nd: 90 degree turn to the left
+					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					goDistance(60/12, true);//3rd: forward about 60 in
-					turnForDegrees(90, Direction.RIGHT);//4th: 90 degree turn to the right
+					gyroTurn(90, Direction.RIGHT);//4th: 90 degree turn to the right
 					goDistance(60/12, true);//5th: forward 60 in
 					//6th: drop cube
 					break;
 				case RIGHT: //Dominic
 					goDistance(230/12, true);//1st: forward 230 in
-					turnForDegrees(90, Direction.LEFT);	//2nd: 90 degree turn to the left
+					gyroTurn(90, Direction.LEFT);	//2nd: 90 degree turn to the left
 					goDistance(150/12, true);//3rd: forward 150 in
-					turnForDegrees(90, Direction.LEFT);	//4th: 90 degree turn to the left
+					gyroTurn(90, Direction.LEFT);	//4th: 90 degree turn to the left
 					goDistance(30/12, true);	//5th: forward 30 in
 					//6th: drop cube
 					break;
-				case ERROR: //debug/error case
-					//turnDistance(10);
-					//turnForDegrees(90, "l");
+				case ERROR: //error case
 					System.err.println("StartingPosition == Error. THAT DOESN'T WORK");
 					break;
 				case STAY: //FREEZE!
+					System.out.println("Case STAY, Side Left. I'm not going to move. Sucks to be you.");
 					break;
 				default:
 					System.out.println("Default case of gameData LEFT activated. Going forward.");
@@ -71,11 +70,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		} else if (gameData.charAt(0) == 'R') {//Right
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
-				case LEFT: //Dominic (more like domithiqq)
+				case LEFT: //Dominic
 					goDistance(230/12, true); //1st: forward 230 in
-					turnForDegrees(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
+					gyroTurn(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
 					goDistance(150/12, true); //3rd: forward 150 in
-					turnForDegrees(90, Direction.RIGHT);	//4th: 90 degree turn to the right
+					gyroTurn(90, Direction.RIGHT);	//4th: 90 degree turn to the right
 					goDistance(30/12, true);	//5th: forward 30 in
 					//6th: drop cube
 					break;
@@ -83,19 +82,20 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					goDistance((140/12),true);//1st: forward 140 in
 					//2nd: drop cube
 					break;
-				case RIGHT: //Joseph (benjamin)
+				case RIGHT: //Joseph (actually Benjamin)
 					goDistance(162/12,true);//1st: forward ~162 in
-					turnForDegrees(90, Direction.LEFT);//2nd: 90 degree turn to the left
+					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					goDistance(55/12,true);//3rd: forward 55in
 					//4th: drop cube
 					break;
 				case ERROR: //debug/error case
+					System.err.println("StartingPosition == Error. THAT DOESN'T WORK");
 					break;
 				case STAY: //FREEZE!
-					System.out.println("I'm not going to move.  Sucks to be you.");
+					System.out.println("Case STAY, Side right. I'm not going to move. Sucks to be you.");
 					break;
 				default:
-					System.out.println("Default case of gameData LEFT activated. Going forward.");
+					System.out.println("Default case of gameData RIGHT activated. Going forward.");
 					crossAutoLine();
 			}
 		}
