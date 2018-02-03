@@ -138,6 +138,12 @@ public class Robot extends IterativeRobot {
     	intake.update();
 
     }
+    
+    public void testInit() {
+    		System.out.println("Starting gyro calibration.");
+    		gyro.calibrate();
+    		System.out.println("Gyro calibration done.");
+    }
 
     public void updateDashboard() {
     	//Auto chooser

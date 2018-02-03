@@ -1,12 +1,10 @@
 package org.usfirst.frc.team4990.robot.controllers;
-//GODISTANCE
+
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
-//import edu.wpi.first.wpilibj.Solenoid; //If we need to implement air compressors
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -200,8 +198,7 @@ public class AutoDriveTrainScripter {
 				}
 
 				if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-					//DONT TOUCH THIS NEXT LINE
-					
+	
 					// Gets the average of each side's distance
 					// Needs abs or else only works one direction
 					currentEncoderDistance = (Math.abs(this.dt.getRightDistanceTraveled()) +
@@ -226,6 +223,76 @@ public class AutoDriveTrainScripter {
 		}
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
+	
+	public void gyroStraight(double distance, String fb) {
+		class gyroStraight_Package implements CommandPackage {
+			private double classdisttogo;
+			private double startingGyro;
+			private boolean done;
+			private DriveTrain dt;
+			private String fb;
+			private ADXRS450_Gyro gyro;
+			private double plusOuMoins;
+			private double baseMotorPower;
+			private double currentGyroData;
+			private double leftmotorspeedadjust;
+			private double ignoreZone;
+
+			public gyroStraight_Package(DriveTrain dt, ADXRS450_Gyro gyro, double distance, String fb) {
+				//Remember that the right motor is the slow one
+				this.dt = dt;
+				this.gyro = gyro;
+				this.classdisttogo = distance;
+				this.done = false;
+				this.fb = fb;
+				this.ignoreZone = 1;
+				
+			}
+			public void init() {
+				System.out.println("gyroStraight(" + distance + ", Forward/backward: " + fb + ")");
+				this.gyro.reset();
+				this.startingGyro = 0;
+				if (this.fb == "f") {
+					this.plusOuMoins = 1;
+					this.baseMotorPower = 0.1;
+				}
+				else if (this.fb == "b") {
+					this.plusOuMoins = -1;
+					this.baseMotorPower = -0.1;
+				}
+				this.dt.resetDistanceTraveled();
+				this.leftmotorspeedadjust = this.baseMotorPower;
+				
+			}
+			public void update() {
+				double currentDistanceTraveled = -this.dt.getRightDistanceTraveled();
+				this.currentGyroData = gyro.getAngle();
+				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.classdisttogo);
+				if (currentDistanceTraveled < this.classdisttogo) {
+					
+					if (this.currentGyroData + this.ignoreZone < this.startingGyro) {
+						//System.out.println("ADJUST LEFT");
+						this.leftmotorspeedadjust = 0.1 * this.plusOuMoins;
+					} else if (this.currentGyroData - this.ignoreZone > this.startingGyro) {
+						//System.out.println("ADJUST RIGHT");
+						this.leftmotorspeedadjust = 0.1 * this.plusOuMoins;
+					}
+					
+					this.dt.setSpeed(this.leftmotorspeedadjust, baseMotorPower);
+					System.out.println("leftmotorspeedadjust: " + leftmotorspeedadjust);
+				} else {
+					this.done = true;
+					this.dt.setSpeed(0, 0);
+				}
+			}
+			public boolean done() {
+				
+				return this.done;
+			}
+		}
+		commands.add(new gyroStraight_Package(dt, gyro, distance, fb));
+	}
+
 	
 	public void gyroTurn(double inputDegrees, Direction lr) {
 		class gyroTurn_Package implements CommandPackage {
