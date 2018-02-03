@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 
 
 	private SimpleAutoDriveTrainScripter autoScripter;
-	private AutoDriveTrainScripter testScripter;
+	private SimpleAutoDriveTrainScripter testScripter;
 
 	private TeleopDriveTrainController teleopDriveTrainController;
 
@@ -82,6 +82,8 @@ public class Robot extends IterativeRobot {
 
     	updateDashboard();
 
+    	resetSensors();
+    	
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
@@ -126,11 +128,14 @@ public class Robot extends IterativeRobot {
 
     	teleopIntakeController.update();
     	intake.update();
-
+    	
+	if (driveGamepad.getBButtonPressed()) {
+		resetSensors();
+	}
     } 
     
     public void testInit() { //TODO add commands for testing
-    		testScripter = new AutoDriveTrainScripter(driveTrain, startPos, gyro);
+    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
     		testScripter.init();
     }
     
@@ -154,4 +159,13 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     	SmartDashboard.updateValues();
     }
+
+	public void resetSensors() {
+    		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT.");
+    		gyro.calibrate();
+    		System.out.println("Gyro calibration done. Reseting encoders.");
+    		this.driveTrain.resetDistanceTraveled();
+    		System.out.println("Sensor reset complete.");
+    		//add ultrasonic reset?
+	}
 }
