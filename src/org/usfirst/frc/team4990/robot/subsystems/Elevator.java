@@ -19,8 +19,6 @@ public class Elevator {
 	private boolean isBelow;
 	
 	private Encoder encoder;
-	private int encoderChannelA;
-	private int encoderChannelB;
 	
 	public Elevator(
 			Motor elevatorMotor, 
