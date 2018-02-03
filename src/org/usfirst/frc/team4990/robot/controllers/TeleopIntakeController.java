@@ -27,7 +27,6 @@ public class TeleopIntakeController {
 		} else {
 			intake.stop();
 		}
-		intake.update();
 	}
 
 }
