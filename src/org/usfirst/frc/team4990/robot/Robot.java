@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot {
 	private F310Gamepad opGamepad;
 	private DriveTrain driveTrain;
 	private Intake intake;
-	private Elevator elevator;
+	private TeleopElevatorController teleopElevatorController;
 
 	public UltrasonicSensor ultrasonicSensor;
 	public ADXRS450_Gyro gyro;
@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
     	//~~~~ Driving/Operator Components ~~~~
 
     	this.driveGamepad = new F310Gamepad(1);
-    	this.opGamepad = new F310Gamepad(2);
+    	//this.opGamepad = new F310Gamepad(2);
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -61,12 +61,15 @@ public class Robot extends IterativeRobot {
 
     	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
     	
-    	/*elevator = new Elevator(
-    			Motor elevatorMotor, 
-    			int topSwitchChannel, 
-    			int topSwitchCounterSensitivity, 
-    			int bottomSwitchChannel, 
-    			int bottomSwitchCounterSensitivity);*/
+    	/*teleopElevatorController = new TeleopElevatorController(new Elevator(
+    			new TalonMotorController(4), //Motor elevatorMotor
+    			, //int topSwitchChannel (DIO)
+    			4, //int topSwitchCounterSensitivity
+    			, //int bottomSwitchChannel (DIO)
+    			4), //int bottomSwitchCounterSensitivity
+    			driveGamepad, //gamepad to control elevator
+    			1.0);*/
+
 
     	//~~~~ Sensor Init & Details ~~~~
 
@@ -81,6 +84,10 @@ public class Robot extends IterativeRobot {
 
     	updateDashboard();
 
+    }
+    
+    public void robotPeriodic() {
+    	//Put nothing here or else the robot might lag severely.
     }
     
     public void disabledInit() {

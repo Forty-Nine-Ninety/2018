@@ -16,17 +16,18 @@ public class TeleopIntakeController {
 		boolean lpressed = gpad.getLeftBumperPressed();
 		boolean rpressed = gpad.getRightBumperPressed();
 		
-		if(lpressed) {
+		if (lpressed && rpressed) {
+			intake.stop();
+		} else if(lpressed) {
 			intake.in();
 			return;
-		}
-		
-		if(rpressed) {
+		} else if(rpressed) {
 			intake.out();
 			return;
+		} else {
+			intake.stop();
 		}
-		
-		intake.stop();
+		intake.update();
 	}
 
 }
