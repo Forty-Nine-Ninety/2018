@@ -224,73 +224,59 @@ public class AutoDriveTrainScripter {
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
 	
-	public void gyroStraight(double distance, String fb) {
+	public void gyroStraight(double distance) {
 		class gyroStraight_Package implements CommandPackage {
-			private double classdisttogo;
+			private double distanceToGo;
 			private double startingGyro;
 			private boolean done;
 			private DriveTrain dt;
-			private String fb;
 			private ADXRS450_Gyro gyro;
-			private double plusOuMoins;
 			private double baseMotorPower;
 			private double currentGyroData;
-			private double leftmotorspeedadjust;
-			private double ignoreZone;
+			private double leftMotorAdjust;
+			private double currentDistanceTraveled;
 
-			public gyroStraight_Package(DriveTrain dt, ADXRS450_Gyro gyro, double distance, String fb) {
+
+			public gyroStraight_Package(DriveTrain dt, ADXRS450_Gyro gyro, double distance) {
 				//Remember that the right motor is the slow one
+				this.done = false;
 				this.dt = dt;
 				this.gyro = gyro;
-				this.classdisttogo = distance;
-				this.done = false;
-				this.fb = fb;
-				this.ignoreZone = 1;
-				
-			}
-			public void init() {
-				System.out.println("gyroStraight(" + distance + ", Forward/backward: " + fb + ")");
+				this.distanceToGo = distance;
 				this.gyro.reset();
 				this.startingGyro = 0;
-				if (this.fb == "f") {
-					this.plusOuMoins = 1;
-					this.baseMotorPower = 0.1;
-				}
-				else if (this.fb == "b") {
-					this.plusOuMoins = -1;
-					this.baseMotorPower = -0.1;
-				}
+				this.baseMotorPower = 0.3;
+			}
+			public void init() {
+				System.out.println("gyroStraight(" + distance + ")");
 				this.dt.resetDistanceTraveled();
-				this.leftmotorspeedadjust = this.baseMotorPower;
-				
 			}
 			public void update() {
-				double currentDistanceTraveled = -this.dt.getRightDistanceTraveled();
+				this.currentDistanceTraveled = Math.abs(this.dt.getRightDistanceTraveled()) * 1.06517;
 				this.currentGyroData = gyro.getAngle();
-				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.classdisttogo);
-				if (currentDistanceTraveled < this.classdisttogo) {
+
+				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
+				if (currentDistanceTraveled < this.distanceToGo) {
 					
-					if (this.currentGyroData + this.ignoreZone < this.startingGyro) {
-						//System.out.println("ADJUST LEFT");
-						this.leftmotorspeedadjust = 0.1 * this.plusOuMoins;
-					} else if (this.currentGyroData - this.ignoreZone > this.startingGyro) {
-						//System.out.println("ADJUST RIGHT");
-						this.leftmotorspeedadjust = 0.1 * this.plusOuMoins;
+					if (this.currentGyroData > this.startingGyro) {
+						this.leftMotorAdjust = this.baseMotorPower - 0.064023; //add to number to go more LEFT
+					} else if (this.currentGyroData < this.startingGyro) {
+						this.leftMotorAdjust = this.baseMotorPower + 0.05;
+
 					}
-					
-					this.dt.setSpeed(this.leftmotorspeedadjust, baseMotorPower);
-					System.out.println("leftmotorspeedadjust: " + leftmotorspeedadjust);
+					this.dt.setSpeed(this.leftMotorAdjust, this.baseMotorPower);
 				} else {
 					this.done = true;
 					this.dt.setSpeed(0, 0);
 				}
 			}
+			
 			public boolean done() {
 				
 				return this.done;
 			}
 		}
-		commands.add(new gyroStraight_Package(dt, gyro, distance, fb));
+		commands.add(new gyroStraight_Package(dt, gyro, distance));
 	}
 
 	
