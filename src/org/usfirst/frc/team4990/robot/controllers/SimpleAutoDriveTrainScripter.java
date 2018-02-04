@@ -115,7 +115,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 
 		//gyroTurn(90, Direction.LEFT);
 
-		// super.init should be last, use this.init() before to start auto
+		// super.init should be last
 		super.init();
 	}
 
