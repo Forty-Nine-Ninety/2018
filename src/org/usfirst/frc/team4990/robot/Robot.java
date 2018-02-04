@@ -140,9 +140,6 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController.update();
     	intake.update();
     	
-	if (driveGamepad.getBButtonPressed()) {
-		resetSensors();
-	}
     } 
     
     public void testInit() { //TODO add commands for testing
@@ -152,12 +149,6 @@ public class Robot extends IterativeRobot {
     
     public void testPeriodic() {
     		testScripter.update();
-    }
-    
-    public void testInit() {
-    		System.out.println("Starting gyro calibration.");
-    		gyro.calibrate();
-    		System.out.println("Gyro calibration done.");
     }
 
     public void updateDashboard() {
