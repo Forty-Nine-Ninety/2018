@@ -9,8 +9,15 @@ public class Forklift {
 	private Fork fork;
 	private boolean forkState;
 	
-	public Forklift(Motor elevatorMotor, int forkPCMChannel, int topSwitchChannel, int topSwitchCounterSensitivity, int bottomSwitchChannel, int bottomSwitchCounterSensitivity) {
-		this.elevator = new Elevator(elevatorMotor, topSwitchChannel, topSwitchCounterSensitivity, bottomSwitchChannel, bottomSwitchCounterSensitivity);
+	public Forklift(Motor elevatorMotor, int forkPCMChannel, int topSwitchChannel, int topSwitchCounterSensitivity, int bottomSwitchChannel, int bottomSwitchCounterSensitivity, int encoderChannelA, 
+			int encoderChannelB) {
+		this.elevator = new Elevator(elevatorMotor, 
+				topSwitchChannel, 
+				topSwitchCounterSensitivity, 
+				bottomSwitchChannel, 
+				bottomSwitchCounterSensitivity, 
+				encoderChannelA, 
+				encoderChannelB);
 		this.fork = new Fork(forkPCMChannel);
 	}
 

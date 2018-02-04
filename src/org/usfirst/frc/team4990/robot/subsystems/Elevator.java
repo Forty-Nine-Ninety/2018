@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.Constants;
 import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
+
+import edu.wpi.first.wpilibj.Encoder;
 
 public class Elevator {
 	private Motor elevatorMotor;
@@ -15,12 +18,16 @@ public class Elevator {
 	private boolean isBelowSwitchInProgress = false;
 	private boolean isBelow;
 	
+	private Encoder encoder;
+	
 	public Elevator(
 			Motor elevatorMotor, 
 			int topSwitchChannel, 
 			int topSwitchCounterSensitivity, 
 			int bottomSwitchChannel, 
-			int bottomSwitchCounterSensitivity) {
+			int bottomSwitchCounterSensitivity,
+			int encoderChannelA, 
+			int encoderChannelB) {
 		this.elevatorMotor = elevatorMotor;
 		
 		this.topSwitch = new LimitSwitch(topSwitchChannel, topSwitchCounterSensitivity);
@@ -28,6 +35,11 @@ public class Elevator {
 		
 		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel, bottomSwitchCounterSensitivity);
 		this.isBelow = false; // the carriage is below the bottom switch
+		
+		encoder = new Encoder(encoderChannelA, encoderChannelB);
+		this.encoder.setDistancePerPulse(1.16 * Math.PI / Constants.pulsesPerRevolution); //diameter of elevator chain gear * PI
+		this.encoder.setMinRate(Constants.gearboxEncoderMinRate);
+		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
 	}
 
 	// positive power = up

@@ -49,11 +49,11 @@ public class DriveTrain {
 	}
 	
 	public double getLeftDistanceTraveled() {
-		return this.leftGearbox.getDistanceTraveled()*-1;
+		return Math.abs(this.leftGearbox.getDistanceTraveled());
 	}
 	
 	public double getRightDistanceTraveled() {
-		return this.rightGearbox.getDistanceTraveled();
+		return Math.abs(this.rightGearbox.getDistanceTraveled());
 	}
 	
 	public double getLeftVelocity() {
