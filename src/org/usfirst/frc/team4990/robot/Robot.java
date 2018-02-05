@@ -47,9 +47,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
 
     	//~~~~ Driving/Operator Components ~~~~
-
-    	this.driveGamepad = new F310Gamepad(0);
-    	//this.opGamepad = new F310Gamepad(1);
+    	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 1));
+    	//this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 2));
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -69,8 +68,8 @@ public class Robot extends IterativeRobot {
     			, //int bottomSwitchChannel (DIO)
     			4), //int bottomSwitchCounterSensitivity
     			driveGamepad, //gamepad to control elevator
-    			1.0);*/
-
+    			1.0); // max speed (0.1 to 1.0) 
+    			*/
 
     	//~~~~ Sensor Init & Details ~~~~
 
