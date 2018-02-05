@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 
 
 	private SimpleAutoDriveTrainScripter autoScripter;
+	private SimpleAutoDriveTrainScripter testScripter;
 
 	private TeleopDriveTrainController teleopDriveTrainController;
 
@@ -46,7 +47,6 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
 
     	//~~~~ Driving/Operator Components ~~~~
-
     	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 1));
     	//this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 2));
 
@@ -84,6 +84,8 @@ public class Robot extends IterativeRobot {
 
     	updateDashboard();
 
+    	resetSensors();
+    	
     }
     
     public void robotPeriodic() {
@@ -136,13 +138,16 @@ public class Robot extends IterativeRobot {
 
     	teleopIntakeController.update();
     	intake.update();
-
+    	
+    } 
+    
+    public void testInit() { //TODO add commands for testing
+    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
+    		testScripter.init();
     }
     
-    public void testInit() {
-    		System.out.println("Starting gyro calibration.");
-    		gyro.calibrate();
-    		System.out.println("Gyro calibration done.");
+    public void testPeriodic() {
+    		testScripter.update();
     }
 
     public void updateDashboard() {
@@ -163,4 +168,13 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
     	SmartDashboard.updateValues();
     }
+
+	public void resetSensors() {
+    		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT.");
+    		gyro.calibrate();
+    		System.out.println("Gyro calibration done. Reseting encoders.");
+    		this.driveTrain.resetDistanceTraveled();
+    		System.out.println("Sensor reset complete.");
+    		//add ultrasonic reset?
+	}
 }
