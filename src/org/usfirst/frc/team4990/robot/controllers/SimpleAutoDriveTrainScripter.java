@@ -110,15 +110,15 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro) {
 		super(dtrain, startP, gyro);
 		
-
+	if (DriverStation.getInstance().isTest()) {
 		// this is for debugging
 
 		//gyroTurn(90, Direction.LEFT);
 
 		// end debugging
-
+	} else {
 		this.init(startP); //uncomment this line to use Auto logic
-		
+	}
 		// super.init should be last
 		super.init();
 	}
