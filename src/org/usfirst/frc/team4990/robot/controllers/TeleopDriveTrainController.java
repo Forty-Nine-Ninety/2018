@@ -155,8 +155,12 @@ public class TeleopDriveTrainController {
 	
 	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {//Both inputs have ranges (-1, 1) (non-inclusive)
 		
+		if (turnSteepness < 0) {//This MIGHT fix the problem below.  I'm not sure.
+			turnSteepness *= -1;
+		}
 		
-		double turnRadius = (1 - turnSteepness) * this.maxTurnRadius;
+		double turnRadius = (1 - turnSteepness) * this.maxTurnRadius;//This is wrong I think
+		
 		System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP ||| OWS: " + outsideWheelSpeed + " | turnRadius:" + turnRadius + " | turnSteepness: " + turnSteepness + " | Return Value: " + outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth)));
 		return outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth));
 	}
