@@ -21,8 +21,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public void crossAutoLine() {
 		//go forward and cross auto line
 		//forward 140 in
-		System.out.println("Only Crossing Auto Line: goDistance((140/12), true)");
-		goDistance((140/12), true);
+		System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
+		gyroStraight(140/12);
 	}
 
 	protected void init(StartingPosition s) {
@@ -35,27 +35,27 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			//Left side is ours
 			switch(s) {
-				case LEFT: //Joseph (actually Benjamin)
-					goDistance(162/12, true);//1st: forward ~162 in
+				case LEFT: 
+					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
-					goDistance((55/12), true);//3rd: forward 55in
+					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
 					break;
-				case MID: //Benjamin
+				case MID: 
 					//cut in front (in between auto line and exchange)
-					goDistance(80/12, true);//1st: forward 80 in
+					gyroStraight(80/12);//1st: forward 80 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
-					goDistance(60/12, true);//3rd: forward about 60 in
+					gyroStraight(60/12);//3rd: forward about 60 in
 					gyroTurn(90, Direction.RIGHT);//4th: 90 degree turn to the right
-					goDistance(60/12, true);//5th: forward 60 in
+					gyroStraight(60/12);//5th: forward 60 in
 					//6th: drop cube
 					break;
 				case RIGHT: //Dominic
-					goDistance(230/12, true);//1st: forward 230 in
+					gyroStraight(230/12);//1st: forward 230 in
 					gyroTurn(90, Direction.LEFT);	//2nd: 90 degree turn to the left
-					goDistance(150/12, true);//3rd: forward 150 in
+					gyroStraight(150/12);//3rd: forward 150 in
 					gyroTurn(90, Direction.LEFT);	//4th: 90 degree turn to the left
-					goDistance(30/12, true);	//5th: forward 30 in
+					gyroStraight(30/12);	//5th: forward 30 in
 					//6th: drop cube
 					break;
 				case ERROR: //error case
@@ -72,21 +72,21 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
 				case LEFT: //Dominic
-					goDistance(230/12, true); //1st: forward 230 in
+					gyroStraight(230/12); //1st: forward 230 in
 					gyroTurn(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
-					goDistance(150/12, true); //3rd: forward 150 in
+					gyroStraight(150/12); //3rd: forward 150 in
 					gyroTurn(90, Direction.RIGHT);	//4th: 90 degree turn to the right
-					goDistance(30/12, true);	//5th: forward 30 in
+					gyroStraight(30/12);	//5th: forward 30 in
 					//6th: drop cube
 					break;
-				case MID: //Benjamin
-					goDistance((140/12),true);//1st: forward 140 in
+				case MID: 
+					gyroStraight(140/12);//1st: forward 140 in
 					//2nd: drop cube
 					break;
-				case RIGHT: //Joseph (actually Benjamin)
-					goDistance(162/12,true);//1st: forward ~162 in
+				case RIGHT: 
+					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
-					goDistance(55/12,true);//3rd: forward 55in
+					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
 					break;
 				case ERROR: //debug/error case
@@ -111,10 +111,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		super(dtrain, startP, gyro);
 		
 	if (DriverStation.getInstance().isTest()) {
-		// this is for debugging
+		//This is for debugging
+		//To run this code, start the robot in TEST mode. 
 
-		//gyroTurn(90, Direction.LEFT);
-
+		
+		
 		// end debugging
 	} else {
 		this.init(startP); //uncomment this line to use Auto logic
