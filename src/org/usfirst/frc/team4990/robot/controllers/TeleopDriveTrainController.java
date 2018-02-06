@@ -133,7 +133,8 @@ public class TeleopDriveTrainController {
 			} else {
 				slowLeft = false;
 			}
-		}else {
+		}
+		else {//What if it's 0 exact?  Or is that not possible? //NVM That's already considered above.
 			if (throttle < 0) {
 				slowLeft = false;
 			} else {
@@ -143,7 +144,6 @@ public class TeleopDriveTrainController {
 		if (slowLeft) {
 			leftWheelSpeed = calculateInsideWheelSpeed(throttle,-turnSteepness);
 			rightWheelSpeed = throttle;
-			
 		}
 		
 		System.out.println(leftWheelSpeed + "; " + rightWheelSpeed);
@@ -154,7 +154,8 @@ public class TeleopDriveTrainController {
 	// TAKE ANOTHER LOOK LATER!!!  INNER WHEEL IS FLIPPED 
 	
 	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {
-		double turnRadius = this.maxTurnRadius - (turnSteepness * this.maxTurnRadius);
+		System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP ||| OWS: " + outsideWheelSpeed + " | turnSteepness: " + turnSteepness);
+		double turnRadius = (1 - turnSteepness) * this.maxTurnRadius;
 		
 		return outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth));
 	}
