@@ -120,7 +120,6 @@ public class Robot extends IterativeRobot {
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
         		this.driveGamepad,
         		this.driveTrain,
-        		this.prefs.getDouble("maxTurnRadius", Constants.defaultMaxTurnRadius),
         		this.prefs.getBoolean("reverseTurningFlipped", false),
         		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
         		this.prefs.getDouble("lowThrottleMultiplier", .25),
