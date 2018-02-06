@@ -80,9 +80,6 @@ public class TeleopDriveTrainController {
 				currentUpdate,
 				this.accelerationTime);
 		
-		System.out.println("throttle:" + throttle);
-		System.out.println("turnSteepness" + turnSteepness);
-		
 		if (throttle != 0 && turnSteepnessInput != 0) {
 			setArcTrajectory(throttle, -turnSteepnessInput);
 		} else if (throttle != 0 && turnSteepnessInput == 0) { 
@@ -114,8 +111,6 @@ public class TeleopDriveTrainController {
 	}
 	
 	public void setArcTrajectory(double throttle, double turnSteepness) {
-		System.out.println("setAT throttle:" + throttle);
-		System.out.println("setAT turnSteepness: " + turnSteepness);
 		//without if statement; turns to the right
 		
 		double leftWheelSpeed = throttle;
@@ -150,19 +145,10 @@ public class TeleopDriveTrainController {
 		
 		this.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
 	}
-	
-	// TAKE ANOTHER LOOK LATER!!!  INNER WHEEL IS FLIPPED 
-	
-	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {//Both inputs have ranges (-1, 1) (non-inclusive)
-		
-		if (turnSteepness < 0) {//This MIGHT fix the problem below.  I'm not sure.
-			turnSteepness *= -1;
-		}
-		
-		double turnRadius = (1 - turnSteepness) * this.maxTurnRadius;//This is wrong I think
-		
-		System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP ||| OWS: " + outsideWheelSpeed + " | turnRadius:" + turnRadius + " | turnSteepness: " + turnSteepness + " | Return Value: " + outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth)));
-		return outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth));
+
+	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {
+		double turnValue = (turnSteepness > 0) ? 1 - turnSteepness : 1 + turnSteepness;
+		return outsideWheelSpeed * turnValue;
 	}
 	
 	public void setStraightTrajectory(double throttle) {
