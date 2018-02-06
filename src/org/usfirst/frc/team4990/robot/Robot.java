@@ -47,8 +47,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
 
     	//~~~~ Driving/Operator Components ~~~~
-    	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 1));
-    	//this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 2));
+    	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
+    	//this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),

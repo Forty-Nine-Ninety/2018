@@ -57,7 +57,7 @@ public class TeleopDriveTrainController {
 		
 		this.lastDpiToggleInput = dpiTogglePressed;
 		
-		double throttleInput = -this.gamepad.getLeftJoystickY();
+		double throttleInput = this.gamepad.getLeftJoystickY();
 		double turnSteepnessInput = this.gamepad.getRightJoystickX();
 		
 		System.out.println("Throttle Input:" + throttleInput);
