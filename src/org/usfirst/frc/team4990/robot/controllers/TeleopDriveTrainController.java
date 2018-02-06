@@ -153,10 +153,9 @@ public class TeleopDriveTrainController {
 	
 	// TAKE ANOTHER LOOK LATER!!!  INNER WHEEL IS FLIPPED 
 	
-	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {
-		System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP ||| OWS: " + outsideWheelSpeed + " | turnSteepness: " + turnSteepness);
+	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {//Both inputs have ranges (-1, 1) (non-inclusive)
 		double turnRadius = (1 - turnSteepness) * this.maxTurnRadius;
-		
+		System.out.println("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP ||| OWS: " + outsideWheelSpeed + " | turnSteepness: " + turnSteepness + " | Return Value: " + outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth)));
 		return outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth));
 	}
 	
