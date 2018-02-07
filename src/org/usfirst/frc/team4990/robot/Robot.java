@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
 	public SendableChooser<StartingPosition> autoChooser;
 	public StartingPosition startPos = StartingPosition.FORWARD;
 
-	private Preferences prefs;
+	public Preferences prefs;
 	private F310Gamepad driveGamepad;
 	private F310Gamepad opGamepad;
 	private DriveTrain driveTrain;
@@ -137,6 +137,7 @@ public class Robot extends IterativeRobot {
 
     	teleopIntakeController.update();
     	intake.update();
+    	updateDashboard();
     	
     } 
     

@@ -156,7 +156,8 @@ public class TeleopDriveTrainController {
 	
 	public void setStraightTrajectory(double throttle) {
 		/* both motors should spin forward. */
-		this.driveTrain.setSpeed(throttle, throttle);
+		
+		this.driveTrain.setSpeed(throttle , throttle);//Hopefully fixes slight turn
 	}
 	
 	public void setTurnInPlaceTrajectory(double turningSpeed) {
