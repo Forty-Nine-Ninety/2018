@@ -7,12 +7,14 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
 
 public class Intake {
 	private Motor motor;
+	//private LimitSwitch ls;
 	private double speed;
 	private double rate = 0.9;
 	
 	
-	public Intake(Motor m) {
+	public Intake(Motor m/*, LimitSwitch switch*/) {
 		motor = m;
+		//ls = switch;
 	}
 	
 	
@@ -32,5 +34,10 @@ public class Intake {
 	
 	public void stop() {
 		speed = 0;
+	}
+	
+	public boolean getLimitSwitch() {
+		//return ls.isSwitched();
+		return true;
 	}
 }

@@ -25,7 +25,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		gyroStraight(140/12);
 	}
 
-	protected void init(StartingPosition s) {
+	public void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Auto Logic INIT");
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
@@ -107,8 +107,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro) {
-		super(dtrain, startP, gyro);
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro/*, Intake i*/) {//uncomment for intake
+		super(dtrain, startP, gyro/*, i*/);//Uncomment for intake
 		
 	if (DriverStation.getInstance().isTest()) {
 		//This is for debugging
