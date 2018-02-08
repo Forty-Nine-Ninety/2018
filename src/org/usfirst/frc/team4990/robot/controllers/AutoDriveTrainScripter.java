@@ -339,7 +339,7 @@ public class AutoDriveTrainScripter {
 	/*
 	 * @param in Whether the intake is going in or out; in is true, out is false.
 	 */
-	public void runIntake(boolean in) {
+	public void runIntake(boolean in) {//IDK how to make it move for a specified distance without using some kind of encoder stuff.
 		class Intake_Package implements CommandPackage {
 			private double distance;
 			private Intake intake;
@@ -361,6 +361,7 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
+				
 			}
 			
 			public boolean done() {
