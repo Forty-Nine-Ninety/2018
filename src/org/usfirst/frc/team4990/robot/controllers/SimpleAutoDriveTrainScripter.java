@@ -25,7 +25,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		gyroStraight(140/12);
 	}
 
-	protected void init(StartingPosition s) {
+	public void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Auto Logic INIT");
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
