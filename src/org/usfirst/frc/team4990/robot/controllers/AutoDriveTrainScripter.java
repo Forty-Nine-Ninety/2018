@@ -3,6 +3,7 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
@@ -26,16 +27,18 @@ public class AutoDriveTrainScripter {
 
 	private Queue<CommandPackage> commands = new LinkedList<>();
 
+	private Intake intake;
 	private DriveTrain dt;
 	@SuppressWarnings("unused")
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
 
 
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy/*, Intake i*/) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
+		//intake = i;
 	}
 
 	public void init() {
@@ -331,5 +334,40 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees, lr));
+	}
+	
+	/*
+	 * @param in Whether the intake is going in or out; in is true, out is false.
+	 */
+	public void runIntake(boolean in) {
+		class Intake_Package implements CommandPackage {
+			private double distance;
+			private Intake intake;
+			private boolean done;
+			
+			public Intake_Package(boolean b, Intake i) {
+				if (b) {
+					distance = 1;
+				}
+				else {
+					distance = -1;
+				}
+				this.intake = i;
+				this.done = false;
+			}
+			
+			public void init() {
+				System.out.println("There's literally nothing in intake.init() lol");
+			}
+			
+			public void update() {
+			}
+			
+			public boolean done() {
+				return done;
+			}
+		}
+		
+		commands.add(new Intake_Package(in, intake));
 	}
 }
