@@ -39,7 +39,7 @@ public class Intake {
 	
 	public void update() {
 		motorL.setPower(speed);
-		motorR.setPower(speed);
+		motorR.setPower(-speed);
 	}
 	
 	public void stop() {
