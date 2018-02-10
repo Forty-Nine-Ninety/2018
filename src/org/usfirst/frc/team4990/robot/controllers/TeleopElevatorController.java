@@ -7,6 +7,7 @@ public class TeleopElevatorController {
 	private Elevator elevator;
 	private F310Gamepad gpad;
 	private double maxSpeed;
+	private double tempAxis;
 	
 	private int controller;
 	
@@ -22,21 +23,22 @@ public class TeleopElevatorController {
 	}
 	
 	public void update() {
+		tempAxis = gpad.getRawAxis(controller);
 		
-		if (gpad.getRawAxis(controller) > 0 && gpad.getRawAxis(controller) < 0) {
+		if (tempAxis > 0 && tempAxis < 0) {
 			elevator.setElevatorPower(0.0);
-		} else if (gpad.getRawAxis(controller) > 0) { //right joystick positive = elevator UP
-			if (gpad.getRawAxis(controller) > maxSpeed) {
+		} else if (tempAxis > 0) { //right joystick positive = elevator UP
+			if (tempAxis > maxSpeed) {
 				elevator.setElevatorPower(maxSpeed);
 			} else { 
-				elevator.setElevatorPower(gpad.getRawAxis(controller)); 
+				elevator.setElevatorPower(tempAxis); 
 			}
 			return;
-		} else if (gpad.getRawAxis(controller) < 0) { //right joystick negative = elevator DOWN
-			if (-gpad.getRawAxis(controller) > maxSpeed) {
+		} else if (tempAxis < 0) { //right joystick negative = elevator DOWN
+			if (-tempAxis > maxSpeed) {
 				elevator.setElevatorPower(-maxSpeed);
 			} else { 
-				elevator.setElevatorPower(gpad.getRawAxis(controller)); 
+				elevator.setElevatorPower(tempAxis); 
 			}
 			return;
 		} else {
@@ -44,8 +46,7 @@ public class TeleopElevatorController {
 			return;
 		}
 			
-		elevator.checkSafety();
-		
+		elevator.update(); //always run at END of update function
 	}
 
 }
