@@ -27,50 +27,25 @@ public class TeleopIntakeController {
 		tempInAxis = gpad.getRawAxis(inController);
 		tempOutAxis = gpad.getRawAxis(outController);
 		boolean override = gpad.getRawButton(7);
-		
-		if (override) {
-			if (tempInAxis > 0 && tempOutAxis > 0) {
-				intake.setSpeed(0.0);
-			} else if (tempInAxis > 0) { //left bumper = elevator UP
-				if (tempInAxis > maxSpeed) {
-					intake.setSpeed(maxSpeed);
-				} else { 
-					intake.setSpeed(tempInAxis);
-				}
-				return;
-			} else if (tempOutAxis > 0) { //right bumper = elevator DOWN
-				if (tempOutAxis > maxSpeed) {
-					intake.setSpeed(-maxSpeed);
-				} else { 
-					intake.setSpeed(-tempOutAxis); 
-				}
-				return;
-			} else {
-				intake.setSpeed(0.0);
-				return;
+		if (tempInAxis > 0 && tempOutAxis > 0) {
+			intake.setSpeed(0.0);
+		} else if (tempInAxis > 0 && ((intake.getAnalogInput() < 2 || override) || override)) { //left bumper = elevator UP
+			if (tempInAxis > maxSpeed) {
+				intake.setSpeed(maxSpeed);
+			} else { 
+				intake.setSpeed(tempInAxis);
 			}
-		}
-		else {
-			if (tempInAxis > 0 && tempOutAxis > 0) {
-				intake.setSpeed(0.0);
-			} else if (tempInAxis > 0 && intake.getAnalogInput() < 2) { //left bumper = elevator UP
-				if (tempInAxis > maxSpeed) {
-					intake.setSpeed(maxSpeed);
-				} else { 
-					intake.setSpeed(tempInAxis);
-				}
-				return;
-			} else if (tempOutAxis > 0) { //right bumper = elevator DOWN
-				if (tempOutAxis > maxSpeed) {
-					intake.setSpeed(-maxSpeed);
-				} else { 
-					intake.setSpeed(-tempOutAxis); 
-				}
-				return;
-			} else {
-				intake.setSpeed(0.0);
-				return;
+			return;
+		} else if (tempOutAxis > 0) { //right bumper = elevator DOWN
+			if (tempOutAxis > maxSpeed) {
+				intake.setSpeed(-maxSpeed);
+			} else { 
+				intake.setSpeed(-tempOutAxis); 
 			}
+			return;
+		} else {
+			intake.setSpeed(0.0);
+			return;
 		}
 	}
 
