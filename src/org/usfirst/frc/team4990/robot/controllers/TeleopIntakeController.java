@@ -7,7 +7,9 @@ public class TeleopIntakeController {
 	private Intake intake;
 	private F310Gamepad gpad;
 	private int upController = 2;
+	private double tempUpAxis;
 	private int downController = 3;
+	private double tempDownAxis;
 	private double maxSpeed = 1.0;
 	
 	public TeleopIntakeController(Intake i, F310Gamepad pad) {
@@ -16,21 +18,23 @@ public class TeleopIntakeController {
 	}
 	
 	public void update() {
+		tempUpAxis = gpad.getRawAxis(upController);
+		tempDownAxis = gpad.getRawAxis(downController);
 		
-		if (gpad.getRawAxis(upController) > 0 && gpad.getRawAxis(downController) > 0) {
+		if (tempUpAxis > 0 && tempDownAxis > 0) {
 			intake.setSpeed(0.0);
-		} else if (gpad.getRawAxis(upController) > 0) { //left bumper = elevator UP
-			if (gpad.getRawAxis(upController) > maxSpeed) {
+		} else if (tempUpAxis > 0) { //left bumper = elevator UP
+			if (tempUpAxis > maxSpeed) {
 				intake.setSpeed(maxSpeed);
 			} else { 
-				intake.setSpeed(gpad.getRawAxis(upController)); 
+				intake.setSpeed(tempUpAxis); 
 			}
 			return;
-		} else if (gpad.getRawAxis(downController) > 0) { //right bumper = elevator DOWN
-			if (gpad.getRawAxis(downController) > maxSpeed) {
+		} else if (tempDownAxis > 0) { //right bumper = elevator DOWN
+			if (tempDownAxis > maxSpeed) {
 				intake.setSpeed(-maxSpeed);
 			} else { 
-				intake.setSpeed(-gpad.getRawAxis(downController)); 
+				intake.setSpeed(-tempDownAxis); 
 			}
 			return;
 		} else {
