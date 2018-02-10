@@ -2,7 +2,7 @@ package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
 
-import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 //In & Out
 	// Constructor(motors)
@@ -10,16 +10,16 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 public class Intake {
 	private Motor motorL;
 	private Motor motorR;
-	private Ultrasonic ultrasonic;
+	private AnalogInput infrared;
 	//private LimitSwitch ls;
 	private double speed;
 	private double rate = 0.9;
 	
 	
-	public Intake(Motor mL, Motor mR, Ultrasonic ultrasonicInput) {
+	public Intake(Motor mL, Motor mR, AnalogInput infraredInput) {
 		motorL = mL;
 		motorR = mR;
-		ultrasonic = ultrasonicInput;
+		infrared = infraredInput;
 	}
 	
 	
@@ -46,16 +46,8 @@ public class Intake {
 		speed = 0;
 	}
 	
-	public double getUltrasonicDistanceInches() {
-		return ultrasonic.getRangeInches();
-	}
-	
-	public double getUltrasonicDistanceMM() {
-		return ultrasonic.getRangeMM();
-	}
-	
-	public Ultrasonic ultrasonic() {
-		return this.ultrasonic;
+	public double getAnalogInput() {
+		return infrared.getAverageVoltage();
 	}
 	
 }

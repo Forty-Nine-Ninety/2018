@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
+import org.usfirst.frc.team4990.robot.controllers.TeleopIntakeController.BoxPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
 import org.usfirst.frc.team4990.robot.subsystems.motors.*;
 
@@ -35,7 +36,6 @@ public class Robot extends IterativeRobot {
 
 
 	public ADXRS450_Gyro gyro;
-	public AnalogInput InfraredInput;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
 	private SimpleAutoDriveTrainScripter testScripter;
@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
 
-    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(6), new Ultrasonic(8, 9)); //Ultrasonic DIOs  are 8 and 9
+    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(6), new AnalogInput(0)); //Ultrasonic DIOs  are 8 and 9
 
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
@@ -80,7 +80,6 @@ public class Robot extends IterativeRobot {
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
     	
-    	InfraredInput = new AnalogInput(0);
     	
     	updateAutoDashboard();
     	
@@ -168,21 +167,18 @@ public class Robot extends IterativeRobot {
     	
     	//Other sensor gauges and data
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
-    	SmartDashboard.putNumber("Analog Infrared Voltage", InfraredInput.getAverageVoltage());
+    	SmartDashboard.putNumber("Analog Infrared Voltage", intake.getAnalogInput());
     	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
     	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
     	
-    	SmartDashboard.putBoolean("Box In", periodicInfraredCheck().equals(infraredBoxPos.IN));
-    	SmartDashboard.putBoolean("Box Out", periodicInfraredCheck().equals(infraredBoxPos.OUT));
-    	SmartDashboard.putBoolean("Box In and Out At The Same Time", periodicInfraredCheck().equals(infraredBoxPos.KIND_OF_IN));
+    	SmartDashboard.putBoolean("Box In", periodicInfraredCheck().equals(BoxPosition.IN));
+    	SmartDashboard.putBoolean("Box Out", periodicInfraredCheck().equals(BoxPosition.OUT));
+    	SmartDashboard.putBoolean("Box In and Out At The Same Time", periodicInfraredCheck().equals(BoxPosition.MOVING));
     	
     	SmartDashboard.putString("The Infrared Sensor Tri Value", periodicInfraredCheck().toString());
     	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
     	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
     	
-    	//SmartDashboard.putData("Gyro", gyro);
-    	SmartDashboard.putData("Ultrasonic", this.intake.ultrasonic());
-    	SmartDashboard.putData("Analog Infrared", InfraredInput);
     	
     	SmartDashboard.updateValues(); //always run at END of updateDashboard
     }
@@ -196,20 +192,17 @@ public class Robot extends IterativeRobot {
     		//add ultrasonic reset?
 	}
 	
-	public enum infraredBoxPos {
-		IN,
-		KIND_OF_IN,
-		OUT;
-	}
-	public infraredBoxPos periodicInfraredCheck(){
-		double periodicAverageInfraredInput = InfraredInput.getAverageVoltage();
+	
+	public BoxPosition periodicInfraredCheck(){
+		double periodicAverageInfraredInput = intake.getAnalogInput();
 		if (periodicAverageInfraredInput >= 2 ) {
-			return infraredBoxPos.IN;
+			return BoxPosition.IN;
 		} else if (periodicAverageInfraredInput >= 0.4) {
-			return infraredBoxPos.KIND_OF_IN;
+			return BoxPosition.MOVING;
 		} else {
-			return infraredBoxPos.OUT;
+			return BoxPosition.OUT;
 		}
 	}
+	
 
 }

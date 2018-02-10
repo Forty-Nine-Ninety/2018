@@ -363,11 +363,11 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
-				if (dirIn && intake.getUltrasonicDistanceInches() <= distance) {
+				if (dirIn && intake.getAnalogInput() >= 2) {
 					done = true;
 					return;
 				}
-				else if ((! dirIn) && intake.getUltrasonicDistanceInches() >= distance) {
+				else if ((! dirIn) && intake.getAnalogInput() <= 0.4) {
 					done = true;
 					return;
 				}
