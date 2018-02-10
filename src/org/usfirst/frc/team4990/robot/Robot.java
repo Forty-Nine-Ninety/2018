@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4990.robot;
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union(Le Dab Gang)
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
@@ -23,22 +22,23 @@ public class Robot extends IterativeRobot {
 	public StartingPosition startPos = StartingPosition.FORWARD;
 
 	public Preferences prefs;
+	
 	private F310Gamepad driveGamepad;
 	private F310Gamepad opGamepad;
+	
 	private DriveTrain driveTrain;
+	private TeleopDriveTrainController teleopDriveTrainController;
 	private Intake intake;
+	private TeleopIntakeController teleopIntakeController;
+	private Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
+
+
 	public ADXRS450_Gyro gyro;
 	public AnalogInput ultrasonicInput;
 
-
 	private SimpleAutoDriveTrainScripter autoScripter;
 	private SimpleAutoDriveTrainScripter testScripter;
-	private Elevator elevator;
-
-	private TeleopDriveTrainController teleopDriveTrainController;
-
-	private TeleopIntakeController teleopIntakeController;
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
@@ -80,7 +80,8 @@ public class Robot extends IterativeRobot {
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
     	
-
+    	ultrasonicInput = new AnalogInput(0);
+    	
     	updateDashboard();
 
     	resetSensors();
@@ -149,7 +150,7 @@ public class Robot extends IterativeRobot {
     		testScripter.update();
     }
 
-    public void updateDashboard() {
+    public void updateAutoDashboard() {
     	//Auto chooser
     	autoChooser = new SendableChooser<StartingPosition>();
     	autoChooser.addObject("Left", StartingPosition.LEFT);
@@ -157,16 +158,25 @@ public class Robot extends IterativeRobot {
     	autoChooser.addObject("Right",  StartingPosition.RIGHT);
     	autoChooser.addObject("Stay", StartingPosition.STAY);
     	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-    	SmartDashboard.putData("Auto Location Chooser", autoChooser);
+    	SmartDashboard.putData(autoChooser);
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
-    	
+    }
+    
+    	public void updateDashboard() {
     	//Other sensor gauges and data
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
+    	SmartDashboard.putNumber("Analog Ultrasonic Voltage", ultrasonicInput.getVoltage());
     	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
     	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
+    	
     	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
     	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-    	SmartDashboard.updateValues();
+    	
+    	SmartDashboard.putData("Gyro", gyro);
+    	SmartDashboard.putData("Ultrasonic", this.intake.ultrasonic());
+    	SmartDashboard.putData("Analog Ultrasonic", ultrasonicInput);
+    	
+    	SmartDashboard.updateValues(); //always run at END of updateDashboard
     }
 
 	public void resetSensors() {
