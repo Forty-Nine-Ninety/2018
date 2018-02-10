@@ -16,10 +16,10 @@ public class Intake {
 	private double rate = 0.9;
 	
 	
-	public Intake(Motor mL, Motor mR/*, LimitSwitch switch*/) {
+	public Intake(Motor mL, Motor mR, Ultrasonic ultrasonicInput) {
 		motorL = mL;
 		motorR = mR;
-		//ls = switch;
+		ultrasonic = ultrasonicInput;
 	}
 	
 	
@@ -46,7 +46,12 @@ public class Intake {
 		speed = 0;
 	}
 	
-	public double getUltrasonicDistance() {
-		return -1;
+	public double getUltrasonicDistanceInches() {
+		return ultrasonic.getRangeInches();
 	}
+	
+	public double getUltrasonicDistanceMM() {
+		return ultrasonic.getRangeMM();
+	}
+	
 }

@@ -347,27 +347,27 @@ public class AutoDriveTrainScripter {
 			private boolean dirIn;
 			
 			public Intake_Package(boolean b, Intake i) {
-				dirIn = b;
+				dirIn = b; //true = in, false = out
 				if (b) {
-					distance = 3;//Guesses in distance
+					distance = 3;//Guesses in distance for cube all the way in
 				}
 				else {
-					distance = 35;//Guesses in distance
+					distance = 35;//Guesses in distance for cube all the way out
 				}
 				this.intake = i;
 				this.done = false;
 			}
 			
 			public void init() {
-				System.out.println("There's literally nothing in intake.init() lol");
+				//nothing.
 			}
 			
 			public void update() {
-				if (dirIn && intake.getUltrasonicDistance() <= distance) {
+				if (dirIn && intake.getUltrasonicDistanceInches() <= distance) {
 					done = true;
 					return;
 				}
-				else if ((! dirIn) && intake.getUltrasonicDistance() >= distance) {
+				else if ((! dirIn) && intake.getUltrasonicDistanceInches() >= distance) {
 					done = true;
 					return;
 				}

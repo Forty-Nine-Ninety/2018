@@ -43,33 +43,4 @@ public class Forklift {
 		this.elevator.setElevatorPower(this.elevatorSetPower);
 		this.fork.setForkState(this.forkState);
 	}
-	
-	public void reset() {
-		this.elevator.reset();
-	}
-	
-	public boolean isCarriageAbove() {
-		return this.elevator.isAbove();
-	}
-	
-	public int topSwitchCurrCount() {
-		return this.elevator.topSwitchCurrCount();
-	}
-	
-	public int topSwitchLastCount() {
-		return this.elevator.topSwitchLastCount();
-	}
-	
-	public boolean isCarriageBelow() {
-		return this.elevator.isBelow();
-	}
-	
-	public int bottomSwitchCurrCount() {
-		return this.elevator.bottomSwitchCurrCount();
-	}
-	
-	public int bottomSwitchLastCount() {
-		return this.elevator.bottomSwitchLastCount();
-	}
-	
 }

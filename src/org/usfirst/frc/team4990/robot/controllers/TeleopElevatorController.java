@@ -23,10 +23,6 @@ public class TeleopElevatorController {
 	
 	public void update() {
 		
-		elevator.update();
-		
-		elevator.checkSafety();
-		
 		if (gpad.getRawAxis(controller) > 0 && gpad.getRawAxis(controller) < 0) {
 			elevator.setElevatorPower(0.0);
 		} else if (gpad.getRawAxis(controller) > 0) { //right joystick positive = elevator UP
@@ -48,7 +44,7 @@ public class TeleopElevatorController {
 			return;
 		}
 			
-		
+		elevator.checkSafety();
 		
 	}
 
