@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 
     	//~~~~ Driving/Operator Components ~~~~
     	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
-    	//this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
+    	this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -59,17 +59,19 @@ public class Robot extends IterativeRobot {
 
     	intake = new Intake(new TalonMotorController(5));
 
-    	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
+    	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
-    	/*teleopElevatorController = new TeleopElevatorController(new Elevator(
+    	teleopElevatorController = new TeleopElevatorController(new Elevator(
     			new TalonMotorController(4), //Motor elevatorMotor
-    			, //int topSwitchChannel (DIO)
+    			9, //int topSwitchChannel (DIO)
     			4, //int topSwitchCounterSensitivity
-    			, //int bottomSwitchChannel (DIO)
-    			4), //int bottomSwitchCounterSensitivity
-    			driveGamepad, //gamepad to control elevator
+    			9, //int bottomSwitchChannel (DIO)
+    			4, //int bottomSwitchCounterSensitivity
+    			9, //int Encoder DIO port A
+    			9), //int Encoder DIO port B
+    			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
-    			*/
+    			
 
     	//~~~~ Sensor Init & Details ~~~~
 
@@ -97,7 +99,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
-    		if (System.currentTimeMillis() % 1000 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
+    		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
     			updateDashboard();
     			//System.out.println("refreshed SmartDashboard");
@@ -134,7 +136,7 @@ public class Robot extends IterativeRobot {
 	    //I thought not, it is not a tale the chairman will tell to you
 
     	this.driveTrain.update();
-
+    	teleopElevatorController.update();
     	teleopIntakeController.update();
     	intake.update();
     	updateDashboard();
