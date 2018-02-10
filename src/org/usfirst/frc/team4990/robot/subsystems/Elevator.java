@@ -1,12 +1,11 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
-
+import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Elevator {
-	private Motor elevatorMotor;
+	private TalonMotorController elevatorMotor;
 	
 	private LimitSwitch topSwitch;
 	
@@ -19,7 +18,7 @@ public class Elevator {
 	private boolean stopped = false;
 	
 	public Elevator(
-			Motor elevatorMotor, 
+			TalonMotorController elevatorMotor, 
 			int topSwitchChannel, 
 			int topSwitchCounterSensitivity, 
 			int bottomSwitchChannel, 
