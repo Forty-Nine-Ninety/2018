@@ -28,14 +28,13 @@ public class Robot extends IterativeRobot {
 	private DriveTrain driveTrain;
 	private Intake intake;
 	private TeleopElevatorController teleopElevatorController;
-
-	public UltrasonicSensor ultrasonicSensor;
 	public ADXRS450_Gyro gyro;
 	public AnalogInput ultrasonicInput;
 
 
 	private SimpleAutoDriveTrainScripter autoScripter;
 	private SimpleAutoDriveTrainScripter testScripter;
+	private Elevator elevator;
 
 	private TeleopDriveTrainController teleopDriveTrainController;
 
@@ -57,18 +56,20 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
 
-    	intake = new Intake(new TalonMotorController(5));
+    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(6));
 
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
-    	teleopElevatorController = new TeleopElevatorController(new Elevator(
-    			new TalonMotorController(4), //Motor elevatorMotor
-    			9, //int topSwitchChannel (DIO)
+    	elevator = new Elevator(
+    			new TalonMotorController(7), //Motor elevatorMotor
+    			6, //int topSwitchChannel (DIO)
     			4, //int topSwitchCounterSensitivity
-    			9, //int bottomSwitchChannel (DIO)
+    			7, //int bottomSwitchChannel (DIO)
     			4, //int bottomSwitchCounterSensitivity
-    			9, //int Encoder DIO port A
-    			9), //int Encoder DIO port B
+    			4, //int Encoder DIO port A
+    			5); //int Encoder DIO port B
+    	
+    	teleopElevatorController = new TeleopElevatorController(elevator,
     			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
     			
@@ -78,11 +79,7 @@ public class Robot extends IterativeRobot {
     	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
-
-    	ultrasonicInput = new AnalogInput(0);
-    	ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
-    	//use ultrasonicSensor.getDistance() to get current distance
-    	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
+    	
 
     	updateDashboard();
 
@@ -108,7 +105,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() { //This function is called at the start of autonomous
     	startPos = autoChooser.getSelected();
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
+    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake);
     	System.out.println("Auto Init complete");
     }
 
@@ -144,7 +141,7 @@ public class Robot extends IterativeRobot {
     } 
     
     public void testInit() { //TODO add commands for testing
-    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
+    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake);
     		testScripter.init();
     }
     
@@ -164,17 +161,18 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     	
     	//Other sensor gauges and data
-    	SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getDistance());
     	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
     	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
+    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
+    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
     	SmartDashboard.updateValues();
     }
 
 	public void resetSensors() {
     		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT.");
     		gyro.calibrate();
-    		System.out.println("Gyro calibration done. Reseting encoders.");
+    		System.out.println("Gyro calibration done. Resetting encoders.");
     		this.driveTrain.resetDistanceTraveled();
     		System.out.println("Sensor reset complete.");
     		//add ultrasonic reset?

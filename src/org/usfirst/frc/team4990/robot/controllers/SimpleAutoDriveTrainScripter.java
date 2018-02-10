@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -78,16 +79,19 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					gyroTurn(90, Direction.RIGHT);	//4th: 90 degree turn to the right
 					gyroStraight(30/12);	//5th: forward 30 in
 					//6th: drop cube
+					//runIntake(false);
 					break;
 				case MID: 
 					gyroStraight(140/12);//1st: forward 140 in
 					//2nd: drop cube
+					//runIntake(false);
 					break;
 				case RIGHT: 
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
+					//runIntake(false);
 					break;
 				case ERROR: //debug/error case
 					System.out.println("StartingPosition == Error. THAT DOESN'T WORK");
@@ -107,8 +111,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro/*, Intake i*/) {//uncomment for intake
-		super(dtrain, startP, gyro/*, i*/);//Uncomment for intake
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i) {//uncomment for intake
+		super(dtrain, startP, gyro, i);//Uncomment for intake
 		
 	if (DriverStation.getInstance().isTest()) {
 		//This is for debugging

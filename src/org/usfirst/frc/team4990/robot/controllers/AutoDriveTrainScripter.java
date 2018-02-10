@@ -34,11 +34,11 @@ public class AutoDriveTrainScripter {
 	private ADXRS450_Gyro gyro;
 
 
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy/*, Intake i*/) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
-		//intake = i;
+		intake = i;
 	}
 
 	public void init() {
@@ -344,13 +344,15 @@ public class AutoDriveTrainScripter {
 			private double distance;
 			private Intake intake;
 			private boolean done;
+			private boolean dirIn;
 			
 			public Intake_Package(boolean b, Intake i) {
+				dirIn = b;
 				if (b) {
-					distance = 1;
+					distance = 3;//Guesses in distance
 				}
 				else {
-					distance = -1;
+					distance = 35;//Guesses in distance
 				}
 				this.intake = i;
 				this.done = false;
@@ -361,7 +363,15 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
-				
+				if (dirIn && intake.getUltrasonicDistance() <= distance) {
+					done = true;
+					return;
+				}
+				else if ((! dirIn) && intake.getUltrasonicDistance() >= distance) {
+					done = true;
+					return;
+				}
+				intake.update();
 			}
 			
 			public boolean done() {

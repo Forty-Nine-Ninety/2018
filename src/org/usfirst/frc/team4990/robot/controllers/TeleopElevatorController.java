@@ -23,6 +23,8 @@ public class TeleopElevatorController {
 	
 	public void update() {
 		
+		elevator.update();
+		
 		elevator.checkSafety();
 		
 		if (gpad.getRawAxis(controller) > 0 && gpad.getRawAxis(controller) < 0) {
