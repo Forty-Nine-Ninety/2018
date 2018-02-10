@@ -54,4 +54,8 @@ public class Intake {
 		return ultrasonic.getRangeMM();
 	}
 	
+	public Ultrasonic ultrasonic() {
+		return this.ultrasonic;
+	}
+	
 }
