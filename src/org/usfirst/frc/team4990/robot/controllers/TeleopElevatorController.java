@@ -16,7 +16,6 @@ public class TeleopElevatorController {
 		elevator = elevatorInput;
 		gpad = gpadInput;
 		maxSpeed = maxSpeedInput;
-		//2 = LEFT Bumper on controller, 3 = RIGHT bumper on controller
 		controller = 4;//RIGHT joystick
 		//top speed of elevator motor (0.0 to 1.0)
 		maxSpeed = 1.0;
