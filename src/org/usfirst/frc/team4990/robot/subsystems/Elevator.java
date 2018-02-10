@@ -99,6 +99,21 @@ public class Elevator {
 		return this.bottomSwitch.getLastCount();
 	}
 	
+	public boolean isTopSwitched() {
+		//topSwitch.update();
+		return this.topSwitch.getValue();
+	}
+	
+	public void update() {
+		//bottomSwitch.update();
+		//topSwitch.update();
+	}
+	
+	public boolean isBottomSwitched() {
+		//bottomSwitch.update();
+		return this.bottomSwitch.getValue();
+	}
+	
 	public void reset() {
 		System.out.println("ELEVATOR RESET");
 		this.topSwitch.reset();

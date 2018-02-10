@@ -2,18 +2,23 @@ package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
+
 //In & Out
 	// Constructor(motors)
 
 public class Intake {
-	private Motor motor;
+	private Motor motorL;
+	private Motor motorR;
+	private Ultrasonic ultrasonic;
 	//private LimitSwitch ls;
 	private double speed;
 	private double rate = 0.9;
 	
 	
-	public Intake(Motor m/*, LimitSwitch switch*/) {
-		motor = m;
+	public Intake(Motor mL, Motor mR/*, LimitSwitch switch*/) {
+		motorL = mL;
+		motorR = mR;
 		//ls = switch;
 	}
 	
@@ -28,16 +33,20 @@ public class Intake {
 		speed = -rate;
 	}
 	
+	public void setSpeed(double speedInput) {
+		speed = speedInput;
+	}
+	
 	public void update() {
-		motor.setPower(speed);
+		motorL.setPower(speed);
+		motorR.setPower(speed);
 	}
 	
 	public void stop() {
 		speed = 0;
 	}
 	
-	public boolean getLimitSwitch() {
-		//return ls.isSwitched();
-		return true;
+	public double getUltrasonicDistance() {
+		return -1;
 	}
 }
