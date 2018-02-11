@@ -107,15 +107,15 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
-    	startPos = autoChooser.getSelected();
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake);
-    	System.out.println("Auto Init complete");
+	    	startPos = autoChooser.getSelected();
+	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake);
+	    	System.out.println("Auto Init complete");
     }
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
-    	autoScripter.update();
-    	driveTrain.update();
-    	updateDashboard();
+	    	autoScripter.update();
+	    	driveTrain.update();
+	    	updateDashboard();
     }
 
     public void teleopInit() { //This function is called at the start of teleop
@@ -134,11 +134,16 @@ public class Robot extends IterativeRobot {
 	    //ever heard of the tale of last minute code
 	    //I thought not, it is not a tale the chairman will tell to you
 
-    	this.driveTrain.update();
-    	teleopElevatorController.update();
-    	teleopIntakeController.update();
-    	intake.update();
-    	updateDashboard();
+	    	this.driveTrain.update();
+	    	teleopElevatorController.update();
+	    	teleopIntakeController.update();
+	    	intake.update();
+	    	updateDashboard();
+	    	if (driveGamepad.getRawButton(8)) {
+	    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
+	    	} else if (opGamepad.getRawButton(8)) {
+	    		System.out.println("Button 7 Pressed on OP GAMEPAD");
+	    	}
     	
     } 
     
@@ -152,35 +157,36 @@ public class Robot extends IterativeRobot {
     }
 
     public void updateAutoDashboard() {
-    	//Auto chooser
-    	autoChooser = new SendableChooser<StartingPosition>();
-    	autoChooser.addObject("Left", StartingPosition.LEFT);
-    	autoChooser.addObject("Middle", StartingPosition.MID);
-    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
-    	autoChooser.addObject("Stay", StartingPosition.STAY);
-    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-    	SmartDashboard.putData(autoChooser);
-    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
+	    	//Auto chooser
+	    	autoChooser = new SendableChooser<StartingPosition>();
+	    	autoChooser.addObject("Left", StartingPosition.LEFT);
+	    	autoChooser.addObject("Middle", StartingPosition.MID);
+	    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
+	    	autoChooser.addObject("Stay", StartingPosition.STAY);
+	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
+	    	SmartDashboard.putData(autoChooser);
+	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     }
     
     	public void updateDashboard() {
-    	
-    	//Other sensor gauges and data
-    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
-    	SmartDashboard.putNumber("Analog Infrared Voltage", intake.getAnalogInput());
-    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
-    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
-    	
-    	SmartDashboard.putBoolean("Box In", periodicInfraredCheck().equals(BoxPosition.IN));
-    	SmartDashboard.putBoolean("Box Out", periodicInfraredCheck().equals(BoxPosition.OUT));
-    	SmartDashboard.putBoolean("Box In and Out At The Same Time", periodicInfraredCheck().equals(BoxPosition.MOVING));
-    	
-    	SmartDashboard.putString("The Infrared Sensor Tri Value", periodicInfraredCheck().toString());
-    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
-    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-    	
-    	
-    	SmartDashboard.updateValues(); //always run at END of updateDashboard
+	    	
+	    	//Other sensor gauges and data
+	    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
+	    	SmartDashboard.putNumber("Analog Infrared Voltage", intake.getAnalogInput());
+	    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
+	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
+	    	
+	    	SmartDashboard.putString("The Infrared Sensor Tri Value", periodicInfraredCheck().toString());
+	    	SmartDashboard.putBoolean("Box In", periodicInfraredCheck().equals(BoxPosition.IN));
+	    	SmartDashboard.putBoolean("Box Out", periodicInfraredCheck().equals(BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", periodicInfraredCheck().equals(BoxPosition.MOVING));
+	    	
+	
+	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
+	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
+	    	
+	    	
+	    	SmartDashboard.updateValues(); //always run at END of updateDashboard
     }
 
 	public void resetSensors() {
