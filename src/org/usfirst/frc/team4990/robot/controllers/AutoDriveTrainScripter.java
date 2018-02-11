@@ -363,7 +363,7 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
-				if (dirIn && intake.getAnalogInput() >= 2) {
+				if (dirIn && intake.getAnalogInput() >= 1.9) {
 					done = true;
 					return;
 				}

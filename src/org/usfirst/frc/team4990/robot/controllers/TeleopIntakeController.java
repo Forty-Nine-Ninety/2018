@@ -29,7 +29,7 @@ public class TeleopIntakeController {
 		boolean override = gpad.getRawButton(7);
 		if (tempInAxis > 0 && tempOutAxis > 0) {
 			intake.setSpeed(0.0);
-		} else if (tempInAxis > 0 && ((intake.getAnalogInput() < 2 || override) || override)) { //left bumper = elevator UP
+		} else if (tempInAxis > 0 && ((intake.getAnalogInput() < 1.9 || override) || override)) { //left bumper = elevator UP
 			if (tempInAxis > maxSpeed) {
 				intake.setSpeed(maxSpeed);
 			} else { 
