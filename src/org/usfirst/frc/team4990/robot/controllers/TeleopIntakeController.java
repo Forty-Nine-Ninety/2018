@@ -16,7 +16,7 @@ public class TeleopIntakeController {
 	private double tempInAxis;
 	private int outController = 3;
 	private double tempOutAxis;
-	private double maxSpeed = 1.0;
+	private double maxSpeed = 0.6;
 	
 	public TeleopIntakeController(Intake i, F310Gamepad pad) {
 		intake = i;
