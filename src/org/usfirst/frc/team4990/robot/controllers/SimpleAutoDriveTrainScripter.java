@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -111,8 +112,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i) {//uncomment for intake
-		super(dtrain, startP, gyro, i);//Uncomment for intake
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i, Elevator e) {//uncomment for intake
+		super(dtrain, startP, gyro, i, e);//Uncomment for intake
 		
 	if (DriverStation.getInstance().isTest()) {
 		//This is for debugging

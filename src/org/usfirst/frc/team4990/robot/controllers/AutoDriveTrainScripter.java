@@ -30,17 +30,19 @@ public class AutoDriveTrainScripter {
 	private Queue<CommandPackage> commands = new LinkedList<>();
 
 	private Intake intake;
+	private Elevator elevator;
 	private DriveTrain dt;
 	@SuppressWarnings("unused")
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
 
 
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
 		intake = i;
+		elevator = e;
 	}
 
 	public void init() {
@@ -414,39 +416,44 @@ public class AutoDriveTrainScripter {
 		commands.add(new IntakeIN_Package(intake));
 	}
 	
-	/*public void moveElevator(double distance) {
+	public void moveElevator(double distance) { //TODO Implement PID for elevator
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
 			private boolean done;
 			private double speed = 0.6;
 			private double distance;
+			private double encoderRange = 10;
 			
-			public Elevator_package(double dist, Elevator) {
-				this.elevator = i;
+			public Elevator_package(double dist, Elevator e) {
+				this.elevator = e;
 				this.done = false;
 				this.distance = dist;
 			}
 			
 			public void init() {
-				//nothing.
+				elevator.resetEncoderDistance();
 			}
 			
 			public void update() {
-				BoxPosition currentDistance = intake.getBoxPosition();
-
-				
+				if (elevator.getEncoderDistance() <= distance - encoderRange) { //too low, going up
+					elevator.setElevatorPower(speed * 1 - (Math.abs(elevator.getEncoderDistance() / distance))); //TODO Check equation logic
+				} else if (elevator.getEncoderDistance() >= distance + encoderRange) { //too high, going down
+					elevator.setElevatorPower(-speed * 1 - (Math.abs(distance / elevator.getEncoderDistance()))); //TODO Check equation logic
+				} else { //done
+					done = true;
+				}
 				
 				elevator.update();
 			}
 			
 			public boolean done() {
 				if (this.done) {
-					intake.stop();
+					elevator.setElevatorPower(0);
 				}
 				return done;
 			}
 		}
 		
-		commands.add(new Elevator_package(/*elevator*/));
-	}*/
+		commands.add(new Elevator_package(distance, elevator));
+	}
 }
