@@ -3,7 +3,9 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
+import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
@@ -336,24 +338,13 @@ public class AutoDriveTrainScripter {
 		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees, lr));
 	}
 	
-	/*
-	 * @param in Whether the intake is going in or out; in is true, out is false.
-	 */
-	public void runIntake(boolean in) {//IDK how to make it move for a specified distance without using some kind of encoder stuff.
-		class Intake_Package implements CommandPackage {
-			private double distance;
+	public void intakeOut() {
+		class IntakeOUT_Package implements CommandPackage {
 			private Intake intake;
 			private boolean done;
-			private boolean dirIn;
+			private double speed = -0.6;
 			
-			public Intake_Package(boolean b, Intake i) {
-				dirIn = b; //true = in, false = out
-				if (b) {
-					distance = 3;//Guesses in distance for cube all the way in
-				}
-				else {
-					distance = 35;//Guesses in distance for cube all the way out
-				}
+			public IntakeOUT_Package(Intake i) {
 				this.intake = i;
 				this.done = false;
 			}
@@ -363,22 +354,99 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void update() {
-				if (dirIn && intake.getAnalogInput() >= 1.9) {
+				BoxPosition boxPos = intake.getBoxPosition();
+				if (boxPos.equals(BoxPosition.OUT)) {
 					done = true;
-					return;
+				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.IN)) {
+					intake.setSpeed(speed);
+
 				}
-				else if ((! dirIn) && intake.getAnalogInput() <= 0.4) {
-					done = true;
-					return;
-				}
+				
 				intake.update();
 			}
 			
 			public boolean done() {
+				if (this.done) {
+					intake.stop();
+				}
 				return done;
 			}
 		}
 		
-		commands.add(new Intake_Package(in, intake));
+		commands.add(new IntakeOUT_Package(intake));
 	}
+	
+	public void intakeIn() {
+		class IntakeIN_Package implements CommandPackage {
+			private Intake intake;
+			private boolean done;
+			private double speed = 0.6;
+			
+			public IntakeIN_Package(Intake i) {
+				this.intake = i;
+				this.done = false;
+			}
+			
+			public void init() {
+				//nothing.
+			}
+			
+			public void update() {
+				BoxPosition boxPos = intake.getBoxPosition();
+				if (boxPos.equals(BoxPosition.IN)) {
+					done = true;
+				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.OUT)) {
+					intake.setSpeed(speed);
+
+				}
+				
+				intake.update();
+			}
+			
+			public boolean done() {
+				if (this.done) {
+					intake.stop();
+				}
+				return done;
+			}
+		}
+		
+		commands.add(new IntakeIN_Package(intake));
+	}
+	
+	/*public void moveElevator(double distance) {
+		class Elevator_package implements CommandPackage {
+			private Elevator elevator;
+			private boolean done;
+			private double speed = 0.6;
+			private double distance;
+			
+			public Elevator_package(double dist, Elevator) {
+				this.elevator = i;
+				this.done = false;
+				this.distance = dist;
+			}
+			
+			public void init() {
+				//nothing.
+			}
+			
+			public void update() {
+				BoxPosition currentDistance = intake.getBoxPosition();
+
+				
+				
+				elevator.update();
+			}
+			
+			public boolean done() {
+				if (this.done) {
+					intake.stop();
+				}
+				return done;
+			}
+		}
+		
+		commands.add(new Elevator_package(/*elevator*/));
+	}*/
 }

@@ -6,17 +6,13 @@ import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
 public class TeleopIntakeController {
 	
-	public enum BoxPosition {
-		IN, MOVING, OUT
-	}
-	
 	private Intake intake;
 	private F310Gamepad gpad;
 	private int inController = 2;
 	private double tempInAxis;
 	private int outController = 3;
 	private double tempOutAxis;
-	private double maxSpeed = 0.6;
+	private double maxSpeed = 0.65;
 	
 	public TeleopIntakeController(Intake i, F310Gamepad pad) {
 		intake = i;

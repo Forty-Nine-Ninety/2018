@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
-import org.usfirst.frc.team4990.robot.controllers.TeleopIntakeController.BoxPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
 import org.usfirst.frc.team4990.robot.subsystems.motors.*;
 
@@ -176,10 +175,10 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
 	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
 	    	
-	    	SmartDashboard.putString("The Infrared Sensor Tri Value", periodicInfraredCheck().toString());
-	    	SmartDashboard.putBoolean("Box In", periodicInfraredCheck().equals(BoxPosition.IN));
-	    	SmartDashboard.putBoolean("Box Out", periodicInfraredCheck().equals(BoxPosition.OUT));
-	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", periodicInfraredCheck().equals(BoxPosition.MOVING));
+	    	SmartDashboard.putString("The Infrared Sensor Tri Value", intake.getBoxPosition().toString());
+	    	SmartDashboard.putBoolean("Box In", intake.isBoxPosition(Intake.BoxPosition.IN));
+	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", intake.isBoxPosition(Intake.BoxPosition.MOVING));
 	    	
 	
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
@@ -197,18 +196,5 @@ public class Robot extends IterativeRobot {
     		System.out.println("Sensor reset complete.");
     		//add ultrasonic reset?
 	}
-	
-	
-	public BoxPosition periodicInfraredCheck(){
-		double periodicAverageInfraredInput = intake.getAnalogInput();
-		if (periodicAverageInfraredInput >= 2 ) {
-			return BoxPosition.IN;
-		} else if (periodicAverageInfraredInput >= 0.4) {
-			return BoxPosition.MOVING;
-		} else {
-			return BoxPosition.OUT;
-		}
-	}
-	
 
 }

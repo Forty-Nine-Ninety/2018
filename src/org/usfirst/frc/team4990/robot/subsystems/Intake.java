@@ -22,6 +22,9 @@ public class Intake {
 		infrared = infraredInput;
 	}
 	
+	public enum BoxPosition {
+		IN, MOVING, OUT
+	}
 	
 	public void in() {
 		//Set speed
@@ -48,6 +51,25 @@ public class Intake {
 	
 	public double getAnalogInput() {
 		return infrared.getAverageVoltage();
+	}
+	
+	public BoxPosition getBoxPosition() {
+		double periodicAverageInfraredInput = getAnalogInput();
+		if (periodicAverageInfraredInput >= 2 ) {
+			return Intake.BoxPosition.IN;
+		} else if (periodicAverageInfraredInput >= 0.4) {
+			return Intake.BoxPosition.MOVING;
+		} else {
+			return Intake.BoxPosition.OUT;
+		}
+	}
+	
+	public boolean isBoxPosition(BoxPosition pos) {
+		if (getBoxPosition() == pos) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
