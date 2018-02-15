@@ -26,6 +26,7 @@ public class TeleopDriveTrainController {
 	private final double lowThrottleMultiplier;
 	private final double maxThrottle;
 	/**
+	 * Constructor for TeleopDriveTrainController
 	 * @author Freshman Union
 	 * 
 	 * @param gamepad Controller to read from
@@ -56,7 +57,8 @@ public class TeleopDriveTrainController {
 	}
 	
 	/**
-	 * 
+	 * Updates class variable values and sets motor speeds
+	 * @author Freshman Union
 	 */
 	public void updateDriveTrainState() {
 		boolean dpiTogglePressed = this.gamepad.getXButtonPressed();
@@ -109,6 +111,16 @@ public class TeleopDriveTrainController {
 		this.lastUpdate = currentUpdate;
 	}
 	
+	/**
+	 * Gets next throttle value
+	 * @author Freshman Union
+	 * @param throttleInput Current throttle value
+	 * @param lastThrottle Last throttle value
+	 * @param lastUpdate Last time function was called
+	 * @param currentUpdate current time
+	 * @param accelerationTime Time robot should take to accelerate
+	 * @return Either 0 if the throttle is below Constants.zeroThrottleThreshold or the new throttle value
+	 */
 	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate, double accelerationTime) {
 		double newThrottle = throttleInput;
 		
@@ -123,7 +135,12 @@ public class TeleopDriveTrainController {
 		
 		return Math.abs(newThrottle) < Constants.zeroThrottleThreshold ? 0.0 : newThrottle;
 	}
-	
+	/**
+	 * Sets motor for arc turns
+	 * @author Freshman Union
+	 * @param throttle Value for left drivetrain
+	 * @param turnSteepness How much the right drivetrain should turn compared to the left drivetrain
+	 */
 	public void setArcTrajectory(double throttle, double turnSteepness) {
 		//without if statement; turns to the right
 		
@@ -159,7 +176,14 @@ public class TeleopDriveTrainController {
 		
 		this.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
 	}
-
+	
+	/**
+	 * Calculates "inside" wheel motor speed based on the "outside" wheel speed and turnSteepness
+	 * @author Freshman Union & Old Coders
+	 * @param outsideWheelSpeed Speed of other wheel
+	 * @param turnSteepness How much the inside wheels should turn compared to the outside wheels
+	 * @return Calculated inside wheel speed
+	 */
 	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {
 		/*
 		 * Basically, the larger the turnSteepness the smaller the power should be
@@ -171,12 +195,22 @@ public class TeleopDriveTrainController {
 		return outsideWheelSpeed * turnValue;
 	}
 	
+	/**
+	 * Sets drivetrain to go straight
+	 * @author Freshman Union
+	 * @param throttle Speed to go straight at
+	 */
 	public void setStraightTrajectory(double throttle) {
 		/* both motors should spin forward. */
 		
-		this.driveTrain.setSpeed(throttle, throttle);//Hopefully fixes slight turn
+		this.driveTrain.setSpeed(throttle, throttle);
 	}
 	
+	/**
+	 * Sets motor speed for stationary turns
+	 * @author Freshman Union
+	 * @param turningSpeed Speed to turn
+	 */
 	public void setTurnInPlaceTrajectory(double turningSpeed) {
 		/* the right motor's velocity has the opposite sign of the the left motor's
 		 * since the right motor will spin in the opposite direction from the left
