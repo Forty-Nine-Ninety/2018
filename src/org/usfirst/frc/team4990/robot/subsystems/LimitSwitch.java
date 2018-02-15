@@ -12,11 +12,22 @@ public class LimitSwitch {
 	
 	private int counterSensitivity; // threshold to compensate for noise
 	
+	/**
+	 * Initialize limit switch. Use getValue() to read state.
+	 * @param digitalIOChannel
+	 * @param counterSensitivity
+	 */
+	
 	public LimitSwitch(int digitalIOChannel, int counterSensitivity) {
 		this.limitSwitch = new DigitalInput(digitalIOChannel);
 		this.counter = new Counter(this.limitSwitch);
 		this.counterSensitivity = counterSensitivity;
 	}
+	
+	/**
+	 * @deprecated
+	 * Used for counter system. Instead, use getValue() to read state. 
+	 */
 	
 	public void update() {
 		this.lastCount = this.currentCount;
@@ -25,9 +36,20 @@ public class LimitSwitch {
 		//System.out.println(limitSwitch.get());
 	}
 	
+	/** 
+	 * Instead, use getValue() to read state. 
+	 * @deprecated
+	 * @return boolean if switch is triggered (inaccurate?)
+	 */
+	
 	public boolean isSwitched() {
 		return this.currentCount - this.lastCount > this.counterSensitivity;
 	}
+	
+	/**
+	 * @deprecated
+	 * Used for counter system. Instead, use getValue() to read state. 
+	 */
 	
 	public void reset() {
 		this.counter.reset();
@@ -35,13 +57,30 @@ public class LimitSwitch {
 		this.lastCount = 0;
 	}
 	
+	/**
+	 * Instead, use getValue() to read state. 
+	 * @deprecated
+	 * @return int of counter
+	 */
+	
 	public int getCurrCount() {
 		return this.currentCount;
 	}
 	
+	/**
+	 * Use this method to read value of limit switch.
+	 * @return boolean (is switch triggered)
+	 */
+	
 	public boolean getValue() {
 		return limitSwitch.get();
 	}
+	
+	/**
+	 * Part of counter system. Instead, use getValue() to read state. 
+	 * @deprecated
+	 * @return int last counter reading
+	 */
 	
 	public int getLastCount() {
 		return this.lastCount;
