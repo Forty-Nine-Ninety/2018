@@ -11,7 +11,7 @@ import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 
 public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 
-	public enum StartingPosition {
+	public enum StartingPosition { //an enum that determines starting position of the robot
 		LEFT, 
 		MID, 
 		RIGHT, 
