@@ -17,6 +17,17 @@ public class Elevator {
 	
 	private boolean stopped = false;
 	
+	/**
+	 * Initializes elevator.
+	 * @param elevatorMotor Motor used to drive elevator (vex pro 775)
+	 * @param topSwitchChannel DIO channel for top limit switch
+	 * @param topSwitchCounterSensitivity sensitivity for top limit switch, default 4
+	 * @param bottomSwitchChannel DIO channel for bottom limit switch
+	 * @param bottomSwitchCounterSensitivity sensitivity for bottom limit switch, default 4
+	 * @param encoderChannelA Encoder for elevator gearbox (Signal, Ground and 5v)
+	 * @param encoderChannelB Encoder for elevator gearbox (just Signal)
+	 */
+	
 	public Elevator(
 			TalonMotorController elevatorMotor, 
 			int topSwitchChannel, 
@@ -35,9 +46,12 @@ public class Elevator {
 		this.encoder.setMinRate(Constants.gearboxEncoderMinRate);
 		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
 	}
-
-	// positive power = up
-	// negative power = down
+	
+	/**
+	 * Sets elevator power and checks limit switches. If moving would hurt elevator, does not move.
+	 * @param power positive value (0 to 1) makes it go up, negative values (-1 to 0) makes it go down
+	 */
+	
 	public void setElevatorPower(double power) {
 		if ((this.topSwitch.getValue() && power > 0) || (this.bottomSwitch.getValue() && power < 0)) {
 			this.elevatorMotor.setPower(0.0);
@@ -53,6 +67,10 @@ public class Elevator {
 			}
 		}
 	}
+	
+	/**
+	 * Checks safety and (hopefully) stops it from falling if stopped
+	 */
 	
 	public void update() {
 		
@@ -74,17 +92,36 @@ public class Elevator {
 		
 	}
 	
+	/**
+	 * returns boolean whether top is switched.
+	 * @return boolean whether top is switched.
+	 */
+	
 	public boolean isTopSwitched() {
 		return this.topSwitch.getValue();
 	}
+	
+	/**
+	 * returns boolean whether bottom is switched.
+	 * @return boolean whether bottom is switched.
+	 */
 	
 	public boolean isBottomSwitched() {
 		return this.bottomSwitch.getValue();
 	}
 	
+	/**
+	 * returns elevator gearbox's distance in unknown units
+	 * @return elevator gearbox's distance in unknown units
+	 */
+	
 	public double getEncoderDistance() {
 		return encoder.getDistance();
 	}
+	
+	/**
+	 * resets encoder's distance.
+	 */
 	
 	public void resetEncoderDistance() {
 		this.encoder.reset();
