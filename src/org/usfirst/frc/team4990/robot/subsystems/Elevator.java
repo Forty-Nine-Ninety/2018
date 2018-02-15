@@ -5,7 +5,8 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Elevator {
-	private TalonMotorController elevatorMotor;
+	private TalonMotorController elevatorMotorA;
+	private TalonMotorController elevatorMotorB;
 	
 	private LimitSwitch topSwitch;
 	
@@ -29,14 +30,16 @@ public class Elevator {
 	 */
 	
 	public Elevator(
-			TalonMotorController elevatorMotor, 
+			TalonMotorController elevatorMotorA, 
+			TalonMotorController elevatorMotorB,
 			int topSwitchChannel, 
 			int topSwitchCounterSensitivity, 
 			int bottomSwitchChannel, 
 			int bottomSwitchCounterSensitivity,
 			int encoderChannelA, 
 			int encoderChannelB) {
-		this.elevatorMotor = elevatorMotor;
+		this.elevatorMotorA = elevatorMotorA;
+		this.elevatorMotorB = elevatorMotorB;
 		
 		this.topSwitch = new LimitSwitch(topSwitchChannel, topSwitchCounterSensitivity);
 		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel, bottomSwitchCounterSensitivity);
@@ -54,11 +57,13 @@ public class Elevator {
 	
 	public void setElevatorPower(double power) {
 		if ((this.topSwitch.getValue() && power > 0) || (this.bottomSwitch.getValue() && power < 0)) {
-			this.elevatorMotor.setPower(0.0);
+			this.elevatorMotorA.setPower(0.0);
+			this.elevatorMotorB.setPower(0.0);
 			resetEncoderDistance();
 			stopped = true;
 		} else {
-			this.elevatorMotor.setPower(power);
+			this.elevatorMotorA.setPower(power);
+			this.elevatorMotorB.setPower(-power);
 			if (power == 0 && ! stopped) {
 				resetEncoderDistance();
 				stopped = true;
@@ -75,15 +80,16 @@ public class Elevator {
 	public void update() {
 		
 		//check limit switches, stop motors if going toward danger
-		if ((this.topSwitch.getValue() && this.elevatorMotor.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotor.getPower() < 0)) {
-			this.elevatorMotor.setPower(0.0);
+		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorB.getPower() < 0)) {
+			this.elevatorMotorA.setPower(0.0);
+			this.elevatorMotorB.setPower(0.0);
 			resetEncoderDistance();
 			stopped = true;
 			System.out.println("Elevator Safety Triggered");
 		}
 		
 		//if stopped, use encoders to run motors to stop intake from falling
-		if (this.elevatorMotor.getPower() == 0)
+		if (this.elevatorMotorA.getPower() == 0)
 			if (Math.abs(getEncoderDistance()) > 0.01) {
 				setElevatorPower(stopFallingSpeed);
 			} else {
