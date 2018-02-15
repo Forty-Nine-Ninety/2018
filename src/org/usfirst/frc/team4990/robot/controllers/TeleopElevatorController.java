@@ -17,6 +17,7 @@ public class TeleopElevatorController {
 	
 	/**
 	 * Constructor for TeleopElevatorController
+	 * @author Freshman Union
 	 * @param elevatorInput Elevator to be controlled
 	 * @param gpadInput Gamepad to read input from
 	 * @param maxSpeedInput Maximum speed for elevator to go up/down at

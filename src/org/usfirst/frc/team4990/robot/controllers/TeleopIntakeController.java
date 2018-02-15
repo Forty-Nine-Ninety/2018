@@ -3,7 +3,11 @@ package org.usfirst.frc.team4990.robot.controllers;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
-
+/**
+ * Class for intake in teleop period
+ * @author Freshman Union
+ *
+ */
 public class TeleopIntakeController {
 	
 	private Intake intake;
@@ -13,12 +17,20 @@ public class TeleopIntakeController {
 	private int outController = 3;
 	private double tempOutAxis;
 	private double maxSpeed = 0.65;
-	
+	/**
+	 * Constructor for class
+	 * @author Freshman Union
+	 * @param i Intake to control
+	 * @param pad Gamepad to read input from
+	 */
 	public TeleopIntakeController(Intake i, F310Gamepad pad) {
 		intake = i;
 		gpad = pad;
 	}
-	
+	/**
+	 * Read input and updates motor speeds
+	 * @author Freshman Union
+	 */
 	public void update() {
 		tempInAxis = gpad.getRawAxis(inController);
 		tempOutAxis = gpad.getRawAxis(outController);
