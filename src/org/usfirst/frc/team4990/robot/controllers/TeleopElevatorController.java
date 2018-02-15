@@ -2,7 +2,11 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
-
+/**
+ * Class that controls elevator in teleop
+ * @author Freshman Union
+ *
+ */
 public class TeleopElevatorController {
 	private Elevator elevator;
 	private F310Gamepad gpad;
@@ -11,7 +15,12 @@ public class TeleopElevatorController {
 	
 	private int controller;
 	
-	
+	/**
+	 * Constructor for TeleopElevatorController
+	 * @param elevatorInput Elevator to be controlled
+	 * @param gpadInput Gamepad to read input from
+	 * @param maxSpeedInput Maximum speed for elevator to go up/down at
+	 */
 	public TeleopElevatorController(Elevator elevatorInput, F310Gamepad gpadInput, double maxSpeedInput) {
 		elevator = elevatorInput;
 		gpad = gpadInput;
@@ -21,6 +30,10 @@ public class TeleopElevatorController {
 		maxSpeed = 1.0;
 	}
 	
+	/**
+	 * Gets input from gamepad and sets motor power
+	 * @author Freshman Union
+	 */
 	public void update() {
 		tempAxis = gpad.getRawAxis(controller);
 		
