@@ -5,7 +5,11 @@ import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
 import java.util.*;
-
+/**
+ * Class for controlling drivetrains.
+ * @author Freshman Union
+ * 
+ */
 public class TeleopDriveTrainController {
 	private F310Gamepad gamepad;
 	private DriveTrain driveTrain;
@@ -22,7 +26,17 @@ public class TeleopDriveTrainController {
 	private final double accelerationTime;
 	private final double lowThrottleMultiplier;
 	private final double maxThrottle;
-	
+	/**
+	 * @author Freshman Union
+	 * 
+	 * @param gamepad Controller to read from
+	 * @param driveTrain Drivetrain to control
+	 * @param maxTurnRadius No idea yet.
+	 * @param reverseTurningFlipped Whether turning is flipped; Not used.
+	 * @param accelerationTime Time the robot has been accelerating for
+	 * @param lowThrottleMultiplier Multiplier for when X button is pressed(puts robot into "turtle mode")
+	 * @param maxThrottle Max throttle between 0 and 1
+	 */
 	public TeleopDriveTrainController(
 			F310Gamepad gamepad, 
 			DriveTrain driveTrain, 
@@ -44,6 +58,9 @@ public class TeleopDriveTrainController {
 		this.maxThrottle = maxThrottle;
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateDriveTrainState() {
 		boolean dpiTogglePressed = this.gamepad.getXButtonPressed();
 		
