@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4990.robot;
-//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
+//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union(Le Dab Gang)
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
@@ -22,24 +21,23 @@ public class Robot extends IterativeRobot {
 	public SendableChooser<StartingPosition> autoChooser;
 	public StartingPosition startPos = StartingPosition.FORWARD;
 
-	private Preferences prefs;
+	public Preferences prefs;
+	
 	private F310Gamepad driveGamepad;
 	private F310Gamepad opGamepad;
+	
 	private DriveTrain driveTrain;
+	private TeleopDriveTrainController teleopDriveTrainController;
 	private Intake intake;
+	private TeleopIntakeController teleopIntakeController;
+	private Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
 
-	public UltrasonicSensor ultrasonicSensor;
-	public ADXRS450_Gyro gyro;
-	public AnalogInput ultrasonicInput;
 
+	public ADXRS450_Gyro gyro;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
 	private SimpleAutoDriveTrainScripter testScripter;
-
-	private TeleopDriveTrainController teleopDriveTrainController;
-
-	private TeleopIntakeController teleopIntakeController;
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
@@ -48,7 +46,7 @@ public class Robot extends IterativeRobot {
 
     	//~~~~ Driving/Operator Components ~~~~
     	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
-    	//this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
+    	this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -57,31 +55,33 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
 
-    	intake = new Intake(new TalonMotorController(5));
+    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(4), new AnalogInput(0)); //Ultrasonic DIOs  are 8 and 9
 
-    	teleopIntakeController = new TeleopIntakeController(intake, driveGamepad);
+    	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
-    	/*teleopElevatorController = new TeleopElevatorController(new Elevator(
-    			new TalonMotorController(4), //Motor elevatorMotor
-    			, //int topSwitchChannel (DIO)
+    	elevator = new Elevator(
+    			new TalonMotorController(7), //Motor elevatorMotor
+    			6, //int topSwitchChannel (DIO)
     			4, //int topSwitchCounterSensitivity
-    			, //int bottomSwitchChannel (DIO)
-    			4), //int bottomSwitchCounterSensitivity
-    			driveGamepad, //gamepad to control elevator
+    			7, //int bottomSwitchChannel (DIO)
+    			4, //int bottomSwitchCounterSensitivity
+    			4, //int Encoder DIO port A
+    			5); //int Encoder DIO port B
+    	
+    	teleopElevatorController = new TeleopElevatorController(elevator,
+    			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
-    			*/
+    			
 
     	//~~~~ Sensor Init & Details ~~~~
 
     	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
-
-    	ultrasonicInput = new AnalogInput(0);
-    	ultrasonicSensor = new UltrasonicSensor(ultrasonicInput);
-    	//use ultrasonicSensor.getDistance() to get current distance
-    	//see https://www.maxbotix.com/Ultrasonic_Sensors/MB1003.htm
-
+    	
+    	
+    	updateAutoDashboard();
+    	
     	updateDashboard();
 
     	resetSensors();
@@ -97,30 +97,30 @@ public class Robot extends IterativeRobot {
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
-    		if (System.currentTimeMillis() % 1000 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
+    		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
     			updateDashboard();
+    			updateAutoDashboard();
     			//System.out.println("refreshed SmartDashboard");
     		}
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
-    	startPos = autoChooser.getSelected();
-    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
-    	System.out.println("Auto Init complete");
+	    	startPos = autoChooser.getSelected();
+	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, this.elevator);
+	    	System.out.println("Auto Init complete");
     }
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
-    	autoScripter.update();
-    	driveTrain.update();
-    	updateDashboard();
+	    	autoScripter.update();
+	    	driveTrain.update();
+	    	updateDashboard();
     }
 
     public void teleopInit() { //This function is called at the start of teleop
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
         		this.driveGamepad,
         		this.driveTrain,
-        		this.prefs.getDouble("maxTurnRadius", Constants.defaultMaxTurnRadius),
         		this.prefs.getBoolean("reverseTurningFlipped", false),
         		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
         		this.prefs.getDouble("lowThrottleMultiplier", .25),
@@ -130,19 +130,24 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() { //This function is called periodically during teleop
 
 	    this.teleopDriveTrainController.updateDriveTrainState();
-
 	    //ever heard of the tale of last minute code
 	    //I thought not, it is not a tale the chairman will tell to you
 
-    	this.driveTrain.update();
-
-    	teleopIntakeController.update();
-    	intake.update();
+	    	this.driveTrain.update();
+	    	teleopElevatorController.update();
+	    	teleopIntakeController.update();
+	    	intake.update();
+	    	updateDashboard();
+	    	if (driveGamepad.getRawButton(8)) {
+	    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
+	    	} else if (opGamepad.getRawButton(8)) {
+	    		System.out.println("Button 7 Pressed on OP GAMEPAD");
+	    	}
     	
     } 
     
     public void testInit() { //TODO add commands for testing
-    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro);
+    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
     		testScripter.init();
     }
     
@@ -150,31 +155,46 @@ public class Robot extends IterativeRobot {
     		testScripter.update();
     }
 
-    public void updateDashboard() {
-    	//Auto chooser
-    	autoChooser = new SendableChooser<StartingPosition>();
-    	autoChooser.addObject("Left", StartingPosition.LEFT);
-    	autoChooser.addObject("Middle", StartingPosition.MID);
-    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
-    	autoChooser.addObject("Stay", StartingPosition.STAY);
-    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-    	SmartDashboard.putData("Auto Location Chooser", autoChooser);
-    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
-    	
-    	//Other sensor gauges and data
-    	SmartDashboard.putNumber("Ultrasonic Distance", ultrasonicSensor.getDistance());
-    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
-    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
-    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
-    	SmartDashboard.updateValues();
+    public void updateAutoDashboard() {
+	    	//Auto chooser
+	    	autoChooser = new SendableChooser<StartingPosition>();
+	    	autoChooser.addObject("Left", StartingPosition.LEFT);
+	    	autoChooser.addObject("Middle", StartingPosition.MID);
+	    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
+	    	autoChooser.addObject("Stay", StartingPosition.STAY);
+	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
+	    	SmartDashboard.putData(autoChooser);
+	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
+    }
+    
+    	public void updateDashboard() {
+	    	
+	    	//Other sensor gauges and data
+	    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
+	    	SmartDashboard.putNumber("Analog Infrared Voltage", intake.getAnalogInput());
+	    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
+	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
+	    	
+	    	SmartDashboard.putString("The Infrared Sensor Tri Value", intake.getBoxPosition().toString());
+	    	SmartDashboard.putBoolean("Box In", intake.isBoxPosition(Intake.BoxPosition.IN));
+	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", intake.isBoxPosition(Intake.BoxPosition.MOVING));
+	    	
+	
+	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
+	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
+	    	
+	    	
+	    	SmartDashboard.updateValues(); //always run at END of updateDashboard
     }
 
 	public void resetSensors() {
     		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT.");
     		gyro.calibrate();
-    		System.out.println("Gyro calibration done. Reseting encoders.");
+    		System.out.println("Gyro calibration done. Resetting encoders.");
     		this.driveTrain.resetDistanceTraveled();
     		System.out.println("Sensor reset complete.");
     		//add ultrasonic reset?
 	}
+
 }

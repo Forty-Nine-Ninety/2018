@@ -22,6 +22,7 @@ public class LimitSwitch {
 		this.lastCount = this.currentCount;
 		this.currentCount = this.counter.get();
 		//System.out.println("lastCount: " + this.lastCount + "; currentCount: " + this.currentCount);
+		//System.out.println(limitSwitch.get());
 	}
 	
 	public boolean isSwitched() {
@@ -36,6 +37,10 @@ public class LimitSwitch {
 	
 	public int getCurrCount() {
 		return this.currentCount;
+	}
+	
+	public boolean getValue() {
+		return limitSwitch.get();
 	}
 	
 	public int getLastCount() {

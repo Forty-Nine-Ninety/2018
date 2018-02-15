@@ -3,6 +3,9 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4990.robot.subsystems.Elevator;
+import org.usfirst.frc.team4990.robot.subsystems.Intake;
+import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
@@ -26,16 +29,20 @@ public class AutoDriveTrainScripter {
 
 	private Queue<CommandPackage> commands = new LinkedList<>();
 
+	private Intake intake;
+	private Elevator elevator;
 	private DriveTrain dt;
 	@SuppressWarnings("unused")
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
 
 
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
+		intake = i;
+		elevator = e;
 	}
 
 	public void init() {
@@ -331,5 +338,122 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees, lr));
+	}
+	
+	public void intakeOut() {
+		class IntakeOUT_Package implements CommandPackage {
+			private Intake intake;
+			private boolean done;
+			private double speed = -0.6;
+			
+			public IntakeOUT_Package(Intake i) {
+				this.intake = i;
+				this.done = false;
+			}
+			
+			public void init() {
+				//nothing.
+			}
+			
+			public void update() {
+				BoxPosition boxPos = intake.getBoxPosition();
+				if (boxPos.equals(BoxPosition.OUT)) {
+					done = true;
+				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.IN)) {
+					intake.setSpeed(speed);
+
+				}
+				
+				intake.update();
+			}
+			
+			public boolean done() {
+				if (this.done) {
+					intake.stop();
+				}
+				return done;
+			}
+		}
+		
+		commands.add(new IntakeOUT_Package(intake));
+	}
+	
+	public void intakeIn() {
+		class IntakeIN_Package implements CommandPackage {
+			private Intake intake;
+			private boolean done;
+			private double speed = 0.6;
+			
+			public IntakeIN_Package(Intake i) {
+				this.intake = i;
+				this.done = false;
+			}
+			
+			public void init() {
+				//nothing.
+			}
+			
+			public void update() {
+				BoxPosition boxPos = intake.getBoxPosition();
+				if (boxPos.equals(BoxPosition.IN)) {
+					done = true;
+				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.OUT)) {
+					intake.setSpeed(speed);
+
+				}
+				
+				intake.update();
+			}
+			
+			public boolean done() {
+				if (this.done) {
+					intake.stop();
+				}
+				return done;
+			}
+		}
+		
+		commands.add(new IntakeIN_Package(intake));
+	}
+	
+	public void moveElevator(double distance) { //TODO Implement PID for elevator
+		class Elevator_package implements CommandPackage {
+			private Elevator elevator;
+			private boolean done;
+			private double speed = 0.6;
+			private double distance;
+			private double encoderRange = 10;
+			
+			public Elevator_package(double dist, Elevator e) {
+				this.elevator = e;
+				this.done = false;
+				this.distance = dist;
+			}
+			
+			public void init() {
+				elevator.resetEncoderDistance();
+			}
+			
+			public void update() {
+				if (elevator.getEncoderDistance() <= distance - encoderRange) { //too low, going up
+					elevator.setElevatorPower(speed * 1 - (Math.abs(elevator.getEncoderDistance() / distance))); //TODO Check equation logic
+				} else if (elevator.getEncoderDistance() >= distance + encoderRange) { //too high, going down
+					elevator.setElevatorPower(-speed * 1 - (Math.abs(distance / elevator.getEncoderDistance()))); //TODO Check equation logic
+				} else { //done
+					done = true;
+				}
+				
+				elevator.update();
+			}
+			
+			public boolean done() {
+				if (this.done) {
+					elevator.setElevatorPower(0);
+				}
+				return done;
+			}
+		}
+		
+		commands.add(new Elevator_package(distance, elevator));
 	}
 }
