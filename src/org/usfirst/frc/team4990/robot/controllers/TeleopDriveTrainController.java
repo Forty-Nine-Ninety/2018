@@ -18,7 +18,6 @@ public class TeleopDriveTrainController {
 	private boolean lastDpiToggleInput = false;
 	private double currentThrottleMultiplier;
 	
-	private final double maxTurnRadius;
 	private final double accelerationTime;
 	private final double lowThrottleMultiplier;
 	private final double maxThrottle;
@@ -26,7 +25,6 @@ public class TeleopDriveTrainController {
 	public TeleopDriveTrainController(
 			F310Gamepad gamepad, 
 			DriveTrain driveTrain, 
-			double maxTurnRadius, 
 			boolean reverseTurningFlipped,
 			double accelerationTime,
 			double lowThrottleMultiplier,
@@ -38,7 +36,6 @@ public class TeleopDriveTrainController {
 		
 		this.currentThrottleMultiplier = maxThrottle;
 		
-		this.maxTurnRadius = maxTurnRadius;
 		this.accelerationTime = accelerationTime;
 		this.lowThrottleMultiplier = lowThrottleMultiplier;
 		this.maxThrottle = maxThrottle;
@@ -147,13 +144,20 @@ public class TeleopDriveTrainController {
 	}
 
 	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {
-		double turnValue = (turnSteepness > 0) ? 1 - turnSteepness : 1 + turnSteepness;
+		/*
+		 * Basically, the larger the turnSteepness the smaller the power should be
+		 * We also add a turnSensitivity constant to make the robot turn slower
+		 */
+		double turnSensitivity = 0.9;
+		double newSteepness = turnSteepness * turnSensitivity;
+		double turnValue = (turnSteepness > 0) ? 1 - newSteepness : 1 + newSteepness;
 		return outsideWheelSpeed * turnValue;
 	}
 	
 	public void setStraightTrajectory(double throttle) {
 		/* both motors should spin forward. */
-		this.driveTrain.setSpeed(throttle, throttle);
+		
+		this.driveTrain.setSpeed(throttle, throttle);//Hopefully fixes slight turn
 	}
 	
 	public void setTurnInPlaceTrajectory(double turningSpeed) {

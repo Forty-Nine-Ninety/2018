@@ -1,27 +1,24 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
-
+import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Elevator {
-	private Motor elevatorMotor;
-	@SuppressWarnings("unused")
-	private double currMotorPower;
+	private TalonMotorController elevatorMotor;
 	
 	private LimitSwitch topSwitch;
-	private boolean isAboveSwitchInProgress = false;
-	private boolean isAbove;
 	
 	private LimitSwitch bottomSwitch;
-	private boolean isBelowSwitchInProgress = false;
-	private boolean isBelow;
 	
 	private Encoder encoder;
 	
+	private double stopFallingSpeed = 0.05;
+	
+	private boolean stopped = false;
+	
 	public Elevator(
-			Motor elevatorMotor, 
+			TalonMotorController elevatorMotor, 
 			int topSwitchChannel, 
 			int topSwitchCounterSensitivity, 
 			int bottomSwitchChannel, 
@@ -31,10 +28,7 @@ public class Elevator {
 		this.elevatorMotor = elevatorMotor;
 		
 		this.topSwitch = new LimitSwitch(topSwitchChannel, topSwitchCounterSensitivity);
-		this.isAbove = false; // the carriage is above the top switch
-		
 		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel, bottomSwitchCounterSensitivity);
-		this.isBelow = false; // the carriage is below the bottom switch
 		
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		this.encoder.setDistancePerPulse(1.16 * Math.PI / Constants.pulsesPerRevolution); //diameter of elevator chain gear * PI
@@ -45,68 +39,54 @@ public class Elevator {
 	// positive power = up
 	// negative power = down
 	public void setElevatorPower(double power) {
-		if ((this.isAbove && power > 0) || (this.isBelow && power < 0)) {
-			this.currMotorPower = 0;
+		if ((this.topSwitch.getValue() && power > 0) || (this.bottomSwitch.getValue() && power < 0)) {
 			this.elevatorMotor.setPower(0.0);
+			resetEncoderDistance();
+			stopped = true;
 		} else {
-			this.currMotorPower = power;
 			this.elevatorMotor.setPower(power);
+			if (power == 0 && ! stopped) {
+				resetEncoderDistance();
+				stopped = true;
+			} else if (! stopped) {
+				stopped = false;
+			}
 		}
 	}
 	
-	public void checkSafety() {
-		this.topSwitch.update();
-		this.bottomSwitch.update();
+	public void update() {
 		
-		if (this.topSwitch.isSwitched()) {
-			this.isAboveSwitchInProgress = true;
-		//in this case, this.topSwitch.isSwitched will always be true
-		} else if (this.isAboveSwitchInProgress) {
-			this.isAbove = !this.isAbove;
-			this.isAboveSwitchInProgress = false;
+		//check limit switches, stop motors if going toward danger
+		if ((this.topSwitch.getValue() && this.elevatorMotor.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotor.getPower() < 0)) {
+			this.elevatorMotor.setPower(0.0);
+			resetEncoderDistance();
+			stopped = true;
+			System.out.println("Elevator Safety Triggered");
 		}
 		
-		if (this.bottomSwitch.isSwitched()) {
-			this.isBelowSwitchInProgress = true;
-		//in this case, this.belowSwitch.isSwitched will always be true
-		} else if (this.isBelowSwitchInProgress) {
-			this.isBelow = !this.isBelow;
-			this.isBelowSwitchInProgress = false;
-		}
-	}
-	
-	public boolean isAbove() {
-		return this.isAbove;
-	}
-	
-	public int topSwitchCurrCount() {
-		return this.topSwitch.getCurrCount();
-	}
-	
-	public int topSwitchLastCount() {
-		return this.topSwitch.getLastCount();
-	}
-	
-	public boolean isBelow() {
-		return this.isBelow;
-	}
-	
-	public int bottomSwitchCurrCount() {
-		return this.bottomSwitch.getCurrCount();
-	}
-	
-	public int bottomSwitchLastCount() {
-		return this.bottomSwitch.getLastCount();
-	}
-	
-	public void reset() {
-		System.out.println("ELEVATOR RESET");
-		this.topSwitch.reset();
-		this.isAbove = false;
-		this.isAboveSwitchInProgress = false;
+		//if stopped, use encoders to run motors to stop intake from falling
+		if (this.elevatorMotor.getPower() == 0)
+			if (Math.abs(getEncoderDistance()) > 0.01) {
+				setElevatorPower(stopFallingSpeed);
+			} else {
+				setElevatorPower(0.0);
+			}
 		
-		this.bottomSwitch.reset();
-		this.isBelow = false;
-		this.isBelowSwitchInProgress = false;
+	}
+	
+	public boolean isTopSwitched() {
+		return this.topSwitch.getValue();
+	}
+	
+	public boolean isBottomSwitched() {
+		return this.bottomSwitch.getValue();
+	}
+	
+	public double getEncoderDistance() {
+		return encoder.getDistance();
+	}
+	
+	public void resetEncoderDistance() {
+		this.encoder.reset();
 	}
 }

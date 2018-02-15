@@ -3,9 +3,16 @@ package org.usfirst.frc.team4990.robot.controllers;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
+
 public class TeleopIntakeController {
+	
 	private Intake intake;
 	private F310Gamepad gpad;
+	private int inController = 2;
+	private double tempInAxis;
+	private int outController = 3;
+	private double tempOutAxis;
+	private double maxSpeed = 0.65;
 	
 	public TeleopIntakeController(Intake i, F310Gamepad pad) {
 		intake = i;
@@ -13,19 +20,28 @@ public class TeleopIntakeController {
 	}
 	
 	public void update() {
-		boolean lpressed = gpad.getLeftBumperPressed();
-		boolean rpressed = gpad.getRightBumperPressed();
-		
-		if (lpressed && rpressed) {
-			intake.stop();
-		} else if(lpressed) {
-			intake.in();
+		tempInAxis = gpad.getRawAxis(inController);
+		tempOutAxis = gpad.getRawAxis(outController);
+		boolean override = gpad.getRawButton(7);
+		if (tempInAxis > 0 && tempOutAxis > 0) {
+			intake.setSpeed(0.0);
+		} else if (tempInAxis > 0 && ((intake.getAnalogInput() < 1.9 || override) || override)) { //left bumper = elevator UP
+			if (tempInAxis > maxSpeed) {
+				intake.setSpeed(maxSpeed);
+			} else { 
+				intake.setSpeed(tempInAxis);
+			}
 			return;
-		} else if(rpressed) {
-			intake.out();
+		} else if (tempOutAxis > 0) { //right bumper = elevator DOWN
+			if (tempOutAxis > maxSpeed) {
+				intake.setSpeed(-maxSpeed);
+			} else { 
+				intake.setSpeed(-tempOutAxis); 
+			}
 			return;
 		} else {
-			intake.stop();
+			intake.setSpeed(0.0);
+			return;
 		}
 	}
 
