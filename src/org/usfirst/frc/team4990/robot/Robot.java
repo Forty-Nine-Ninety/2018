@@ -60,7 +60,8 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
     	elevator = new Elevator(
-    			new TalonMotorController(7), //Motor elevatorMotor
+    			new TalonMotorController(7), //Motor elevatorMotorA
+    			new TalonMotorController(6), //Motor elevatorMotorB
     			6, //int topSwitchChannel (DIO)
     			4, //int topSwitchCounterSensitivity
     			7, //int bottomSwitchChannel (DIO)
