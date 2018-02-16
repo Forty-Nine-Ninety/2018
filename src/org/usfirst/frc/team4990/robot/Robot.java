@@ -83,7 +83,7 @@ public class Robot extends IterativeRobot {
     	
     	updateAutoDashboard();
     	
-    	updateDashboard();
+    	dashboardPeriodic();
 
     	resetSensors();
     	
@@ -100,7 +100,7 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
     		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
-    			updateDashboard();
+    			dashboardPeriodic();
     			updateAutoDashboard();
     			//System.out.println("refreshed SmartDashboard");
     		}
@@ -115,7 +115,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() { //This function is called periodically during autonomous
 	    	autoScripter.update();
 	    	driveTrain.update();
-	    	updateDashboard();
+	    	dashboardPeriodic();
     }
 
     public void teleopInit() { //This function is called at the start of teleop
@@ -138,7 +138,7 @@ public class Robot extends IterativeRobot {
 	    	teleopElevatorController.update();
 	    	teleopIntakeController.update();
 	    	intake.update();
-	    	updateDashboard();
+	    	dashboardPeriodic();
 	    	if (driveGamepad.getRawButton(8)) {
 	    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
 	    	} else if (opGamepad.getRawButton(8)) {
@@ -168,7 +168,7 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     }
     
-    	public void updateDashboard() {
+    	public void dashboardPeriodic() {
 	    	
 	    	//Other sensor gauges and data
 	    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
@@ -186,15 +186,15 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
 	    	
 	    	
-	    	SmartDashboard.updateValues(); //always run at END of updateDashboard
+	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
 
 	public void resetSensors() {
-    		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT.");
+    		System.out.print("Starting gyro calibration. DON'T MOVE THE ROBOT...");
     		gyro.calibrate();
-    		System.out.println("Gyro calibration done. Resetting encoders.");
+    		System.out.print("Gyro calibration done. Resetting encoders...");
     		this.driveTrain.resetDistanceTraveled();
-    		System.out.println("Sensor reset complete.");
+    		System.out.print("Sensor reset complete.");
     		//add ultrasonic reset?
 	}
 
