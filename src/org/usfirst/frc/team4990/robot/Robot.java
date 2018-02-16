@@ -181,6 +181,8 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", intake.isBoxPosition(Intake.BoxPosition.MOVING));
 	    	
+	    	SmartDashboard.putNumber("Throttle Input", driveGamepad.getLeftJoystickY());
+	    	SmartDashboard.putNumber("Turn Steepness Input", driveGamepad.getRightJoystickX());
 	
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
@@ -190,11 +192,11 @@ public class Robot extends IterativeRobot {
     }
 
 	public void resetSensors() {
-    		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT.");
+    		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT...");
     		gyro.calibrate();
-    		System.out.println("Gyro calibration done. Resetting encoders.");
+    		System.out.print("Gyro calibration done. Resetting encoders...");
     		this.driveTrain.resetDistanceTraveled();
-    		System.out.println("Sensor reset complete.");
+    		System.out.print("Sensor reset complete.");
     		//add ultrasonic reset?
 	}
 
