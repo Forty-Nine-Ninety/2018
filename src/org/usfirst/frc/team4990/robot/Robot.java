@@ -155,6 +155,10 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
     		testScripter.update();
     }
+    
+    /**
+     * Adds SendableChooser to SmartDashboard for Auto route choosing.
+     */
 
     public void updateAutoDashboard() {
 	    	//Auto chooser
