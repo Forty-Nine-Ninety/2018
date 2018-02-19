@@ -30,7 +30,7 @@ public class Robot extends IterativeRobot {
 	private TeleopDriveTrainController teleopDriveTrainController;
 	private Intake intake;
 	private TeleopIntakeController teleopIntakeController;
-	private Elevator elevator;
+	public Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
 
 
@@ -148,6 +148,7 @@ public class Robot extends IterativeRobot {
     } 
     
     public void testInit() { //TODO add commands for testing
+    		liveWindowInit();
     		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
     		testScripter.init();
     }
@@ -185,10 +186,8 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", intake.isBoxPosition(Intake.BoxPosition.MOVING));
 	    	
-	
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-	    	
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
@@ -199,7 +198,15 @@ public class Robot extends IterativeRobot {
     		System.out.print("Gyro calibration done. Resetting encoders...");
     		this.driveTrain.resetDistanceTraveled();
     		System.out.print("Sensor reset complete.");
-    		//add ultrasonic reset?
+	}
+	
+	public void liveWindowInit() {
+		//Elevator
+		elevator.encoder.setName("Elevator","Encoder");
+		elevator.elevatorMotorA.setName("Elevator","MotorA");
+		elevator.elevatorMotorB.setName("Elevator","MotorB");
+		
+		//Intake
 	}
 
 }

@@ -4,10 +4,13 @@ package org.usfirst.frc.team4990.robot.controllers;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
+import org.usfirst.frc.team4990.robot.subsystems.ElevatorPID;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -420,27 +423,32 @@ public class AutoDriveTrainScripter {
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
 			private boolean done;
-			private double speed = 0.6;
-			private double distance;
-			private double encoderRange = 10;
+			private double doneTolerance = 5; //percent
+			private PIDController elevatorPID;
 			
 			public Elevator_package(double dist, Elevator e) {
 				this.elevator = e;
 				this.done = false;
-				this.distance = dist;
+				elevatorPID = new PIDController(1,0,0,elevator.encoder, new ElevatorPID(elevator));
+				elevatorPID.setInputRange(0, 4.8); //minimumInput, maximumInput
+				elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
+				elevatorPID.setSetpoint(dist);
+				elevatorPID.setAbsoluteTolerance(doneTolerance);
+				LiveWindow.add(elevatorPID);
+				
 			}
 			
 			public void init() {
 				elevator.resetEncoderDistance();
+				elevatorPID.enable();
 			}
 			
 			public void update() {
-				if (elevator.getEncoderDistance() <= distance - encoderRange) { //too low, going up
-					elevator.setElevatorPower(speed * 1 - (Math.abs(elevator.getEncoderDistance() / distance))); //TODO Check equation logic
-				} else if (elevator.getEncoderDistance() >= distance + encoderRange) { //too high, going down
-					elevator.setElevatorPower(-speed * 1 - (Math.abs(distance / elevator.getEncoderDistance()))); //TODO Check equation logic
-				} else { //done
+				elevator.setElevatorPower(elevatorPID.get());
+					
+				if (elevatorPID.onTarget()){ //done
 					done = true;
+					elevatorPID.disable();
 				}
 				
 				elevator.update();
