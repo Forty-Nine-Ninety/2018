@@ -30,6 +30,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Auto Logic INIT");
+		
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
 			//if there is no game message (string) OR just cross auto line
 			crossAutoLine();
@@ -38,6 +39,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			//Left side is ours
 			switch(s) {
 				case LEFT: 
+					moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					gyroStraight(55/12);//3rd: forward 55in
@@ -45,6 +47,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					break;
 				case MID: 
+					moveElevator(2.25);
 					//cut in front (in between auto line and exchange)
 					gyroStraight(80/12);//1st: forward 80 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
@@ -55,6 +58,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//6th: drop cube
 					break;
 				case RIGHT: //Dominic
+					moveElevator(2.25);
 					gyroStraight(230/12);//1st: forward 230 in
 					gyroTurn(90, Direction.LEFT);	//2nd: 90 degree turn to the left
 					gyroStraight(150/12);//3rd: forward 150 in
@@ -77,6 +81,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
 				case LEFT: //Dominic
+					moveElevator(2.25);
 					gyroStraight(230/12); //1st: forward 230 in
 					gyroTurn(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
 					gyroStraight(150/12); //3rd: forward 150 in
@@ -86,11 +91,13 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					break;
 				case MID: 
+					moveElevator(2.25);
 					gyroStraight(140/12);//1st: forward 140 in
 					//2nd: drop cube
 					//runIntake(false);
 					break;
-				case RIGHT: 
+				case RIGHT:
+					moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					gyroStraight(55/12);//3rd: forward 55in
