@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
+
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Elevator {
