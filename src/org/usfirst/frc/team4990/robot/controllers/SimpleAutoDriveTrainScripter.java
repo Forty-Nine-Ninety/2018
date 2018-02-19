@@ -42,6 +42,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
+					//runIntake(false);
 					break;
 				case MID: 
 					//cut in front (in between auto line and exchange)
@@ -50,6 +51,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					gyroStraight(60/12);//3rd: forward about 60 in
 					gyroTurn(90, Direction.RIGHT);//4th: 90 degree turn to the right
 					gyroStraight(60/12);//5th: forward 60 in
+					//runIntake(false);
 					//6th: drop cube
 					break;
 				case RIGHT: //Dominic
@@ -58,6 +60,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					gyroStraight(150/12);//3rd: forward 150 in
 					gyroTurn(90, Direction.LEFT);	//4th: 90 degree turn to the left
 					gyroStraight(30/12);	//5th: forward 30 in
+					//runIntake(false);
 					//6th: drop cube
 					break;
 				case ERROR: //error case
