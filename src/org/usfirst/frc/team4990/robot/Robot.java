@@ -207,6 +207,18 @@ public class Robot extends IterativeRobot {
 		elevator.elevatorMotorB.setName("Elevator","MotorB");
 		
 		//Intake
+		intake.motorL.setName("Intake", "LeftMotor");
+		intake.motorR.setName("Intake", "RightMotor");
+		intake.infrared.setName("Intake", "Infrared");
+		
+		//DriveTrain
+		driveTrain.leftGearbox.motor1.setName("DriveTrain","LeftMotor1");
+		driveTrain.leftGearbox.motor2.setName("DriveTrain","LeftMotor2");
+		driveTrain.rightGearbox.motor1.setName("DriveTrain","RightMotor1");
+		driveTrain.rightGearbox.motor2.setName("DriveTrain","RightMotor2");
+		
+		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
+		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
 	}
 
 }

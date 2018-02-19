@@ -2,7 +2,7 @@ package org.usfirst.frc.team4990.robot.subsystems.motors;
 
 import edu.wpi.first.wpilibj.Talon;
 
-public class TalonMotorController extends Talon implements Motor {
+public class TalonMotorController extends Talon{
 	
 	/**
 	 * Initialize Talon.

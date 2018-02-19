@@ -1,8 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
-
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * An Intake.
@@ -11,9 +10,9 @@ import edu.wpi.first.wpilibj.AnalogInput;
  */
 
 public class Intake {
-	private Motor motorL;
-	private Motor motorR;
-	private AnalogInput infrared;
+	public Talon motorL;
+	public Talon motorR;
+	public AnalogInput infrared;
 	private double speed;
 	private double rate = 0.9;
 	
@@ -24,7 +23,7 @@ public class Intake {
 	 * @param infraredInput Analog Port for Sharp Distance Sensor
 	 */
 	
-	public Intake(Motor mL, Motor mR, AnalogInput infraredInput) {
+	public Intake(Talon mL, Talon mR, AnalogInput infraredInput) {
 		motorL = mL;
 		motorR = mR;
 		infrared = infraredInput;
@@ -70,8 +69,8 @@ public class Intake {
 	 */
 	
 	public void update() {
-		motorL.setPower(speed);
-		motorR.setPower(-speed);
+		motorL.set(speed);
+		motorR.set(-speed);
 	}
 	
 	/**
