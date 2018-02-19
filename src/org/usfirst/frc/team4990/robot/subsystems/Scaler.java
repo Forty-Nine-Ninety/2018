@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
+import edu.wpi.first.wpilibj.Talon;
 
 public class Scaler {
-	private Motor scalermotor;
+	private Talon scalermotor;
 	private double currpower;
 	
 	/**
@@ -11,7 +11,7 @@ public class Scaler {
 	 * @param scalemot motor used for scaler
 	 */
 	
-	public Scaler(Motor scalemot) {
+	public Scaler(Talon scalemot) {
 		scalermotor = scalemot;
 	}
 	
@@ -38,6 +38,6 @@ public class Scaler {
 	 */
 	
 	public void update() {
-		scalermotor.setPower(currpower);
+		scalermotor.set(currpower);
 	}
 }

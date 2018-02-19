@@ -1,12 +1,12 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
+import edu.wpi.first.wpilibj.Talon;
 
 public class DriveTrain {
-	private Gearbox leftGearbox;
+	public Gearbox leftGearbox;
 	private double leftSetSpeed;
 	
-	private Gearbox rightGearbox;
+	public Gearbox rightGearbox;
 	private double rightSetSpeed;
 	/**
 	 * Includes 4 driving motors and 2 encoders.
@@ -21,7 +21,7 @@ public class DriveTrain {
 	 * @author Freshman Union
 	 */
 	
-	public DriveTrain(Motor leftMotor1, Motor leftMotor2, Motor rightMotor1, Motor rightMotor2,
+	public DriveTrain(Talon leftMotor1, Talon leftMotor2, Talon rightMotor1, Talon rightMotor2,
 						int leftEncoderChannelA, int leftEncoderChannelB, 
 						int rightEncoderChannelA, int rightEncoderChannelB) {
 		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB);

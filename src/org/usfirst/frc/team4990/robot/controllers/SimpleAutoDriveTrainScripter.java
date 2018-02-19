@@ -123,8 +123,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		
 		// end debugging
 	} else {
-		//this.init(startP); //uncomment this line to use Auto logic
-		gyroStraight(10);
+		
+		this.init(startP); 
+		
 	}
 		// super.init should be last
 		super.init();

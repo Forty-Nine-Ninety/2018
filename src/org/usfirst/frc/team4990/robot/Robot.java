@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
-import org.usfirst.frc.team4990.robot.subsystems.motors.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +29,7 @@ public class Robot extends IterativeRobot {
 	private TeleopDriveTrainController teleopDriveTrainController;
 	private Intake intake;
 	private TeleopIntakeController teleopIntakeController;
-	private Elevator elevator;
+	public Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
 
 
@@ -83,7 +82,7 @@ public class Robot extends IterativeRobot {
     	
     	updateAutoDashboard();
     	
-    	updateDashboard();
+    	dashboardPeriodic();
 
     	resetSensors();
     	
@@ -100,7 +99,7 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
     		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
-    			updateDashboard();
+    			dashboardPeriodic();
     			updateAutoDashboard();
     			//System.out.println("refreshed SmartDashboard");
     		}
@@ -115,7 +114,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() { //This function is called periodically during autonomous
 	    	autoScripter.update();
 	    	driveTrain.update();
-	    	updateDashboard();
+	    	dashboardPeriodic();
     }
 
     public void teleopInit() { //This function is called at the start of teleop
@@ -138,7 +137,7 @@ public class Robot extends IterativeRobot {
 	    	teleopElevatorController.update();
 	    	teleopIntakeController.update();
 	    	intake.update();
-	    	updateDashboard();
+	    	dashboardPeriodic();
 	    	if (driveGamepad.getRawButton(8)) {
 	    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
 	    	} else if (opGamepad.getRawButton(8)) {
@@ -148,6 +147,7 @@ public class Robot extends IterativeRobot {
     } 
     
     public void testInit() { //TODO add commands for testing
+    		liveWindowInit();
     		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
     		testScripter.init();
     }
@@ -155,6 +155,10 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
     		testScripter.update();
     }
+    
+    /**
+     * Adds SendableChooser to SmartDashboard for Auto route choosing.
+     */
 
     public void updateAutoDashboard() {
 	    	//Auto chooser
@@ -168,7 +172,7 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
     }
     
-    	public void updateDashboard() {
+    	public void dashboardPeriodic() {
 	    	
 	    	//Other sensor gauges and data
 	    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
@@ -183,21 +187,40 @@ public class Robot extends IterativeRobot {
 	    	
 	    	SmartDashboard.putNumber("Throttle Input", driveGamepad.getLeftJoystickY());
 	    	SmartDashboard.putNumber("Turn Steepness Input", driveGamepad.getRightJoystickX());
-	
+
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
 	    	
-	    	
-	    	SmartDashboard.updateValues(); //always run at END of updateDashboard
+	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
 
 	public void resetSensors() {
-    		System.out.println("Starting gyro calibration. DON'T MOVE THE ROBOT...");
+    		System.out.print("Starting gyro calibration. DON'T MOVE THE ROBOT...");
     		gyro.calibrate();
     		System.out.print("Gyro calibration done. Resetting encoders...");
     		this.driveTrain.resetDistanceTraveled();
     		System.out.print("Sensor reset complete.");
-    		//add ultrasonic reset?
+	}
+	
+	public void liveWindowInit() {
+		//Elevator
+		elevator.encoder.setName("Elevator","Encoder");
+		elevator.elevatorMotorA.setName("Elevator","MotorA");
+		elevator.elevatorMotorB.setName("Elevator","MotorB");
+		
+		//Intake
+		intake.motorL.setName("Intake", "LeftMotor");
+		intake.motorR.setName("Intake", "RightMotor");
+		intake.infrared.setName("Intake", "Infrared");
+		
+		//DriveTrain
+		driveTrain.leftGearbox.motor1.setName("DriveTrain","LeftMotor1");
+		driveTrain.leftGearbox.motor2.setName("DriveTrain","LeftMotor2");
+		driveTrain.rightGearbox.motor1.setName("DriveTrain","RightMotor1");
+		driveTrain.rightGearbox.motor2.setName("DriveTrain","RightMotor2");
+		
+		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
+		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
 	}
 
 }

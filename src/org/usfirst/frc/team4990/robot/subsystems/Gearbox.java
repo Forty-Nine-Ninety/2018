@@ -1,15 +1,15 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.subsystems.motors.Motor;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
 
 public class Gearbox {
-	private Motor motor1;
-	private Motor motor2;
+	public Talon motor1;
+	public Talon motor2;
 	
-	private Encoder encoder;
+	public Encoder encoder;
 	
 	private double compensate;
 	private double fix_backwards;
@@ -26,15 +26,15 @@ public class Gearbox {
 	
 	/**
 	 * Initialize gearbox
-	 * @param motor1 DIO port for 1st motor
-	 * @param motor2 DIO port for 2nd motor
+	 * @param leftMotor1 DIO port for 1st motor
+	 * @param leftMotor2 DIO port for 2nd motor
 	 * @param encoderChannelA Encoder in gearbox (Signal, Ground and 5v)
 	 * @param encoderChannelB Encoder in gearbox (just Signal)
 	 */
 	
-	public Gearbox(Motor motor1, Motor motor2, int encoderChannelA, int encoderChannelB) {
-		this.motor1 = motor1;
-		this.motor2 = motor2;
+	public Gearbox(Talon leftMotor1, Talon leftMotor2, int encoderChannelA, int encoderChannelB) {
+		this.motor1 = leftMotor1;
+		this.motor2 = leftMotor2;
 
 		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
 		
@@ -56,8 +56,8 @@ public class Gearbox {
 	 */
 	
 	public void setSpeed(double speed) {
-		this.motor1.setPower(speed * this.compensate * this.fix_backwards);
-		this.motor2.setPower(speed * this.compensate * this.fix_backwards);
+		this.motor1.set(speed * this.compensate * this.fix_backwards);
+		this.motor2.set(speed * this.compensate * this.fix_backwards);
 	}
 	
 	public void updateCompensate(double other_dist) {

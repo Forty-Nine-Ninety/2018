@@ -1,18 +1,18 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
+
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Elevator {
-	private TalonMotorController elevatorMotorA;
-	private TalonMotorController elevatorMotorB;
+	public TalonMotorController elevatorMotorA;
+	public TalonMotorController elevatorMotorB;
 	
-	private LimitSwitch topSwitch;
+	public LimitSwitch topSwitch;
 	
-	private LimitSwitch bottomSwitch;
+	public LimitSwitch bottomSwitch;
 	
-	private Encoder encoder;
+	public Encoder encoder;
 	
 	private double stopFallingSpeed = 0.05;
 	
