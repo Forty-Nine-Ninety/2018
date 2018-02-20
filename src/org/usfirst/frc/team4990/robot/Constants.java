@@ -1,5 +1,11 @@
 package org.usfirst.frc.team4990.robot;
 
+
+/**
+ * Class for constants (?)
+ * @author Old Coder People
+ *
+ */
 public class Constants {
 	
 	public static double zeroThrottleThreshold = 0.01;

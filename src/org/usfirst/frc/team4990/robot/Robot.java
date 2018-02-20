@@ -13,7 +13,7 @@ import org.usfirst.frc.team4990.robot.subsystems.*;
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
- * directory.
+ * directory.  | If you don't know what this is then you shouldn't be touching the code probably 
  */
 public class Robot extends IterativeRobot {
 
@@ -183,6 +183,9 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", intake.isBoxPosition(Intake.BoxPosition.MOVING));
 	    	
+	    	SmartDashboard.putNumber("Throttle Input", driveGamepad.getLeftJoystickY());
+	    	SmartDashboard.putNumber("Turn Steepness Input", driveGamepad.getRightJoystickX());
+
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
 	    	

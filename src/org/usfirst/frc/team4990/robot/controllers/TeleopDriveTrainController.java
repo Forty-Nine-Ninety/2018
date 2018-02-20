@@ -76,9 +76,9 @@ public class TeleopDriveTrainController {
 		double throttleInput = this.gamepad.getLeftJoystickY();
 		double turnSteepnessInput = this.gamepad.getRightJoystickX();
 		
-		System.out.println("Throttle Input:" + throttleInput);
+		//System.out.println("Throttle Input:" + throttleInput);
 		
-		System.out.println("turnSteepnessInput:" + turnSteepnessInput);
+		//System.out.println("turnSteepnessInput:" + turnSteepnessInput);
 		
 		Date currentUpdate = new Date();
 		

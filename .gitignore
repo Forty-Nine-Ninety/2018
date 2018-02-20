@@ -14,3 +14,6 @@ hs_err_pid*
 
 # Macs only
 *.DS_Store
+.classpath
+.classpath
+.classpath
