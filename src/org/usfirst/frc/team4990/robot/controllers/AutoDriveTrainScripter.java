@@ -18,15 +18,27 @@ import java.util.Queue;
 //You shouldn't mess with this if you don't know what you're doing
 
 public class AutoDriveTrainScripter {
-
+	/**
+	 * Base class for commands
+	 * @author Old Coder People
+	 *
+	 */
 	private interface CommandPackage {
 		//called when the command first starts
+		/**
+		 * Called when the command starts; resets sensors and things
+		 */
 		public void init();
 
-		// called every time
+		/**
+		 * Called every time the other updates are called; Makes sure that it isn't completed yet
+		 */
 		public void update();
 
-		// returns true if command is finished
+		/**
+		 * 
+		 * @return Returns false if the command isn't done and true if it is.
+		 */
 		public boolean done();
 	}
 
@@ -39,7 +51,15 @@ public class AutoDriveTrainScripter {
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
 
-
+	/**
+	 * Just a constructor
+	 * @param dtrain Drivetrain
+	 * @param startP Starting position of robot for auto period
+	 * @param gy Gyro sensor
+	 * @param i Intake
+	 * @param e Elevator
+	 * @author Old Coder People
+	 */
 	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e) {
 		dt = dtrain;
 		startPos = startP;
@@ -47,7 +67,9 @@ public class AutoDriveTrainScripter {
 		intake = i;
 		elevator = e;
 	}
-
+	/**
+	 * Starts first instruction if it exists;
+	 */
 	public void init() {
 		// needs to be called once when auto starts
 		CommandPackage top = commands.peek();
@@ -55,7 +77,10 @@ public class AutoDriveTrainScripter {
 
 		top.init();
 	}
-
+	
+	/**
+	 * Updates instruction if not done; if done then starts next instruction
+	 */
 	public void update() {
 		CommandPackage top = commands.peek();
 		if(top == null) return;
@@ -75,11 +100,22 @@ public class AutoDriveTrainScripter {
 		}
 	}
 	
+	/**
+	 * Enum for direction because we like readable code
+	 * @author Freshman Union
+	 *
+	 */
 	public enum Direction {
 		RIGHT,
 		LEFT
 	}
-
+	
+	/**
+	 * @deprecated
+	 * Command for moving forward/backwards
+	 * @param distance Distance to travel in feet
+	 * @param backwards If true then it goes backwards, if false then it goes forwards
+	 */
 	public void goDistance(double distance, boolean backwards) {
 		/*Test LOG (format date: specified distance | actual distance)
 		 * 1-20-18: 3ft | 3ft+7in
@@ -99,12 +135,16 @@ public class AutoDriveTrainScripter {
 				this.done = false;
 				this.backwards = backwards;
 			}
-
+			/**
+			 * Clears drivetrain distances
+			 */
 			public void init() {
 				this.dt.resetDistanceTraveled();
 				System.out.println("goDistance(" + value + ")");
 			}
-
+			/**
+			 * Updates forward instruction
+			 */
 			public void update() {
 				// only the right side works...
 				// and it's backwards
@@ -132,7 +172,10 @@ public class AutoDriveTrainScripter {
 
 		commands.add(new F_Package(dt, distance, backwards));
 	}
-	
+	/**
+	 * Makes robot wait
+	 * @param time Time to wait for in milliseconds
+	 */
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
 			private boolean done;
@@ -143,19 +186,25 @@ public class AutoDriveTrainScripter {
 				this.duration = (long) t;
 				this.done = false;
 			}
-
+			/**
+			 * Clears time
+			 */
 			public void init() {
 				this.startMillis = System.currentTimeMillis();
 				System.out.println("wait(" + duration + ")");
 			}
-
+			/**
+			 * Sets done to true if time is up
+			 */
 			public void update() {
 				if (startMillis + duration <= System.currentTimeMillis()) {
 					//done waiting!
 					this.done = true;
 				}
 			}
-
+			/**
+			 * Returns whether the command is done or not
+			 */
 			public boolean done() {
 				return this.done;
 			}
@@ -164,7 +213,12 @@ public class AutoDriveTrainScripter {
 		commands.add(new W_Package(time));
 	}
 
-
+	/**
+	 * Turns robot for degrees
+	 * @deprecated
+	 * @param degrees
+	 * @param lr
+	 */
 	public void turnForDegrees(double degrees, Direction lr) {
 		//0.01709 feet per 1 degree
 		class turnForDegrees_Package implements CommandPackage {
@@ -194,7 +248,6 @@ public class AutoDriveTrainScripter {
 					this.left = false;
 				}
 			}
-
 			public void init() {
 				this.dt.resetDistanceTraveled();
 				System.out.println("turnForDegrees(" + degrees + ", Left:" + left + ")");
@@ -233,7 +286,10 @@ public class AutoDriveTrainScripter {
 		}
 		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
-	
+	/**
+	 * Command for going straight
+	 * @param distance Distance to go straight for in feet
+	 */
 	public void gyroStraight(double distance) {
 		class gyroStraight_Package implements CommandPackage {
 			private double distanceToGo;
@@ -289,7 +345,11 @@ public class AutoDriveTrainScripter {
 		commands.add(new gyroStraight_Package(dt, gyro, distance));
 	}
 
-	
+	/**
+	 * Turns left or right
+	 * @param inputDegrees Degrees to turn
+	 * @param lr Left or right(As an object of type Direction)
+	 */
 	public void gyroTurn(double inputDegrees, Direction lr) {
 		class gyroTurn_Package implements CommandPackage {
 			private double degrees;
@@ -342,7 +402,9 @@ public class AutoDriveTrainScripter {
 		}
 		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees, lr));
 	}
-	
+	/**
+	 * Makes intake throw whatever is inside out
+	 */
 	public void intakeOut() {
 		class IntakeOUT_Package implements CommandPackage {
 			private Intake intake;
@@ -380,7 +442,9 @@ public class AutoDriveTrainScripter {
 		
 		commands.add(new IntakeOUT_Package(intake));
 	}
-	
+	/**
+	 * Makes intake take in whatever is in front of it(people included)
+	 */
 	public void intakeIn() {
 		class IntakeIN_Package implements CommandPackage {
 			private Intake intake;
@@ -418,7 +482,10 @@ public class AutoDriveTrainScripter {
 		
 		commands.add(new IntakeIN_Package(intake));
 	}
-	
+	/**
+	 * Moves elevator a set distance
+	 * @param distance Distance to move; positive is up, negative is down I think
+	 */
 	public void moveElevator(double distance) { //TODO Implement PID for elevator
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;

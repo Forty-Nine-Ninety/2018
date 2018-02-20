@@ -19,14 +19,19 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		STAY, 
 		FORWARD
 	};
-
+	/**
+	 * Function for crossing auto line
+	 */
 	public void crossAutoLine() {
 		//go forward and cross auto line
 		//forward 140 in
 		System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
 		gyroStraight(140/12);
 	}
-
+	/**
+	 * Initializes auto code as a whole
+	 * @param s Object of type StartingPosition that tells it where you're starting from
+	 */
 	public void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Auto Logic INIT");
