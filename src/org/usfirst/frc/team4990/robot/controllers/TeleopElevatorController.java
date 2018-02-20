@@ -38,25 +38,20 @@ public class TeleopElevatorController {
 	public void update() {
 		tempAxis = gpad.getRawAxis(controller);
 		
-		if (tempAxis > 0 && tempAxis < 0) {
-			elevator.setElevatorPower(0.0);
-		} else if (tempAxis > 0) { //right joystick positive = elevator UP
+		if (tempAxis > 0) { //right joystick positive = elevator UP
 			if (tempAxis > maxSpeed) {
 				elevator.setElevatorPower(maxSpeed);
 			} else { 
 				elevator.setElevatorPower(tempAxis); 
 			}
-			return;
 		} else if (tempAxis < 0) { //right joystick negative = elevator DOWN
 			if (-tempAxis > maxSpeed) {
 				elevator.setElevatorPower(-maxSpeed);
 			} else { 
-				elevator.setElevatorPower(tempAxis); 
+				elevator.setElevatorPower(-tempAxis); 
 			}
-			return;
 		} else {
 			elevator.setElevatorPower(0.0);
-			return;
 		}
 			
 		elevator.update(); //always run at END of update function
