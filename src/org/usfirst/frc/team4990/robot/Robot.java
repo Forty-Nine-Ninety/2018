@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
 
-    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(4), new AnalogInput(0)); //Ultrasonic DIOs  are 8 and 9
+    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(4), new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
