@@ -79,7 +79,6 @@ public class Robot extends IterativeRobot {
     	//use gyro.getAngle() to return heading (returns number 0 to n)
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
     	
-    	
     	updateAutoDashboard();
     	
     	dashboardPeriodic();
@@ -89,11 +88,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void robotPeriodic() {
-    	//Put nothing here or else the robot might lag severely.
+    	//Don't put anything here or else the robot might lag severely.
     }
     
     public void disabledInit() {
-    	System.out.println("ROBOT DISABLED.");
+    		System.out.println("ROBOT DISABLED.");
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
@@ -101,13 +100,12 @@ public class Robot extends IterativeRobot {
     			startPos = autoChooser.getSelected();
     			dashboardPeriodic();
     			updateAutoDashboard();
-    			//System.out.println("refreshed SmartDashboard");
     		}
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
 	    	startPos = autoChooser.getSelected();
-	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, this.elevator);
+	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
 	    	System.out.println("Auto Init complete");
     }
 
