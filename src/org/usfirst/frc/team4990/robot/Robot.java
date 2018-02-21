@@ -57,13 +57,13 @@ public class Robot extends IterativeRobot {
     	
     	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
-    	intake = new Intake(new TalonMotorController(5), new TalonMotorController(4), new AnalogInput(0)); //Left motor, right motor, distance sensor
+    	intake = new Intake(new TalonMotorController(7), new TalonMotorController(6), new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
     	elevator = new Elevator(
-    			new TalonMotorController(7), //Motor elevatorMotorA
-    			new TalonMotorController(6), //Motor elevatorMotorB
+    			new TalonMotorController(5), //Motor elevatorMotorA
+    			new TalonMotorController(4), //Motor elevatorMotorB
     			6, //int topSwitchChannel (DIO)
     			4, //int topSwitchCounterSensitivity
     			7, //int bottomSwitchChannel (DIO)
