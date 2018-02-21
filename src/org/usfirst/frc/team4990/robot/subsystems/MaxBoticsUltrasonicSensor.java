@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
  *
  */
 
-public class UltrasonicSensor {
+public class MaxBoticsUltrasonicSensor {
 	private AnalogInput input;
 	private double defaultVoltage;
 	private double voltagePerInch;
@@ -19,7 +19,7 @@ public class UltrasonicSensor {
 	 * @param inputDevice Analog IO port that sensor is plugged into
 	 */
 	
-	public UltrasonicSensor(AnalogInput inputDevice) {
+	public MaxBoticsUltrasonicSensor(AnalogInput inputDevice) {
 		input = inputDevice;
 		voltagePerInch = 0.01431;//Found these values at from testing the sensor
 		resetDefaultVoltage();
