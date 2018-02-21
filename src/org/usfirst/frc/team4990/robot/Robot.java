@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
-    	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
+    	ultrasonic = new Ultrasonic(8, 9, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
     	intake = new Intake(new TalonMotorController(7), new TalonMotorController(6), new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
