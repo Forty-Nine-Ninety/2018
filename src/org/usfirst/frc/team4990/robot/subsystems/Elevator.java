@@ -61,6 +61,7 @@ public class Elevator {
 			this.elevatorMotorB.setPower(0.0);
 			resetEncoderDistance();
 			stopped = true;
+			System.out.println("Elevator Safety Triggered");
 		} else {
 			this.elevatorMotorA.setPower(power);
 			this.elevatorMotorB.setPower(-power);
@@ -89,7 +90,7 @@ public class Elevator {
 		}
 		
 		//if stopped, use encoders to run motors to stop intake from falling
-		if (this.elevatorMotorA.getPower() == 0)
+		if (this.elevatorMotorA.getPower() == 0 || this.elevatorMotorA.getPower() == stopFallingSpeed)
 			if (Math.abs(getEncoderDistance()) > 0.01) {
 				setElevatorPower(stopFallingSpeed);
 			} else {

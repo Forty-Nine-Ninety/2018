@@ -490,19 +490,18 @@ public class AutoDriveTrainScripter {
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
 			private boolean done;
-			private double doneTolerance = 5; //percent
+			private double doneTolerance = 3; //percent
 			private PIDController elevatorPID;
 			
 			public Elevator_package(double dist, Elevator e) {
 				this.elevator = e;
 				this.done = false;
-				elevatorPID = new PIDController(1,0,0,elevator.encoder, new ElevatorPID(elevator));
+				elevatorPID = new PIDController(1, 0, 0, elevator.encoder, new ElevatorPID(elevator));
 				elevatorPID.setInputRange(0, 4.8); //minimumInput, maximumInput
 				elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
 				elevatorPID.setSetpoint(dist);
 				elevatorPID.setAbsoluteTolerance(doneTolerance);
-				LiveWindow.add(elevatorPID);
-				
+				LiveWindow.add(elevatorPID);	
 			}
 			
 			public void init() {
@@ -518,7 +517,6 @@ public class AutoDriveTrainScripter {
 					elevatorPID.disable();
 				}
 				
-				elevator.update();
 			}
 			
 			public boolean done() {

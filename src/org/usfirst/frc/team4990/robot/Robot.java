@@ -34,6 +34,7 @@ public class Robot extends IterativeRobot {
 
 
 	public ADXRS450_Gyro gyro;
+	public Ultrasonic ultrasonic;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
 	private SimpleAutoDriveTrainScripter testScripter;
@@ -53,6 +54,8 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
+    	
+    	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
     	intake = new Intake(new TalonMotorController(5), new TalonMotorController(4), new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
@@ -112,6 +115,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() { //This function is called periodically during autonomous
 	    	autoScripter.update();
 	    	driveTrain.update();
+	    	elevator.update();
 	    	dashboardPeriodic();
     }
 
