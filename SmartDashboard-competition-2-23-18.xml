@@ -7,25 +7,25 @@
 		<property name="Font Size" value="20"/>
 	</widget>
 	<widget field="Box In and Out At The Same Time" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="18" y="518"/>
-		<width>382</width>
-		<height>44</height>
+		<location x="24" y="371"/>
+		<width>411</width>
+		<height>122</height>
 	</widget>
 	<widget field="Box In" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="17" y="567"/>
-		<width>252</width>
-		<height>43</height>
+		<location x="23" y="503"/>
+		<width>285</width>
+		<height>98</height>
 	</widget>
 	<widget field="Box Out" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="20" y="467"/>
-		<width>258</width>
-		<height>46</height>
+		<location x="26" y="222"/>
+		<width>288</width>
+		<height>132</height>
 	</widget>
 	<widget field="" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="22" y="7"/>
+		<location x="13" y="6"/>
 	</widget>
 	<widget field="The Infrared Sensor Tri Value" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="26" y="420"/>
+		<location x="123" y="19"/>
 	</widget>
 </dashboard>
 <live-window>
