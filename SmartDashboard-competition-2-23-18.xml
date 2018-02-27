@@ -6,20 +6,10 @@
 		<height>54</height>
 		<property name="Font Size" value="20"/>
 	</widget>
-	<widget field="Box In and Out At The Same Time" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="24" y="371"/>
-		<width>411</width>
-		<height>122</height>
-	</widget>
 	<widget field="Box In" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="23" y="503"/>
-		<width>285</width>
-		<height>98</height>
-	</widget>
-	<widget field="Box Out" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="26" y="222"/>
-		<width>288</width>
-		<height>132</height>
+		<location x="24" y="225"/>
+		<width>635</width>
+		<height>354</height>
 	</widget>
 	<widget field="" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="13" y="6"/>
@@ -145,15 +135,17 @@
 		<height>123</height>
 	</widget>
 </live-window>
-	<hidden field="Gyro Heading"/>
 	<hidden field="Throttle Input"/>
-	<hidden field="Elevator Encoder"/>
-	<hidden field="Analog Infrared Voltage"/>
-	<hidden field="Right Encoder"/>
-	<hidden field="Turn Steepness Input"/>
-	<hidden field="Left Drive Encoder"/>
 	<hidden field="Right Drive Encoder"/>
 	<hidden field="Elevator Top Limit Switch"/>
 	<hidden field="Left Encoder"/>
 	<hidden field="Elevator Bottom Limit Switch"/>
+	<hidden field="Gyro Heading"/>
+	<hidden field="Elevator Encoder"/>
+	<hidden field="Analog Infrared Voltage"/>
+	<hidden field="Box Out"/>
+	<hidden field="Right Encoder"/>
+	<hidden field="Box In and Out At The Same Time"/>
+	<hidden field="Turn Steepness Input"/>
+	<hidden field="Left Drive Encoder"/>
 </xml>
