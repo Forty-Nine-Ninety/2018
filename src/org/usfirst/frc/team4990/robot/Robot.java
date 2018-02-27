@@ -88,6 +88,8 @@ public class Robot extends IterativeRobot {
 
     	resetSensors();
     	
+    	liveWindowInit();
+    	
     }
     
     public void robotPeriodic() {
@@ -104,6 +106,8 @@ public class Robot extends IterativeRobot {
     			dashboardPeriodic();
     			updateAutoDashboard();
     		}
+    		
+    		controllerCheck();
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
@@ -140,22 +144,21 @@ public class Robot extends IterativeRobot {
 	    	teleopIntakeController.update();
 	    	intake.update();
 	    	dashboardPeriodic();
-	    	if (driveGamepad.getRawButton(8)) {
-	    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
-	    	} else if (opGamepad.getRawButton(8)) {
-	    		System.out.println("Button 7 Pressed on OP GAMEPAD");
-	    	}
+	    	controllerCheck();
     	
     } 
     
     public void testInit() { //TODO add commands for testing
     		liveWindowInit();
-    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
-    		testScripter.init();
+    		//testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
+    		//testScripter.init();
+    		teleopInit();
     }
     
     public void testPeriodic() {
-    		testScripter.update();
+    		//testScripter.update();
+    	teleopPeriodic();
+
     }
     
     /**
@@ -172,6 +175,7 @@ public class Robot extends IterativeRobot {
 	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
 	    	SmartDashboard.putData(autoChooser);
 	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
+	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
     }
     
     	public void dashboardPeriodic() {
@@ -192,6 +196,10 @@ public class Robot extends IterativeRobot {
 
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
+	    	SmartDashboard.putData("Elevator Encoder",elevator.encoder);
+	    	
+	    	SmartDashboard.putData("Left Drive Encoder",this.driveTrain.leftGearbox.encoder);
+	    	SmartDashboard.putData("Right Drive Encoder",this.driveTrain.rightGearbox.encoder);
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
@@ -223,6 +231,17 @@ public class Robot extends IterativeRobot {
 		
 		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
 		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
+		
+		//General
+		gyro.setName("General", "Gyro");
+	}
+	
+	public void controllerCheck() {
+    	if (driveGamepad.getRawButton(8)) {
+    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
+    	} else if (opGamepad.getRawButton(8)) {
+    		System.out.println("Button 7 Pressed on OP GAMEPAD");
+    	}
 	}
 
 }

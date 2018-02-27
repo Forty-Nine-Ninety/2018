@@ -309,13 +309,13 @@ public class AutoDriveTrainScripter {
 				this.dt = dt;
 				this.gyro = gyro;
 				this.distanceToGo = distance;
-				this.gyro.reset();
 				this.startingGyro = 0;
 				this.baseMotorPower = 0.3;
 			}
 			public void init() {
 				System.out.println("gyroStraight(" + distance + ")");
 				this.dt.resetDistanceTraveled();
+				gyro.reset();
 			}
 			public void update() {
 				this.currentDistanceTraveled = Math.abs(this.dt.getRightDistanceTraveled()) * 1.06517;
