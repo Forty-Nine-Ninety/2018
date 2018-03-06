@@ -18,10 +18,10 @@ public class LimitSwitch {
 	 * @param counterSensitivity
 	 */
 	
-	public LimitSwitch(int digitalIOChannel, int counterSensitivity) {
+	public LimitSwitch(int digitalIOChannel) {
 		this.limitSwitch = new DigitalInput(digitalIOChannel);
 		this.counter = new Counter(this.limitSwitch);
-		this.counterSensitivity = counterSensitivity;
+		this.counterSensitivity = 4;
 	}
 	
 	/**

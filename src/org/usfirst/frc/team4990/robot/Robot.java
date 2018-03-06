@@ -13,7 +13,7 @@ import org.usfirst.frc.team4990.robot.subsystems.*;
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
- * directory.  | If you don't know what this is then you shouldn't be touching the code probably 
+ * directory. 
  */
 public class Robot extends IterativeRobot {
 
@@ -57,7 +57,9 @@ public class Robot extends IterativeRobot {
     	
     	ultrasonic = new Ultrasonic(8, 9, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
-    	intake = new Intake(new TalonMotorController(7), new TalonMotorController(6), new AnalogInput(0)); //Left motor, right motor, distance sensor
+    	intake = new Intake(new TalonMotorController(7), 
+    			new TalonMotorController(6), 
+    			new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
@@ -65,9 +67,7 @@ public class Robot extends IterativeRobot {
     			new TalonMotorController(5), //Motor elevatorMotorA
     			new TalonMotorController(4), //Motor elevatorMotorB
     			6, //int topSwitchChannel (DIO)
-    			4, //int topSwitchCounterSensitivity
     			7, //int bottomSwitchChannel (DIO)
-    			4, //int bottomSwitchCounterSensitivity
     			4, //int Encoder DIO port A
     			5); //int Encoder DIO port B
     	
@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot {
     	
     	updateAutoDashboard();
     	
-    	dashboardPeriodic();
+    	simpleDashboardPeriodic();
 
     	resetSensors();
     	
@@ -103,7 +103,7 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
     		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
-    			dashboardPeriodic();
+    			simpleDashboardPeriodic();
     			updateAutoDashboard();
     		}
     		
@@ -120,7 +120,7 @@ public class Robot extends IterativeRobot {
 	    	autoScripter.update();
 	    	driveTrain.update();
 	    	elevator.update();
-	    	dashboardPeriodic();
+	    	simpleDashboardPeriodic();
     }
 
     public void teleopInit() { //This function is called at the start of teleop
@@ -143,7 +143,7 @@ public class Robot extends IterativeRobot {
 	    	teleopElevatorController.update();
 	    	teleopIntakeController.update();
 	    	intake.update();
-	    	dashboardPeriodic();
+	    	simpleDashboardPeriodic();
 	    	controllerCheck();
     	
     } 
@@ -177,6 +177,10 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
 	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
     }
+    
+    	public void simpleDashboardPeriodic() {
+	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
+    	}
     
     	public void dashboardPeriodic() {
 	    	

@@ -46,9 +46,9 @@ public class TeleopElevatorController {
 			}
 		} else if (tempAxis < 0) { //right joystick negative = elevator DOWN
 			if (-tempAxis > maxSpeed) {
-				elevator.setElevatorPower(-maxSpeed);
+				elevator.setElevatorPower(maxSpeed);
 			} else { 
-				elevator.setElevatorPower(-tempAxis); 
+				elevator.setElevatorPower(tempAxis); 
 			}
 		} else {
 			elevator.setElevatorPower(0.0);

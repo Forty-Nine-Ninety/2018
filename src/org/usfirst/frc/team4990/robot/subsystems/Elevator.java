@@ -33,16 +33,14 @@ public class Elevator {
 			TalonMotorController elevatorMotorA, 
 			TalonMotorController elevatorMotorB,
 			int topSwitchChannel, 
-			int topSwitchCounterSensitivity, 
 			int bottomSwitchChannel, 
-			int bottomSwitchCounterSensitivity,
 			int encoderChannelA, 
 			int encoderChannelB) {
 		this.elevatorMotorA = elevatorMotorA;
 		this.elevatorMotorB = elevatorMotorB;
 		
-		this.topSwitch = new LimitSwitch(topSwitchChannel, topSwitchCounterSensitivity);
-		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel, bottomSwitchCounterSensitivity);
+		this.topSwitch = new LimitSwitch(topSwitchChannel);
+		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel);
 		
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		this.encoder.setDistancePerPulse(1.16 * Math.PI / Constants.pulsesPerRevolution); //diameter of elevator chain gear * PI
@@ -81,7 +79,7 @@ public class Elevator {
 	public void update() {
 		
 		//check limit switches, stop motors if going toward danger
-		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorB.getPower() < 0)) {
+		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorA.getPower() < 0)) {
 			this.elevatorMotorA.setPower(0.0);
 			this.elevatorMotorB.setPower(0.0);
 			resetEncoderDistance();
