@@ -31,13 +31,15 @@ public class Robot extends IterativeRobot {
 	private TeleopIntakeController teleopIntakeController;
 	public Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
+	private Scaler scaler;
+	private TeleopScalerController teleopScalerController;
 
 
 	public ADXRS450_Gyro gyro;
 	public Ultrasonic ultrasonic;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
-	private SimpleAutoDriveTrainScripter testScripter;
+	//private SimpleAutoDriveTrainScripter testScripter;
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
@@ -45,8 +47,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
 
     	//~~~~ Driving/Operator Components ~~~~
-    	this.driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
-    	this.opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
+    	driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
+    	opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -74,6 +76,10 @@ public class Robot extends IterativeRobot {
     	teleopElevatorController = new TeleopElevatorController(elevator,
     			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
+    	
+    scaler = new Scaler(new TalonMotorController(8));
+    		
+    	teleopScalerController = new TeleopScalerController(scaler, opGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
     			
 
     	//~~~~ Sensor Init & Details ~~~~
@@ -143,9 +149,11 @@ public class Robot extends IterativeRobot {
 	    	teleopElevatorController.update();
 	    	teleopIntakeController.update();
 	    	intake.update();
+	    	teleopScalerController.update();
+	    	scaler.update();
+	    	
 	    	simpleDashboardPeriodic();
 	    	controllerCheck();
-    	
     } 
     
     public void testInit() { //TODO add commands for testing
@@ -157,8 +165,7 @@ public class Robot extends IterativeRobot {
     
     public void testPeriodic() {
     		//testScripter.update();
-    	teleopPeriodic();
-
+    		teleopPeriodic();
     }
     
     /**
@@ -179,7 +186,9 @@ public class Robot extends IterativeRobot {
     }
     
     	public void simpleDashboardPeriodic() {
-	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("Box", intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	
+	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
     
     	public void dashboardPeriodic() {
@@ -190,7 +199,6 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
 	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
 	    	
-	    	SmartDashboard.putString("The Infrared Sensor Tri Value", intake.getBoxPosition().toString());
 	    	SmartDashboard.putBoolean("Box In", intake.isBoxPosition(Intake.BoxPosition.IN));
 	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", intake.isBoxPosition(Intake.BoxPosition.MOVING));
