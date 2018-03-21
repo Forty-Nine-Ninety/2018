@@ -36,7 +36,7 @@ public class TeleopElevatorController {
 	 * @author Freshman Union
 	 */
 	public void update() {
-		tempAxis = gpad.getRawAxis(controller);
+		tempAxis = -gpad.getRawAxis(controller);
 		
 		if (tempAxis > 0) { //right joystick positive = elevator UP
 			if (tempAxis > maxSpeed) {
