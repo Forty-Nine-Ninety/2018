@@ -1,14 +1,32 @@
 <xml version="1.0">
 <dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="305" y="56"/>
+		<width>130</width>
+		<height>57</height>
+		<property name="Text" value="Connection"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="293" y="13"/>
+		<width>155</width>
+		<height>64</height>
+		<property name="Connection Color" value="51.51.255.255"/>
+		<property name="No Connection Color" value="0.0.0.255"/>
+		<property name="Graphics" value="Simple"/>
+	</static-widget>
 	<widget field="Elevator Top Limit Switch" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="454" y="9"/>
 		<width>277</width>
 		<height>33</height>
+		<property name="Color to show when true" value="153.0.153.255"/>
+		<property name="Color to show when false" value="255.255.255.255"/>
 	</widget>
 	<widget field="Elevator Bottom Limit Switch" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="454" y="45"/>
 		<width>293</width>
 		<height>33</height>
+		<property name="Color to show when true" value="153.0.153.255"/>
+		<property name="Color to show when false" value="255.255.255.255"/>
 	</widget>
 	<widget field="Box" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="19" y="227"/>
@@ -88,9 +106,14 @@
 			<height>46</height>
 			<width>293</width>
 		</widget>
+		<widget field="Ultrasonic[5]" type="Ultrasonic" class="edu.wpi.first.smartdashboard.livewindow.elements.SingleNumberDisplay">
+			<location x="6" y="142"/>
+			<height>20</height>
+			<width>293</width>
+		</widget>
 		<location x="626" y="282"/>
 		<width>305</width>
-		<height>149</height>
+		<height>169</height>
 	</widget>
 	<widget field="Elevator" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
 		<widget field="MotorA" type="Table" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">

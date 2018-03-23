@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(3),
     		0, 1, 2, 3);
     	
-    	ultrasonic = new Ultrasonic(8, 9, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
+    	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
     	intake = new Intake(new TalonMotorController(7), 
     			new TalonMotorController(6), 
@@ -70,8 +70,8 @@ public class Robot extends IterativeRobot {
     			new TalonMotorController(4), //Motor elevatorMotorB
     			6, //int topSwitchChannel (DIO)
     			7, //int bottomSwitchChannel (DIO)
-    			4, //int Encoder DIO port A
-    			5); //int Encoder DIO port B
+    			8, //int Encoder DIO port A
+    			9); //int Encoder DIO port B
     	
     	teleopElevatorController = new TeleopElevatorController(elevator,
     			opGamepad, //gamepad to control elevator
