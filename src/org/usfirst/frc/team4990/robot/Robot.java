@@ -1,14 +1,12 @@
 package org.usfirst.frc.team4990.robot;
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union(Le Dab Gang)
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -243,7 +241,6 @@ public class Robot extends IterativeRobot {
 		driveTrain.leftGearbox.motor2.setName("DriveTrain","LeftMotor2");
 		driveTrain.rightGearbox.motor1.setName("DriveTrain","RightMotor1");
 		driveTrain.rightGearbox.motor2.setName("DriveTrain","RightMotor2");
-		
 		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
 		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
 		
