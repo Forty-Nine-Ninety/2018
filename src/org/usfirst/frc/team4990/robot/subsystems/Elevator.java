@@ -3,6 +3,7 @@ package org.usfirst.frc.team4990.robot.subsystems;
 import org.usfirst.frc.team4990.robot.Constants;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
 
 public class Elevator {
 	public TalonMotorController elevatorMotorA;
@@ -17,6 +18,11 @@ public class Elevator {
 	private double stopFallingSpeed = 0.05;
 	
 	private boolean stopped = false;
+	
+	//for Elevator goToPostion
+	public double doneTolerance = 3; //percent
+	public PIDController elevatorPID;
+	public boolean goToPostionActive = false;
 	
 	/**
 	 * Initializes elevator.
@@ -46,6 +52,12 @@ public class Elevator {
 		this.encoder.setDistancePerPulse(1.16 * Math.PI / Constants.pulsesPerRevolution); //diameter of elevator chain gear * PI
 		this.encoder.setMinRate(Constants.gearboxEncoderMinRate);
 		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
+		
+		//for elevator PID goToPosition
+		elevatorPID = new PIDController(1, 0, 0, encoder, new ElevatorPID(this));
+		elevatorPID.setInputRange(0, 4.8); //minimumInput, maximumInput
+		elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
+		elevatorPID.setAbsoluteTolerance(doneTolerance);
 	}
 	
 	/**
@@ -78,6 +90,15 @@ public class Elevator {
 	
 	public void update() {
 		
+		//updates elevator PID for goToPostion
+		if (goToPostionActive) {
+			if (elevatorPID.onTarget()){ //done
+				elevatorPID.disable();
+			} else {
+				setElevatorPower(elevatorPID.get());
+			} 
+		}
+		
 		//check limit switches, stop motors if going toward danger
 		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorA.getPower() < 0)) {
 			this.elevatorMotorA.setPower(0.0);
@@ -95,6 +116,14 @@ public class Elevator {
 				setElevatorPower(0.0);
 			}
 		
+	}
+	
+	public void goToPosition(double postionInput) {
+		resetEncoderDistance();
+		elevatorPID.setSetpoint(postionInput);
+		elevatorPID.enable();
+		setElevatorPower(elevatorPID.get());
+		goToPostionActive = true;
 	}
 	
 	/**

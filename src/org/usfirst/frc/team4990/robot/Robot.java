@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot;
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union(Le Dab Gang)
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -47,8 +48,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
 
     	//~~~~ Driving/Operator Components ~~~~
-    	driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
-    	opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
+    	driveGamepad = new F310Gamepad(0);
+    	opGamepad = new F310Gamepad(1);
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
