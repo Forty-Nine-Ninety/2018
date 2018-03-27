@@ -4,13 +4,12 @@ package org.usfirst.frc.team4990.robot.controllers;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
-import org.usfirst.frc.team4990.robot.subsystems.ElevatorPID;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -50,6 +49,7 @@ public class AutoDriveTrainScripter {
 	@SuppressWarnings("unused")
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
+	private Ultrasonic ultrasonic;
 
 	/**
 	 * Just a constructor
@@ -58,9 +58,10 @@ public class AutoDriveTrainScripter {
 	 * @param gy Gyro sensor
 	 * @param i Intake
 	 * @param e Elevator
+	 * @param u Ultrasonic
 	 * @author Old Coder People
 	 */
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e, Ultrasonic u) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
@@ -344,6 +345,64 @@ public class AutoDriveTrainScripter {
 		}
 		commands.add(new gyroStraight_Package(dt, gyro, distance));
 	}
+	
+	/**
+	 * Command for going straight
+	 * @param distance Distance to go straight for in feet
+	 */
+	public void straightToSwitch() {
+		class straightToSwitch_Package implements CommandPackage {
+			private double startingGyro;
+			private boolean done;
+			private DriveTrain dt;
+			private ADXRS450_Gyro gyro;
+			private Ultrasonic ultrasonic;
+			private double baseMotorPower;
+			private double currentGyroData;
+			private double leftMotorAdjust;
+
+
+			public straightToSwitch_Package(DriveTrain dt, ADXRS450_Gyro gyro, Ultrasonic ultrasonic) {
+				//Remember that the right motor is the slow one
+				this.done = false;
+				this.dt = dt;
+				this.gyro = gyro;
+				this.ultrasonic = ultrasonic;
+				this.startingGyro = 0;
+				this.baseMotorPower = 0.3;
+			}
+			
+			public void init() {
+				System.out.println("straightToSwitch()");
+				this.dt.resetDistanceTraveled();
+				gyro.reset();
+			}
+			public void update() {
+				this.currentGyroData = gyro.getAngle();
+				System.out.println("current ultrasonic distance: " + ultrasonic.getRangeInches());
+				
+				if (ultrasonic.getRangeInches() < 20) { //THIS LINE TELLS ROBOT WHEN TO STOP
+					
+					if (this.currentGyroData > this.startingGyro) {
+						this.leftMotorAdjust = this.baseMotorPower - 0.064023; //add to number to go more LEFT
+					} else if (this.currentGyroData < this.startingGyro) {
+						this.leftMotorAdjust = this.baseMotorPower + 0.05;
+
+					}
+					this.dt.setSpeed(this.leftMotorAdjust, this.baseMotorPower);
+				} else {
+					this.done = true;
+					this.dt.setSpeed(0, 0);
+				}
+			}
+			
+			public boolean done() {
+				
+				return this.done;
+			}
+		}
+		commands.add(new straightToSwitch_Package(dt, gyro, ultrasonic));
+	}
 
 	/**
 	 * Turns left or right
@@ -485,23 +544,18 @@ public class AutoDriveTrainScripter {
 	/**
 	 * Moves elevator a set distance
 	 * @param distance Distance to move; positive is up, negative is down I think
+	 * @deprecated Needs to be modified for actual encoder
 	 */
 	public void moveElevator(double distance) { //TODO Implement PID for elevator
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
 			private boolean done;
-			private double doneTolerance = 3; //percent
 			private PIDController elevatorPID;
 			
 			public Elevator_package(double dist, Elevator e) {
 				this.elevator = e;
 				this.done = false;
-				elevatorPID = new PIDController(1, 0, 0, elevator.encoder, new ElevatorPID(elevator));
-				elevatorPID.setInputRange(0, 4.8); //minimumInput, maximumInput
-				elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
-				elevatorPID.setSetpoint(dist);
-				elevatorPID.setAbsoluteTolerance(doneTolerance);
-				LiveWindow.add(elevatorPID);	
+				this.elevatorPID = e.elevatorPID;
 			}
 			
 			public void init() {
@@ -529,4 +583,56 @@ public class AutoDriveTrainScripter {
 		
 		commands.add(new Elevator_package(distance, elevator));
 	}
+	
+	/**
+	 * Moves elevator for duration.
+	 * @param time in milliseconds
+	 * @param power 0 to 1 for up, 0 to -1 for down
+	 */
+	
+	
+	public void moveElevatorTime(double time, double power) { //time is in milliseconds
+		class EW_Package implements CommandPackage {
+			private boolean done;
+			private long duration;
+			private double power;
+			private long startMillis;
+			private Elevator elevator;
+
+			public EW_Package(double t, double power_input, Elevator elevator) {
+				this.duration = (long) t;
+				this.power = power_input;
+				this.done = false;
+				this.elevator = elevator;
+			}
+			/**
+			 * Clears time
+			 */
+			public void init() {
+				this.startMillis = System.currentTimeMillis();
+				System.out.println("moveElevatorTime(" + duration + ")");
+				elevator.setElevatorPower(power);
+			}
+			/**
+			 * Sets done to true if time is up
+			 */
+			public void update() {
+				if (startMillis + duration <= System.currentTimeMillis()) {
+					//done waiting!
+					elevator.setElevatorPower(0);
+					this.done = true;
+				}
+			}
+			/**
+			 * Returns whether the command is done or not
+			 */
+			public boolean done() {
+				return this.done;
+			}
+		}
+
+		commands.add(new EW_Package(time, power, elevator));
+	}
+	
+	
 }

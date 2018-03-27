@@ -12,6 +12,7 @@ public class TeleopElevatorController {
 	private F310Gamepad gpad;
 	private double maxSpeed;
 	private double tempAxis;
+	private double elevatorPreset;
 	
 	private int controller;
 	
@@ -29,6 +30,7 @@ public class TeleopElevatorController {
 		controller = 5;//RIGHT joystick
 		//top speed of elevator motor (0.0 to 1.0)
 		maxSpeed = 1.0;
+		elevatorPreset = 4; //height to move to
 	}
 	
 	/**
@@ -36,24 +38,31 @@ public class TeleopElevatorController {
 	 * @author Freshman Union
 	 */
 	public void update() {
-		tempAxis = -gpad.getRawAxis(controller);
-		
-		if (tempAxis > 0) { //right joystick positive = elevator UP
-			if (tempAxis > maxSpeed) {
+
+		tempAxis = gpad.getRawAxis(controller);
+		if (!elevator.goToPostionActive) {
+			if (tempAxis > 0) { //right joystick positive = elevator UP
+				if (tempAxis > maxSpeed) {
 				elevator.setElevatorPower(maxSpeed);
-			} else { 
-				elevator.setElevatorPower(tempAxis); 
+				} else { 
+					elevator.setElevatorPower(tempAxis); 
+				}
+			} else if (tempAxis < 0) { //right joystick negative = elevator DOWN
+				if (-tempAxis > maxSpeed) {
+					elevator.setElevatorPower(maxSpeed);
+				} else { 
+					elevator.setElevatorPower(tempAxis); 
+				}
+			} else {
+				elevator.setElevatorPower(0.0);
 			}
-		} else if (tempAxis < 0) { //right joystick negative = elevator DOWN
-			if (-tempAxis > maxSpeed) {
-				elevator.setElevatorPower(maxSpeed);
-			} else { 
-				elevator.setElevatorPower(tempAxis); 
+		
+			if (gpad.getYButtonPressed()) {
+				elevator.goToPosition(elevatorPreset);
 			}
 		} else {
-			elevator.setElevatorPower(0.0);
+			System.out.println("Moving to " + elevator.elevatorPID.getSetpoint() + ", current speed: " + elevator.elevatorPID.get());
 		}
-			
 		elevator.update(); //always run at END of update function
 	}
 

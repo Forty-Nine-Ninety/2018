@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -47,8 +46,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
 
     	//~~~~ Driving/Operator Components ~~~~
-    	driveGamepad = new F310Gamepad(this.prefs.getInt("Drive Gamepad Port", 0));
-    	opGamepad = new F310Gamepad(this.prefs.getInt("Op Gamepad Port", 1));
+    	driveGamepad = new F310Gamepad(0);
+    	opGamepad = new F310Gamepad(1);
 
     	this.driveTrain = new DriveTrain(
     		new TalonMotorController(0),
@@ -118,7 +117,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() { //This function is called at the start of autonomous
 	    	startPos = autoChooser.getSelected();
-	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
+	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator, ultrasonic);
 	    	System.out.println("Auto Init complete");
     }
 
@@ -242,7 +241,6 @@ public class Robot extends IterativeRobot {
 		driveTrain.leftGearbox.motor2.setName("DriveTrain","LeftMotor2");
 		driveTrain.rightGearbox.motor1.setName("DriveTrain","RightMotor1");
 		driveTrain.rightGearbox.motor2.setName("DriveTrain","RightMotor2");
-		
 		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
 		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
 		

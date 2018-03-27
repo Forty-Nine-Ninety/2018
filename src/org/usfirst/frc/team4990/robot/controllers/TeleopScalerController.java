@@ -28,21 +28,16 @@ public class TeleopScalerController {
 	 * Reads input and updates scaler
 	 * @author Old Coders
 	 */
-	public void update() {
-		boolean lpressed = gpad.getLeftBumperPressed();
-		boolean rpressed = gpad.getRightBumperPressed();
-		
-		if(lpressed) {
+	public void update() {		
+		if(gpad.getLeftBumperPressed() && !gpad.getRightBumperPressed()) {
 			scaler.setSpeed(-speed);
 			return;
-		}
-		
-		if(rpressed) {
+		} if(gpad.getRightBumperPressed() && !gpad.getLeftBumperPressed()) {
 			scaler.setSpeed(speed);
 			return;
+		} else {
+			scaler.setSpeed(0);
 		}
-		
-		scaler.setSpeed(0);
 	}
 
 }

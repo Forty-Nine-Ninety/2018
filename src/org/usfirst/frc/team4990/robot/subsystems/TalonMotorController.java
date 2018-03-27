@@ -18,7 +18,7 @@ public class TalonMotorController extends Talon{
 	 */
 	
 	public void setPower(double power) {
-		this.set(power);
+		this.set(Math.max(-1, Math.min(power, 1))); //constrains value to between -1 and 1
 	}
 	
 	/**
