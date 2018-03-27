@@ -117,7 +117,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() { //This function is called at the start of autonomous
 	    	startPos = autoChooser.getSelected();
-	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
+	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator, ultrasonic);
 	    	System.out.println("Auto Init complete");
     }
 

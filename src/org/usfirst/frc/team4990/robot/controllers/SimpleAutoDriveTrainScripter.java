@@ -6,6 +6,7 @@ import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainScripter;
 
@@ -27,6 +28,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		//forward 140 in
 		System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
 		gyroStraight(140/12);
+		//TODO: see if straightToSwitch(); works here!
 	}
 	/**
 	 * Initializes auto code as a whole
@@ -44,7 +46,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			//Left side is ours
 			switch(s) {
 				case LEFT: 
-					moveElevator(2.25);
+					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					gyroStraight(55/12);//3rd: forward 55in
@@ -52,7 +54,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					break;
 				case MID: 
-					moveElevator(2.25);
+					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					//cut in front (in between auto line and exchange)
 					gyroStraight(80/12);//1st: forward 80 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
@@ -63,7 +65,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//6th: drop cube
 					break;
 				case RIGHT: //Dominic
-					moveElevator(2.25);
+					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12);//1st: forward 230 in
 					gyroTurn(90, Direction.LEFT);	//2nd: 90 degree turn to the left
 					gyroStraight(150/12);//3rd: forward 150 in
@@ -86,7 +88,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
 				case LEFT: //Dominic
-					moveElevator(2.25);
+					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12); //1st: forward 230 in
 					gyroTurn(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
 					gyroStraight(150/12); //3rd: forward 150 in
@@ -96,13 +98,13 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					break;
 				case MID: 
-					moveElevator(2.25);
+					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(140/12);//1st: forward 140 in
 					//2nd: drop cube
 					//runIntake(false);
 					break;
 				case RIGHT:
-					moveElevator(2.25);
+					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					gyroStraight(55/12);//3rd: forward 55in
@@ -127,8 +129,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i, Elevator e) {//uncomment for intake
-		super(dtrain, startP, gyro, i, e);//Uncomment for intake
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i, Elevator e, Ultrasonic u) {//uncomment for intake
+		super(dtrain, startP, gyro, i, e, u);//Uncomment for intake
 		
 	if (DriverStation.getInstance().isTest()) {
 		//This is for debugging
