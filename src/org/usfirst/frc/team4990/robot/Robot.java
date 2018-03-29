@@ -106,7 +106,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
-    		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 1000 < 50) { //runs around every 1 second
+    		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
     			simpleDashboardPeriodic();
     			updateAutoDashboard();

@@ -39,7 +39,7 @@ public class TeleopElevatorController {
 	 */
 	public void update() {
 
-		tempAxis = gpad.getRawAxis(controller);
+		tempAxis = -gpad.getRawAxis(controller);
 		if (!elevator.goToPostionActive) {
 			if (tempAxis > 0) { //right joystick positive = elevator UP
 				if (tempAxis > maxSpeed) {
@@ -58,7 +58,7 @@ public class TeleopElevatorController {
 			}
 		
 			if (gpad.getYButtonPressed()) {
-				elevator.goToPosition(elevatorPreset);
+				//elevator.goToPosition(elevatorPreset);
 			}
 		} else {
 			System.out.println("Moving to " + elevator.elevatorPID.getSetpoint() + ", current speed: " + elevator.elevatorPID.get());

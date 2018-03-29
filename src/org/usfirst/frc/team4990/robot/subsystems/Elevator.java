@@ -73,8 +73,8 @@ public class Elevator {
 			stopped = true;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			this.elevatorMotorA.setPower(power);
-			this.elevatorMotorB.setPower(-power);
+			this.elevatorMotorA.setPower(-power);
+			this.elevatorMotorB.setPower(power);
 			if (power == 0 && ! stopped) {
 				resetEncoderDistance();
 				stopped = true;
