@@ -110,69 +110,7 @@ public class AutoDriveTrainScripter {
 		RIGHT,
 		LEFT
 	}
-	
-	/**
-	 * @deprecated
-	 * Command for moving forward/backwards
-	 * @param distance Distance to travel in feet
-	 * @param backwards If true then it goes backwards, if false then it goes forwards
-	 */
-	public void goDistance(double distance, boolean backwards) {
-		/*Test LOG (format date: specified distance | actual distance)
-		 * 1-20-18: 3ft | 3ft+7in
-		 *
-		 *
-		 */
-		class F_Package implements CommandPackage {
-			private double value;
-			private DriveTrain dt;
-			private boolean done;
-			private boolean backwards;
-
-			public F_Package(DriveTrain d, double v, boolean backwards) {
-				this.dt = d;
-				// Use abs to make sure a negative number doesn't break anything
-				this.value = Math.abs(v);
-				this.done = false;
-				this.backwards = backwards;
-			}
-			/**
-			 * Clears drivetrain distances
-			 */
-			public void init() {
-				this.dt.resetDistanceTraveled();
-				System.out.println("goDistance(" + value + ")");
-			}
-			/**
-			 * Updates forward instruction
-			 */
-			public void update() {
-				// only the right side works...
-				// and it's backwards
-				// this entire robot is backwards
-				//System.out.println("LEFT: "+  this.dt.getLeftDistanceTraveled() + " RIGHT: " + this.dt.getRightDistanceTraveled());
-				double speed = .3;
-				if (this.backwards == true) {
-					speed = -speed;
-				}
-				if(Math.abs(this.dt.getRightDistanceTraveled()) < this.value) {
-					dt.setLeftSpeed(speed);
-					dt.setRightSpeed(speed);
-				}
-				else {
-					dt.setLeftSpeed(0.0);
-					dt.setRightSpeed(0.0);
-					this.done = true;
-				}
-			}
-
-			public boolean done() {
-				return this.done;
-			}
-		}
-
-		commands.add(new F_Package(dt, distance, backwards));
-	}
+	//------ Begin commands ------
 	/**
 	 * Makes robot wait
 	 * @param time Time to wait for in milliseconds
@@ -213,80 +151,6 @@ public class AutoDriveTrainScripter {
 
 		commands.add(new W_Package(time));
 	}
-
-	/**
-	 * Turns robot for degrees
-	 * @deprecated
-	 * @param degrees
-	 * @param lr
-	 */
-	public void turnForDegrees(double degrees, Direction lr) {
-		//0.01709 feet per 1 degree
-		class turnForDegrees_Package implements CommandPackage {
-			// feetPer1Degree = ((24 * pi) inches / 360 degrees) / (12 inches / 1 foot)
-			// times some other random constant lol
-			private double feetPer1Degree = 0.01745329  * .99;
-			private double classdegrees;
-			private boolean done;
-			private DriveTrain dt;
-			private boolean left;
-			private double encoderDistanceToStriveFor;
-			private double currentEncoderDistance;
-
-			public turnForDegrees_Package(DriveTrain d, double classdegrees, Direction classlr) {
-				// please note that the right encoder is backwards
-				this.dt = d;
-				this.classdegrees = classdegrees;
-				this.done = false;
-				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
-
-				currentEncoderDistance = 0;
-				
-				if (classlr == Direction.LEFT) {
-					this.left = true;
-				}
-				else {
-					this.left = false;
-				}
-			}
-			public void init() {
-				this.dt.resetDistanceTraveled();
-				System.out.println("turnForDegrees(" + degrees + ", Left:" + left + ")");
-			}
-
-			public void update() {
-				double speed = 0.20;
-				if (this.left == true) {
-					// if it's supposed to turn left (I know it's weird just go with it)
-					speed = -speed;
-				}
-
-				if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-	
-					// Gets the average of each side's distance
-					// Needs abs or else only works one direction
-					currentEncoderDistance = (Math.abs(this.dt.getRightDistanceTraveled()) +
-											  Math.abs(this.dt.getLeftDistanceTraveled())) / 2;
-
-					//DEBUG ENCODER PRINTER
-					System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  "+ encoderDistanceToStriveFor);
-
-					this.dt.setLeftSpeed(speed); // left needs to go forwards
-					this.dt.setRightSpeed(-speed); // right needs to go backwards
-				}
-				else {
-					this.dt.setSpeed(0.0, 0.0);
-					this.done = true;
-				}
-
-			}
-			
-			public boolean done() {
-				return this.done;
-			}
-		}
-		commands.add(new turnForDegrees_Package(dt, degrees, lr));
-	}
 	/**
 	 * Command for going straight
 	 * @param distance Distance to go straight for in feet
@@ -296,13 +160,11 @@ public class AutoDriveTrainScripter {
 			private double distanceToGo;
 			private double startingGyro;
 			private boolean done;
+			private boolean backwards;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private double baseMotorPower;
-			private double currentGyroData;
-			private double leftMotorAdjust;
 			private double currentDistanceTraveled;
-
 
 			public gyroStraight_Package(DriveTrain dt, ADXRS450_Gyro gyro, double distance) {
 				//Remember that the right motor is the slow one
@@ -312,6 +174,7 @@ public class AutoDriveTrainScripter {
 				this.distanceToGo = distance;
 				this.startingGyro = 0;
 				this.baseMotorPower = 0.3;
+				this.backwards = (distance > 0) ? false : true;
 			}
 			public void init() {
 				System.out.println("gyroStraight(" + distance + ")");
@@ -319,19 +182,11 @@ public class AutoDriveTrainScripter {
 				gyro.reset();
 			}
 			public void update() {
-				this.currentDistanceTraveled = Math.abs(this.dt.getRightDistanceTraveled()) * 1.06517;
-				this.currentGyroData = gyro.getAngle();
+				this.currentDistanceTraveled = (backwards) ? -this.dt.getRightDistanceTraveled() * 1.06517 : this.dt.getRightDistanceTraveled() * 1.06517;
 
 				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
-				if (currentDistanceTraveled < this.distanceToGo) {
-					
-					if (this.currentGyroData > this.startingGyro) {
-						this.leftMotorAdjust = this.baseMotorPower - 0.064023; //add to number to go more LEFT
-					} else if (this.currentGyroData < this.startingGyro) {
-						this.leftMotorAdjust = this.baseMotorPower + 0.05;
-
-					}
-					this.dt.setSpeed(this.leftMotorAdjust, this.baseMotorPower);
+				if (currentDistanceTraveled < this.distanceToGo) { //not at goal yet
+					this.dt.setSpeed(baseMotorPower + (0.1 * (startingGyro - gyro.getAngle())), baseMotorPower - (0.1 * (startingGyro - gyro.getAngle())));
 				} else {
 					this.done = true;
 					this.dt.setSpeed(0, 0);
