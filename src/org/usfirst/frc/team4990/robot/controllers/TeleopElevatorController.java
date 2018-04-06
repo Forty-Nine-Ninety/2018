@@ -30,7 +30,7 @@ public class TeleopElevatorController {
 		controller = 5;//RIGHT joystick
 		//top speed of elevator motor (0.0 to 1.0)
 		maxSpeed = 1.0;
-		elevatorPreset = 4; //height to move to
+		elevatorPreset = 4; //height to move to (in feet?)
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class TeleopElevatorController {
 			}
 		
 			if (gpad.getYButtonPressed()) {
-				//elevator.goToPosition(elevatorPreset);
+				elevator.goToPosition(elevatorPreset);
 			}
 		} else {
 			System.out.println("Moving to " + elevator.elevatorPID.getSetpoint() + ", current speed: " + elevator.elevatorPID.get());

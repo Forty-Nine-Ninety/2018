@@ -160,7 +160,6 @@ public class AutoDriveTrainScripter {
 			private double distanceToGo;
 			private double startingGyro;
 			private boolean done;
-			private boolean backwards;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private double baseMotorPower;
@@ -174,7 +173,6 @@ public class AutoDriveTrainScripter {
 				this.distanceToGo = distance;
 				this.startingGyro = 0;
 				this.baseMotorPower = 0.3;
-				this.backwards = (distance > 0) ? false : true;
 			}
 			public void init() {
 				System.out.println("gyroStraight(" + distance + ")");
@@ -182,11 +180,11 @@ public class AutoDriveTrainScripter {
 				gyro.reset();
 			}
 			public void update() {
-				this.currentDistanceTraveled = (backwards) ? -this.dt.getRightDistanceTraveled() * 1.06517 : this.dt.getRightDistanceTraveled() * 1.06517;
+				this.currentDistanceTraveled = (distance > 0) ? -this.dt.getRightDistanceTraveled() * 1.06517 : this.dt.getRightDistanceTraveled() * 1.06517;
 
 				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
 				if (currentDistanceTraveled < this.distanceToGo) { //not at goal yet
-					this.dt.setSpeed(baseMotorPower + (0.1 * (startingGyro - gyro.getAngle())), baseMotorPower - (0.1 * (startingGyro - gyro.getAngle())));
+					this.dt.setSpeed(baseMotorPower + (0.1 * (startingGyro - gyro.getAngle())), baseMotorPower - (0.1 * (startingGyro - gyro.getAngle()))); //TODO: find proportional values (right now 0.1) for drive train
 				} else {
 					this.done = true;
 					this.dt.setSpeed(0, 0);
@@ -261,60 +259,51 @@ public class AutoDriveTrainScripter {
 
 	/**
 	 * Turns left or right
-	 * @param inputDegrees Degrees to turn
-	 * @param lr Left or right(As an object of type Direction)
+	 * @param inputDegrees Degrees to turn (Positive = right, negative = left)
 	 */
-	public void gyroTurn(double inputDegrees, Direction lr) {
+	public void gyroTurn(double inputDegrees) {
 		class gyroTurn_Package implements CommandPackage {
 			private double degrees;
 			private boolean done;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
-			private Direction dir;
 
-			public gyroTurn_Package(DriveTrain d, ADXRS450_Gyro g, double classdegrees, Direction classlr) {
+			public gyroTurn_Package(DriveTrain d, ADXRS450_Gyro g, double classdegrees) {
 				// please note that the right encoder is backwards
 				this.dt = d;
 				this.degrees = classdegrees;
 				this.done = false;
 				gyro = g;
-				dir = classlr;
 			}
 
 			public void init() {
 				this.gyro.reset();
-				System.out.println("gyroTurn(" + degrees + ", " + dir + ")");
+				System.out.println("gyroTurn(" + degrees + ")");
 			}
 
 			public void update() {
-				double speed = 0.5;
-				if (dir == Direction.LEFT) speed *= -1;
 				
 				double currentDegreesTraveled = Math.abs(gyro.getAngle());
+				System.out.println("Current angle: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
 				
-				if (currentDegreesTraveled < this.degrees * 0.67) {
-					//DEBUG GYRO PRINTER
-					//System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
-
-					this.dt.setSpeed(speed, -speed); // left needs to go forwards, right needs to go backwards
-				}
-				else if (currentDegreesTraveled < this.degrees - (this.degrees * 0.02777)) {
-					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
-					
-					this.dt.setSpeed(speed / 3, -speed / 3);
-				}
-				else {
-					this.dt.setSpeed(0.0, 0.0);
+				if (currentDegreesTraveled < this.degrees) {
+					this.dt.setSpeed( //TODO change (1/90) to actual porportional value
+							(degrees > 0) ? //turning right?
+							(1/90) * (degrees - gyro.getAngle()) : -(1/90) * (degrees - gyro.getAngle()), 
+							(degrees > 0) ? //turning right?
+							-(1/90) * (degrees - gyro.getAngle()) : (1/90) * (degrees - gyro.getAngle())
+							); // left needs to go forwards, right needs to go backwards to turn right	
+				} else {
+					this.dt.setSpeed(0, 0);
 					this.done = true;
 				}
-
 			}
 			
 			public boolean done() {
 				return this.done;
 			}
 		}
-		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees, lr));
+		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees));
 	}
 	/**
 	 * Makes intake throw whatever is inside out
@@ -399,9 +388,9 @@ public class AutoDriveTrainScripter {
 	/**
 	 * Moves elevator a set distance
 	 * @param distance Distance to move; positive is up, negative is down I think
-	 * @deprecated Needs to be modified for actual encoder
+	 * TODO: Needs to be modified for actual encoder
 	 */
-	public void moveElevator(double distance) { //TODO Implement PID for elevator
+	public void moveElevator(double distance) { 
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
 			private boolean done;

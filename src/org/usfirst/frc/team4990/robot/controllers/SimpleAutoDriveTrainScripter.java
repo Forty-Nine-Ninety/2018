@@ -48,7 +48,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				case LEFT: 
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
-					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
+					gyroTurn(90);//2nd: 90 degree turn to the right
 					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
 					//runIntake(false);
@@ -57,9 +57,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					//cut in front (in between auto line and exchange)
 					gyroStraight(80/12);//1st: forward 80 in
-					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
+					gyroTurn(-90);//2nd: 90 degree turn to the left
 					gyroStraight(60/12);//3rd: forward about 60 in
-					gyroTurn(90, Direction.RIGHT);//4th: 90 degree turn to the right
+					gyroTurn(90);//4th: 90 degree turn to the right
 					gyroStraight(60/12);//5th: forward 60 in
 					//runIntake(false);
 					//6th: drop cube
@@ -67,9 +67,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				case RIGHT: //Dominic
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12);//1st: forward 230 in
-					gyroTurn(90, Direction.LEFT);	//2nd: 90 degree turn to the left
+					gyroTurn(-90);	//2nd: 90 degree turn to the left
 					gyroStraight(150/12);//3rd: forward 150 in
-					gyroTurn(90, Direction.LEFT);	//4th: 90 degree turn to the left
+					gyroTurn(-90);	//4th: 90 degree turn to the left
 					gyroStraight(30/12);	//5th: forward 30 in
 					//runIntake(false);
 					//6th: drop cube
@@ -90,9 +90,9 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				case LEFT: //Dominic
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12); //1st: forward 230 in
-					gyroTurn(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
+					gyroTurn(90);	 //2nd: 90 degree turn to the right
 					gyroStraight(150/12); //3rd: forward 150 in
-					gyroTurn(90, Direction.RIGHT);	//4th: 90 degree turn to the right
+					gyroTurn(90);	//4th: 90 degree turn to the right
 					gyroStraight(30/12);	//5th: forward 30 in
 					//6th: drop cube
 					//runIntake(false);
@@ -106,7 +106,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 				case RIGHT:
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
-					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
+					gyroTurn(-90);//2nd: 90 degree turn to the left
 					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
 					//runIntake(false);

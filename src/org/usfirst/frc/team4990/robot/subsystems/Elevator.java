@@ -94,6 +94,7 @@ public class Elevator {
 		if (goToPostionActive) {
 			if (elevatorPID.onTarget()){ //done
 				elevatorPID.disable();
+				goToPostionActive = false;
 			} else {
 				setElevatorPower(elevatorPID.get());
 			} 
