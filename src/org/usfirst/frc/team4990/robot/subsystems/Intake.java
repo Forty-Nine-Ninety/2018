@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Talon;
 
 /**
  * An Intake.
@@ -10,22 +9,22 @@ import edu.wpi.first.wpilibj.Talon;
  */
 
 public class Intake {
-	public Talon motorL;
-	public Talon motorR;
+	public TalonMotorController motorL;
+	public TalonMotorController motorR;
 	public AnalogInput infrared;
 	private double speed;
 	private double rate = 0.9;
 	
 	/**
 	 * Initialize inkate.
-	 * @param mL PWM port for LEFT talon
-	 * @param mR PWM port for RIGHT talon
+	 * @param talonMotorController PWM port for LEFT talon
+	 * @param talonMotorController2 PWM port for RIGHT talon
 	 * @param infraredInput Analog Port for Sharp Distance Sensor
 	 */
 	
-	public Intake(Talon mL, Talon mR, AnalogInput infraredInput) {
-		motorL = mL;
-		motorR = mR;
+	public Intake(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, AnalogInput infraredInput) {
+		motorL = talonMotorController;
+		motorR = talonMotorController2;
 		infrared = infraredInput;
 	}
 	

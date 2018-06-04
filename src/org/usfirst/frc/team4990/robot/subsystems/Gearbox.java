@@ -3,11 +3,10 @@ package org.usfirst.frc.team4990.robot.subsystems;
 import org.usfirst.frc.team4990.robot.Constants;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
 
 public class Gearbox {
-	public Talon motor1;
-	public Talon motor2;
+	public TalonMotorController motor1;
+	public TalonMotorController motor2;
 	
 	public Encoder encoder;
 	
@@ -26,15 +25,15 @@ public class Gearbox {
 	
 	/**
 	 * Initialize gearbox
-	 * @param leftMotor1 DIO port for 1st motor
-	 * @param leftMotor2 DIO port for 2nd motor
+	 * @param talonMotorController DIO port for 1st motor
+	 * @param talonMotorController2 DIO port for 2nd motor
 	 * @param encoderChannelA Encoder in gearbox (Signal, Ground and 5v)
 	 * @param encoderChannelB Encoder in gearbox (just Signal)
 	 */
 	
-	public Gearbox(Talon leftMotor1, Talon leftMotor2, int encoderChannelA, int encoderChannelB) {
-		this.motor1 = leftMotor1;
-		this.motor2 = leftMotor2;
+	public Gearbox(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, int encoderChannelA, int encoderChannelB) {
+		this.motor1 = talonMotorController;
+		this.motor2 = talonMotorController2;
 
 		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
 		

@@ -1,18 +1,16 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Talon;
-
 public class Scaler {
-	private Talon scalermotor;
+	private TalonMotorController scalermotor;
 	private double currpower;
 	
 	/**
 	 * Initialize scaler
-	 * @param scalemot motor used for scaler
+	 * @param talonMotorController motor used for scaler
 	 */
 	
-	public Scaler(Talon scalemot) {
-		scalermotor = scalemot;
+	public Scaler(TalonMotorController talonMotorController) {
+		scalermotor = talonMotorController;
 	}
 	
 	/**

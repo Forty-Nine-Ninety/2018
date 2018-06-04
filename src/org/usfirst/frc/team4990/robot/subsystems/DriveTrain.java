@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Talon;
-
 public class DriveTrain {
 	public Gearbox leftGearbox;
 	private double leftSetSpeed;
@@ -10,10 +8,10 @@ public class DriveTrain {
 	private double rightSetSpeed;
 	/**
 	 * Includes 4 driving motors and 2 encoders.
-	 * @param leftMotor1 First Left Motor
-	 * @param leftMotor2 Second Left Motor
+	 * @param talonMotorController First Left Motor
+	 * @param talonMotorController2 Second Left Motor
 	 * @param rightotor1 First Right Motor
-	 * @param rightMotor2 Second Right Motor
+	 * @param talonMotorController4 Second Right Motor
 	 * @param leftEncoderChannelA Encoder for Left gearbox (Signal, Ground and 5v)
 	 * @param leftEncoderChannelB Encoder for Left gearbox (just Signal)
 	 * @param rightEncoderChannelA Encoder for Right gearbox (Signal, Ground and 5v)
@@ -21,11 +19,11 @@ public class DriveTrain {
 	 * @author Freshman Union
 	 */
 	
-	public DriveTrain(Talon leftMotor1, Talon leftMotor2, Talon rightMotor1, Talon rightMotor2,
+	public DriveTrain(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, TalonMotorController talonMotorController3, TalonMotorController talonMotorController4,
 						int leftEncoderChannelA, int leftEncoderChannelB, 
 						int rightEncoderChannelA, int rightEncoderChannelB) {
-		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB);
-		this.rightGearbox = new Gearbox(rightMotor1, rightMotor2, rightEncoderChannelA, rightEncoderChannelB);
+		this.leftGearbox = new Gearbox(talonMotorController, talonMotorController2, leftEncoderChannelA, leftEncoderChannelB);
+		this.rightGearbox = new Gearbox(talonMotorController3, talonMotorController4, rightEncoderChannelA, rightEncoderChannelB);
 		
 		// The gearbox is backwards
 		this.rightGearbox.swapDirection();
