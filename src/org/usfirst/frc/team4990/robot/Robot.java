@@ -8,6 +8,8 @@ import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
 import org.usfirst.frc.team4990.robot.subsystems.Gearbox;
+
+import com.kauailabs.navx.frc.AHRS;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -37,6 +39,7 @@ public class Robot extends IterativeRobot {
 
 	public ADXRS450_Gyro gyro;
 	public Ultrasonic ultrasonic;
+	public AHRS ahrs;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
 	//private SimpleAutoDriveTrainScripter testScripter;
@@ -88,8 +91,12 @@ public class Robot extends IterativeRobot {
     	//~~~~ Sensor Init & Details ~~~~
 
     	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-    	//use gyro.getAngle() to return heading (returns number 0 to n)
+    	//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
+    	
+    	ahrs = new AHRS(SPI.Port.kMXP); 
+    	//navX-MXP RoboRIO extension and 9-axis gyro thingy
+    	//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
     	
     	updateAutoDashboard();
     	
