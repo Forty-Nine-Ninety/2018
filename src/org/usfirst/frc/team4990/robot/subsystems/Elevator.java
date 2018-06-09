@@ -6,12 +6,9 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 
 public class Elevator {
-	public TalonMotorController elevatorMotorA;
-	public TalonMotorController elevatorMotorB;
+	public TalonMotorController elevatorMotorA, elevatorMotorB;
 	
-	public LimitSwitch topSwitch;
-	
-	public LimitSwitch bottomSwitch;
+	public LimitSwitch topSwitch, bottomSwitch;
 	
 	public Encoder encoder;
 	

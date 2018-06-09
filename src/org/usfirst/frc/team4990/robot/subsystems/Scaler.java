@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 public class Scaler {
-	private TalonMotorController scalermotor;
-	private double currpower;
+	private TalonMotorController scalerMotor;
+	private double setSpeed;
 	
 	/**
 	 * Initialize scaler
@@ -10,7 +10,7 @@ public class Scaler {
 	 */
 	
 	public Scaler(TalonMotorController talonMotorController) {
-		scalermotor = talonMotorController;
+		scalerMotor = talonMotorController;
 	}
 	
 	/**
@@ -18,8 +18,8 @@ public class Scaler {
 	 * @param power
 	 */
 	
-	public void setSpeed(double power) {
-		currpower = power;
+	public void setSpeed(double speed) {
+		setSpeed = speed;
 	}
 	
 	/** 
@@ -28,7 +28,7 @@ public class Scaler {
 	 */
 	
 	public double getLastPower() {
-		return currpower;
+		return setSpeed;
 	}
 	
 	/**
@@ -36,6 +36,6 @@ public class Scaler {
 	 */
 	
 	public void update() {
-		scalermotor.set(currpower);
+		scalerMotor.set(setSpeed);
 	}
 }

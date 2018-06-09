@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 	private TeleopDriveTrainController teleopDriveTrainController;
 	private Intake intake;
 	private TeleopIntakeController teleopIntakeController;
-	public Elevator elevator;
+	private Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
 	private Scaler scaler;
 	private TeleopScalerController teleopScalerController;

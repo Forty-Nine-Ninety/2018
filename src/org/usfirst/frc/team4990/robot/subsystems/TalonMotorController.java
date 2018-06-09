@@ -2,14 +2,14 @@ package org.usfirst.frc.team4990.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-public class TalonMotorController extends WPI_TalonSRX{
+public class TalonMotorController extends WPI_TalonSRX {
 	
 	/**
 	 * Initialize Talon.
-	 * @param pwmPort PWM port of Talon
+	 * @param canID CAN bus ID of Talon (0 to 63, set it from the web dashboard)
 	 */
-	public TalonMotorController(int pwmPort) {
-		super(pwmPort);
+	public TalonMotorController(int canID) {
+		super(canID);
 	}
 	
 	/**
