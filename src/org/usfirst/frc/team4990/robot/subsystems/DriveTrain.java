@@ -1,13 +1,11 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 public class DriveTrain {
-	public Gearbox leftGearbox;
-	private double leftSetSpeed;
+	public Gearbox left;
+	public Gearbox right;
 	
-	public Gearbox rightGearbox;
-	private double rightSetSpeed;
 	/**
-	 * Includes 4 driving motors and 2 encoders.
+	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
 	 * @param talonMotorController First Left Motor
 	 * @param talonMotorController2 Second Left Motor
 	 * @param rightotor1 First Right Motor
@@ -18,118 +16,53 @@ public class DriveTrain {
 	 * @param rightEncoderChannelB Encoder for right gearbox (just Signal)
 	 * @author Freshman Union
 	 */
-	
-	public DriveTrain(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, TalonMotorController talonMotorController3, TalonMotorController talonMotorController4,
-						int leftEncoderChannelA, int leftEncoderChannelB, 
-						int rightEncoderChannelA, int rightEncoderChannelB) {
-		this.leftGearbox = new Gearbox(talonMotorController, talonMotorController2, leftEncoderChannelA, leftEncoderChannelB);
-		this.rightGearbox = new Gearbox(talonMotorController3, talonMotorController4, rightEncoderChannelA, rightEncoderChannelB);
+	public DriveTrain(Gearbox gearbox, Gearbox gearbox2) {
+		this.left = gearbox;
+		this.right = gearbox2;
 		
-		// The gearbox is backwards
-		this.rightGearbox.swapDirection();
+		// The right gearbox is backwards
+		this.right.fix_backwards = -1.0;
+		// the bot swerves to the right, so slow down left side
+		this.left.compensate = 0.86;
 	}
 	
 	/**
-	 * Sets speed of Left AND Right sides
-	 * @param leftSpeed Set speed for left side, min 0, max 1
-	 * @param rightSpeed Set speed for right side, min 0, max 1
+	 * Sets speed of all drive train motors.
+	 * @param speed speed to set, min -1, max 1 (stop is 0)
+	 */
+	
+	public void setSpeed(double speed) {
+		left.setSpeed(speed);
+		right.setSpeed(speed);
+	}
+	
+	/**
+	 * Sets speed of all drive train motors.
+	 * @param leftSpeed speed to set, min -1, max 1 (stop is 0)
+	 * @param rightSpeed speed to set, min -1, max 1 (stop is 0)
 	 */
 	
 	public void setSpeed(double leftSpeed, double rightSpeed) {
-		setLeftSpeed(leftSpeed);
-		setRightSpeed(rightSpeed);
+		left.setSpeed(leftSpeed);
+		right.setSpeed(rightSpeed);
 	}
 	
-	/**
-	 * Sets robot's left side speed.
-	 * @param leftSpeed Speed to set, min 0, max 1
-	 */
-	
-	public void setLeftSpeed(double leftSpeed) {
-		// the bot swerves to the right, so slow down left side
-		double multiply_constant = 0.86;
-		this.leftSetSpeed = leftSpeed * multiply_constant;
-	}
 	
 	/**
-	 * Sets robot's right side speed.
-	 * @param rightSpeed Speed to set, min 0, max 1
-	 */
-	
-	public void setRightSpeed(double rightSpeed) {
-		this.rightSetSpeed = rightSpeed;
-	}
-	
-	/**
-	 * Acually sets the speeds of the motors.
+	 * Actually sets the speeds of all drive train motors.
 	 */
 	
 	public void update() {
-		this.leftGearbox.setSpeed(this.leftSetSpeed);
-		this.rightGearbox.setSpeed(this.rightSetSpeed);
+		left.motorGroup.set(left.setSpeed * left.compensate * left.fix_backwards);
+		right.motorGroup.set(right.setSpeed * right.compensate * right.fix_backwards);
 	}
 	
 	/**
-	 * Returns left speed that will be set when update() is called
-	 * @return left speed that will be set when update() is called
+	 * Resets left and right encoder distances.
 	 */
-	
-	//TODO: figure out how to scale PWM value to velocity
-	public double getLeftSetSpeed() {
-		return this.leftSetSpeed;
-	}
-	
-	/**
-	 * Returns right speed that will be set when update() is called
-	 * @return right speed that will be set when update() is called
-	 */
-	
-	public double getRightSetSpeed() {
-		return this.rightSetSpeed;
-	}
-	
-	/**
-	 * Returns left gearbox's encoder distance
-	 * @return left gearbox's encoder distance in feet (maybe)
-	 */
-	
-	public double getLeftDistanceTraveled() {
-		return Math.abs(this.leftGearbox.getDistanceTraveled());
-	}
-	
-	/**
-	 * Returns right gearbox's encoder distance
-	 * @return right gearbox's encoder distance (multiply by 1.06517 to get feet)
-	 */
-	
-	public double getRightDistanceTraveled() {
-		return Math.abs(this.rightGearbox.getDistanceTraveled());
-	}
-	
-	/**
-	 * Returns left gearbox's encoder speed
-	 * @return left gearbox's encoder speed
-	 */
-	
-	public double getLeftVelocity() {
-		return this.leftGearbox.getCurrentVelocity();
-	}
-	
-	/**
-	 * Returns right gearbox's encoder speed
-	 * @return right gearbox's encoder speed
-	 */
-	
-	public double getRightVelocity() {
-		return this.rightGearbox.getCurrentVelocity();
-	}
-	
-	/**
-	 * Sets getRightDistance and getLeftDistance to 0. Also, it might reset the encoders. Nobody knows.
-	 */
-	
+
 	public void resetDistanceTraveled() {
-		this.leftGearbox.resetDistanceTraveled();
-		this.rightGearbox.resetDistanceTraveled();
+		left.encoder.reset();
+		right.encoder.reset();
 	}
 }

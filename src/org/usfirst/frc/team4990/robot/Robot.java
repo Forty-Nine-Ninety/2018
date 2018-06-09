@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
+import org.usfirst.frc.team4990.robot.subsystems.Gearbox;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -49,12 +50,15 @@ public class Robot extends IterativeRobot {
     	driveGamepad = new F310Gamepad(0);
     	opGamepad = new F310Gamepad(1);
 
-    	this.driveTrain = new DriveTrain(
-    		new TalonMotorController(0),
-    		new TalonMotorController(1),
-    		new TalonMotorController(2),
-    		new TalonMotorController(3),
-    		0, 1, 2, 3);
+    	this.driveTrain = new DriveTrain( 
+    			new Gearbox(
+    					new TalonMotorController(0),
+    					new TalonMotorController(1),
+    					0, 1),
+    			new Gearbox(
+    				new TalonMotorController(2),
+    				new TalonMotorController(3),
+    				2, 3));
     	
     	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
@@ -192,13 +196,13 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
     
-    	public void dashboardPeriodic() {
+    	public void complexDashboardPeriodic() {
 	    	
 	    	//Other sensor gauges and data
 	    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
 	    	SmartDashboard.putNumber("Analog Infrared Voltage", intake.getAnalogInput());
-	    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
-	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
+	    	SmartDashboard.putNumber("Left Encoder", this.driveTrain.left.getDistanceTraveled());
+	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.right.getDistanceTraveled());
 	    	
 	    	SmartDashboard.putBoolean("Box In", intake.isBoxPosition(Intake.BoxPosition.IN));
 	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
@@ -211,8 +215,8 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
 	    	SmartDashboard.putData("Elevator Encoder",elevator.encoder);
 	    	
-	    	SmartDashboard.putData("Left Drive Encoder",this.driveTrain.leftGearbox.encoder);
-	    	SmartDashboard.putData("Right Drive Encoder",this.driveTrain.rightGearbox.encoder);
+	    	SmartDashboard.putData("Left Drive Encoder",this.driveTrain.left.encoder);
+	    	SmartDashboard.putData("Right Drive Encoder",this.driveTrain.right.encoder);
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
@@ -237,12 +241,10 @@ public class Robot extends IterativeRobot {
 		intake.infrared.setName("Intake", "Infrared");
 		
 		//DriveTrain
-		driveTrain.leftGearbox.motor1.setName("DriveTrain","LeftMotor1");
-		driveTrain.leftGearbox.motor2.setName("DriveTrain","LeftMotor2");
-		driveTrain.rightGearbox.motor1.setName("DriveTrain","RightMotor1");
-		driveTrain.rightGearbox.motor2.setName("DriveTrain","RightMotor2");
-		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
-		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
+		driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
+		driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
+		driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
+		driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
 		
 		//General
 		gyro.setName("General", "Gyro");

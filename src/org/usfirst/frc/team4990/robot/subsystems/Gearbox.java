@@ -3,38 +3,24 @@ package org.usfirst.frc.team4990.robot.subsystems;
 import org.usfirst.frc.team4990.robot.Constants;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 public class Gearbox {
-	public TalonMotorController motor1;
-	public TalonMotorController motor2;
+	public TalonMotorController frontMotor;
+	public TalonMotorController rearMotor;
+	public SpeedControllerGroup motorGroup;
 	
 	public Encoder encoder;
 	
-	private double compensate;
-	private double fix_backwards;
+	public double compensate;
+	public double fix_backwards;
+	public double setSpeed;
 	
-	/**
-	 * Used in ???
-	 * @author Freshman Union
-	 *
-	 */
-	
-	public enum RobotSide {
-		Left, Right
-	}
-	
-	/**
-	 * Initialize gearbox
-	 * @param talonMotorController DIO port for 1st motor
-	 * @param talonMotorController2 DIO port for 2nd motor
-	 * @param encoderChannelA Encoder in gearbox (Signal, Ground and 5v)
-	 * @param encoderChannelB Encoder in gearbox (just Signal)
-	 */
-	
-	public Gearbox(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, int encoderChannelA, int encoderChannelB) {
-		this.motor1 = talonMotorController;
-		this.motor2 = talonMotorController2;
-
+	public Gearbox(TalonMotorController fMotor, TalonMotorController rMotor, int encoderChannelA, int encoderChannelB) {
+		this.frontMotor = fMotor;
+		this.rearMotor = rMotor;
+		this.motorGroup = new SpeedControllerGroup(frontMotor, rearMotor);
+		
 		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
 		
 		this.compensate = 1.0;
@@ -45,53 +31,62 @@ public class Gearbox {
 		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
 	}
 	
+	public void update() {
+		motorGroup.set(setSpeed * compensate * fix_backwards);
+	}
+	
 	public void swapDirection() {
 		this.fix_backwards = (this.fix_backwards > 0.0) ? -1.0 : 1.0;
 	}
 	
 	/**
-	 * Set Speed of gearbox. Use update() to execute.
-	 * @param speed speed from -1 to 1
+	 * Sets speed of robot side
+	 * @param speed Set speed for side, min -1, max 1
 	 */
 	
 	public void setSpeed(double speed) {
-		this.motor1.set(speed * this.compensate * this.fix_backwards);
-		this.motor2.set(speed * this.compensate * this.fix_backwards);
+		this.setSpeed = speed;
 	}
 	
-	public void updateCompensate(double other_dist) {
-		this.compensate = other_dist / this.getDistanceTraveled();
+	public void updateCompensate(double new_dist) {
+		this.compensate = new_dist / getDistanceTraveled();
 	}
 	
-	/*
-	 * returned in ft
-	 */
-
 	/**
-	 * Returns gearbox's encoder's distance in feet
-	 * @return gearbox's encoder's distance in feet
+	 * Returns speed that will be set when update() is called
+	 * @return speed that will be set when update() is called
+	 */
+	
+	public double getSetSpeed() {
+		return this.setSpeed;
+	}
+	
+	/**
+	 * Returns current speed (not changed until new speed is send via update())
+	 * @return current speed (not changed until new speed is send via update())
+	 */
+	
+	public double getSpeed() {
+		return this.motorGroup.get();
+	}
+	
+	/**
+	 * Returns encoder distance in ft?
+	 * @return encoder distance (multiply by 1.06517 to get feet?)
 	 */
 	
 	public double getDistanceTraveled() {
-		return this.encoder.getDistance() * this.fix_backwards;
-	}
-	
-	/*
-	 * returned in ft/s
-	 */
-	
-	/**
-	 * Returns gearbox's encoder's speed in feet per second
-	 * @return gearbox's encoder's speed in feet per second
-	 */
-	
-	public double getCurrentVelocity() {
-		return this.encoder.getRate() * this.fix_backwards;
+		return Math.abs(this.encoder.getDistance());
 	}
 	
 	/**
-	 * Resets gearbox's encoder. Sets distance to 0.
+	 * Returns left gearbox's encoder speed in feet per sec
+	 * @return left gearbox's encoder speed
 	 */
+	
+	public double getVelocity() {
+		return Math.abs(this.encoder.getRate());
+	}
 	
 	public void resetDistanceTraveled() {
 		this.encoder.reset();

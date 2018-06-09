@@ -180,9 +180,9 @@ public class AutoDriveTrainScripter {
 				gyro.reset();
 			}
 			public void update() {
-				this.currentDistanceTraveled = (distance > 0) ? -this.dt.getRightDistanceTraveled() * 1.06517 : this.dt.getRightDistanceTraveled() * 1.06517;
+				this.currentDistanceTraveled = (distance > 0) ? -this.dt.right.getDistanceTraveled() * 1.06517 : this.dt.right.getDistanceTraveled() * 1.06517;
 
-				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
+				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.right.getDistanceTraveled() + this.dt.left.getDistanceTraveled());
 				if (currentDistanceTraveled < this.distanceToGo) { //not at goal yet
 					this.dt.setSpeed(baseMotorPower + (0.1 * (startingGyro - gyro.getAngle())), baseMotorPower - (0.1 * (startingGyro - gyro.getAngle()))); //TODO: find proportional values (right now 0.1) for drive train
 				} else {
