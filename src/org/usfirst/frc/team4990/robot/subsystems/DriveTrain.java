@@ -1,8 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 public class DriveTrain {
-	public Gearbox left;
-	public Gearbox right;
+	public Gearbox left, right;
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!

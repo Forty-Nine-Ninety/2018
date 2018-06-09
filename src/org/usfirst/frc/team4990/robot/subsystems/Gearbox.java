@@ -6,15 +6,12 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 public class Gearbox {
-	public TalonMotorController frontMotor;
-	public TalonMotorController rearMotor;
+	public TalonMotorController frontMotor, rearMotor;
 	public SpeedControllerGroup motorGroup;
 	
 	public Encoder encoder;
 	
-	public double compensate;
-	public double fix_backwards;
-	public double setSpeed;
+	public double compensate, fix_backwards, setSpeed;
 	
 	public Gearbox(TalonMotorController fMotor, TalonMotorController rMotor, int encoderChannelA, int encoderChannelB) {
 		this.frontMotor = fMotor;
