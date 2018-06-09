@@ -67,6 +67,11 @@ public class Gearbox {
 		return this.motorGroup.get();
 	}
 	
+	public void clearStickyFaults() {
+		frontMotor.clearStickyFaults(0);
+		rearMotor.clearStickyFaults(0);
+	}
+	
 	/**
 	 * Returns encoder distance in ft?
 	 * @return encoder distance (multiply by 1.06517 to get feet?)
