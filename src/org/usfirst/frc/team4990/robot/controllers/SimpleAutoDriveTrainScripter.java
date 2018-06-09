@@ -144,12 +144,12 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		this.init(startP); 
 		
 	}
-		// super.init should be last
-		super.init();
+		// super.initialize should be last
+		super.initialize();
 	}
 
 	public void update() {
-		super.update();
+		super.execute();
 	}
 
 }

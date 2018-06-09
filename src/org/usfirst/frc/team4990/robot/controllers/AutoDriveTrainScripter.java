@@ -27,18 +27,18 @@ public class AutoDriveTrainScripter {
 		/**
 		 * Called when the command starts; resets sensors and things
 		 */
-		public void init();
+		public void initialize();
 
 		/**
 		 * Called every time the other updates are called; Makes sure that it isn't completed yet
 		 */
-		public void update();
+		public void execute();
 
 		/**
 		 * 
 		 * @return Returns false if the command isn't done and true if it is.
 		 */
-		public boolean done();
+		public boolean isFinished();
 	}
 
 	private Queue<CommandPackage> commands = new LinkedList<>();
@@ -71,23 +71,23 @@ public class AutoDriveTrainScripter {
 	/**
 	 * Starts first instruction if it exists;
 	 */
-	public void init() {
+	public void initialize() {
 		// needs to be called once when auto starts
 		CommandPackage top = commands.peek();
 		if(top == null) return;
 
-		top.init();
+		top.initialize();
 	}
 	
 	/**
-	 * Updates instruction if not done; if done then starts next instruction
+	 * executes instruction if not done; if done then starts next instruction
 	 */
-	public void update() {
+	public void execute() {
 		CommandPackage top = commands.peek();
 		if(top == null) return;
 
-		if(!top.done() ) {
-			top.update();
+		if(!top.isFinished() ) {
+			top.execute();
 		}
 		else {
 			commands.remove();
@@ -96,8 +96,8 @@ public class AutoDriveTrainScripter {
 			// but I don't want to take the risk
 			top = commands.peek();
 			if(top == null) return;
-			top.init();
-			top.update();
+			top.initialize();
+			top.execute();
 		}
 	}
 	
@@ -110,42 +110,44 @@ public class AutoDriveTrainScripter {
 		RIGHT,
 		LEFT
 	}
-	//------ Begin commands ------
+	
+	//------ Begin commands ------//
+	
 	/**
 	 * Makes robot wait
 	 * @param time Time to wait for in milliseconds
 	 */
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
-			private boolean done;
+			private boolean isFinished;
 			private long duration;
 			private long startMillis;
 
 			public W_Package(double t) {
 				this.duration = (long) t;
-				this.done = false;
+				this.isFinished = false;
 			}
 			/**
 			 * Clears time
 			 */
-			public void init() {
+			public void initialize() {
 				this.startMillis = System.currentTimeMillis();
 				System.out.println("wait(" + duration + ")");
 			}
 			/**
-			 * Sets done to true if time is up
+			 * Sets isFinished to true if time is up
 			 */
-			public void update() {
+			public void execute() {
 				if (startMillis + duration <= System.currentTimeMillis()) {
 					//done waiting!
-					this.done = true;
+					this.isFinished = true;
 				}
 			}
 			/**
 			 * Returns whether the command is done or not
 			 */
-			public boolean done() {
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 
@@ -159,7 +161,7 @@ public class AutoDriveTrainScripter {
 		class gyroStraight_Package implements CommandPackage {
 			private double distanceToGo;
 			private double startingGyro;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private double baseMotorPower;
@@ -167,33 +169,32 @@ public class AutoDriveTrainScripter {
 
 			public gyroStraight_Package(DriveTrain dt, ADXRS450_Gyro gyro, double distance) {
 				//Remember that the right motor is the slow one
-				this.done = false;
+				this.isFinished = false;
 				this.dt = dt;
 				this.gyro = gyro;
 				this.distanceToGo = distance;
 				this.startingGyro = 0;
 				this.baseMotorPower = 0.3;
 			}
-			public void init() {
+			public void initialize() {
 				System.out.println("gyroStraight(" + distance + ")");
 				this.dt.resetDistanceTraveled();
 				gyro.reset();
 			}
-			public void update() {
+			public void execute() {
 				this.currentDistanceTraveled = (distance > 0) ? -this.dt.right.getDistanceTraveled() * 1.06517 : this.dt.right.getDistanceTraveled() * 1.06517;
 
 				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.right.getDistanceTraveled() + this.dt.left.getDistanceTraveled());
 				if (currentDistanceTraveled < this.distanceToGo) { //not at goal yet
 					this.dt.setSpeed(baseMotorPower + (0.1 * (startingGyro - gyro.getAngle())), baseMotorPower - (0.1 * (startingGyro - gyro.getAngle()))); //TODO: find proportional values (right now 0.1) for drive train
 				} else {
-					this.done = true;
+					this.isFinished = true;
 					this.dt.setSpeed(0, 0);
 				}
 			}
 			
-			public boolean done() {
-				
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		commands.add(new gyroStraight_Package(dt, gyro, distance));
@@ -206,7 +207,7 @@ public class AutoDriveTrainScripter {
 	public void straightToSwitch() {
 		class straightToSwitch_Package implements CommandPackage {
 			private double startingGyro;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private Ultrasonic ultrasonic;
@@ -217,7 +218,7 @@ public class AutoDriveTrainScripter {
 
 			public straightToSwitch_Package(DriveTrain dt, ADXRS450_Gyro gyro, Ultrasonic ultrasonic) {
 				//Remember that the right motor is the slow one
-				this.done = false;
+				this.isFinished = false;
 				this.dt = dt;
 				this.gyro = gyro;
 				this.ultrasonic = ultrasonic;
@@ -225,12 +226,12 @@ public class AutoDriveTrainScripter {
 				this.baseMotorPower = 0.3;
 			}
 			
-			public void init() {
+			public void initialize() {
 				System.out.println("straightToSwitch()");
 				this.dt.resetDistanceTraveled();
 				gyro.reset();
 			}
-			public void update() {
+			public void execute() {
 				this.currentGyroData = gyro.getAngle();
 				System.out.println("current ultrasonic distance: " + ultrasonic.getRangeInches());
 				
@@ -244,14 +245,13 @@ public class AutoDriveTrainScripter {
 					}
 					this.dt.setSpeed(this.leftMotorAdjust, this.baseMotorPower);
 				} else {
-					this.done = true;
+					this.isFinished = true;
 					this.dt.setSpeed(0, 0);
 				}
 			}
 			
-			public boolean done() {
-				
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		commands.add(new straightToSwitch_Package(dt, gyro, ultrasonic));
@@ -264,7 +264,7 @@ public class AutoDriveTrainScripter {
 	public void gyroTurn(double inputDegrees) {
 		class gyroTurn_Package implements CommandPackage {
 			private double degrees;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 
@@ -272,16 +272,16 @@ public class AutoDriveTrainScripter {
 				// please note that the right encoder is backwards
 				this.dt = d;
 				this.degrees = classdegrees;
-				this.done = false;
+				this.isFinished = false;
 				gyro = g;
 			}
 
-			public void init() {
+			public void initialize() {
 				this.gyro.reset();
 				System.out.println("gyroTurn(" + degrees + ")");
 			}
 
-			public void update() {
+			public void execute() {
 				
 				double currentDegreesTraveled = Math.abs(gyro.getAngle());
 				System.out.println("Current angle: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
@@ -295,12 +295,12 @@ public class AutoDriveTrainScripter {
 							); // left needs to go forwards, right needs to go backwards to turn right	
 				} else {
 					this.dt.setSpeed(0, 0);
-					this.done = true;
+					this.isFinished = true;
 				}
 			}
 			
-			public boolean done() {
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees));
@@ -311,35 +311,34 @@ public class AutoDriveTrainScripter {
 	public void intakeOut() {
 		class IntakeOUT_Package implements CommandPackage {
 			private Intake intake;
-			private boolean done;
+			private boolean isFinished;
 			private double speed = -0.6;
 			
 			public IntakeOUT_Package(Intake i) {
 				this.intake = i;
-				this.done = false;
+				this.isFinished = false;
 			}
 			
-			public void init() {
+			public void initialize() {
 				//nothing.
 			}
 			
-			public void update() {
+			public void execute() {
 				BoxPosition boxPos = intake.getBoxPosition();
 				if (boxPos.equals(BoxPosition.OUT)) {
-					done = true;
+					isFinished = true;
 				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.IN)) {
 					intake.setSpeed(speed);
 
 				}
-				
+				if (this.isFinished) {
+					intake.stop();
+				}
 				intake.update();
 			}
 			
-			public boolean done() {
-				if (this.done) {
-					intake.stop();
-				}
-				return done;
+			public boolean isFinished() {
+				return isFinished;
 			}
 		}
 		
@@ -351,35 +350,34 @@ public class AutoDriveTrainScripter {
 	public void intakeIn() {
 		class IntakeIN_Package implements CommandPackage {
 			private Intake intake;
-			private boolean done;
+			private boolean isFinished;
 			private double speed = 0.6;
 			
 			public IntakeIN_Package(Intake i) {
 				this.intake = i;
-				this.done = false;
+				this.isFinished = false;
 			}
 			
-			public void init() {
+			public void initialize() {
 				//nothing.
 			}
 			
-			public void update() {
+			public void execute() {
 				BoxPosition boxPos = intake.getBoxPosition();
 				if (boxPos.equals(BoxPosition.IN)) {
-					done = true;
+					isFinished = true;
 				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.OUT)) {
 					intake.setSpeed(speed);
 
 				}
-				
+				if (this.isFinished) {
+					intake.stop();
+				}
 				intake.update();
 			}
 			
-			public boolean done() {
-				if (this.done) {
-					intake.stop();
-				}
-				return done;
+			public boolean isFinished() {
+				return isFinished;
 			}
 		}
 		
@@ -393,35 +391,36 @@ public class AutoDriveTrainScripter {
 	public void moveElevator(double distance) { 
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
-			private boolean done;
+			private boolean isFinished;
 			private PIDController elevatorPID;
 			
 			public Elevator_package(double dist, Elevator e) {
 				this.elevator = e;
-				this.done = false;
+				this.isFinished = false;
 				this.elevatorPID = e.elevatorPID;
 			}
 			
-			public void init() {
+			public void initialize() {
 				elevator.resetEncoderDistance();
 				elevatorPID.enable();
 			}
 			
-			public void update() {
+			public void execute() {
 				elevator.setElevatorPower(elevatorPID.get());
 					
-				if (elevatorPID.onTarget()){ //done
-					done = true;
+				if (elevatorPID.onTarget()){ //isFinished
+					isFinished = true;
 					elevatorPID.disable();
+				}
+				
+				if (this.isFinished) {
+					elevator.setElevatorPower(0);
 				}
 				
 			}
 			
-			public boolean done() {
-				if (this.done) {
-					elevator.setElevatorPower(0);
-				}
-				return done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		
@@ -437,7 +436,7 @@ public class AutoDriveTrainScripter {
 	
 	public void moveElevatorTime(double time, double power) { //time is in milliseconds
 		class EW_Package implements CommandPackage {
-			private boolean done;
+			private boolean isFinished;
 			private long duration;
 			private double power;
 			private long startMillis;
@@ -446,32 +445,32 @@ public class AutoDriveTrainScripter {
 			public EW_Package(double t, double power_input, Elevator elevator) {
 				this.duration = (long) t;
 				this.power = power_input;
-				this.done = false;
+				this.isFinished = false;
 				this.elevator = elevator;
 			}
 			/**
 			 * Clears time
 			 */
-			public void init() {
+			public void initialize() {
 				this.startMillis = System.currentTimeMillis();
 				System.out.println("moveElevatorTime(" + duration + ")");
 				elevator.setElevatorPower(power);
 			}
 			/**
-			 * Sets done to true if time is up
+			 * Sets isFinished to true if time is up
 			 */
-			public void update() {
+			public void execute() {
 				if (startMillis + duration <= System.currentTimeMillis()) {
 					//done waiting!
 					elevator.setElevatorPower(0);
-					this.done = true;
+					this.isFinished = true;
 				}
 			}
 			/**
 			 * Returns whether the command is done or not
 			 */
-			public boolean done() {
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 
