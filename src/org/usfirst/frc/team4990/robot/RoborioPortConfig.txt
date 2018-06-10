@@ -4,13 +4,13 @@ CAN Bus IDs:
 2: Drive Train B
 3: Drive Train C
 4: Drive Train D
-5: Elevator Motor B
+5: 
 6: Elevator Motor A
 7: Intake Motor B
 8: Intake Motor A
 9: Scaler Motor
 ...
-60: PDP
+0: PDP
 
 DIO Ports
 0: leftEncoderChannelA
