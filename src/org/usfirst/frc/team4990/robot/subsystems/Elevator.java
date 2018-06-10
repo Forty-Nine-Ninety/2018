@@ -75,7 +75,7 @@ public class Elevator {
 		} else {
 			System.out.println(this.elevatorMotorB.getPower());
 			this.elevatorMotorA.setPower(-power);
-			this.elevatorMotorB.setPower(power);
+			this.elevatorMotorB.setPower((power * 0.9) + stopFallingSpeed);
 			if (power == 0 && ! stopped) {
 				resetEncoderDistance();
 				stopped = true;
