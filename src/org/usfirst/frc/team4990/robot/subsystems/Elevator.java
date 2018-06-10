@@ -1,16 +1,16 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.Constants;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 
-public class Elevator {
-	public TalonMotorController elevatorMotorA, elevatorMotorB;
+public class Elevator{
+	public TalonSRX elevatorMotor;
+	
+	private ElevatorEncoder elevatorEncoder;
 	
 	public LimitSwitch topSwitch, bottomSwitch;
-	
-	public Encoder encoder;
 	
 	private double stopFallingSpeed = 0.05;
 	
@@ -33,25 +33,17 @@ public class Elevator {
 	 */
 	
 	public Elevator(
-			TalonMotorController elevatorMotorA, 
-			TalonMotorController elevatorMotorB,
+			TalonSRX elevatorMotor, 
 			int topSwitchChannel, 
-			int bottomSwitchChannel, 
-			int encoderChannelA, 
-			int encoderChannelB) {
-		this.elevatorMotorA = elevatorMotorA;
-		this.elevatorMotorB = elevatorMotorB;
+			int bottomSwitchChannel) {
+		this.elevatorMotor = elevatorMotor;
+		this.elevatorEncoder = new ElevatorEncoder(this);
 		
 		this.topSwitch = new LimitSwitch(topSwitchChannel);
 		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel);
 		
-		encoder = new Encoder(encoderChannelA, encoderChannelB);
-		this.encoder.setDistancePerPulse(1.16 * Math.PI / Constants.pulsesPerRevolution); //diameter of elevator chain gear * PI
-		this.encoder.setMinRate(Constants.gearboxEncoderMinRate);
-		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
-		
 		//for elevator PID goToPosition
-		elevatorPID = new PIDController(1, 0, 0, encoder, new ElevatorPID(this));
+		//elevatorPID = new PIDController(1, 0, 0, elevatorEncoder, elevatorMotor);
 		elevatorPID.setInputRange(0, 4.8); //minimumInput, maximumInput
 		elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
 		elevatorPID.setAbsoluteTolerance(doneTolerance);
@@ -64,14 +56,12 @@ public class Elevator {
 	
 	public void setElevatorPower(double power) {
 		if ((this.topSwitch.getValue() && power > 0) || (this.bottomSwitch.getValue() && power < 0)) {
-			this.elevatorMotorA.setPower(0.0);
-			this.elevatorMotorB.setPower(0.0);
+			this.elevatorMotor.set(ControlMode.PercentOutput,0.0);
 			resetEncoderDistance();
 			stopped = true;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			this.elevatorMotorA.setPower(-power);
-			this.elevatorMotorB.setPower((power * 0.9) + stopFallingSpeed);
+			this.elevatorMotor.set(ControlMode.PercentOutput,-(power * 0.9) + stopFallingSpeed); //TODO: check this calculation
 			if (power == 0 && ! stopped) {
 				resetEncoderDistance();
 				stopped = true;
@@ -98,9 +88,8 @@ public class Elevator {
 		}
 		
 		//check limit switches, stop motors if going toward danger
-		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorA.getPower() < 0)) {
-			this.elevatorMotorA.setPower(0.0);
-			this.elevatorMotorB.setPower(0.0);
+		if ((this.topSwitch.getValue() && this.elevatorMotor.getMotorOutputPercent() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotor.getMotorOutputPercent() < 0)) {
+			this.elevatorMotor.set(ControlMode.PercentOutput, 0);
 			resetEncoderDistance();
 			stopped = true;
 			System.out.println("Elevator Safety Triggered in update");
@@ -140,7 +129,7 @@ public class Elevator {
 	 */
 	
 	public double getEncoderDistance() {
-		return encoder.getDistance();
+		return 0;//encoder.getDistance();
 	}
 	
 	/**
@@ -148,6 +137,6 @@ public class Elevator {
 	 */
 	
 	public void resetEncoderDistance() {
-		this.encoder.reset();
+		//this.encoder.reset();
 	}
 }

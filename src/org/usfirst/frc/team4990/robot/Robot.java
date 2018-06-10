@@ -9,6 +9,7 @@ import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.S
 import org.usfirst.frc.team4990.robot.subsystems.*;
 import org.usfirst.frc.team4990.robot.subsystems.Gearbox;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -72,12 +73,9 @@ public class Robot extends IterativeRobot {
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
     	elevator = new Elevator(
-    			new TalonMotorController(5), //Motor elevatorMotorA
-    			new TalonMotorController(4), //Motor elevatorMotorB
+    			new TalonSRX(6), //Motor elevatorMotorA
     			6, //int topSwitchChannel (DIO)
-    			7, //int bottomSwitchChannel (DIO)
-    			8, //int Encoder DIO port A
-    			9); //int Encoder DIO port B
+    			7); //int bottomSwitchChannel (DIO)
     	
     	teleopElevatorController = new TeleopElevatorController(elevator,
     			opGamepad, //gamepad to control elevator
@@ -220,7 +218,7 @@ public class Robot extends IterativeRobot {
 
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-	    	SmartDashboard.putData("Elevator Encoder",elevator.encoder);
+	    	
 	    	
 	    	SmartDashboard.putData("Left Drive Encoder",this.driveTrain.left.encoder);
 	    	SmartDashboard.putData("Right Drive Encoder",this.driveTrain.right.encoder);
@@ -238,9 +236,7 @@ public class Robot extends IterativeRobot {
 	
 	public void liveWindowInit() {
 		//Elevator
-		elevator.encoder.setName("Elevator","Encoder");
-		elevator.elevatorMotorA.setName("Elevator","MotorA");
-		elevator.elevatorMotorB.setName("Elevator","MotorB");
+		//elevator.elevatorMotor.setName("Elevator","Motor");
 		
 		//Intake
 		intake.motorL.setName("Intake", "LeftMotor");
