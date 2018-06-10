@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
@@ -11,11 +14,10 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Ultrasonic;
-
-import java.util.LinkedList;
-import java.util.Queue;
 
 //You shouldn't mess with this if you don't know what you're doing
 
@@ -312,7 +314,7 @@ public class AutoDriveTrainScripter {
 	}
 	
 	public void ahrsTurn(double heading) {
-		class AhrsTurn_Package implements CommandPackage {
+		class AhrsTurn_Package implements CommandPackage, PIDSource, PIDOutput {
 			private AHRS ahrs;
 			private DriveTrain dt;
 			private double maxSpeed = 0.65;
@@ -323,6 +325,8 @@ public class AutoDriveTrainScripter {
 			private double kI = 0;
 			private double kD = 0;
 			
+			private PIDSourceType pidSourceType = PIDSourceType.kRate;
+			
 			public AhrsTurn_Package(AHRS ahrs_input, DriveTrain dt_input, double heading_input) {
 				this.ahrs = ahrs_input;
 				this.dt = dt_input;
@@ -330,31 +334,51 @@ public class AutoDriveTrainScripter {
 			}
 			
 			public void initialize() {
-				yawPIDController = new PIDController(kP, kI, kD, ahrs, dt);
+				
+				yawPIDController = new PIDController(kP, kI, kD, this, this);
 				yawPIDController.setInputRange(-180f, 180f);
-				ahrs.setPIDSourceType(PIDSourceType.kRate);
+				//ahrs.setPIDSourceType(PIDSourceType.kRate);
 				yawPIDController.setSetpoint(heading);
-				yawPIDController.setContinuous(true);
 		        yawPIDController.setOutputRange(-maxSpeed, maxSpeed);
 		        yawPIDController.setAbsoluteTolerance(3);
+		        yawPIDController.setContinuous(true);
 		        yawPIDController.enable();
-		        if (ahrs.isConnected() && !ahrs.isCalibrating()) {
-		        	ahrs.zeroYaw();
-		        }
+		        //ahrs.zeroYaw();
 			}
 
 			public void execute() {
 				if (yawPIDController.onTarget()) { //go straight
 					dt.setSpeed(0);
-				} else if (yawPIDController.getError() > 0) { //turn right?
+				} else if (yawPIDController.get() > 0) { //turn right?
 					dt.setSpeed(regSpeed + yawPIDController.get(), regSpeed - yawPIDController.get()); 
-				} else if (yawPIDController.getError() < 0) {//turn left?
+				} else if (yawPIDController.get() < 0) {//turn left?
 					dt.setSpeed(regSpeed - yawPIDController.get(), regSpeed + yawPIDController.get());
 				}
 			}
 
 			public boolean isFinished() {
 				return yawPIDController.onTarget();
+			}
+
+			@Override
+			public void pidWrite(double output) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {
+				pidSourceType = pidSource;
+			}
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return pidSourceType;
+			}
+
+			@Override
+			public double pidGet() {
+				return ahrs.getAngle();
 			}
 		}
 		commands.add(new AhrsTurn_Package(ahrs, dt, heading));

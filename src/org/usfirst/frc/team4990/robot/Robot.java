@@ -174,6 +174,7 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
     		testScripter.update();
     		//teleopPeriodic();
+    		System.out.println(ahrs.getAngle());
     }
     
     /**

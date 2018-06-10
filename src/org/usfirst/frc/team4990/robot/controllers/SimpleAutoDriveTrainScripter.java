@@ -141,7 +141,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	if (DriverStation.getInstance().isTest()) {
 		//This is for debugging
 		//To run this code, start the robot in TEST mode. 
-
+		
 		ahrsTurn(90);
 		
 		// end debugging
