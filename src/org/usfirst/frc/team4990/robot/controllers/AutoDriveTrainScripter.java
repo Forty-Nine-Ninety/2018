@@ -2,6 +2,7 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
+import org.usfirst.frc.team4990.robot.subsystems.AHRSPIDSource;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
@@ -330,6 +331,7 @@ public class AutoDriveTrainScripter {
 			
 			public void initialize() {
 				yawPIDController = new PIDController(kP, kI, kD, ahrs, dt);
+				yawPIDController = new PIDController(kP, kI, kD, new AHRSPIDSource(ahrs), dt);
 				yawPIDController.setInputRange(-180f, 180f);
 				yawPIDController.setSetpoint(heading);
 				yawPIDController.setContinuous(true);
