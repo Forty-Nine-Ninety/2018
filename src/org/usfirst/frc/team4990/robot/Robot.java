@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot {
 	public AHRS ahrs;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
-	//private SimpleAutoDriveTrainScripter testScripter;
+	private SimpleAutoDriveTrainScripter testScripter;
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot {
     			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
     	
-    scaler = new Scaler(new TalonMotorController(9));
+    	scaler = new Scaler(new TalonMotorController(9));
     		
     	teleopScalerController = new TeleopScalerController(scaler, opGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
     			
@@ -166,14 +166,14 @@ public class Robot extends IterativeRobot {
     
     public void testInit() { //TODO add commands for testing
     		liveWindowInit();
-    		//testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
-    		//testScripter.init();
-    		teleopInit();
+    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator, ultrasonic, ahrs);
+    		testScripter.initialize();
+    		//teleopInit();
     }
     
     public void testPeriodic() {
-    		//testScripter.update();
-    		teleopPeriodic();
+    		testScripter.update();
+    		//teleopPeriodic();
     }
     
     /**

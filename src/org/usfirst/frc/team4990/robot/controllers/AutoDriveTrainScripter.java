@@ -330,6 +330,7 @@ public class AutoDriveTrainScripter {
 			
 			public void initialize() {
 				yawPIDController = new PIDController(kP, kI, kD, ahrs, dt);
+				yawPIDController.setInputRange(-180f, 180f);
 				yawPIDController.setSetpoint(heading);
 				yawPIDController.setContinuous(true);
 		        yawPIDController.setOutputRange(-maxSpeed, maxSpeed);
