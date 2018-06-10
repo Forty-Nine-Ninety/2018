@@ -56,18 +56,18 @@ public class Robot extends IterativeRobot {
 
     	this.driveTrain = new DriveTrain( 
     			new Gearbox(
-    					new TalonMotorController(0),
     					new TalonMotorController(1),
+    					new TalonMotorController(2),
     					0, 1),
     			new Gearbox(
-    				new TalonMotorController(2),
     				new TalonMotorController(3),
+    				new TalonMotorController(4),
     				2, 3));
     	
     	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
-    	intake = new Intake(new TalonMotorController(7), 
-    			new TalonMotorController(6), 
+    	intake = new Intake(new TalonMotorController(8), 
+    			new TalonMotorController(7), 
     			new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot {
     			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
     	
-    scaler = new Scaler(new TalonMotorController(8));
+    scaler = new Scaler(new TalonMotorController(9));
     		
     	teleopScalerController = new TeleopScalerController(scaler, opGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
     			

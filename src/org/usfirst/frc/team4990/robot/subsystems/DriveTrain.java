@@ -24,7 +24,7 @@ public class DriveTrain implements PIDOutput {
 		// The right gearbox is backwards
 		this.right.fix_backwards = -1.0;
 		// the bot swerves to the right, so slow down left side
-		this.left.compensate = 0.86;
+		this.left.compensate = 0.9;
 	}
 	
 	/**

@@ -42,7 +42,8 @@ public class Elevator implements PIDSource, PIDOutput{
 		this.topSwitch = new LimitSwitch(topSwitchChannel);
 		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel);
 		
-		elevatorPID.setContinuous(); //minimumInput, maximumInput
+		this.elevatorPID.setInputRange(-180f, 180f);
+		this.elevatorPID.setContinuous(true);; //minimumInput, maximumInput
 		this.elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
 		this.elevatorPID.setAbsoluteTolerance(doneTolerance);
 	}
