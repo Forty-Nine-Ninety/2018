@@ -12,6 +12,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.util.LinkedList;
@@ -331,14 +332,16 @@ public class AutoDriveTrainScripter {
 			
 			public void initialize() {
 				yawPIDController = new PIDController(kP, kI, kD, ahrs, dt);
-				yawPIDController = new PIDController(kP, kI, kD, new AHRSPIDSource(ahrs), dt);
 				yawPIDController.setInputRange(-180f, 180f);
+				ahrs.setPIDSourceType(PIDSourceType.kRate);
 				yawPIDController.setSetpoint(heading);
 				yawPIDController.setContinuous(true);
 		        yawPIDController.setOutputRange(-maxSpeed, maxSpeed);
 		        yawPIDController.setAbsoluteTolerance(3);
 		        yawPIDController.enable();
-		        ahrs.zeroYaw();
+		        if (ahrs.isConnected() && !ahrs.isCalibrating()) {
+		        	ahrs.zeroYaw();
+		        }
 			}
 
 			public void execute() {

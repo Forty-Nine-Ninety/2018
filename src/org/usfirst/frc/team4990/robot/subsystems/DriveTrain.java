@@ -68,7 +68,7 @@ public class DriveTrain implements PIDOutput {
 	}
 
 	public void pidWrite(double output) {
-		setSpeed(output);
-		
+		//setSpeed(output);
+		//speed set somewhere else!
 	}
 }
