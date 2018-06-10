@@ -78,7 +78,7 @@ public class Robot extends IterativeRobot {
     	
     scaler = new Scaler(new TalonMotorController(8));
     		
-    	teleopScalerController = new TeleopScalerController(scaler, opGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
+    	teleopScalerController = new TeleopScalerController(scaler, driveGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
     			
 
     	//~~~~ Sensor Init & Details ~~~~
@@ -188,6 +188,8 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Box", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
+	    	SmartDashboard.putNumber("Elevator Power", elevator.elevatorMotorB.getPower());
+	    	SmartDashboard.putNumber("ultrasonic", ultrasonic.getRangeInches());
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
@@ -246,6 +248,7 @@ public class Robot extends IterativeRobot {
 		
 		//General
 		gyro.setName("General", "Gyro");
+		ultrasonic.setName("General", "Gyro");
 	}
 	
 	public void controllerCheck() {

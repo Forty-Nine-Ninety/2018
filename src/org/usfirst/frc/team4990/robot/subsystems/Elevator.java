@@ -15,7 +15,7 @@ public class Elevator {
 	
 	public Encoder encoder;
 	
-	private double stopFallingSpeed = 0.05;
+	private double stopFallingSpeed = -0.1;
 	
 	private boolean stopped = false;
 	
@@ -73,6 +73,7 @@ public class Elevator {
 			stopped = true;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
+			System.out.println(this.elevatorMotorB.getPower());
 			this.elevatorMotorA.setPower(-power);
 			this.elevatorMotorB.setPower(power);
 			if (power == 0 && ! stopped) {
@@ -99,6 +100,13 @@ public class Elevator {
 			} 
 		}
 		
+		//if stopped, use encoders to run motors to stop intake from falling
+		/*if (this.elevatorMotorA.getPower() == 0 || this.elevatorMotorA.getPower() == stopFallingSpeed) {
+				setElevatorPower(stopFallingSpeed);
+			} else {
+				setElevatorPower(0.0);
+			}*/
+		
 		//check limit switches, stop motors if going toward danger
 		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorA.getPower() < 0)) {
 			this.elevatorMotorA.setPower(0.0);
@@ -107,14 +115,6 @@ public class Elevator {
 			stopped = true;
 			System.out.println("Elevator Safety Triggered in update");
 		}
-		
-		//if stopped, use encoders to run motors to stop intake from falling
-		if (this.elevatorMotorA.getPower() == 0 || this.elevatorMotorA.getPower() == stopFallingSpeed)
-			if (Math.abs(getEncoderDistance()) > 0.01) {
-				setElevatorPower(stopFallingSpeed);
-			} else {
-				setElevatorPower(0.0);
-			}
 		
 	}
 	

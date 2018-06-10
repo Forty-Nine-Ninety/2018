@@ -311,7 +311,7 @@ public class AutoDriveTrainScripter {
 				this.gyro = gyro;
 				this.distanceToGo = distance;
 				this.startingGyro = 0;
-				this.baseMotorPower = 0.3;
+				this.baseMotorPower = 0.6;
 			}
 			public void init() {
 				System.out.println("gyroStraight(" + distance + ")");
@@ -326,12 +326,12 @@ public class AutoDriveTrainScripter {
 				if (currentDistanceTraveled < this.distanceToGo) {
 					
 					if (this.currentGyroData > this.startingGyro) {
-						this.leftMotorAdjust = this.baseMotorPower - 0.064023; //add to number to go more LEFT
+						this.leftMotorAdjust = this.baseMotorPower + 0.064023; //add to number to go more LEFT
 					} else if (this.currentGyroData < this.startingGyro) {
-						this.leftMotorAdjust = this.baseMotorPower + 0.05;
+						this.leftMotorAdjust = this.baseMotorPower - 0.05;
 
 					}
-					this.dt.setSpeed(this.leftMotorAdjust, this.baseMotorPower);
+					this.dt.setSpeed(this.baseMotorPower, this.baseMotorPower);
 				} else {
 					this.done = true;
 					this.dt.setSpeed(0, 0);
@@ -344,6 +344,61 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		commands.add(new gyroStraight_Package(dt, gyro, distance));
+	}
+	
+	public void gyroStraightBackwards(double distance) {
+		class gyroStraight_Packageb implements CommandPackage {
+			private double distanceToGo;
+			private double startingGyro;
+			private boolean done;
+			private DriveTrain dt;
+			private ADXRS450_Gyro gyro;
+			private double baseMotorPower;
+			private double currentGyroData;
+			private double leftMotorAdjust;
+			private double currentDistanceTraveled;
+
+
+			public gyroStraight_Packageb(DriveTrain dt, ADXRS450_Gyro gyro, double distance) {
+				//Remember that the right motor is the slow one
+				this.done = false;
+				this.dt = dt;
+				this.gyro = gyro;
+				this.distanceToGo = distance;
+				this.startingGyro = 0;
+				this.baseMotorPower = 0.1;
+			}
+			public void init() {
+				System.out.println("gyroStraight(" + distance + ")");
+				this.dt.resetDistanceTraveled();
+				gyro.reset();
+			}
+			public void update() {
+				this.currentDistanceTraveled = Math.abs(this.dt.getRightDistanceTraveled()) * 1.06517;
+				this.currentGyroData = gyro.getAngle();
+
+				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
+				if (currentDistanceTraveled > this.distanceToGo) {
+					
+					/*if (this.currentGyroData < this.startingGyro) {
+						this.leftMotorAdjust = this.baseMotorPower - 0.64; //add to number to go more LEFT
+					} else if (this.currentGyroData > this.startingGyro) {
+						this.leftMotorAdjust = this.baseMotorPower + 0.05;
+
+				} */
+					this.dt.setSpeed(this.baseMotorPower * (1/0.86), this.baseMotorPower);
+				} else {
+					this.done = true;
+					this.dt.setSpeed(0, 0);
+				}
+			}
+			
+			public boolean done() {
+				
+				return this.done;
+			}
+		}
+		commands.add(new gyroStraight_Packageb(dt, gyro, distance));
 	}
 	
 	/**
@@ -464,28 +519,29 @@ public class AutoDriveTrainScripter {
 	/**
 	 * Makes intake throw whatever is inside out
 	 */
-	public void intakeOut() {
+	public void intakeOut(double duration) {
 		class IntakeOUT_Package implements CommandPackage {
 			private Intake intake;
 			private boolean done;
 			private double speed = -0.6;
+			private double startMillis;
+			private double duration;
 			
-			public IntakeOUT_Package(Intake i) {
+			public IntakeOUT_Package(double duration, Intake i) {
 				this.intake = i;
 				this.done = false;
+				this.duration = duration;
 			}
 			
 			public void init() {
-				//nothing.
+				this.startMillis = System.currentTimeMillis();
 			}
 			
 			public void update() {
-				BoxPosition boxPos = intake.getBoxPosition();
-				if (boxPos.equals(BoxPosition.OUT)) {
+				if (startMillis + duration <= System.currentTimeMillis()) {
 					done = true;
-				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.IN)) {
+				} else {
 					intake.setSpeed(speed);
-
 				}
 				
 				intake.update();
@@ -499,24 +555,28 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		
-		commands.add(new IntakeOUT_Package(intake));
+		commands.add(new IntakeOUT_Package(duration, intake));
 	}
 	/**
 	 * Makes intake take in whatever is in front of it(people included)
 	 */
-	public void intakeIn() {
+	public void intakeIn(double duration) {
 		class IntakeIN_Package implements CommandPackage {
 			private Intake intake;
 			private boolean done;
 			private double speed = 0.6;
+			private double duration;
+			private long startMillis;
 			
-			public IntakeIN_Package(Intake i) {
+			
+			public IntakeIN_Package(double duration, Intake i) {
 				this.intake = i;
 				this.done = false;
+				this.duration = duration;
 			}
 			
 			public void init() {
-				//nothing.
+				this.startMillis = System.currentTimeMillis();
 			}
 			
 			public void update() {
@@ -539,7 +599,7 @@ public class AutoDriveTrainScripter {
 			}
 		}
 		
-		commands.add(new IntakeIN_Package(intake));
+		commands.add(new IntakeIN_Package(duration, intake));
 	}
 	/**
 	 * Moves elevator a set distance

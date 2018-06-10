@@ -29,10 +29,7 @@ public class TeleopScalerController {
 	 * @author Old Coders
 	 */
 	public void update() {		
-		if(gpad.getLeftBumperPressed() && !gpad.getRightBumperPressed()) {
-			scaler.setSpeed(-speed);
-			return;
-		} if(gpad.getRightBumperPressed() && !gpad.getLeftBumperPressed()) {
+		if(gpad.getRightBumperPressed()) {
 			scaler.setSpeed(speed);
 			return;
 		} else {

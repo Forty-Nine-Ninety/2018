@@ -27,7 +27,7 @@ public class TeleopElevatorController {
 		elevator = elevatorInput;
 		gpad = gpadInput;
 		maxSpeed = maxSpeedInput;
-		controller = 5;//RIGHT joystick
+		controller = 1;//RIGHT joystick
 		//top speed of elevator motor (0.0 to 1.0)
 		maxSpeed = 1.0;
 		elevatorPreset = 4; //height to move to

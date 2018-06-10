@@ -26,8 +26,8 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	public void crossAutoLine() {
 		//go forward and cross auto line
 		//forward 140 in
-		System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
-		gyroStraight(140/12);
+		System.out.println("Only Crossing Auto Line: gyroStraight()");
+		gyroStraight(6);
 		//TODO: see if straightToSwitch(); works here!
 	}
 	/**
@@ -41,12 +41,12 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
 			//if there is no game message (string) OR just cross auto line
 			crossAutoLine();
-		} else if (gameData.charAt(0) == 'L') {
+		} else if (gameData.charAt(0) == 'R') {
 			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			//Left side is ours
 			switch(s) {
 				case LEFT: 
-					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
+					//moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.RIGHT);//2nd: 90 degree turn to the right
 					gyroStraight(55/12);//3rd: forward 55in
@@ -54,15 +54,16 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					break;
 				case MID: 
-					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
+					crossAutoLine();
+					/*moveElevatorTime(5, 0.7); //moveElevator(2.25);
 					//cut in front (in between auto line and exchange)
 					gyroStraight(80/12);//1st: forward 80 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					gyroStraight(60/12);//3rd: forward about 60 in
 					gyroTurn(90, Direction.RIGHT);//4th: 90 degree turn to the right
 					gyroStraight(60/12);//5th: forward 60 in
-					//runIntake(false);
-					//6th: drop cube
+					intakeOut(4);
+					//6th: drop cube*/
 					break;
 				case RIGHT: //Dominic
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
@@ -84,11 +85,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					System.out.println("Default case of gameData LEFT activated. Going forward.");
 					crossAutoLine();
 			}
-		} else if (gameData.charAt(0) == 'R') {//Right
+		} else if (gameData.charAt(0) == 'L') {//Right
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
 				case LEFT: //Dominic
-					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
+					//moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12); //1st: forward 230 in
 					gyroTurn(90, Direction.RIGHT);	 //2nd: 90 degree turn to the right
 					gyroStraight(150/12); //3rd: forward 150 in
@@ -98,18 +99,18 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					break;
 				case MID: 
-					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
-					gyroStraight(140/12);//1st: forward 140 in
+					moveElevatorTime(5, 0.7); //moveElevator(2.25);
+					gyroStraight(7);//1st: forward 140 in
 					//2nd: drop cube
-					//runIntake(false);
+					intakeOut(4);
 					break;
 				case RIGHT:
-					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
+					//moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(162/12);//1st: forward ~162 in
 					gyroTurn(90, Direction.LEFT);//2nd: 90 degree turn to the left
 					gyroStraight(55/12);//3rd: forward 55in
 					//4th: drop cube
-					//runIntake(false);
+					intakeOut(3);
 					break;
 				case ERROR: //debug/error case
 					System.out.println("StartingPosition == Error. THAT DOESN'T WORK");
