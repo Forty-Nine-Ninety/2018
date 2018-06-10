@@ -2,7 +2,6 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
-import org.usfirst.frc.team4990.robot.subsystems.AHRSPIDSource;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
