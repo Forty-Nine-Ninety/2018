@@ -4,6 +4,8 @@ import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -20,9 +22,11 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		STAY, 
 		FORWARD
 	};
+	
 	/**
 	 * Function for crossing auto line
 	 */
+	
 	public void crossAutoLine() {
 		//go forward and cross auto line
 		//forward 140 in
@@ -30,10 +34,12 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		gyroStraight(140/12);
 		//TODO: see if straightToSwitch(); works here!
 	}
+	
 	/**
 	 * Initializes auto code as a whole
 	 * @param s Object of type StartingPosition that tells it where you're starting from
 	 */
+	
 	public void init(StartingPosition s) {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Auto Logic INIT");
@@ -64,7 +70,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 					//runIntake(false);
 					//6th: drop cube
 					break;
-				case RIGHT: //Dominic
+				case RIGHT: 
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12);//1st: forward 230 in
 					gyroTurn(-90);	//2nd: 90 degree turn to the left
@@ -87,7 +93,7 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 		} else if (gameData.charAt(0) == 'R') {//Right
 			System.out.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			switch(s) {
-				case LEFT: //Dominic
+				case LEFT: 
 					moveElevatorTime(2.5, 0.7); //moveElevator(2.25);
 					gyroStraight(230/12); //1st: forward 230 in
 					gyroTurn(90);	 //2nd: 90 degree turn to the right
@@ -129,14 +135,14 @@ public class SimpleAutoDriveTrainScripter extends AutoDriveTrainScripter {
 	}
 
 	// Do not modify below por favor (this means "please" in Spanish)
-	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i, Elevator e, Ultrasonic u) {//uncomment for intake
-		super(dtrain, startP, gyro, i, e, u);//Uncomment for intake
+	public SimpleAutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gyro, Intake i, Elevator e, Ultrasonic u, AHRS ahrs) {//uncomment for intake
+		super(dtrain, startP, gyro, i, e, u, ahrs);
 		
 	if (DriverStation.getInstance().isTest()) {
 		//This is for debugging
 		//To run this code, start the robot in TEST mode. 
 
-		
+		ahrsTurn(90);
 		
 		// end debugging
 	} else {

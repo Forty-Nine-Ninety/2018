@@ -7,6 +7,8 @@ import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -50,6 +52,7 @@ public class AutoDriveTrainScripter {
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
 	private Ultrasonic ultrasonic;
+	private AHRS ahrs;
 
 	/**
 	 * Just a constructor
@@ -59,9 +62,10 @@ public class AutoDriveTrainScripter {
 	 * @param i Intake
 	 * @param e Elevator
 	 * @param u Ultrasonic
+	 * @param a AHRS gyro (NAVX-MXP)
 	 * @author Old Coder People
 	 */
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e, Ultrasonic u) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e, Ultrasonic u, AHRS ahrs) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
@@ -305,6 +309,52 @@ public class AutoDriveTrainScripter {
 		}
 		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees));
 	}
+	
+	public void ahrsTurn(double heading) {
+		class AhrsTurn_Package implements CommandPackage {
+			private AHRS ahrs;
+			private DriveTrain dt;
+			private double maxSpeed = 0.65;
+			private double regSpeed = 0.35;
+			private PIDController yawPIDController;
+			private double heading = 0;
+			private double kP = 0.03;
+			private double kI = 0;
+			private double kD = 0;
+			
+			public AhrsTurn_Package(AHRS ahrs_input, DriveTrain dt_input, double heading_input) {
+				this.ahrs = ahrs_input;
+				this.dt = dt_input;
+				this.heading = heading_input;
+			}
+			
+			public void initialize() {
+				yawPIDController = new PIDController(kP, kI, kD, ahrs, dt);
+				yawPIDController.setSetpoint(heading);
+				yawPIDController.setContinuous(true);
+		        yawPIDController.setOutputRange(-maxSpeed, maxSpeed);
+		        yawPIDController.setAbsoluteTolerance(3);
+		        yawPIDController.enable();
+		        ahrs.zeroYaw();
+			}
+
+			public void execute() {
+				if (yawPIDController.onTarget()) { //go straight
+					dt.setSpeed(0);
+				} else if (yawPIDController.getError() > 0) { //turn right?
+					dt.setSpeed(regSpeed + yawPIDController.get(), regSpeed - yawPIDController.get()); 
+				} else if (yawPIDController.getError() < 0) {//turn left?
+					dt.setSpeed(regSpeed - yawPIDController.get(), regSpeed + yawPIDController.get());
+				}
+			}
+
+			public boolean isFinished() {
+				return yawPIDController.onTarget();
+			}
+		}
+		commands.add(new AhrsTurn_Package(ahrs, dt, heading));
+	}
+	
 	/**
 	 * Makes intake throw whatever is inside out
 	 */

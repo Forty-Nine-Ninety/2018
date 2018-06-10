@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-public class DriveTrain {
+import edu.wpi.first.wpilibj.PIDOutput;
+
+public class DriveTrain implements PIDOutput {
 	public Gearbox left, right;
 	
 	/**
@@ -63,5 +65,10 @@ public class DriveTrain {
 	public void resetDistanceTraveled() {
 		left.encoder.reset();
 		right.encoder.reset();
+	}
+
+	public void pidWrite(double output) {
+		setSpeed(output);
+		
 	}
 }
