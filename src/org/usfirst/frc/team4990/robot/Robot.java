@@ -36,8 +36,8 @@ public class Robot extends IterativeRobot {
 
 	public Preferences prefs;
 	
-	public F310Gamepad driveGamepad;
-	public F310Gamepad opGamepad;
+	public static F310Gamepad driveGamepad;
+	public static F310Gamepad opGamepad;
 	
 	public static DriveTrain driveTrain;
 	public TeleopDriveTrainController teleopDriveTrainController;
@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
 
 
 	public static ADXRS450_Gyro gyro;
-	public Ultrasonic ultrasonic;
+	public static Ultrasonic ultrasonic;
 	public static AHRS ahrs;
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
@@ -152,7 +152,7 @@ public class Robot extends IterativeRobot {
 			autonomusCommand.cancel();
 		}
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
-        		this.driveGamepad,
+        		Robot.driveGamepad,
         		Robot.driveTrain,
         		this.prefs.getBoolean("reverseTurningFlipped", false),
         		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
