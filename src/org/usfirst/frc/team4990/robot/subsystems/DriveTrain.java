@@ -1,8 +1,9 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class DriveTrain implements PIDOutput {
+public class DriveTrain extends Subsystem implements PIDOutput  {
 	public Gearbox left, right;
 	
 	/**
@@ -70,5 +71,11 @@ public class DriveTrain implements PIDOutput {
 	public void pidWrite(double output) {
 		//setSpeed(output);
 		//speed set somewhere else!
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 }

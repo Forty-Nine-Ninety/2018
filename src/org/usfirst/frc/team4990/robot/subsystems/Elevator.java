@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Elevator implements PIDSource, PIDOutput{
+public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	
 	public TalonSRX elevatorMotor;
 	
@@ -155,5 +156,11 @@ public class Elevator implements PIDSource, PIDOutput{
 	@Override
 	public double pidGet() {
 		return getEncoderDistance();
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 }

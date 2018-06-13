@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * An Intake.
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
  * 
  */
 
-public class Intake {
+public class Intake extends Subsystem{
 	public TalonMotorController motorL;
 	public TalonMotorController motorR;
 	public AnalogInput infrared;
@@ -117,6 +118,12 @@ public class Intake {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
