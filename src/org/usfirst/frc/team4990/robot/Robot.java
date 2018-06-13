@@ -64,9 +64,9 @@ public class Robot extends IterativeRobot {
 
     	Robot.driveTrain = new DriveTrain( 
     			new Gearbox(
-    					new TalonMotorController(1),
-    					new TalonMotorController(2),
-    					0, 1),
+    				new TalonMotorController(1),
+    				new TalonMotorController(2),
+    				0, 1),
     			new Gearbox(
     				new TalonMotorController(3),
     				new TalonMotorController(4),

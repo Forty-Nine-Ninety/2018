@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomusCommand extends CommandGroup {
 	public AutonomusCommand(StartingPosition s, String gameData) {
-System.out.println("Auto Logic INIT");
+		System.out.println("Auto Logic INIT");
 		
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
 			//if there is no game message (string) OR just cross auto line
