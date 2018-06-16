@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 	
 	public static F310Gamepad driveGamepad;
 	public static F310Gamepad opGamepad;
+	public static OI oi;
 	
 	public static DriveTrain driveTrain;
 	public TeleopDriveTrainController teleopDriveTrainController;
@@ -61,6 +62,7 @@ public class Robot extends IterativeRobot {
     	//~~~~ Driving/Operator Components ~~~~
     	driveGamepad = new F310Gamepad(0);
     	opGamepad = new F310Gamepad(1);
+    	oi = new OI();
 
     	Robot.driveTrain = new DriveTrain( 
     			new Gearbox(
@@ -151,13 +153,7 @@ public class Robot extends IterativeRobot {
 		if (autonomusCommand != null) {
 			autonomusCommand.cancel();
 		}
-    	this.teleopDriveTrainController = new TeleopDriveTrainController(
-        		Robot.driveGamepad,
-        		Robot.driveTrain,
-        		this.prefs.getBoolean("reverseTurningFlipped", false),
-        		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
-        		this.prefs.getDouble("lowThrottleMultiplier", .25),
-        		this.prefs.getDouble("maxThrottle", 1.0));
+    	this.teleopDriveTrainController = new TeleopDriveTrainController();
     }
 
     public void teleopPeriodic() { //This function is called periodically during teleop

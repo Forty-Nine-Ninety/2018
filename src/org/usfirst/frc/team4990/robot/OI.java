@@ -78,9 +78,22 @@ public class OI {
 	*/
 	
 	public OI() {
-		//drive gamepad
+		//intake
+		
+		//elevator
+		
+		//scaler
+		
+		//drivetrain
+		
+		//other
 		
 	}
+	
+	/**
+	 * see https://gist.github.com/jcorcoran/5743806
+	 * @author James
+	 */
 	
 	public class JoystickAnalogButton extends Button {
 		

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
 import org.usfirst.frc.team4990.robot.Constants;
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
@@ -21,39 +22,15 @@ public class TeleopDriveTrainController {
 	
 	private boolean lastDpiToggleInput = false;
 	private double currentThrottleMultiplier;
-	
-	private final double accelerationTime;
-	private final double lowThrottleMultiplier;
-	private final double maxThrottle;
 	/**
 	 * Constructor for TeleopDriveTrainController
 	 * @author Freshman Union
-	 * 
-	 * @param gamepad Controller to read from
-	 * @param driveTrain Drivetrain to control
-	 * @param maxTurnRadius No idea yet.
-	 * @param reverseTurningFlipped Whether turning is flipped; Not used.
-	 * @param accelerationTime Time the robot has been accelerating for
-	 * @param lowThrottleMultiplier Multiplier for when X button is pressed(puts robot into "turtle mode")
-	 * @param maxThrottle Max throttle between 0 and 1
 	 */
-	public TeleopDriveTrainController(
-			F310Gamepad gamepad, 
-			DriveTrain driveTrain, 
-			boolean reverseTurningFlipped,
-			double accelerationTime,
-			double lowThrottleMultiplier,
-			double maxThrottle) {
-		this.gamepad = gamepad;
-		this.driveTrain = driveTrain;
+	public TeleopDriveTrainController() {
+		this.gamepad = Robot.driveGamepad;
+		this.driveTrain = Robot.driveTrain;
 		
 		this.lastUpdate = new Date();
-		
-		this.currentThrottleMultiplier = maxThrottle;
-		
-		this.accelerationTime = accelerationTime;
-		this.lowThrottleMultiplier = lowThrottleMultiplier;
-		this.maxThrottle = maxThrottle;
 	}
 	
 	/**
@@ -64,10 +41,10 @@ public class TeleopDriveTrainController {
 		boolean dpiTogglePressed = this.gamepad.getXButtonPressed();
 		
 		if (dpiTogglePressed && !this.lastDpiToggleInput) {
-			if (this.currentThrottleMultiplier == this.maxThrottle) {
-				this.currentThrottleMultiplier = this.lowThrottleMultiplier;
+			if (this.currentThrottleMultiplier == Constants.maxThrottle) {
+				this.currentThrottleMultiplier = Constants.lowThrottleMultiplier;
 			} else {
-				this.currentThrottleMultiplier = this.maxThrottle;
+				this.currentThrottleMultiplier = Constants.maxThrottle;
 			}
 		}
 		
@@ -86,15 +63,13 @@ public class TeleopDriveTrainController {
 				throttleInput * this.currentThrottleMultiplier, 
 				this.lastThrottle, 
 				this.lastUpdate, 
-				currentUpdate, 
-				this.accelerationTime);
+				currentUpdate);
 		
 		double turnSteepness = getNextThrottle(
 				turnSteepnessInput * this.currentThrottleMultiplier,
 				this.lastTurnSteepness,
 				this.lastUpdate,
-				currentUpdate,
-				this.accelerationTime);
+				currentUpdate);
 		
 		if (throttle != 0 && turnSteepnessInput != 0) {
 			setArcTrajectory(throttle, -turnSteepnessInput);
@@ -121,11 +96,11 @@ public class TeleopDriveTrainController {
 	 * @param accelerationTime Time robot should take to accelerate
 	 * @return Either 0 if the throttle is below Constants.zeroThrottleThreshold or the new throttle value
 	 */
-	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate, double accelerationTime) {
+	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate) {
 		double newThrottle = throttleInput;
 		
-		if (accelerationTime != 0) {
-			double acceleration = (throttleInput - lastThrottle) / accelerationTime;
+		if (Constants.defaultAccelerationTime != 0) {
+			double acceleration = (throttleInput - lastThrottle) / Constants.defaultAccelerationTime;
 			double deltaTime = currentUpdate.getTime() - lastUpdate.getTime();
 			
 			double deltaThrottle = deltaTime * acceleration;

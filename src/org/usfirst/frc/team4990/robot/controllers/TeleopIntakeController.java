@@ -44,7 +44,7 @@ public class TeleopIntakeController {
 				intake.setSpeed(tempInAxis);
 			}
 			return;
-		} else if (tempOutAxis > 0) { //right bumper = elevator DOWN
+		} else if (tempOutAxis > 0) { 
 			if (tempOutAxis > maxSpeed) {
 				intake.setSpeed(-maxSpeed);
 			} else { 
