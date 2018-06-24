@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 /**
  * We don't like this sensor, but it came in the Kit of Parts, so we tried it. It was not accurate enough for 2018's applications.
  * @deprecated
- * @author Freshman Union
+ * @author Class of '21 (created in 2018 season)
  *
  */
 
