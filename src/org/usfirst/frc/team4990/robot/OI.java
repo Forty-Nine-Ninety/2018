@@ -7,20 +7,19 @@
 
 package org.usfirst.frc.team4990.robot;
 
-import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
+import org.usfirst.frc.team4990.robot.commands.*;
+import org.usfirst.frc.team4990.robot.subsystems.*;
 
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ * @author Class of '21 (created in 2018 season)
  */
-public class OI {
+public class OI{
 	
 	public F310Gamepad driveGamepad = Robot.driveGamepad;
-	Button driveJoystickRight = new JoystickButton(driveGamepad, 12);
-	Button driveJoystickLeft = new JoystickButton(driveGamepad, 11);
 	Button driveA = new JoystickButton(driveGamepad, 1);
 	Button driveB = new JoystickButton(driveGamepad, 2);
 	Button driveX = new JoystickButton(driveGamepad, 3);
@@ -29,13 +28,16 @@ public class OI {
 	Button driveBumperRight = new JoystickButton(driveGamepad, 6);
 	Button driveStart = new JoystickButton(driveGamepad, 10);
 	Button driveBack = new JoystickButton(driveGamepad, 9);
-	
-	Button driveTriggerLeft = new JoystickAnalogButton(driveGamepad, 2);
-	Button driveTriggerRight = new JoystickAnalogButton(driveGamepad, 3);
+	Button driveJoystickPressRight = new JoystickButton(driveGamepad, 12);
+	Button driveJoystickPressLeft = new JoystickButton(driveGamepad, 11);
+	JoystickAnalogButton driveTriggerLeft = new JoystickAnalogButton(driveGamepad, 2);
+	JoystickAnalogButton driveTriggerRight = new JoystickAnalogButton(driveGamepad, 3);
+	JoystickAnalogButton driveJoystickLeftX = new JoystickAnalogButton(driveGamepad, 0);
+	JoystickAnalogButton driveJoystickLeftY = new JoystickAnalogButton(driveGamepad, 1);
+	JoystickAnalogButton driveJoystickRightX = new JoystickAnalogButton(driveGamepad, 4);
+	JoystickAnalogButton driveJoystickRightY = new JoystickAnalogButton(driveGamepad, 5);
 	
 	public F310Gamepad opGamepad = Robot.opGamepad;
-	Button opJoystickRight = new JoystickButton(opGamepad, 12);
-	Button opJoystickLeft = new JoystickButton(opGamepad, 11);
 	Button opA = new JoystickButton(opGamepad, 1);
 	Button opB = new JoystickButton(opGamepad, 2);
 	Button opX = new JoystickButton(opGamepad, 3);
@@ -44,9 +46,14 @@ public class OI {
 	Button opBumperRight = new JoystickButton(opGamepad, 6);
 	Button opStart = new JoystickButton(opGamepad, 10);
 	Button opBack = new JoystickButton(opGamepad, 9);
-	
-	Button opTriggerLeft = new JoystickAnalogButton(opGamepad, 2);
-	Button opeTriggerRight = new JoystickAnalogButton(opGamepad, 3);
+	Button opJoystickPressRight = new JoystickButton(opGamepad, 12);
+	Button opJoystickPressLeft = new JoystickButton(opGamepad, 11);
+	JoystickAnalogButton opTriggerLeft = new JoystickAnalogButton(opGamepad, 2);
+	JoystickAnalogButton opTriggerRight = new JoystickAnalogButton(opGamepad, 3);
+	JoystickAnalogButton opJoystickLeftX = new JoystickAnalogButton(opGamepad, 0);
+	JoystickAnalogButton opJoystickLeftY = new JoystickAnalogButton(opGamepad, 1);
+	JoystickAnalogButton opJoystickRightX = new JoystickAnalogButton(opGamepad, 4);
+	JoystickAnalogButton opJoystickRightY = new JoystickAnalogButton(opGamepad, 5);
 	
 	/* CREATING BUTTONS
 	One type of button is a joystick button which is any button on a
@@ -77,14 +84,61 @@ public class OI {
 	button.whenReleased(new ExampleCommand());
 	*/
 	
-	public OI() {
-		//intake
+	/*
+		Drive Train: (drive controller)
+		    Joysticks 1 and 2: forward/backward and turn left/right
+		    X button: toggle slow mode
 		
+		Elevator: (OP controller)
+		    RIGHT Joystick up/down: elevator up/down
+		    Y button: Move elevator to preset height w/PID system
+		
+		Intake: (OP controller)
+		    LOWER back bumpers/triggers: Left (in/out?), Right (in/out?)
+		    X button: override sensor
+		
+		Scaler: (OP controller)
+		    UPPER back button triggers: Left (in/out?), Right (in/out?)
+		
+		Check which controller is which: (both)
+		    START key (RIGHT Middle): prints in console which controller it is being pressed on
+	 */
+	
+	public OI() {
+		//joystick config
+		driveJoystickLeftY.setThreshold(0.0078125);
+		driveJoystickRightX.setThreshold(0.0391);
+		driveTriggerLeft.setThreshold(0.95);
+		driveTriggerRight.setThreshold(0.95);
+		
+		opJoystickRightX.setThreshold(0.0391);
+		opJoystickLeftY.setThreshold(0.0078125);
+		opTriggerLeft.setThreshold(0.95);
+		opTriggerRight.setThreshold(0.95);
+		
+		//intake
+		JoystickButtonGroup intakeButtons = new JoystickButtonGroup(opTriggerLeft, opTriggerRight);
+		opTriggerLeft.whileHeld(new TeleopIntakeController(TeleopIntakeController.direction.OUT));
+		opTriggerRight.whileHeld(new TeleopIntakeController(TeleopIntakeController.direction.IN));
+		intakeButtons.cancelWhenActive(new TeleopIntakeController());
+
 		//elevator
+		opJoystickRightY.whileHeld(new TeleopElevatorController());
+		opY.whenPressed(new ElevatorPID());
 		
 		//scaler
+		JoystickButtonGroup scalerButtons = new JoystickButtonGroup(opBumperLeft, opBumperRight);
+		opBumperLeft.whileHeld(new TeleopScalerController(TeleopScalerController.direction.IN));
+		opBumperRight.whileHeld(new TeleopScalerController(TeleopScalerController.direction.OUT));
+		scalerButtons.cancelWhenActive(new TeleopScalerController());
 		
 		//drivetrain
+		driveX.whenPressed(new DriveDpiToggle());
+		//default command is (standard) joystick drive
+		
+		//controller check
+		driveStart.whileHeld(new ControllerCheck(Robot.driveGamepad));
+		opStart.whileHeld(new ControllerCheck(Robot.opGamepad));
 		
 		//other
 		
@@ -99,7 +153,7 @@ public class OI {
 		
 		F310Gamepad m_gamepad;
 		int m_axisNumber;
-		private double THRESHOLD = 0.9;
+		private double THRESHOLD = 0;
 
 		/**
 		 * Create a button for triggering commands off a joystick's analog axis
@@ -144,6 +198,10 @@ public class OI {
 			return THRESHOLD;
 		}
 		
+		/**
+		 * Returns boolean value of analog button.
+		 * @return boolean value of button
+		 */
 
 		public boolean get() {
 			if(THRESHOLD < 0){
@@ -154,6 +212,53 @@ public class OI {
 		}
 
 		}
+	
+	/**
+	 * based on https://gist.github.com/jcorcoran/5743806
+	 * @author Benjamin
+	 */
+	
+	public class JoystickButtonGroup extends Button {
+		Button[] buttons;
+
+		/**
+		 * Create a group of buttons. Must have at least 2 buttons.
+		 */
+		public JoystickButtonGroup(Trigger... buttons) {
+			if (buttons.length < 2) {
+				this.free();
+			} else {
+				this.buttons = (Button[]) buttons;
+			}
+		}
+		
+		/**
+		 * Create a group of buttons. Must have at least 2 buttons.
+		 */
+		public JoystickButtonGroup(JoystickAnalogButton... buttons) {
+			if (buttons.length < 2) {
+				this.free();
+			} else {
+				this.buttons = buttons;
+			}
+		}
+
+		/**
+		 * Returns boolean value of analog button.
+		 * @return boolean value of button
+		 */
+
+		public boolean get() {
+			int i = 0; 
+			while(i < buttons.length) {
+				if (!buttons[i].get()) {
+					return false;
+				}
+				i++;
+			}
+			return true;
+		}
+	}
 	
 	
 }

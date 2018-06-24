@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.Robot;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -14,6 +16,8 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	public TalonSRX elevatorMotor;
 	
 	public LimitSwitch topSwitch, bottomSwitch;
+	
+	public double maxSpeed = 1.0;
 	
 	public double stopFallingSpeed = 0.05;
 	
@@ -34,6 +38,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	 * @param elevatorMotor Talon for motor used to drive elevator
 	 * @param topSwitchChannel DIO channel for top limit switch
 	 * @param bottomSwitchChannel DIO channel for bottom limit switch
+	 * @author Class of '21 (created in 2018 season)
 	 */
 	
 	public Elevator(TalonSRX elevatorMotor, int topSwitchChannel, int bottomSwitchChannel) {
@@ -54,12 +59,30 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	 * @param power positive value (0 to 1) makes it go up, negative values (-1 to 0) makes it go down
 	 */
 	
-	public void setElevatorPower(double power) {
+	public void setElevatorPower(double power) {	
 		if ((topSwitch.getValue() && power > 0) || (bottomSwitch.getValue() && power < 0)) {
 			this.setSpeed = 0;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			this.setSpeed = power;
+			if (!Robot.elevator.goToPostionActive) {
+				if (power > stopFallingSpeed) { //right joystick positive = elevator UP
+					if (power > maxSpeed) {
+						this.setSpeed = maxSpeed;
+					} else { 
+						this.setSpeed = power; 
+					}
+				} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
+					if (-power > maxSpeed) {
+						this.setSpeed = maxSpeed;
+					} else { 
+						this.setSpeed = power; 
+					}
+				} else {
+					this.setSpeed = stopFallingSpeed;
+				}
+			} else {
+				this.setSpeed = power; 
+			}
 		}
 	}
 	

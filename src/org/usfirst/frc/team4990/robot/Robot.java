@@ -1,17 +1,15 @@
 package org.usfirst.frc.team4990.robot;
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import org.usfirst.frc.team4990.robot.commands.*;
-import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.subsystems.*;
-import org.usfirst.frc.team4990.robot.subsystems.Gearbox;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -21,7 +19,12 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class Robot extends IterativeRobot {
 	
-	public enum StartingPosition { //an enum that determines starting position of the robot
+	/**
+	 * An enum that describes the starting position of the robot
+	 * @author Class of '21 (created in 2018 season)
+	 *
+	 */
+	public enum StartingPosition {
 		LEFT, 
 		MID, 
 		RIGHT, 
@@ -33,8 +36,6 @@ public class Robot extends IterativeRobot {
 	public SendableChooser<StartingPosition> autoChooser;
 	public StartingPosition startPos = StartingPosition.FORWARD;
 	public AutonomusCommand autonomusCommand;
-
-	public Preferences prefs;
 	
 	public static F310Gamepad driveGamepad;
 	public static F310Gamepad opGamepad;
@@ -57,9 +58,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
     	System.out.println("Version 1.29.2018.6.18");
-    	this.prefs = Preferences.getInstance();
 
-    	//~~~~ Driving/Operator Components ~~~~
+    	//.... Driving/Operator Components ....
     	driveGamepad = new F310Gamepad(0);
     	opGamepad = new F310Gamepad(1);
     	oi = new OI();
@@ -80,23 +80,15 @@ public class Robot extends IterativeRobot {
     			new TalonMotorController(7), 
     			new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
-    	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
-    	
     	elevator = new Elevator(
     			new TalonSRX(6), //Motor elevatorMotorA
     			6, //int topSwitchChannel (DIO)
     			7); //int bottomSwitchChannel (DIO)
     	
-    	teleopElevatorController = new TeleopElevatorController(elevator,
-    			opGamepad, //gamepad to control elevator
-    			1.0); // max speed (0.1 to 1.0) 
-    	
     	scaler = new Scaler(new TalonMotorController(9));
-    		
-    	teleopScalerController = new TeleopScalerController(scaler, opGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
     			
 
-    	//~~~~ Sensor Init & Details ~~~~
+    	//.... Sensor Init & Details ....
 
     	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     	//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
@@ -131,7 +123,6 @@ public class Robot extends IterativeRobot {
     			updateAutoDashboard();
     		}
     		
-    		controllerCheck();
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
@@ -158,19 +149,16 @@ public class Robot extends IterativeRobot {
 
     public void teleopPeriodic() { //This function is called periodically during teleop
 
-	    this.teleopDriveTrainController.updateDriveTrainState();
+	    this.teleopDriveTrainController.execute();
 	    //ever heard of the tale of last minute code
 	    //I thought not, it is not a tale the chairman will tell to you
 
 	    	Robot.driveTrain.update();
-	    	teleopElevatorController.update();
-	    	teleopIntakeController.update();
-	    	intake.update();
-	    	teleopScalerController.update();
-	    	scaler.update();
+	    	Robot.elevator.update();
+	    	Robot.intake.update();
+	    	Robot.scaler.update();
 	    	
 	    	simpleDashboardPeriodic();
-	    	controllerCheck();
     } 
     
     public void testInit() { //TODO add commands for testing
@@ -263,14 +251,6 @@ public class Robot extends IterativeRobot {
 		
 		//General
 		gyro.setName("General", "Gyro");
-	}
-	
-	public void controllerCheck() {
-    	if (driveGamepad.getRawButton(8)) {
-    		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
-    	} else if (opGamepad.getRawButton(8)) {
-    		System.out.println("Button 7 Pressed on OP GAMEPAD");
-    	}
 	}
 
 }

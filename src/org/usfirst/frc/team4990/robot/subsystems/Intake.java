@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * An Intake.
- * @author Freshman Union
+ * @author Class of '21 (created in 2018 season)
  * 
  */
 
@@ -31,7 +31,7 @@ public class Intake extends Subsystem{
 	
 	/**
 	 * Enum describing ultrasonic visibility of box. MOVING indicates in between IN and OUT.
-	 * @author Freshman Union
+	 * @author Class of '21 (created in 2018 season)
 	 */
 	
 	public enum BoxPosition {
@@ -96,10 +96,9 @@ public class Intake extends Subsystem{
 	 */
 	
 	public BoxPosition getBoxPosition() {
-		double periodicAverageInfraredInput = getAnalogInput();
-		if (periodicAverageInfraredInput >= 2 ) {
+		if (getAnalogInput() >= 2 ) {
 			return Intake.BoxPosition.IN;
-		} else if (periodicAverageInfraredInput >= 0.4) {
+		} else if (getAnalogInput() >= 0.4) {
 			return Intake.BoxPosition.MOVING;
 		} else {
 			return Intake.BoxPosition.OUT;
@@ -122,8 +121,7 @@ public class Intake extends Subsystem{
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+
 	}
 	
 }

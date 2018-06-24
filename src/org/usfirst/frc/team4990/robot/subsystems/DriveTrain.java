@@ -1,10 +1,14 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem implements PIDOutput  {
 	public Gearbox left, right;
+	public double currentThrottleMultiplier;
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
@@ -16,7 +20,7 @@ public class DriveTrain extends Subsystem implements PIDOutput  {
 	 * @param leftEncoderChannelB Encoder for Left gearbox (just Signal)
 	 * @param rightEncoderChannelA Encoder for Right gearbox (Signal, Ground and 5v)
 	 * @param rightEncoderChannelB Encoder for right gearbox (just Signal)
-	 * @author Freshman Union
+	 * @author Class of '21 (created in 2018 season)
 	 */
 	public DriveTrain(Gearbox gearbox, Gearbox gearbox2) {
 		this.left = gearbox;
@@ -75,7 +79,9 @@ public class DriveTrain extends Subsystem implements PIDOutput  {
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		if(DriverStation.getInstance().isOperatorControl()) {
+		this.setDefaultCommand(new TeleopDriveTrainController());
+		}
 	}
+		
 }
