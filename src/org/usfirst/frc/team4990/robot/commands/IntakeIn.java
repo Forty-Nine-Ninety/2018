@@ -12,7 +12,7 @@ public class IntakeIn extends Command {
 	private double speed = 0.6;
 
 	/**
-	 * Makes intake take in whatever is in front of it(people included)
+	 * Makes intake take in whatever is in front of it (people included)
 	 */
 	
 	public IntakeIn() {
@@ -31,15 +31,16 @@ public class IntakeIn extends Command {
 			isFinished = true;
 		} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.OUT)) {
 			intake.setSpeed(speed);
-
 		}
-		if (this.isFinished) {
-			intake.stop();
-		}
+		
 		intake.update();
 	}
 	
 	public boolean isFinished() {
 		return isFinished;
+	}
+	
+	public void end() {
+		intake.stop();
 	}
 }

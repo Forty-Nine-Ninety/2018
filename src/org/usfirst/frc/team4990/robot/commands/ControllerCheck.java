@@ -2,7 +2,6 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -19,9 +18,8 @@ public class ControllerCheck extends Command {
     		System.out.println("Button 7 Pressed on OP GAMEPAD");
     	}
 	}
-		@Override
-		protected boolean isFinished() {
-			// TODO Auto-generated method stub
-			return true;
-		}
+	
+	protected boolean isFinished() {
+		return true;
+	}
 }
