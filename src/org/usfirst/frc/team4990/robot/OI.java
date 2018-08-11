@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.buttons.*;
  */
 public class OI{
 	
-	public F310Gamepad driveGamepad = Robot.driveGamepad;
+	public F310Gamepad driveGamepad = RobotMap.driveGamepad;
 	Button driveA = new JoystickButton(driveGamepad, 1);
 	Button driveB = new JoystickButton(driveGamepad, 2);
 	Button driveX = new JoystickButton(driveGamepad, 3);
@@ -37,7 +37,7 @@ public class OI{
 	JoystickAnalogButton driveJoystickRightX = new JoystickAnalogButton(driveGamepad, 4);
 	JoystickAnalogButton driveJoystickRightY = new JoystickAnalogButton(driveGamepad, 5);
 	
-	public F310Gamepad opGamepad = Robot.opGamepad;
+	public F310Gamepad opGamepad = RobotMap.opGamepad;
 	Button opA = new JoystickButton(opGamepad, 1);
 	Button opB = new JoystickButton(opGamepad, 2);
 	Button opX = new JoystickButton(opGamepad, 3);
@@ -137,8 +137,8 @@ public class OI{
 		//default command is (standard) joystick drive
 		
 		//controller check
-		driveStart.whileHeld(new ControllerCheck(Robot.driveGamepad));
-		opStart.whileHeld(new ControllerCheck(Robot.opGamepad));
+		driveStart.whileHeld(new ControllerCheck(RobotMap.driveGamepad));
+		opStart.whileHeld(new ControllerCheck(RobotMap.opGamepad));
 		
 		//other
 		

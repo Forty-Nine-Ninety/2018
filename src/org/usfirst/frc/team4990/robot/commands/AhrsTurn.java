@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -25,9 +25,9 @@ public class AhrsTurn extends Command implements PIDSource, PIDOutput {
 	private PIDSourceType pidSourceType = PIDSourceType.kRate;
 	
 	public AhrsTurn(double heading_input) {
-		requires(Robot.driveTrain);
-		this.ahrs = Robot.ahrs;
-		this.dt = Robot.driveTrain;
+		requires(RobotMap.driveTrain);
+		this.ahrs = RobotMap.ahrs;
+		this.dt = RobotMap.driveTrain;
 		this.heading = heading_input;
 	}
 	

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -22,11 +22,11 @@ public class gyroStraight extends Command {
 	 */
 	
 	public gyroStraight(double distance) {
-		requires(Robot.driveTrain);
+		requires(RobotMap.driveTrain);
 		//Remember that the right motor is the slow one
 		this.isFinished = false;
-		Robot.driveTrain = dt;
-		Robot.gyro = gyro;
+		RobotMap.driveTrain = dt;
+		RobotMap.gyro = gyro;
 		this.distanceToGo = distance;
 		this.startingGyro = 0;
 		this.baseMotorPower = 0.3;

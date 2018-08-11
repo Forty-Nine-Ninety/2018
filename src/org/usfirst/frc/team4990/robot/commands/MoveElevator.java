@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -18,8 +18,8 @@ public class MoveElevator extends Command {
 	 */
 	
 	public MoveElevator(double dist) {
-		requires(Robot.elevator);
-		this.elevator = Robot.elevator;
+		requires(RobotMap.elevator);
+		this.elevator = RobotMap.elevator;
 		this.isFinished = false;
 		this.elevatorPID = elevator.elevatorPID;
 	}

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
@@ -16,8 +16,8 @@ public class IntakeIn extends Command {
 	 */
 	
 	public IntakeIn() {
-		requires(Robot.intake);
-		this.intake = Robot.intake;
+		requires(RobotMap.intake);
+		this.intake = RobotMap.intake;
 
 	}
 	

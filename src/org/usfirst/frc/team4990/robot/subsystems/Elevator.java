@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.Robot;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -41,12 +39,12 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	
-	public Elevator(TalonSRX elevatorMotor, int topSwitchChannel, int bottomSwitchChannel) {
+	public Elevator(TalonSRX elevatorMotor, LimitSwitch topSwitch, LimitSwitch bottomSwitch) {
 		
 		this.elevatorMotor = elevatorMotor;
 		
-		this.topSwitch = new LimitSwitch(topSwitchChannel);
-		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel);
+		this.topSwitch = topSwitch;
+		this.bottomSwitch = bottomSwitch;
 		
 		this.elevatorPID.setInputRange(-180f, 180f);
 		this.elevatorPID.setContinuous(true);; //minimumInput, maximumInput
@@ -64,7 +62,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 			this.setSpeed = 0;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			if (!Robot.elevator.goToPostionActive) {
+			if (!this.goToPostionActive) {
 				if (power > stopFallingSpeed) { //right joystick positive = elevator UP
 					if (power > maxSpeed) {
 						this.setSpeed = maxSpeed;

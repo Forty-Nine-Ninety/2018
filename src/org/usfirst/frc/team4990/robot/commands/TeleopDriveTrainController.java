@@ -21,7 +21,7 @@ public class TeleopDriveTrainController extends Command {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public TeleopDriveTrainController() {
-		requires(Robot.driveTrain);
+		requires(RobotMap.driveTrain);
 	}
 	
 	/**
@@ -30,27 +30,27 @@ public class TeleopDriveTrainController extends Command {
 	 */
 	public void execute() {
 		double throttle = getNextThrottle(
-				Robot.driveGamepad.getLeftJoystickY(), 
+				RobotMap.driveGamepad.getLeftJoystickY(), 
 				this.lastThrottle);
 		
 		double turnSteepness = getNextThrottle(
-				Robot.driveGamepad.getRightJoystickX(),
+				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			setArcTrajectory(throttle, -turnSteepness);
 			
 		} else if (throttle != 0 && turnSteepness == 0) { //go forward
-			Robot.driveTrain.setSpeed(throttle, throttle);
+			RobotMap.driveTrain.setSpeed(throttle, throttle);
 			
 		} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 			/* the right motor's velocity has the opposite sign of the the left motor's
 			 * since the right motor will spin in the opposite direction from the left
 			 */
-			Robot.driveTrain.setSpeed(turnSteepness, -turnSteepness);
+			RobotMap.driveTrain.setSpeed(turnSteepness, -turnSteepness);
 			
 		} else {
-			Robot.driveTrain.setSpeed(0, 0);
+			RobotMap.driveTrain.setSpeed(0, 0);
 		}
 		
 		this.lastThrottle = throttle;
@@ -66,7 +66,7 @@ public class TeleopDriveTrainController extends Command {
 	 * @return Either 0 if the throttle is below Constants.zeroThrottleThreshold or the new throttle value
 	 */
 	public double getNextThrottle(double throttleInput, double lastThrottle) {
-		double acceleration = ((throttleInput * Robot.driveTrain.currentThrottleMultiplier) - lastThrottle) / Constants.defaultAccelerationTime;
+		double acceleration = ((throttleInput * RobotMap.driveTrain.currentThrottleMultiplier) - lastThrottle) / Constants.defaultAccelerationTime;
 		double newThrottle = lastThrottle + ((new Date().getTime() - this.lastUpdate.getTime()) * acceleration);
 		
 		return Math.abs(newThrottle) < Constants.zeroThrottleThreshold ? 0.0 : newThrottle;
@@ -110,7 +110,7 @@ public class TeleopDriveTrainController extends Command {
 		
 		//System.out.println(leftWheelSpeed + "; " + rightWheelSpeed);
 		
-		Robot.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
+		RobotMap.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class TeleopDriveTrainController extends Command {
 	
 	@Override
 	protected void end() {
-		Robot.driveTrain.setSpeed(0,0);
+		RobotMap.driveTrain.setSpeed(0,0);
 	}
 
 }

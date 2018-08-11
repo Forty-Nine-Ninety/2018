@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ControllerCheck extends Command {
 	public ControllerCheck(F310Gamepad gamepad) {
-    	if (gamepad.equals(Robot.driveGamepad)) {
+    	if (gamepad.equals(RobotMap.driveGamepad)) {
     		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
-    	} else if (gamepad.equals(Robot.opGamepad)) {
+    	} else if (gamepad.equals(RobotMap.opGamepad)) {
     		System.out.println("Button 7 Pressed on OP GAMEPAD");
     	}
 	}

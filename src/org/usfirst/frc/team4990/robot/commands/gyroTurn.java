@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -18,12 +18,12 @@ public class gyroTurn extends Command {
 	 */
 	
 	public gyroTurn(double classdegrees) {
-		requires(Robot.driveTrain);
+		requires(RobotMap.driveTrain);
 		// please note that the right encoder is backwards
-		this.dt = Robot.driveTrain;
+		this.dt = RobotMap.driveTrain;
 		this.degrees = classdegrees;
 		this.isFinished = false;
-		gyro = Robot.gyro;
+		gyro = RobotMap.gyro;
 	}
 
 	public void initialize() {

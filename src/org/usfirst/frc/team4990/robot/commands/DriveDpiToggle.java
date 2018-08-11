@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * Ported from old TeleopDriveController
@@ -11,18 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 
-public class DriveDpiToggle extends Command {
+public class DriveDpiToggle extends InstantCommand {
 	public DriveDpiToggle() {
-		if (Robot.driveTrain.currentThrottleMultiplier == Constants.maxThrottle) {
-			Robot.driveTrain.currentThrottleMultiplier = Constants.lowThrottleMultiplier;
+		if (RobotMap.driveTrain.currentThrottleMultiplier == Constants.maxThrottle) {
+			RobotMap.driveTrain.currentThrottleMultiplier = Constants.lowThrottleMultiplier;
 		} else {
-			Robot.driveTrain.currentThrottleMultiplier = Constants.maxThrottle;
+			RobotMap.driveTrain.currentThrottleMultiplier = Constants.maxThrottle;
 		}
-	}
-
-	@Override
-	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 }

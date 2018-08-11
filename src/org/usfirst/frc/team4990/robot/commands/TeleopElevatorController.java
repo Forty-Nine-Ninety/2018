@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+
+import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 /**
@@ -14,7 +15,7 @@ public class TeleopElevatorController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public TeleopElevatorController() {
-		requires(Robot.elevator);
+		requires(RobotMap.elevator);
 	}
 	
 	/**
@@ -26,10 +27,10 @@ public class TeleopElevatorController extends Command{
 			//Elevator PID System still needs some work, disabled for now
 			/*if (gpad.getYButtonPressed()) { 
 				elevator.goToPosition(4);
-				System.out.println("Moving to " + Robot.elevator.elevatorPID.getSetpoint() + ", current speed: " + Robot.elevator.elevatorPID.get());
+				System.out.println("Moving to " + RobotMap.elevator.elevatorPID.getSetpoint() + ", current speed: " + RobotMap.elevator.elevatorPID.get());
 		}
 			} else { */
-				Robot.elevator.setElevatorPower(Math.abs(Robot.opGamepad.getRightJoystickY()) + Robot.elevator.stopFallingSpeed);
+				RobotMap.elevator.setElevatorPower(Math.abs(RobotMap.opGamepad.getRightJoystickY()) + RobotMap.elevator.stopFallingSpeed);
 			//}
 	}
 

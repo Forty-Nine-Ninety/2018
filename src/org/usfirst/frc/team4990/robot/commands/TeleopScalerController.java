@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4990.robot.RobotMap;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Class for Scaler
@@ -29,22 +29,22 @@ public class TeleopScalerController extends Command{
 	 */
 	public void initalize() {		
 		if(dir.equals(direction.IN)) {
-			Robot.scaler.setSpeed(-0.7);
+			RobotMap.scaler.setSpeed(-0.7);
 			return;
 		} if(dir.equals(direction.OUT)) {
-			Robot.scaler.setSpeed(0.7);
+			RobotMap.scaler.setSpeed(0.7);
 			return;
 		} else {
-			Robot.scaler.setSpeed(0);
+			RobotMap.scaler.setSpeed(0);
 		}
 	}
 	
 	public void end() {
-		Robot.scaler.setSpeed(0);
+		RobotMap.scaler.setSpeed(0);
 	}
 	
 	protected void interrupted() {
-		Robot.scaler.setSpeed(0);
+		RobotMap.scaler.setSpeed(0);
 	}
 
 	@Override

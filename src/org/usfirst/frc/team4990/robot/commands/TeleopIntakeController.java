@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -31,38 +31,38 @@ public class TeleopIntakeController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		double tempInAxis = Robot.opGamepad.getLeftTrigger();
-		double tempOutAxis = Robot.opGamepad.getRightTrigger();
-		boolean override = Robot.opGamepad.getXButtonPressed();
+		double tempInAxis = RobotMap.opGamepad.getLeftTrigger();
+		double tempOutAxis = RobotMap.opGamepad.getRightTrigger();
+		boolean override = RobotMap.opGamepad.getXButtonPressed();
 
-		if (dir == direction.IN && ((Robot.intake.getAnalogInput() < 1.9 || override) || override)) { //left bumper = elevator UP
+		if (dir == direction.IN && ((RobotMap.intake.getAnalogInput() < 1.9 || override) || override)) { //left bumper = elevator UP
 			if (tempInAxis > maxSpeed) {
-				Robot.intake.setSpeed(maxSpeed);
+				RobotMap.intake.setSpeed(maxSpeed);
 			} else { 
-				Robot.intake.setSpeed(tempInAxis);
+				RobotMap.intake.setSpeed(tempInAxis);
 			}
 			return;
 		} else if (dir == direction.OUT) { 
 			if (tempOutAxis > maxSpeed) {
-				Robot.intake.setSpeed(-maxSpeed);
+				RobotMap.intake.setSpeed(-maxSpeed);
 			} else { 
-				Robot.intake.setSpeed(-tempOutAxis); 
+				RobotMap.intake.setSpeed(-tempOutAxis); 
 			}
 			return;
 		} else {
-			Robot.intake.setSpeed(0.0);
+			RobotMap.intake.setSpeed(0.0);
 			return;
 		}
 	}
 	
 	@Override
 	protected void end() {
-		Robot.intake.setSpeed(0.0);
+		RobotMap.intake.setSpeed(0.0);
 	}
 	
 	@Override
 	public void cancel() {
-		Robot.intake.setSpeed(0.0);
+		RobotMap.intake.setSpeed(0.0);
 	}
 	
 	@Override

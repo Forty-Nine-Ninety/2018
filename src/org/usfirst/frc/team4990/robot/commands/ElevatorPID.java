@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 /**
@@ -16,7 +16,7 @@ public class ElevatorPID extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public ElevatorPID() {
-		requires(Robot.elevator);
+		requires(RobotMap.elevator);
 	}
 	
 	public ElevatorPID(double setpoint) {
@@ -24,8 +24,8 @@ public class ElevatorPID extends Command{
 	}
 	
 	public void initalize() {
-		Robot.elevator.elevatorPID.setSetpoint(setpoint);
-		Robot.elevator.elevatorPID.enable();
+		RobotMap.elevator.elevatorPID.setSetpoint(setpoint);
+		RobotMap.elevator.elevatorPID.enable();
 	}
 	
 	/**
@@ -34,28 +34,28 @@ public class ElevatorPID extends Command{
 	 */
 	
 	public void execute() {
-		System.out.println("Moving to " + Robot.elevator.elevatorPID.getSetpoint() + ", current speed: " + Robot.elevator.elevatorPID.get());
+		System.out.println("Moving to " + RobotMap.elevator.elevatorPID.getSetpoint() + ", current speed: " + RobotMap.elevator.elevatorPID.get());
 
 	}
 	
 	@Override
 	protected void end() {
-		Robot.elevator.elevatorPID.disable();
+		RobotMap.elevator.elevatorPID.disable();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.elevator.elevatorPID.disable();
-		Robot.elevator.setElevatorPower(Robot.elevator.stopFallingSpeed);
+		RobotMap.elevator.elevatorPID.disable();
+		RobotMap.elevator.setElevatorPower(RobotMap.elevator.stopFallingSpeed);
 	}
 	
 
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return Robot.elevator.elevatorPID.onTarget();
+		return RobotMap.elevator.elevatorPID.onTarget();
 	}
 
 }

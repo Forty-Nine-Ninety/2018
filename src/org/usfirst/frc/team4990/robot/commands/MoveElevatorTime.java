@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,11 +19,11 @@ public class MoveElevatorTime extends Command {
 	 */
 	
 	public MoveElevatorTime(double t, double power_input) {
-		requires(Robot.elevator);
+		requires(RobotMap.elevator);
 		this.duration = (long) t;
 		this.power = power_input;
 		this.isFinished = false;
-		this.elevator = Robot.elevator;
+		this.elevator = RobotMap.elevator;
 	}
 	/**
 	 * Clears time
