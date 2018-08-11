@@ -16,7 +16,7 @@ public class Elevator implements PIDSource, PIDOutput{
 	
 	public double stopFallingSpeed = 0.05;
 	
-	private double setSpeed = 0;
+	private boolean stopped = false;
 	
 	//for Elevator goToPostion
 	private PIDSourceType pidSource = PIDSourceType.kDisplacement;
@@ -53,12 +53,30 @@ public class Elevator implements PIDSource, PIDOutput{
 	 * @param power positive value (0 to 1) makes it go up, negative values (-1 to 0) makes it go down
 	 */
 	
-	public void setElevatorPower(double power) {
+	public void setElevatorPower(double power) {	
 		if ((topSwitch.getValue() && power > 0) || (bottomSwitch.getValue() && power < 0)) {
 			this.setSpeed = 0;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			this.setSpeed = power;
+			if (!this.goToPostionActive) {
+				if (power > stopFallingSpeed) { //right joystick positive = elevator UP
+					if (power > maxSpeed) {
+						this.setSpeed = maxSpeed;
+					} else { 
+						this.setSpeed = power; 
+					}
+				} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
+					if (-power > maxSpeed) {
+						this.setSpeed = maxSpeed;
+					} else { 
+						this.setSpeed = power; 
+					}
+				} else {
+					this.setSpeed = stopFallingSpeed;
+				}
+			} else {
+				this.setSpeed = power; 
+			}
 		}
 	}
 	
@@ -81,6 +99,7 @@ public class Elevator implements PIDSource, PIDOutput{
 		if (setSpeed > stopFallingSpeed || setSpeed < stopFallingSpeed) {
 			
 		}
+
 		
 		//check limit switches, stop motors if going toward danger
 		if ((this.topSwitch.getValue() && this.setSpeed > stopFallingSpeed) || (this.bottomSwitch.getValue() && this.setSpeed < stopFallingSpeed)) {
