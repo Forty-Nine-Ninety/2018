@@ -24,7 +24,7 @@ public class DriveTrain implements PIDOutput {
 		this.left.compensate = 0.9;
 
 		// The gearbox is backwards
-		this.rightGearbox.swapDirection();
+		this.right.swapDirection();
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class DriveTrain implements PIDOutput {
 	
 	public void setLeftSpeed(double leftSpeed) {
 		double multiply_constant = 1;
-		this.leftSetSpeed = leftSpeed * multiply_constant;
+		this.left.setSpeed = leftSpeed * multiply_constant;
 
 	}
   
@@ -45,7 +45,7 @@ public class DriveTrain implements PIDOutput {
 	
 	public void setRightSpeed(double rightSpeed) {
 		double multiply_constant = 1;
-		this.rightSetSpeed = rightSpeed * multiply_constant;
+		this.right.setSpeed = rightSpeed * multiply_constant;
 
 	}
 	

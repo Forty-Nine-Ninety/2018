@@ -198,7 +198,7 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Box", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-	    	SmartDashboard.putNumber("Elevator Power", elevator.elevatorMotorB.getPower());
+	    	SmartDashboard.putNumber("Elevator Power", elevator.elevatorMotor.getMotorOutputPercent());
 	    	SmartDashboard.putNumber("ultrasonic", ultrasonic.getRangeInches());
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic

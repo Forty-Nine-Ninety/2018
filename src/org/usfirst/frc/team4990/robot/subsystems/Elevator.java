@@ -16,8 +16,9 @@ public class Elevator implements PIDSource, PIDOutput{
 	
 	public double stopFallingSpeed = 0.05;
 	
-	private boolean stopped = false;
+	public double maxSpeed = 1.0;
 	
+	public double setSpeed = 1.0;
 	//for Elevator goToPostion
 	private PIDSourceType pidSource = PIDSourceType.kDisplacement;
 	public double doneTolerance = 3; //percent
