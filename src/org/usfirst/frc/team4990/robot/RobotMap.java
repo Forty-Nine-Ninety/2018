@@ -16,7 +16,6 @@ import org.usfirst.frc.team4990.robot.subsystems.LimitSwitch;
 import org.usfirst.frc.team4990.robot.subsystems.Scaler;
 import org.usfirst.frc.team4990.robot.subsystems.TalonMotorController;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
