@@ -4,13 +4,15 @@ import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class gyroTurn extends Command {
+public class gyroTurn extends Command implements PIDOutput {
 	private double degrees;
 	private boolean isFinished;
 	private DriveTrain dt;
 	private ADXRS450_Gyro gyro;
+	boolean hasInitialized = false;
 
 	/**
 	 * Turns left or right
@@ -27,6 +29,7 @@ public class gyroTurn extends Command {
 	}
 
 	public void initialize() {
+		hasInitialized = true;
 		this.gyro.reset();
 		System.out.println("gyroTurn(" + degrees + ")");
 	}
@@ -51,5 +54,14 @@ public class gyroTurn extends Command {
 	
 	public boolean isFinished() {
 		return this.isFinished;
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		if (!hasInitialized) {
+			return;
+		}
+		
+		
 	}
 }
