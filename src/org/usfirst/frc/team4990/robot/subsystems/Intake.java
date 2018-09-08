@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import org.usfirst.frc.team4990.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -10,11 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 
 public class Intake extends Subsystem{
-	public TalonMotorController motorL;
-	public TalonMotorController motorR;
-	public AnalogInput infrared;
 	private double speed;
-	private double rate = 0.9;
 	
 	/**
 	 * Initialize inkate.
@@ -23,10 +19,8 @@ public class Intake extends Subsystem{
 	 * @param infraredInput Analog Port for Sharp Distance Sensor
 	 */
 	
-	public Intake(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, AnalogInput infraredInput) {
-		motorL = talonMotorController;
-		motorR = talonMotorController2;
-		infrared = infraredInput;
+	public Intake() {
+		
 	}
 	
 	/**
@@ -36,23 +30,6 @@ public class Intake extends Subsystem{
 	
 	public enum BoxPosition {
 		IN, MOVING, OUT
-	}
-	
-	/**
-	 * Intake cube. Does not auto-stop based on sensor. Execute by calling update().
-	 */
-	
-	public void in() {
-		//Set speed
-		speed = rate;
-	}
-	
-	/**
-	 * Outake cube. Does not auto-stop based on sensor. Execute by calling update().
-	 */
-	public void out() {
-		//Set speed
-		speed = -rate;
 	}
 	
 	/**
@@ -69,16 +46,8 @@ public class Intake extends Subsystem{
 	 */
 	
 	public void update() {
-		motorL.set(speed);
-		motorR.set(-speed);
-	}
-	
-	/**
-	 * STOPS Intake. (speed 0) Execute by calling update().
-	 */
-	
-	public void stop() {
-		speed = 0;
+		RobotMap.intakeTalonA.set(speed);
+		RobotMap.intakeTalonB.set(-speed);
 	}
 	
 	/**
@@ -87,7 +56,8 @@ public class Intake extends Subsystem{
 	 */
 	
 	public double getAnalogInput() {
-		return infrared.getAverageVoltage();
+		return RobotMap.intakeDistanceAnalogInput.getAverageVoltage();
+		
 	}
 	
 	/**
