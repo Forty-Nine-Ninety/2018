@@ -33,13 +33,20 @@ public class IntakeOut extends Command {
 			intake.setSpeed(speed);
 
 		}
-		if (this.isFinished) {
-			intake.stop();
-		}
+
 		intake.update();
 	}
 	
 	public boolean isFinished() {
 		return isFinished;
+	}
+	
+	public void end() {
+		intake.setSpeed(0);
+		intake.update();
+	}
+	
+	public void interupted() {
+		end();
 	}
 }
