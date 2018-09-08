@@ -11,6 +11,14 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Use gyroTurn instead, depreciated.
+ * @see gyroTurn
+ * @depreciated
+ * @author Class of '21
+ *
+ */
+
 public class AhrsTurn extends Command implements PIDSource, PIDOutput {
 	private AHRS ahrs;
 	private DriveTrain dt;
