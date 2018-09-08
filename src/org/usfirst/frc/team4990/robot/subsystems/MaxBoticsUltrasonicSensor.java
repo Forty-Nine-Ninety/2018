@@ -3,7 +3,8 @@ package org.usfirst.frc.team4990.robot.subsystems;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
- * We don't like this sensor, but it came in the Kit of Parts, so we tried it. It was not accurate enough for 2018's applications.
+ * We don't like this sensor, but it came in the 2018 Kit of Parts, so we tried it. It was not accurate enough for 2018's applications.
+ * If someone ever wants to use it, spend some time looking at the sensor curve and write a better interface than this one!
  * @deprecated
  * @author Class of '21 (created in 2018 season)
  *
