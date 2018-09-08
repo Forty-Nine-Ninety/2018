@@ -117,7 +117,7 @@ public class RobotMap {
 	
 	intakeDistanceAnalogInput = new AnalogInput(0);
 	
-	intake = new Intake(intakeTalonA, intakeTalonB, intakeDistanceAnalogInput); //Left motor, right motor, distance sensor
+	intake = new Intake();
 	
 	elevatorTalon = new TalonMotorController(6);
 	
@@ -127,7 +127,7 @@ public class RobotMap {
 	elevatorLimitSwitchTop = new LimitSwitch(6);
 	elevatorLimitSwitchBottom = new LimitSwitch(7);
 	
-	elevator = new Elevator(elevatorTalon, elevatorLimitSwitchTop, elevatorLimitSwitchBottom);
+	elevator = new Elevator();
 	
 	scalerTalon = new TalonMotorController(9);
 	
