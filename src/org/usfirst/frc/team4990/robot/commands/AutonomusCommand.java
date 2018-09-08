@@ -5,6 +5,7 @@ import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomusCommand extends CommandGroup {
+	
 	public AutonomusCommand(StartingPosition s, String gameData) {
 		System.out.println("Auto Logic INIT");
 		
