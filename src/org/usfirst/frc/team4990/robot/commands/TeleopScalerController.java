@@ -28,10 +28,10 @@ public class TeleopScalerController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void initalize() {		
-		if(dir.equals(direction.IN)) {
+		if (dir == direction.IN) {
 			RobotMap.scaler.setSpeed(-0.7);
 			return;
-		} if(dir.equals(direction.OUT)) {
+		} if (dir == direction.OUT) {
 			RobotMap.scaler.setSpeed(0.7);
 			return;
 		} else {
@@ -44,12 +44,10 @@ public class TeleopScalerController extends Command{
 	}
 	
 	protected void interrupted() {
-		RobotMap.scaler.setSpeed(0);
+		end();
 	}
 
-	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
