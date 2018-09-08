@@ -173,6 +173,7 @@ public class Robot extends IterativeRobot {
 	public void resetSensors() {
     		System.out.print("Starting gyro calibration. DON'T MOVE THE ROBOT...");
     		RobotMap.gyro.calibrate();
+    		RobotMap.ahrs.reset();
     		System.out.print("Gyro calibration done. Resetting encoders...");
     		RobotMap.driveTrain.resetDistanceTraveled();
     		System.out.print("Sensor reset complete.");
@@ -180,12 +181,12 @@ public class Robot extends IterativeRobot {
 	
 	public void liveWindowInit() {
 		//Elevator
-		//elevator.elevatorMotor.setName("Elevator","Motor");
+		RobotMap.elevatorTalon.setName("Elevator","Motor");
 		
 		//Intake
-		RobotMap.intake.motorL.setName("Intake", "LeftMotor");
-		RobotMap.intake.motorR.setName("Intake", "RightMotor");
-		RobotMap.intake.infrared.setName("Intake", "Infrared");
+		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
+		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
+		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
 		
 		//DriveTrain
 		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
@@ -195,6 +196,7 @@ public class Robot extends IterativeRobot {
 		
 		//General
 		RobotMap.gyro.setName("General", "Gyro");
+		RobotMap.ahrs.setName("General", "Gyro");
 	}
 	
 	//ever heard of the tale of last minute code
