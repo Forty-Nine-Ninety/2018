@@ -55,19 +55,15 @@ public class TeleopIntakeController extends Command{
 		}
 	}
 	
-	@Override
 	protected void end() {
 		RobotMap.intake.setSpeed(0.0);
 	}
 	
-	@Override
-	public void cancel() {
-		RobotMap.intake.setSpeed(0.0);
+	public void interupted() {
+		end();
 	}
 	
-	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

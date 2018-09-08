@@ -89,61 +89,62 @@ public class RobotMap {
 	public static AHRS ahrs;
 	
 	public RobotMap() {
-	pdp = new PowerDistributionPanel();
+		
+		pdp = new PowerDistributionPanel();
+		
+		driveGamepad = new F310Gamepad(0);
+		opGamepad = new F310Gamepad(1);
+		
+		leftFrontDriveTalon = new TalonMotorController(1);
+		leftRearDriveTalon = new TalonMotorController(2);
+		rightFrontDriveTalon = new TalonMotorController(3);
+		rightRearDriveTalon = new TalonMotorController(4);
+		
+		leftEncoderPortA = new DigitalInput(0);
+		leftEncoderPortB = new DigitalInput(1);
+		rightEncoderPortA = new DigitalInput(2);
+		rightEncoderPortB = new DigitalInput(3);
+		
+		leftEncoder = new Encoder(leftEncoderPortA, leftEncoderPortB);
+		rightEncoder = new Encoder(rightEncoderPortA, rightEncoderPortB);
+		
+		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
+		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
+					
+		driveTrain = new DriveTrain(leftGearbox, rightGearbox);
+		
+		intakeTalonA = new TalonMotorController(8);
+		intakeTalonB = new TalonMotorController(7);
+		
+		intakeDistanceAnalogInput = new AnalogInput(0);
+		
+		intake = new Intake();
+		
+		elevatorTalon = new TalonMotorController(6);
+		
+		elevatorLimitSwitchTopInput = new DigitalInput(6);
+		elevatorLimitSwitchBottomInput = new DigitalInput(7);
+		
+		elevatorLimitSwitchTop = new LimitSwitch(6);
+		elevatorLimitSwitchBottom = new LimitSwitch(7);
+		
+		elevator = new Elevator();
+		
+		scalerTalon = new TalonMotorController(9);
+		
+		scaler = new Scaler(new TalonMotorController(9));
+		
+		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
+		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
+		
+		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
 	
-	driveGamepad = new F310Gamepad(0);
-	opGamepad = new F310Gamepad(1);
-	
-	leftFrontDriveTalon = new TalonMotorController(1);
-	leftRearDriveTalon = new TalonMotorController(2);
-	rightFrontDriveTalon = new TalonMotorController(3);
-	rightRearDriveTalon = new TalonMotorController(4);
-	
-	leftEncoderPortA = new DigitalInput(0);
-	leftEncoderPortB = new DigitalInput(1);
-	rightEncoderPortA = new DigitalInput(2);
-	rightEncoderPortB = new DigitalInput(3);
-	
-	leftEncoder = new Encoder(leftEncoderPortA, leftEncoderPortB);
-	rightEncoder = new Encoder(rightEncoderPortA, rightEncoderPortB);
-	
-	leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
-	rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
-				
-	driveTrain = new DriveTrain(leftGearbox, rightGearbox);
-	
-	intakeTalonA = new TalonMotorController(8);
-	intakeTalonB = new TalonMotorController(7);
-	
-	intakeDistanceAnalogInput = new AnalogInput(0);
-	
-	intake = new Intake();
-	
-	elevatorTalon = new TalonMotorController(6);
-	
-	elevatorLimitSwitchTopInput = new DigitalInput(6);
-	elevatorLimitSwitchBottomInput = new DigitalInput(7);
-	
-	elevatorLimitSwitchTop = new LimitSwitch(6);
-	elevatorLimitSwitchBottom = new LimitSwitch(7);
-	
-	elevator = new Elevator();
-	
-	scalerTalon = new TalonMotorController(9);
-	
-	scaler = new Scaler(new TalonMotorController(9));
-	
-	ultrasonicDigitalOutput = new DigitalOutput(4); //PING
-	ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
-	
-	ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
-
-	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-	//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
-	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
-	
-	ahrs = new AHRS(SPI.Port.kMXP); 
-	//navX-MXP RoboRIO extension and 9-axis gyro thingy
-	//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
+		gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+		//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
+		//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
+		
+		ahrs = new AHRS(SPI.Port.kMXP); 
+		//navX-MXP RoboRIO extension and 9-axis gyro thingy
+		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
 	} 
 }
