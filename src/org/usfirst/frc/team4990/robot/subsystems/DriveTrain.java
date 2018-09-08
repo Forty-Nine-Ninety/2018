@@ -3,10 +3,11 @@ package org.usfirst.frc.team4990.robot.subsystems;
 import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class DriveTrain extends Subsystem implements PIDOutput  {
+public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
 	public double currentThrottleMultiplier;
 	
@@ -53,7 +54,6 @@ public class DriveTrain extends Subsystem implements PIDOutput  {
 		right.setSpeed(rightSpeed);
 	}
 	
-	
 	/**
 	 * Actually sets the speeds of all drive train motors.
 	 */
@@ -72,16 +72,38 @@ public class DriveTrain extends Subsystem implements PIDOutput  {
 		right.encoder.reset();
 	}
 
-	public void pidWrite(double output) {
-		//setSpeed(output);
-		//speed set somewhere else!
+	@Override
+	protected void initDefaultCommand() {
+		if (DriverStation.getInstance().isOperatorControl()) {
+		this.setDefaultCommand(new TeleopDriveTrainController());
+		}
 	}
 
 	@Override
-	protected void initDefaultCommand() {
-		if(DriverStation.getInstance().isOperatorControl()) {
-		this.setDefaultCommand(new TeleopDriveTrainController());
-		}
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/**
+	 * Returns raw average left/right encoder value, in unknown units.
+	 * Use pidGet() to return distance in feet.
+	 */
+	
+	public double getEncoderDistance() {
+		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+	}
+
+	/**
+	 * Returns average left/right encoder value, in feet.
+	 */
+	public double pidGet() {
+		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
 	}
 		
 }
