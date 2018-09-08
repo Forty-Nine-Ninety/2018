@@ -7,7 +7,7 @@ public class LimitSwitch {
 	
 	/**
 	 * Initialize limit switch. Use getValue() to read state.
-	 * @param digitalIOChannel
+	 * @param digitalIOChannel DigitalIO on RoboRIO
 	 */
 	
 	public LimitSwitch(int digitalIOChannel) {
