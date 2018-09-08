@@ -124,7 +124,7 @@ public class OI{
 
 		//elevator
 		opJoystickRightY.whileHeld(new TeleopElevatorController());
-		opY.whenPressed(new ElevatorPID());
+		//opY.whenPressed(new ElevatorPID());
 		
 		//scaler
 		JoystickButtonGroup scalerButtons = new JoystickButtonGroup(opBumperLeft, opBumperRight);
