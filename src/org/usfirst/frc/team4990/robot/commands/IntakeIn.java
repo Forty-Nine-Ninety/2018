@@ -41,6 +41,11 @@ public class IntakeIn extends Command {
 	}
 	
 	public void end() {
-		intake.stop();
+		intake.setSpeed(0);
+		intake.update();
+	}
+	
+	public void interupted() {
+		end();
 	}
 }
