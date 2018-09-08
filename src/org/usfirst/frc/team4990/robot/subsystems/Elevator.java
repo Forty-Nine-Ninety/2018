@@ -1,15 +1,13 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.RobotMap;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Elevator extends Subsystem implements PIDSource, PIDOutput{
+public class Elevator extends Subsystem {
 	
 	public TalonSRX elevatorMotor;
 	
@@ -21,16 +19,6 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	
 	private double setSpeed = 0;
 	
-	//for Elevator goToPostion
-	private PIDSourceType pidSource = PIDSourceType.kDisplacement;
-	public double doneTolerance = 3; //percent
-	public boolean goToPostionActive = false;
-	double kP = 0.2;
-	double kI = 0;
-	double kD = 0;
-	
-	public PIDController elevatorPID = new PIDController(kP, kI, kD, this, this);
-	
 	/**
 	 * Initializes elevator.
 	 * @param elevatorMotor Talon for motor used to drive elevator
@@ -39,17 +27,13 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	
-	public Elevator(TalonSRX elevatorMotor, LimitSwitch topSwitch, LimitSwitch bottomSwitch) {
+	public Elevator() {
 		
-		this.elevatorMotor = elevatorMotor;
+		this.elevatorMotor = RobotMap.elevatorTalon;
 		
-		this.topSwitch = topSwitch;
-		this.bottomSwitch = bottomSwitch;
+		this.topSwitch = RobotMap.elevatorLimitSwitchTop;
+		this.bottomSwitch = RobotMap.elevatorLimitSwitchBottom;
 		
-		this.elevatorPID.setInputRange(-180f, 180f);
-		this.elevatorPID.setContinuous(true);; //minimumInput, maximumInput
-		this.elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
-		this.elevatorPID.setAbsoluteTolerance(doneTolerance);
 	}
 	
 	/**
@@ -62,24 +46,20 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 			this.setSpeed = 0;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			if (!this.goToPostionActive) {
-				if (power > stopFallingSpeed) { //right joystick positive = elevator UP
-					if (power > maxSpeed) {
-						this.setSpeed = maxSpeed;
-					} else { 
-						this.setSpeed = power; 
-					}
-				} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
-					if (-power > maxSpeed) {
-						this.setSpeed = maxSpeed;
-					} else { 
-						this.setSpeed = power; 
-					}
-				} else {
-					this.setSpeed = stopFallingSpeed;
+			if (power > stopFallingSpeed) { //right joystick positive = elevator UP
+				if (power > maxSpeed) {
+					this.setSpeed = maxSpeed;
+				} else { 
+					this.setSpeed = power; 
+				}
+			} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
+				if (-power > maxSpeed) {
+					this.setSpeed = maxSpeed;
+				} else { 
+					this.setSpeed = power; 
 				}
 			} else {
-				this.setSpeed = power; 
+				this.setSpeed = stopFallingSpeed;
 			}
 		}
 	}
@@ -89,16 +69,6 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	 */
 	
 	public void update() {
-		
-		//updates elevator PID for goToPostion
-		if (goToPostionActive) {
-			if (this.elevatorPID.onTarget()){ //done
-				this.elevatorPID.disable();
-				goToPostionActive = false;
-			} else {
-				setElevatorPower(this.elevatorPID.get());
-			} 
-		}
 		
 		if (setSpeed > stopFallingSpeed || setSpeed < stopFallingSpeed) {
 			
@@ -113,14 +83,6 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 			this.elevatorMotor.set(ControlMode.PercentOutput, setSpeed);
 		}
 		
-	}
-	
-	public void goToPosition(double postionInput) {
-		resetEncoderDistance();
-		this.elevatorPID.setSetpoint(postionInput);
-		this.elevatorPID.enable();
-		setElevatorPower(this.elevatorPID.get());
-		goToPostionActive = true;
 	}
 	
 	/**
@@ -155,28 +117,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput{
 	 */
 	
 	public void resetEncoderDistance() {
-		elevatorMotor.setSelectedSensorPosition(0, 0, 0);
-	}
-
-	@Override
-	public void pidWrite(double output) {
-		setElevatorPower(output);
-	}
-
-	@Override
-	public void setPIDSourceType(PIDSourceType pidSource) {
-		this.pidSource = pidSource;
-		
-	}
-
-	@Override
-	public PIDSourceType getPIDSourceType() {
-		return pidSource;
-	}
-
-	@Override
-	public double pidGet() {
-		return getEncoderDistance();
+		elevatorMotor.setSelectedSensorPosition(0, 0, 25);
 	}
 
 	@Override
