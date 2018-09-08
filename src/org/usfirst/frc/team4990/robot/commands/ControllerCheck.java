@@ -2,7 +2,7 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * Press 'START' button on Drive or OP controller to see which is which
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 
-public class ControllerCheck extends Command {
+public class ControllerCheck extends InstantCommand {
 	public ControllerCheck(F310Gamepad gamepad) {
     	if (gamepad.equals(RobotMap.driveGamepad)) {
     		System.out.println("Button 7 Pressed on DRIVE GAMEPAD");
