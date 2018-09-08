@@ -23,21 +23,21 @@ public class TeleopElevatorController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-
-			//Elevator PID System still needs some work, disabled for now
-			/*if (gpad.getYButtonPressed()) { 
-				elevator.goToPosition(4);
-				System.out.println("Moving to " + RobotMap.elevator.elevatorPID.getSetpoint() + ", current speed: " + RobotMap.elevator.elevatorPID.get());
-		}
-			} else { */
-				RobotMap.elevator.setElevatorPower(Math.abs(RobotMap.opGamepad.getRightJoystickY()) + RobotMap.elevator.stopFallingSpeed);
-			//}
+		RobotMap.elevator.setElevatorPower(Math.abs(RobotMap.opGamepad.getRightJoystickY()) + RobotMap.elevator.stopFallingSpeed);
 	}
 
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void end() {
+		RobotMap.elevator.setElevatorPower(0);
+	}
+	
+	public void interupted() {
+		end();
 	}
 
 }
