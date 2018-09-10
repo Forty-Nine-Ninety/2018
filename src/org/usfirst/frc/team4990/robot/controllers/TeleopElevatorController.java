@@ -10,9 +10,8 @@ import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 public class TeleopElevatorController {
 	private Elevator elevator;
 	private F310Gamepad gpad;
-	private double maxSpeed;
-	private double tempAxis;
-	private double elevatorPreset;
+	@SuppressWarnings("unused") //not fully implemented
+	private double maxSpeed, joystickInput, elevatorPreset, stopFallingSpeed;
 	
 	private int controller;
 	
@@ -30,7 +29,8 @@ public class TeleopElevatorController {
 		controller = 1;//RIGHT joystick
 		//top speed of elevator motor (0.0 to 1.0)
 		maxSpeed = 1.0;
-		elevatorPreset = 4; //height to move to
+		elevatorPreset = 4; //height to move to (in feet?)
+		stopFallingSpeed = elevator.stopFallingSpeed;
 	}
 	
 	/**
@@ -39,27 +39,27 @@ public class TeleopElevatorController {
 	 */
 	public void update() {
 
-		tempAxis = -gpad.getRawAxis(controller);
+		joystickInput = -gpad.getRawAxis(controller) + stopFallingSpeed;
 		if (!elevator.goToPostionActive) {
-			if (tempAxis > 0) { //right joystick positive = elevator UP
-				if (tempAxis > maxSpeed) {
+			if (joystickInput > stopFallingSpeed) { //right joystick positive = elevator UP
+				if (joystickInput > maxSpeed) {
 				elevator.setElevatorPower(maxSpeed);
 				} else { 
-					elevator.setElevatorPower(tempAxis); 
+					elevator.setElevatorPower(joystickInput); 
 				}
-			} else if (tempAxis < 0) { //right joystick negative = elevator DOWN
-				if (-tempAxis > maxSpeed) {
+			} else if (joystickInput < stopFallingSpeed) { //right joystick negative = elevator DOWN
+				if (-joystickInput > maxSpeed) {
 					elevator.setElevatorPower(maxSpeed);
 				} else { 
-					elevator.setElevatorPower(tempAxis); 
+					elevator.setElevatorPower(joystickInput); 
 				}
 			} else {
-				elevator.setElevatorPower(0.0);
+				elevator.setElevatorPower(stopFallingSpeed);
 			}
 		
-			if (gpad.getYButtonPressed()) {
-				//elevator.goToPosition(elevatorPreset);
-			}
+			/*if (gpad.getYButtonPressed()) { //Elevator PID System still needs some work...
+				elevator.goToPosition(elevatorPreset);
+			}*/
 		} else {
 			System.out.println("Moving to " + elevator.elevatorPID.getSetpoint() + ", current speed: " + elevator.elevatorPID.get());
 		}

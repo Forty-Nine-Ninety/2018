@@ -1,63 +1,52 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.Constants;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 
-public class Elevator {
-	public TalonMotorController elevatorMotorA;
-	public TalonMotorController elevatorMotorB;
+public class Elevator implements PIDSource, PIDOutput{
 	
-	public LimitSwitch topSwitch;
+	public TalonSRX elevatorMotor;
 	
-	public LimitSwitch bottomSwitch;
+	public LimitSwitch topSwitch, bottomSwitch;
 	
-	public Encoder encoder;
+	public double stopFallingSpeed = 0.05;
 	
-	private double stopFallingSpeed = -0.1;
+	public double maxSpeed = 1.0;
 	
-	private boolean stopped = false;
-	
+	public double setSpeed = 1.0;
 	//for Elevator goToPostion
+	private PIDSourceType pidSource = PIDSourceType.kDisplacement;
 	public double doneTolerance = 3; //percent
-	public PIDController elevatorPID;
 	public boolean goToPostionActive = false;
+	double kP = 0.2;
+	double kI = 0;
+	double kD = 0;
+	
+	public PIDController elevatorPID = new PIDController(kP, kI, kD, this, this);
 	
 	/**
 	 * Initializes elevator.
-	 * @param elevatorMotor Motor used to drive elevator (vex pro 775)
+	 * @param elevatorMotor Talon for motor used to drive elevator
 	 * @param topSwitchChannel DIO channel for top limit switch
-	 * @param topSwitchCounterSensitivity sensitivity for top limit switch, default 4
 	 * @param bottomSwitchChannel DIO channel for bottom limit switch
-	 * @param bottomSwitchCounterSensitivity sensitivity for bottom limit switch, default 4
-	 * @param encoderChannelA Encoder for elevator gearbox (Signal, Ground and 5v)
-	 * @param encoderChannelB Encoder for elevator gearbox (just Signal)
 	 */
 	
-	public Elevator(
-			TalonMotorController elevatorMotorA, 
-			TalonMotorController elevatorMotorB,
-			int topSwitchChannel, 
-			int bottomSwitchChannel, 
-			int encoderChannelA, 
-			int encoderChannelB) {
-		this.elevatorMotorA = elevatorMotorA;
-		this.elevatorMotorB = elevatorMotorB;
+	public Elevator(TalonSRX elevatorMotor, int topSwitchChannel, int bottomSwitchChannel) {
+		
+		this.elevatorMotor = elevatorMotor;
 		
 		this.topSwitch = new LimitSwitch(topSwitchChannel);
 		this.bottomSwitch = new LimitSwitch(bottomSwitchChannel);
 		
-		encoder = new Encoder(encoderChannelA, encoderChannelB);
-		this.encoder.setDistancePerPulse(1.16 * Math.PI / Constants.pulsesPerRevolution); //diameter of elevator chain gear * PI
-		this.encoder.setMinRate(Constants.gearboxEncoderMinRate);
-		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
-		
-		//for elevator PID goToPosition
-		elevatorPID = new PIDController(1, 0, 0, encoder, new ElevatorPID(this));
-		elevatorPID.setInputRange(0, 4.8); //minimumInput, maximumInput
-		elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
-		elevatorPID.setAbsoluteTolerance(doneTolerance);
+		this.elevatorPID.setInputRange(-180f, 180f);
+		this.elevatorPID.setContinuous(true);; //minimumInput, maximumInput
+		this.elevatorPID.setOutputRange(-1, 1); //minimumOutput, maximumoutput (motor constraints)
+		this.elevatorPID.setAbsoluteTolerance(doneTolerance);
 	}
 	
 	/**
@@ -65,22 +54,29 @@ public class Elevator {
 	 * @param power positive value (0 to 1) makes it go up, negative values (-1 to 0) makes it go down
 	 */
 	
-	public void setElevatorPower(double power) {
-		if ((this.topSwitch.getValue() && power > 0) || (this.bottomSwitch.getValue() && power < 0)) {
-			this.elevatorMotorA.setPower(0.0);
-			this.elevatorMotorB.setPower(0.0);
-			resetEncoderDistance();
-			stopped = true;
+	public void setElevatorPower(double power) {	
+		if ((topSwitch.getValue() && power > 0) || (bottomSwitch.getValue() && power < 0)) {
+			this.setSpeed = 0;
 			System.out.println("Elevator Safety Triggered in setElevatorPower");
 		} else {
-			System.out.println(this.elevatorMotorB.getPower());
-			this.elevatorMotorA.setPower(-power);
-			this.elevatorMotorB.setPower((power * 0.9) + stopFallingSpeed);
-			if (power == 0 && ! stopped) {
-				resetEncoderDistance();
-				stopped = true;
-			} else if (! stopped) {
-				stopped = false;
+			if (!this.goToPostionActive) {
+				if (power > stopFallingSpeed) { //right joystick positive = elevator UP
+					if (power > maxSpeed) {
+						this.setSpeed = maxSpeed;
+					} else { 
+						this.setSpeed = power; 
+					}
+				} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
+					if (-power > maxSpeed) {
+						this.setSpeed = maxSpeed;
+					} else { 
+						this.setSpeed = power; 
+					}
+				} else {
+					this.setSpeed = stopFallingSpeed;
+				}
+			} else {
+				this.setSpeed = power; 
 			}
 		}
 	}
@@ -93,36 +89,35 @@ public class Elevator {
 		
 		//updates elevator PID for goToPostion
 		if (goToPostionActive) {
-			if (elevatorPID.onTarget()){ //done
-				elevatorPID.disable();
+			if (this.elevatorPID.onTarget()){ //done
+				this.elevatorPID.disable();
+				goToPostionActive = false;
 			} else {
-				setElevatorPower(elevatorPID.get());
+				setElevatorPower(this.elevatorPID.get());
 			} 
 		}
 		
-		//if stopped, use encoders to run motors to stop intake from falling
-		/*if (this.elevatorMotorA.getPower() == 0 || this.elevatorMotorA.getPower() == stopFallingSpeed) {
-				setElevatorPower(stopFallingSpeed);
-			} else {
-				setElevatorPower(0.0);
-			}*/
+		if (setSpeed > stopFallingSpeed || setSpeed < stopFallingSpeed) {
+			
+		}
+
 		
 		//check limit switches, stop motors if going toward danger
-		if ((this.topSwitch.getValue() && this.elevatorMotorA.getPower() > 0) || (this.bottomSwitch.getValue() && this.elevatorMotorA.getPower() < 0)) {
-			this.elevatorMotorA.setPower(0.0);
-			this.elevatorMotorB.setPower(0.0);
+		if ((this.topSwitch.getValue() && this.setSpeed > stopFallingSpeed) || (this.bottomSwitch.getValue() && this.setSpeed < stopFallingSpeed)) {
+			this.elevatorMotor.set(ControlMode.PercentOutput, 0);
 			resetEncoderDistance();
-			stopped = true;
 			System.out.println("Elevator Safety Triggered in update");
+		} else {
+			this.elevatorMotor.set(ControlMode.PercentOutput, setSpeed);
 		}
 		
 	}
 	
 	public void goToPosition(double postionInput) {
 		resetEncoderDistance();
-		elevatorPID.setSetpoint(postionInput);
-		elevatorPID.enable();
-		setElevatorPower(elevatorPID.get());
+		this.elevatorPID.setSetpoint(postionInput);
+		this.elevatorPID.enable();
+		setElevatorPower(this.elevatorPID.get());
 		goToPostionActive = true;
 	}
 	
@@ -150,7 +145,7 @@ public class Elevator {
 	 */
 	
 	public double getEncoderDistance() {
-		return encoder.getDistance();
+		return elevatorMotor.getSelectedSensorPosition(0);
 	}
 	
 	/**
@@ -158,6 +153,27 @@ public class Elevator {
 	 */
 	
 	public void resetEncoderDistance() {
-		this.encoder.reset();
+		elevatorMotor.setSelectedSensorPosition(0, 0, 0);
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		setElevatorPower(output);
+	}
+
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		this.pidSource = pidSource;
+		
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		return pidSource;
+	}
+
+	@Override
+	public double pidGet() {
+		return getEncoderDistance();
 	}
 }

@@ -1,18 +1,23 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.Elevator;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 import org.usfirst.frc.team4990.robot.subsystems.Intake.BoxPosition;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Ultrasonic;
-
-import java.util.LinkedList;
-import java.util.Queue;
 
 //You shouldn't mess with this if you don't know what you're doing
 
@@ -27,18 +32,18 @@ public class AutoDriveTrainScripter {
 		/**
 		 * Called when the command starts; resets sensors and things
 		 */
-		public void init();
+		public void initialize();
 
 		/**
 		 * Called every time the other updates are called; Makes sure that it isn't completed yet
 		 */
-		public void update();
+		public void execute();
 
 		/**
 		 * 
 		 * @return Returns false if the command isn't done and true if it is.
 		 */
-		public boolean done();
+		public boolean isFinished();
 	}
 
 	private Queue<CommandPackage> commands = new LinkedList<>();
@@ -50,6 +55,7 @@ public class AutoDriveTrainScripter {
 	private StartingPosition startPos; //used in SimpleAutoDriveTrain
 	private ADXRS450_Gyro gyro;
 	private Ultrasonic ultrasonic;
+	private AHRS ahrs;
 
 	/**
 	 * Just a constructor
@@ -59,9 +65,10 @@ public class AutoDriveTrainScripter {
 	 * @param i Intake
 	 * @param e Elevator
 	 * @param u Ultrasonic
+	 * @param a AHRS gyro (NAVX-MXP)
 	 * @author Old Coder People
 	 */
-	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e, Ultrasonic u) {
+	public AutoDriveTrainScripter(DriveTrain dtrain, StartingPosition startP, ADXRS450_Gyro gy, Intake i, Elevator e, Ultrasonic u, AHRS ahrs) {
 		dt = dtrain;
 		startPos = startP;
 		gyro = gy;
@@ -71,23 +78,23 @@ public class AutoDriveTrainScripter {
 	/**
 	 * Starts first instruction if it exists;
 	 */
-	public void init() {
+	public void initialize() {
 		// needs to be called once when auto starts
 		CommandPackage top = commands.peek();
 		if(top == null) return;
 
-		top.init();
+		top.initialize();
 	}
 	
 	/**
-	 * Updates instruction if not done; if done then starts next instruction
+	 * executes instruction if not done; if done then starts next instruction
 	 */
-	public void update() {
+	public void execute() {
 		CommandPackage top = commands.peek();
 		if(top == null) return;
 
-		if(!top.done() ) {
-			top.update();
+		if(!top.isFinished() ) {
+			top.execute();
 		}
 		else {
 			commands.remove();
@@ -96,8 +103,8 @@ public class AutoDriveTrainScripter {
 			// but I don't want to take the risk
 			top = commands.peek();
 			if(top == null) return;
-			top.init();
-			top.update();
+			top.initialize();
+			top.execute();
 		}
 	}
 	
@@ -111,181 +118,47 @@ public class AutoDriveTrainScripter {
 		LEFT
 	}
 	
-	/**
-	 * @deprecated
-	 * Command for moving forward/backwards
-	 * @param distance Distance to travel in feet
-	 * @param backwards If true then it goes backwards, if false then it goes forwards
-	 */
-	public void goDistance(double distance, boolean backwards) {
-		/*Test LOG (format date: specified distance | actual distance)
-		 * 1-20-18: 3ft | 3ft+7in
-		 *
-		 *
-		 */
-		class F_Package implements CommandPackage {
-			private double value;
-			private DriveTrain dt;
-			private boolean done;
-			private boolean backwards;
-
-			public F_Package(DriveTrain d, double v, boolean backwards) {
-				this.dt = d;
-				// Use abs to make sure a negative number doesn't break anything
-				this.value = Math.abs(v);
-				this.done = false;
-				this.backwards = backwards;
-			}
-			/**
-			 * Clears drivetrain distances
-			 */
-			public void init() {
-				this.dt.resetDistanceTraveled();
-				System.out.println("goDistance(" + value + ")");
-			}
-			/**
-			 * Updates forward instruction
-			 */
-			public void update() {
-				// only the right side works...
-				// and it's backwards
-				// this entire robot is backwards
-				//System.out.println("LEFT: "+  this.dt.getLeftDistanceTraveled() + " RIGHT: " + this.dt.getRightDistanceTraveled());
-				double speed = .3;
-				if (this.backwards == true) {
-					speed = -speed;
-				}
-				if(Math.abs(this.dt.getRightDistanceTraveled()) < this.value) {
-					dt.setLeftSpeed(speed);
-					dt.setRightSpeed(speed);
-				}
-				else {
-					dt.setLeftSpeed(0.0);
-					dt.setRightSpeed(0.0);
-					this.done = true;
-				}
-			}
-
-			public boolean done() {
-				return this.done;
-			}
-		}
-
-		commands.add(new F_Package(dt, distance, backwards));
-	}
+	//------ Begin commands ------//
+	
 	/**
 	 * Makes robot wait
 	 * @param time Time to wait for in milliseconds
 	 */
 	public void wait(double time) { //time is in milliseconds
 		class W_Package implements CommandPackage {
-			private boolean done;
+			private boolean isFinished;
 			private long duration;
 			private long startMillis;
 
 			public W_Package(double t) {
 				this.duration = (long) t;
-				this.done = false;
+				this.isFinished = false;
 			}
 			/**
 			 * Clears time
 			 */
-			public void init() {
+			public void initialize() {
 				this.startMillis = System.currentTimeMillis();
 				System.out.println("wait(" + duration + ")");
 			}
 			/**
-			 * Sets done to true if time is up
+			 * Sets isFinished to true if time is up
 			 */
-			public void update() {
+			public void execute() {
 				if (startMillis + duration <= System.currentTimeMillis()) {
 					//done waiting!
-					this.done = true;
+					this.isFinished = true;
 				}
 			}
 			/**
 			 * Returns whether the command is done or not
 			 */
-			public boolean done() {
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 
 		commands.add(new W_Package(time));
-	}
-
-	/**
-	 * Turns robot for degrees
-	 * @deprecated
-	 * @param degrees
-	 * @param lr
-	 */
-	public void turnForDegrees(double degrees, Direction lr) {
-		//0.01709 feet per 1 degree
-		class turnForDegrees_Package implements CommandPackage {
-			// feetPer1Degree = ((24 * pi) inches / 360 degrees) / (12 inches / 1 foot)
-			// times some other random constant lol
-			private double feetPer1Degree = 0.01745329  * .99;
-			private double classdegrees;
-			private boolean done;
-			private DriveTrain dt;
-			private boolean left;
-			private double encoderDistanceToStriveFor;
-			private double currentEncoderDistance;
-
-			public turnForDegrees_Package(DriveTrain d, double classdegrees, Direction classlr) {
-				// please note that the right encoder is backwards
-				this.dt = d;
-				this.classdegrees = classdegrees;
-				this.done = false;
-				encoderDistanceToStriveFor = this.classdegrees * feetPer1Degree;
-
-				currentEncoderDistance = 0;
-				
-				if (classlr == Direction.LEFT) {
-					this.left = true;
-				}
-				else {
-					this.left = false;
-				}
-			}
-			public void init() {
-				this.dt.resetDistanceTraveled();
-				System.out.println("turnForDegrees(" + degrees + ", Left:" + left + ")");
-			}
-
-			public void update() {
-				double speed = 0.20;
-				if (this.left == true) {
-					// if it's supposed to turn left (I know it's weird just go with it)
-					speed = -speed;
-				}
-
-				if (currentEncoderDistance <= encoderDistanceToStriveFor) {
-	
-					// Gets the average of each side's distance
-					// Needs abs or else only works one direction
-					currentEncoderDistance = (Math.abs(this.dt.getRightDistanceTraveled()) +
-											  Math.abs(this.dt.getLeftDistanceTraveled())) / 2;
-
-					//DEBUG ENCODER PRINTER
-					System.out.println("LEFT: " + this.dt.getLeftDistanceTraveled() + "  RIGHT: " + this.dt.getRightDistanceTraveled() + "  "+ encoderDistanceToStriveFor);
-
-					this.dt.setLeftSpeed(speed); // left needs to go forwards
-					this.dt.setRightSpeed(-speed); // right needs to go backwards
-				}
-				else {
-					this.dt.setSpeed(0.0, 0.0);
-					this.done = true;
-				}
-
-			}
-			
-			public boolean done() {
-				return this.done;
-			}
-		}
-		commands.add(new turnForDegrees_Package(dt, degrees, lr));
 	}
 	/**
 	 * Command for going straight
@@ -295,52 +168,41 @@ public class AutoDriveTrainScripter {
 		class gyroStraight_Package implements CommandPackage {
 			private double distanceToGo;
 			private double startingGyro;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private double baseMotorPower;
-			private double currentGyroData;
-			private double leftMotorAdjust;
 			private double currentDistanceTraveled;
-
 
 			public gyroStraight_Package(DriveTrain dt, ADXRS450_Gyro gyro, double distance) {
 				//Remember that the right motor is the slow one
-				this.done = false;
+				this.isFinished = false;
 				this.dt = dt;
 				this.gyro = gyro;
 				this.distanceToGo = distance;
 				this.startingGyro = 0;
 				this.baseMotorPower = 0.6;
 			}
-			public void init() {
+			public void initialize() {
 				System.out.println("gyroStraight(" + distance + ")");
 				this.dt.resetDistanceTraveled();
 				gyro.reset();
 			}
-			public void update() {
-				this.currentDistanceTraveled = Math.abs(this.dt.getRightDistanceTraveled()) * 1.06517;
-				this.currentGyroData = gyro.getAngle();
+			public void execute() {
+				this.currentDistanceTraveled = (distance > 0) ? -this.dt.right.getDistanceTraveled() * 1.06517 : this.dt.right.getDistanceTraveled() * 1.06517;
 
-				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
-				if (currentDistanceTraveled < this.distanceToGo) {
-					
-					if (this.currentGyroData > this.startingGyro) {
-						this.leftMotorAdjust = this.baseMotorPower + 0.064023; //add to number to go more LEFT
-					} else if (this.currentGyroData < this.startingGyro) {
-						this.leftMotorAdjust = this.baseMotorPower - 0.05;
+				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.right.getDistanceTraveled() + this.dt.left.getDistanceTraveled());
+				if (currentDistanceTraveled < this.distanceToGo) { //not at goal yet
+					this.dt.setSpeed(baseMotorPower + (0.1 * (startingGyro - gyro.getAngle())), baseMotorPower - (0.1 * (startingGyro - gyro.getAngle()))); //TODO: find proportional values (right now 0.1) for drive train
 
-					}
-					this.dt.setSpeed(this.baseMotorPower, this.baseMotorPower);
 				} else {
-					this.done = true;
+					this.isFinished = true;
 					this.dt.setSpeed(0, 0);
 				}
 			}
 			
-			public boolean done() {
-				
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		commands.add(new gyroStraight_Package(dt, gyro, distance));
@@ -349,35 +211,32 @@ public class AutoDriveTrainScripter {
 	public void gyroStraightBackwards(double distance) {
 		class gyroStraight_Packageb implements CommandPackage {
 			private double distanceToGo;
-			private double startingGyro;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private double baseMotorPower;
-			private double currentGyroData;
-			private double leftMotorAdjust;
 			private double currentDistanceTraveled;
 
 
 			public gyroStraight_Packageb(DriveTrain dt, ADXRS450_Gyro gyro, double distance) {
 				//Remember that the right motor is the slow one
-				this.done = false;
+				this.isFinished = false;
 				this.dt = dt;
 				this.gyro = gyro;
 				this.distanceToGo = distance;
-				this.startingGyro = 0;
+				//this.startingGyro = 0;
 				this.baseMotorPower = 0.1;
 			}
-			public void init() {
+			public void initialize() {
 				System.out.println("gyroStraight(" + distance + ")");
 				this.dt.resetDistanceTraveled();
 				gyro.reset();
 			}
-			public void update() {
-				this.currentDistanceTraveled = Math.abs(this.dt.getRightDistanceTraveled()) * 1.06517;
-				this.currentGyroData = gyro.getAngle();
+			public void execute() {
+				this.currentDistanceTraveled = Math.abs(this.dt.right.getDistanceTraveled()) * 1.06517;
+				//this.currentGyroData = gyro.getAngle();
 
-				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.getRightDistanceTraveled() + this.dt.getLeftDistanceTraveled());
+				System.out.println("current distance: " + currentDistanceTraveled + " stopping at: " + this.distanceToGo + "r encoder: " + this.dt.right.getDistanceTraveled() + this.dt.left.getDistanceTraveled());
 				if (currentDistanceTraveled > this.distanceToGo) {
 					
 					/*if (this.currentGyroData < this.startingGyro) {
@@ -388,14 +247,14 @@ public class AutoDriveTrainScripter {
 				} */
 					this.dt.setSpeed(this.baseMotorPower * (1/0.86), this.baseMotorPower);
 				} else {
-					this.done = true;
+					this.isFinished = true;
 					this.dt.setSpeed(0, 0);
 				}
 			}
 			
-			public boolean done() {
+			public boolean isFinished() {
 				
-				return this.done;
+				return this.isFinished;
 			}
 		}
 		commands.add(new gyroStraight_Packageb(dt, gyro, distance));
@@ -408,7 +267,7 @@ public class AutoDriveTrainScripter {
 	public void straightToSwitch() {
 		class straightToSwitch_Package implements CommandPackage {
 			private double startingGyro;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
 			private Ultrasonic ultrasonic;
@@ -419,7 +278,7 @@ public class AutoDriveTrainScripter {
 
 			public straightToSwitch_Package(DriveTrain dt, ADXRS450_Gyro gyro, Ultrasonic ultrasonic) {
 				//Remember that the right motor is the slow one
-				this.done = false;
+				this.isFinished = false;
 				this.dt = dt;
 				this.gyro = gyro;
 				this.ultrasonic = ultrasonic;
@@ -427,12 +286,12 @@ public class AutoDriveTrainScripter {
 				this.baseMotorPower = 0.3;
 			}
 			
-			public void init() {
+			public void initialize() {
 				System.out.println("straightToSwitch()");
 				this.dt.resetDistanceTraveled();
 				gyro.reset();
 			}
-			public void update() {
+			public void execute() {
 				this.currentGyroData = gyro.getAngle();
 				System.out.println("current ultrasonic distance: " + ultrasonic.getRangeInches());
 				
@@ -446,14 +305,13 @@ public class AutoDriveTrainScripter {
 					}
 					this.dt.setSpeed(this.leftMotorAdjust, this.baseMotorPower);
 				} else {
-					this.done = true;
+					this.isFinished = true;
 					this.dt.setSpeed(0, 0);
 				}
 			}
 			
-			public boolean done() {
-				
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		commands.add(new straightToSwitch_Package(dt, gyro, ultrasonic));
@@ -461,97 +319,160 @@ public class AutoDriveTrainScripter {
 
 	/**
 	 * Turns left or right
-	 * @param inputDegrees Degrees to turn
-	 * @param lr Left or right(As an object of type Direction)
+	 * @param inputDegrees Degrees to turn (Positive = right, negative = left)
 	 */
-	public void gyroTurn(double inputDegrees, Direction lr) {
+	public void gyroTurn(double inputDegrees) {
 		class gyroTurn_Package implements CommandPackage {
 			private double degrees;
-			private boolean done;
+			private boolean isFinished;
 			private DriveTrain dt;
 			private ADXRS450_Gyro gyro;
-			private Direction dir;
 
-			public gyroTurn_Package(DriveTrain d, ADXRS450_Gyro g, double classdegrees, Direction classlr) {
+			public gyroTurn_Package(DriveTrain d, ADXRS450_Gyro g, double classdegrees) {
 				// please note that the right encoder is backwards
 				this.dt = d;
 				this.degrees = classdegrees;
-				this.done = false;
+				this.isFinished = false;
 				gyro = g;
-				dir = classlr;
 			}
 
-			public void init() {
+			public void initialize() {
 				this.gyro.reset();
-				System.out.println("gyroTurn(" + degrees + ", " + dir + ")");
+				System.out.println("gyroTurn(" + degrees + ")");
 			}
 
-			public void update() {
-				double speed = 0.5;
-				if (dir == Direction.LEFT) speed *= -1;
+			public void execute() {
 				
 				double currentDegreesTraveled = Math.abs(gyro.getAngle());
+				System.out.println("Current angle: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
 				
-				if (currentDegreesTraveled < this.degrees * 0.67) {
-					//DEBUG GYRO PRINTER
-					//System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
-
-					this.dt.setSpeed(speed, -speed); // left needs to go forwards, right needs to go backwards
+				if (currentDegreesTraveled < this.degrees) {
+					this.dt.setSpeed( //TODO change (1/90) to actual porportional value
+							(degrees > 0) ? //turning right?
+							(1/90) * (degrees - gyro.getAngle()) : -(1/90) * (degrees - gyro.getAngle()), 
+							(degrees > 0) ? //turning right?
+							-(1/90) * (degrees - gyro.getAngle()) : (1/90) * (degrees - gyro.getAngle())
+							); // left needs to go forwards, right needs to go backwards to turn right	
+				} else {
+					this.dt.setSpeed(0, 0);
+					this.isFinished = true;
 				}
-				else if (currentDegreesTraveled < this.degrees - (this.degrees * 0.02777)) {
-					System.out.println("Current: " + this.gyro.getAngle() + "  Stopping at: " + this.degrees);
-					
-					this.dt.setSpeed(speed / 3, -speed / 3);
-				}
-				else {
-					this.dt.setSpeed(0.0, 0.0);
-					this.done = true;
-				}
-
 			}
 			
-			public boolean done() {
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
-		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees, lr));
+		commands.add(new gyroTurn_Package(dt, gyro, inputDegrees));
 	}
+	
+	public void ahrsTurn(double heading) {
+		class AhrsTurn_Package implements CommandPackage, PIDSource, PIDOutput {
+			private AHRS ahrs;
+			private DriveTrain dt;
+			private double maxSpeed = 0.65;
+			private double regSpeed = 0.35;
+			private PIDController yawPIDController;
+			private double heading = 0;
+			private double kP = 0.03;
+			private double kI = 0;
+			private double kD = 0;
+			
+			private PIDSourceType pidSourceType = PIDSourceType.kRate;
+			
+			public AhrsTurn_Package(AHRS ahrs_input, DriveTrain dt_input, double heading_input) {
+				this.ahrs = ahrs_input;
+				this.dt = dt_input;
+				this.heading = heading_input;
+			}
+			
+			public void initialize() {
+				
+				yawPIDController = new PIDController(kP, kI, kD, this, this);
+				yawPIDController.setInputRange(-180f, 180f);
+				//ahrs.setPIDSourceType(PIDSourceType.kRate);
+				yawPIDController.setSetpoint(heading);
+		        yawPIDController.setOutputRange(-maxSpeed, maxSpeed);
+		        yawPIDController.setAbsoluteTolerance(3);
+		        yawPIDController.setContinuous(true);
+		        yawPIDController.enable();
+		        //ahrs.zeroYaw();
+			}
+
+			public void execute() {
+				if (yawPIDController.onTarget()) { //go straight
+					dt.setSpeed(0);
+				} else if (yawPIDController.get() > 0) { //turn right?
+					dt.setSpeed(regSpeed + yawPIDController.get(), regSpeed - yawPIDController.get()); 
+				} else if (yawPIDController.get() < 0) {//turn left?
+					dt.setSpeed(regSpeed - yawPIDController.get(), regSpeed + yawPIDController.get());
+				}
+			}
+
+			public boolean isFinished() {
+				return yawPIDController.onTarget();
+			}
+
+			@Override
+			public void pidWrite(double output) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {
+				pidSourceType = pidSource;
+			}
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return pidSourceType;
+			}
+
+			@Override
+			public double pidGet() {
+				return ahrs.getAngle();
+			}
+		}
+		commands.add(new AhrsTurn_Package(ahrs, dt, heading));
+	}
+	
 	/**
 	 * Makes intake throw whatever is inside out
 	 */
 	public void intakeOut(double duration) {
 		class IntakeOUT_Package implements CommandPackage {
 			private Intake intake;
-			private boolean done;
+			private boolean isFinished;
 			private double speed = -0.6;
-			private double startMillis;
-			private double duration;
+
 			
 			public IntakeOUT_Package(double duration, Intake i) {
 				this.intake = i;
-				this.done = false;
-				this.duration = duration;
+
+				this.isFinished = false;
 			}
 			
-			public void init() {
-				this.startMillis = System.currentTimeMillis();
+			public void initialize() {
+				//nothing.
 			}
 			
-			public void update() {
-				if (startMillis + duration <= System.currentTimeMillis()) {
-					done = true;
-				} else {
+			public void execute() {
+				BoxPosition boxPos = intake.getBoxPosition();
+				if (boxPos.equals(BoxPosition.OUT)) {
+					isFinished = true;
+				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.IN)) {
+
 					intake.setSpeed(speed);
 				}
-				
+				if (this.isFinished) {
+					intake.stop();
+				}
 				intake.update();
 			}
 			
-			public boolean done() {
-				if (this.done) {
-					intake.stop();
-				}
-				return done;
+			public boolean isFinished() {
+				return isFinished;
 			}
 		}
 		
@@ -563,39 +484,37 @@ public class AutoDriveTrainScripter {
 	public void intakeIn(double duration) {
 		class IntakeIN_Package implements CommandPackage {
 			private Intake intake;
-			private boolean done;
+			private boolean isFinished;
 			private double speed = 0.6;
-			private double duration;
-			private long startMillis;
 			
 			
 			public IntakeIN_Package(double duration, Intake i) {
 				this.intake = i;
-				this.done = false;
-				this.duration = duration;
+				this.isFinished = false;
+
 			}
 			
-			public void init() {
-				this.startMillis = System.currentTimeMillis();
+			public void initialize() {
+
+
 			}
 			
-			public void update() {
+			public void execute() {
 				BoxPosition boxPos = intake.getBoxPosition();
 				if (boxPos.equals(BoxPosition.IN)) {
-					done = true;
+					isFinished = true;
 				} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.OUT)) {
 					intake.setSpeed(speed);
 
 				}
-				
+				if (this.isFinished) {
+					intake.stop();
+				}
 				intake.update();
 			}
 			
-			public boolean done() {
-				if (this.done) {
-					intake.stop();
-				}
-				return done;
+			public boolean isFinished() {
+				return isFinished;
 			}
 		}
 		
@@ -604,40 +523,41 @@ public class AutoDriveTrainScripter {
 	/**
 	 * Moves elevator a set distance
 	 * @param distance Distance to move; positive is up, negative is down I think
-	 * @deprecated Needs to be modified for actual encoder
+	 * TODO: Needs to be modified for actual encoder
 	 */
-	public void moveElevator(double distance) { //TODO Implement PID for elevator
+	public void moveElevator(double distance) { 
 		class Elevator_package implements CommandPackage {
 			private Elevator elevator;
-			private boolean done;
+			private boolean isFinished;
 			private PIDController elevatorPID;
 			
 			public Elevator_package(double dist, Elevator e) {
 				this.elevator = e;
-				this.done = false;
+				this.isFinished = false;
 				this.elevatorPID = e.elevatorPID;
 			}
 			
-			public void init() {
+			public void initialize() {
 				elevator.resetEncoderDistance();
 				elevatorPID.enable();
 			}
 			
-			public void update() {
+			public void execute() {
 				elevator.setElevatorPower(elevatorPID.get());
 					
-				if (elevatorPID.onTarget()){ //done
-					done = true;
+				if (elevatorPID.onTarget()){ //isFinished
+					isFinished = true;
 					elevatorPID.disable();
+				}
+				
+				if (this.isFinished) {
+					elevator.setElevatorPower(0);
 				}
 				
 			}
 			
-			public boolean done() {
-				if (this.done) {
-					elevator.setElevatorPower(0);
-				}
-				return done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 		
@@ -653,7 +573,7 @@ public class AutoDriveTrainScripter {
 	
 	public void moveElevatorTime(double time, double power) { //time is in milliseconds
 		class EW_Package implements CommandPackage {
-			private boolean done;
+			private boolean isFinished;
 			private long duration;
 			private double power;
 			private long startMillis;
@@ -662,32 +582,32 @@ public class AutoDriveTrainScripter {
 			public EW_Package(double t, double power_input, Elevator elevator) {
 				this.duration = (long) t;
 				this.power = power_input;
-				this.done = false;
+				this.isFinished = false;
 				this.elevator = elevator;
 			}
 			/**
 			 * Clears time
 			 */
-			public void init() {
+			public void initialize() {
 				this.startMillis = System.currentTimeMillis();
 				System.out.println("moveElevatorTime(" + duration + ")");
 				elevator.setElevatorPower(power);
 			}
 			/**
-			 * Sets done to true if time is up
+			 * Sets isFinished to true if time is up
 			 */
-			public void update() {
+			public void execute() {
 				if (startMillis + duration <= System.currentTimeMillis()) {
 					//done waiting!
 					elevator.setElevatorPower(0);
-					this.done = true;
+					this.isFinished = true;
 				}
 			}
 			/**
 			 * Returns whether the command is done or not
 			 */
-			public boolean done() {
-				return this.done;
+			public boolean isFinished() {
+				return this.isFinished;
 			}
 		}
 

@@ -1,18 +1,16 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Talon;
-
 public class Scaler {
-	private Talon scalermotor;
-	private double currpower;
+	private TalonMotorController scalerMotor;
+	private double setSpeed;
 	
 	/**
 	 * Initialize scaler
-	 * @param scalemot motor used for scaler
+	 * @param talonMotorController motor used for scaler
 	 */
 	
-	public Scaler(Talon scalemot) {
-		scalermotor = scalemot;
+	public Scaler(TalonMotorController talonMotorController) {
+		scalerMotor = talonMotorController;
 	}
 	
 	/**
@@ -20,8 +18,8 @@ public class Scaler {
 	 * @param power
 	 */
 	
-	public void setSpeed(double power) {
-		currpower = power;
+	public void setSpeed(double speed) {
+		setSpeed = speed;
 	}
 	
 	/** 
@@ -30,7 +28,7 @@ public class Scaler {
 	 */
 	
 	public double getLastPower() {
-		return currpower;
+		return setSpeed;
 	}
 	
 	/**
@@ -38,6 +36,6 @@ public class Scaler {
 	 */
 	
 	public void update() {
-		scalermotor.set(currpower);
+		scalerMotor.set(setSpeed);
 	}
 }

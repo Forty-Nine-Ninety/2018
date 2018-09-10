@@ -1,5 +1,5 @@
 package org.usfirst.frc.team4990.robot;
-//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union(Le Dab Gang)
+//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4990.robot.controllers.*;
 import org.usfirst.frc.team4990.robot.controllers.SimpleAutoDriveTrainScripter.StartingPosition;
 import org.usfirst.frc.team4990.robot.subsystems.*;
+import org.usfirst.frc.team4990.robot.subsystems.Gearbox;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -28,7 +32,7 @@ public class Robot extends IterativeRobot {
 	private TeleopDriveTrainController teleopDriveTrainController;
 	private Intake intake;
 	private TeleopIntakeController teleopIntakeController;
-	public Elevator elevator;
+	private Elevator elevator;
 	private TeleopElevatorController teleopElevatorController;
 	private Scaler scaler;
 	private TeleopScalerController teleopScalerController;
@@ -36,9 +40,10 @@ public class Robot extends IterativeRobot {
 
 	public ADXRS450_Gyro gyro;
 	public Ultrasonic ultrasonic;
+	public AHRS ahrs;
 
 	private SimpleAutoDriveTrainScripter autoScripter;
-	//private SimpleAutoDriveTrainScripter testScripter;
+	private SimpleAutoDriveTrainScripter testScripter;
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
@@ -49,34 +54,34 @@ public class Robot extends IterativeRobot {
     	driveGamepad = new F310Gamepad(0);
     	opGamepad = new F310Gamepad(1);
 
-    	this.driveTrain = new DriveTrain(
-    		new TalonMotorController(0),
-    		new TalonMotorController(1),
-    		new TalonMotorController(2),
-    		new TalonMotorController(3),
-    		0, 1, 2, 3);
+    	this.driveTrain = new DriveTrain( 
+    			new Gearbox(
+    					new TalonMotorController(1),
+    					new TalonMotorController(2),
+    					0, 1),
+    			new Gearbox(
+    				new TalonMotorController(3),
+    				new TalonMotorController(4),
+    				2, 3));
     	
     	ultrasonic = new Ultrasonic(4, 5, Ultrasonic.Unit.kInches); //ping DIO (OUTPUT), echo DIO, units
 
-    	intake = new Intake(new TalonMotorController(7), 
-    			new TalonMotorController(6), 
+    	intake = new Intake(new TalonMotorController(8), 
+    			new TalonMotorController(7), 
     			new AnalogInput(0)); //Left motor, right motor, distance sensor
     	
     	teleopIntakeController = new TeleopIntakeController(intake, opGamepad);
     	
     	elevator = new Elevator(
-    			new TalonMotorController(5), //Motor elevatorMotorA
-    			new TalonMotorController(4), //Motor elevatorMotorB
+    			new TalonSRX(6), //Motor elevatorMotorA
     			6, //int topSwitchChannel (DIO)
-    			7, //int bottomSwitchChannel (DIO)
-    			8, //int Encoder DIO port A
-    			9); //int Encoder DIO port B
+    			7); //int bottomSwitchChannel (DIO)
     	
     	teleopElevatorController = new TeleopElevatorController(elevator,
     			opGamepad, //gamepad to control elevator
     			1.0); // max speed (0.1 to 1.0) 
     	
-    scaler = new Scaler(new TalonMotorController(8));
+    	scaler = new Scaler(new TalonMotorController(9));
     		
     	teleopScalerController = new TeleopScalerController(scaler, driveGamepad, 0.7); //Scaler scaler, F310Gamepad opGamepad, double speed
     			
@@ -84,8 +89,12 @@ public class Robot extends IterativeRobot {
     	//~~~~ Sensor Init & Details ~~~~
 
     	gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-    	//use gyro.getAngle() to return heading (returns number 0 to n)
+    	//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
     	//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
+    	
+    	ahrs = new AHRS(SPI.Port.kMXP); 
+    	//navX-MXP RoboRIO extension and 9-axis gyro thingy
+    	//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
     	
     	updateAutoDashboard();
     	
@@ -117,7 +126,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() { //This function is called at the start of autonomous
 	    	startPos = autoChooser.getSelected();
-	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator, ultrasonic);
+	    	autoScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator, ultrasonic, ahrs);
 	    	System.out.println("Auto Init complete");
     }
 
@@ -157,14 +166,15 @@ public class Robot extends IterativeRobot {
     
     public void testInit() { //TODO add commands for testing
     		liveWindowInit();
-    		//testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator);
-    		//testScripter.init();
-    		teleopInit();
+    		testScripter = new SimpleAutoDriveTrainScripter(driveTrain, startPos, gyro, intake, elevator, ultrasonic, ahrs);
+    		testScripter.initialize();
+    		//teleopInit();
     }
     
     public void testPeriodic() {
-    		//testScripter.update();
-    		teleopPeriodic();
+    		testScripter.update();
+    		//teleopPeriodic();
+    		System.out.println(ahrs.getAngle());
     }
     
     /**
@@ -188,19 +198,19 @@ public class Robot extends IterativeRobot {
 	    	SmartDashboard.putBoolean("Box", intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-	    	SmartDashboard.putNumber("Elevator Power", elevator.elevatorMotorB.getPower());
+	    	SmartDashboard.putNumber("Elevator Power", elevator.elevatorMotor.getMotorOutputPercent());
 	    	SmartDashboard.putNumber("ultrasonic", ultrasonic.getRangeInches());
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
     
-    	public void dashboardPeriodic() {
+    	public void complexDashboardPeriodic() {
 	    	
 	    	//Other sensor gauges and data
 	    	SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
 	    	SmartDashboard.putNumber("Analog Infrared Voltage", intake.getAnalogInput());
-	    	SmartDashboard.putNumber("Left Encoder", -this.driveTrain.getLeftDistanceTraveled());
-	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.getRightDistanceTraveled());
+	    	SmartDashboard.putNumber("Left Encoder", this.driveTrain.left.getDistanceTraveled());
+	    	SmartDashboard.putNumber("Right Encoder", this.driveTrain.right.getDistanceTraveled());
 	    	
 	    	SmartDashboard.putBoolean("Box In", intake.isBoxPosition(Intake.BoxPosition.IN));
 	    	SmartDashboard.putBoolean("Box Out", intake.isBoxPosition(Intake.BoxPosition.OUT));
@@ -211,10 +221,10 @@ public class Robot extends IterativeRobot {
 
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", this.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", this.elevator.isBottomSwitched());
-	    	SmartDashboard.putData("Elevator Encoder",elevator.encoder);
 	    	
-	    	SmartDashboard.putData("Left Drive Encoder",this.driveTrain.leftGearbox.encoder);
-	    	SmartDashboard.putData("Right Drive Encoder",this.driveTrain.rightGearbox.encoder);
+	    	
+	    	SmartDashboard.putData("Left Drive Encoder",this.driveTrain.left.encoder);
+	    	SmartDashboard.putData("Right Drive Encoder",this.driveTrain.right.encoder);
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
@@ -229,9 +239,7 @@ public class Robot extends IterativeRobot {
 	
 	public void liveWindowInit() {
 		//Elevator
-		elevator.encoder.setName("Elevator","Encoder");
-		elevator.elevatorMotorA.setName("Elevator","MotorA");
-		elevator.elevatorMotorB.setName("Elevator","MotorB");
+		//elevator.elevatorMotor.setName("Elevator","Motor");
 		
 		//Intake
 		intake.motorL.setName("Intake", "LeftMotor");
@@ -239,12 +247,10 @@ public class Robot extends IterativeRobot {
 		intake.infrared.setName("Intake", "Infrared");
 		
 		//DriveTrain
-		driveTrain.leftGearbox.motor1.setName("DriveTrain","LeftMotor1");
-		driveTrain.leftGearbox.motor2.setName("DriveTrain","LeftMotor2");
-		driveTrain.rightGearbox.motor1.setName("DriveTrain","RightMotor1");
-		driveTrain.rightGearbox.motor2.setName("DriveTrain","RightMotor2");
-		driveTrain.leftGearbox.encoder.setName("DriveTrain","LeftEncoder");
-		driveTrain.rightGearbox.encoder.setName("DriveTrain","RightEncoder");
+		driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
+		driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
+		driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
+		driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
 		
 		//General
 		gyro.setName("General", "Gyro");

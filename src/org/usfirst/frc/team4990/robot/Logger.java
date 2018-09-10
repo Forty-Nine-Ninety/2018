@@ -20,18 +20,18 @@ public class Logger {
 	
 	
 	public void profileDriveTrain(DriveTrain driveTrain) {
-		SmartDashboard.putNumber("left set speed", driveTrain.getLeftSetSpeed());
-		SmartDashboard.putNumber("right set speed", driveTrain.getRightSetSpeed());
-		SmartDashboard.putNumber("left measured speed", driveTrain.getLeftVelocity());
-		SmartDashboard.putNumber("right measured speed", driveTrain.getRightVelocity());
+		SmartDashboard.putNumber("left set speed", driveTrain.left.getSetSpeed());
+		SmartDashboard.putNumber("right set speed", driveTrain.right.getSetSpeed());
+		SmartDashboard.putNumber("left measured speed", driveTrain.left.getVelocity());
+		SmartDashboard.putNumber("right measured speed", driveTrain.right.getVelocity());
 		
-		fileLogger.writeToLog("left set speed" + driveTrain.getLeftSetSpeed());
+		fileLogger.writeToLog("left set speed" + driveTrain.left.getSetSpeed());
 		//File Logger purposes
 		
-		System.out.println("left set speed: " + driveTrain.getLeftSetSpeed());
-		System.out.println("right set speed: " + driveTrain.getRightSetSpeed());
-		System.out.println("left measured speed: " + driveTrain.getLeftVelocity());
-		System.out.println("right measured speed: " + driveTrain.getRightVelocity());
+		System.out.println("left set speed: " + driveTrain.left.getSetSpeed());
+		System.out.println("right set speed: " + driveTrain.right.getSetSpeed());
+		System.out.println("left measured speed: " + driveTrain.left.getVelocity());
+		System.out.println("right measured speed: " + driveTrain.right.getVelocity());
 		
 		
 	}
