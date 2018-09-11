@@ -125,14 +125,14 @@ public class RobotMap {
 		elevatorLimitSwitchTopInput = new DigitalInput(6);
 		elevatorLimitSwitchBottomInput = new DigitalInput(7);
 		
-		elevatorLimitSwitchTop = new LimitSwitch(6);
-		elevatorLimitSwitchBottom = new LimitSwitch(7);
+		elevatorLimitSwitchTop = new LimitSwitch(elevatorLimitSwitchTopInput);
+		elevatorLimitSwitchBottom = new LimitSwitch(elevatorLimitSwitchBottomInput);
 		
 		elevator = new Elevator();
 		
 		scalerTalon = new TalonMotorController(9);
 		
-		scaler = new Scaler(new TalonMotorController(9));
+		scaler = new Scaler(scalerTalon);
 		
 		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
 		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO

@@ -117,10 +117,10 @@ public class OI{
 		opTriggerRight.setThreshold(0.95);
 		
 		//intake
-		JoystickButtonGroup intakeButtons = new JoystickButtonGroup(opTriggerLeft, opTriggerRight);
+		//JoystickButtonGroup intakeButtons = new JoystickButtonGroup(opTriggerLeft, opTriggerRight);
 		opTriggerLeft.whileHeld(new TeleopIntakeController(TeleopIntakeController.direction.OUT));
 		opTriggerRight.whileHeld(new TeleopIntakeController(TeleopIntakeController.direction.IN));
-		intakeButtons.cancelWhenActive(new TeleopIntakeController());
+		//intakeButtons.cancelWhenActive(new TeleopIntakeController());
 
 		//elevator
 		opJoystickRightY.whileHeld(new TeleopElevatorController());
@@ -224,7 +224,7 @@ public class OI{
 		/**
 		 * Create a group of buttons. Must have at least 2 buttons.
 		 */
-		public JoystickButtonGroup(Trigger... buttons) {
+		public JoystickButtonGroup(Button... buttons) {
 			if (buttons.length < 2) {
 				this.free();
 			} else {

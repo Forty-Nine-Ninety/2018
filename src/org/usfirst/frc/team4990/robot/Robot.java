@@ -14,7 +14,7 @@ import org.usfirst.frc.team4990.robot.subsystems.*;
  * creating this project, you must also update the manifest file in the resource
  * directory. 
  */
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
 	
 	/**
 	 * An enum that describes the starting position of the robot
@@ -43,8 +43,9 @@ public class Robot extends IterativeRobot {
 
     	System.out.println("Version 1.29.2018.6.18");
 
-    	oi = new OI();
+    	
     	robotMap = new RobotMap();
+    	oi = new OI();
     	updateAutoDashboard();
     	
     	simpleDashboardPeriodic();
