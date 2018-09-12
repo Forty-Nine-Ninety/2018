@@ -13,12 +13,12 @@ public class Gearbox {
 	
 	public double compensate, fix_backwards, setSpeed;
 	
-	public Gearbox(TalonMotorController fMotor, TalonMotorController rMotor, int encoderChannelA, int encoderChannelB) {
+	public Gearbox(TalonMotorController fMotor, TalonMotorController rMotor, Encoder encoder) {
 		this.frontMotor = fMotor;
 		this.rearMotor = rMotor;
 		this.motorGroup = new SpeedControllerGroup(frontMotor, rearMotor);
 		
-		this.encoder = new Encoder(encoderChannelA, encoderChannelB);
+		this.encoder = encoder;
 		
 		this.compensate = 1.0;
 		this.fix_backwards = 1.0;

@@ -164,4 +164,22 @@ public class F310Gamepad extends Joystick {
 	public boolean getRightTriggerPressed() {
 		return this.getRawAxis(3) == 1.0;
 	}
+	
+	/**
+	 * Returns double value of left trigger Button (upper)
+	 * @return boolean value of left trigger Button (upper)
+	 */
+	
+	public double getLeftTrigger() {
+		return this.getRawAxis(2);
+	}
+	
+	/**
+	 * Returns double value of right trigger Button (upper)
+	 * @return boolean value of right trigger Button (upper)
+	 */
+	
+	public double getRightTrigger() {
+		return this.getRawAxis(3);
+	}
 }

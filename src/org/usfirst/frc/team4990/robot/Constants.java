@@ -38,4 +38,9 @@ public class Constants {
 	 * units: feet/revolution
 	 */
 	public static final double feetPerWheelRevolution = 4.0 / 12.0 * Math.PI;
+	
+	//drive train
+	public static final double maxThrottle = 1;
+	public static final double lowThrottleMultiplier = 0.25;
+	public static final boolean reverseTurningFlipped = false;
 }

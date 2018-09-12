@@ -1,9 +1,15 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PIDOutput;
+import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController;
 
-public class DriveTrain implements PIDOutput {
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
+	public double currentThrottleMultiplier;
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
@@ -15,7 +21,7 @@ public class DriveTrain implements PIDOutput {
 	 * @param leftEncoderChannelB Encoder for Left gearbox (just Signal)
 	 * @param rightEncoderChannelA Encoder for Right gearbox (Signal, Ground and 5v)
 	 * @param rightEncoderChannelB Encoder for right gearbox (just Signal)
-	 * @author Freshman Union
+	 * @author Class of '21 (created in 2018 season)
 	 */
 	public DriveTrain(Gearbox gearbox, Gearbox gearbox2) {
 		this.left = gearbox;
@@ -70,7 +76,6 @@ public class DriveTrain implements PIDOutput {
 		right.setSpeed(rightSpeed);
 	}
 	
-	
 	/**
 	 * Actually sets the speeds of all drive train motors.
 	 */
@@ -89,8 +94,38 @@ public class DriveTrain implements PIDOutput {
 		right.encoder.reset();
 	}
 
-	public void pidWrite(double output) {
-		//setSpeed(output);
-		//speed set somewhere else!
+	@Override
+	protected void initDefaultCommand() {
+		if (DriverStation.getInstance().isOperatorControl()) {
+		this.setDefaultCommand(new TeleopDriveTrainController());
+		}
 	}
+
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/**
+	 * Returns raw average left/right encoder value, in unknown units.
+	 * Use pidGet() to return distance in feet.
+	 */
+	
+	public double getEncoderDistance() {
+		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+	}
+
+	/**
+	 * Returns average left/right encoder value, in feet.
+	 */
+	public double pidGet() {
+		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+	}
+		
 }
