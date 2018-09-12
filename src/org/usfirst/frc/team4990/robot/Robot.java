@@ -12,27 +12,27 @@ import org.usfirst.frc.team4990.robot.subsystems.*;
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
- * directory. 
+ * directory.
  */
 public class Robot extends TimedRobot {
-	
+
 	/**
 	 * An enum that describes the starting position of the robot
 	 * @author Class of '21 (created in 2018 season)
 	 *
 	 */
 	public enum StartingPosition {
-		LEFT, 
-		MID, 
-		RIGHT, 
+		LEFT,
+		MID,
+		RIGHT,
 		ERROR,
-		STAY, 
+		STAY,
 		FORWARD
 	};
 
 	public SendableChooser<StartingPosition> autoChooser;
 	public StartingPosition startPos = StartingPosition.FORWARD;
-	
+
 	public AutonomusCommand autonomusCommand;
 
 	public static OI oi;
@@ -41,25 +41,25 @@ public class Robot extends TimedRobot {
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
-    	System.out.println("Version 1.29.2018.6.18");
+    	System.out.println("Version 1.29.2018.9.12");
 
-    	
+
     	robotMap = new RobotMap();
     	oi = new OI();
     	updateAutoDashboard();
-    	
+
     	simpleDashboardPeriodic();
 
     	resetSensors();
-    	
+
     	liveWindowInit();
-    	
+
     }
-    
+
     public void robotPeriodic() {
     	//Don't put anything here or else the robot might lag severely.
     }
-    
+
     public void disabledInit() {
     		System.out.println("ROBOT DISABLED.");
     }
@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
     			simpleDashboardPeriodic();
     			updateAutoDashboard();
     		}
-    		
+
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
@@ -95,8 +95,8 @@ public class Robot extends TimedRobot {
 
     }
 
-    
-    
+
+
     public void teleopPeriodic() { //This function is called periodically during teleop
     		Scheduler.getInstance().run();
 	    	simpleDashboardPeriodic();
@@ -104,8 +104,8 @@ public class Robot extends TimedRobot {
 	    	RobotMap.elevator.update();
 	    	RobotMap.intake.update();
 	    	RobotMap.scaler.update();
-    } 
-    
+    }
+
     public void testInit() { //TODO add commands for testing
     		liveWindowInit();
 	    	startPos = autoChooser.getSelected();
@@ -114,13 +114,13 @@ public class Robot extends TimedRobot {
 			}
     		//teleopInit();
     }
-    
+
     public void testPeriodic() {
     		Scheduler.getInstance().run();
     		//teleopPeriodic();
     		//System.out.println(ahrs.getAngle());
     }
-    
+
     /**
      * Adds SendableChooser to SmartDashboard for Auto route choosing.
      */
@@ -137,37 +137,39 @@ public class Robot extends TimedRobot {
 	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
 	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
     }
-    
+
     	public void simpleDashboardPeriodic() {
 	    	SmartDashboard.putBoolean("Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-	    	
+				SmartDashboard.putNumber("Elevator Power", RobotMap.intakeTalonA.getMotorOutputPercent());
+	    	SmartDashboard.putNumber("ultrasonic", RobotMap.ultrasonic.getRangeInches());
+
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
-    
+
     	public void complexDashboardPeriodic() {
-	    	
+
 	    	//Other sensor gauges and data
 	    	SmartDashboard.putNumber("Gyro Heading", RobotMap.gyro.getAngle());
 	    	SmartDashboard.putNumber("Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
 	    	SmartDashboard.putNumber("Left Encoder", RobotMap.driveTrain.left.getDistanceTraveled());
 	    	SmartDashboard.putNumber("Right Encoder", RobotMap.driveTrain.right.getDistanceTraveled());
-	    	
+
 	    	SmartDashboard.putBoolean("Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
 	    	SmartDashboard.putBoolean("Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
-	    	
+
 	    	SmartDashboard.putNumber("Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
 	    	SmartDashboard.putNumber("Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
 
 	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-	    	
-	    	
+
+
 	    	SmartDashboard.putData("Left Drive Encoder",RobotMap.driveTrain.left.encoder);
 	    	SmartDashboard.putData("Right Drive Encoder",RobotMap.driveTrain.right.encoder);
-	    	
+
 	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
     }
 
@@ -179,27 +181,27 @@ public class Robot extends TimedRobot {
     		RobotMap.driveTrain.resetDistanceTraveled();
     		System.out.print("Sensor reset complete.");
 	}
-	
+
 	public void liveWindowInit() {
 		//Elevator
 		RobotMap.elevatorTalon.setName("Elevator","Motor");
-		
+
 		//Intake
 		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
 		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
 		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
-		
+
 		//DriveTrain
 		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
 		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
 		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
 		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
-		
+
 		//General
 		RobotMap.gyro.setName("General", "Gyro");
 		RobotMap.ahrs.setName("General", "Gyro");
 	}
-	
+
 	//ever heard of the tale of last minute code
     //I thought not, it is not a tale the chairman will tell to you
 	//(Keep below last function of Robot.java)

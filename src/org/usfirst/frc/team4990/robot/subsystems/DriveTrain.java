@@ -26,11 +26,33 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	public DriveTrain(Gearbox gearbox, Gearbox gearbox2) {
 		this.left = gearbox;
 		this.right = gearbox2;
-		
-		// The right gearbox is backwards
-		this.right.fix_backwards = -1.0;
 		// the bot swerves to the right, so slow down left side
 		this.left.compensate = 0.9;
+
+		// The gearbox is backwards
+		this.right.swapDirection();
+	}
+	
+	/**
+	 * Sets robot's left side speed.
+	 * @param leftSpeed Speed to set, min 0, max 1
+	 */
+	
+	public void setLeftSpeed(double leftSpeed) {
+		double multiply_constant = 1;
+		this.left.setSpeed = leftSpeed * multiply_constant;
+
+	}
+  
+  /**
+	 * Sets robot's right side speed.
+	 * @param rightSpeed Speed to set, min 0, max 1
+	 */
+	
+	public void setRightSpeed(double rightSpeed) {
+		double multiply_constant = 1;
+		this.right.setSpeed = rightSpeed * multiply_constant;
+
 	}
 	
 	/**
