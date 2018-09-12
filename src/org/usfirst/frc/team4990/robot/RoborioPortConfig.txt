@@ -21,8 +21,8 @@ DIO Ports
 5: Ultrasonic Echo (output)
 6: Top elevator limit switch
 7: Bottom elevator limit switch
-8:
-9:
+8: Elevator encoder channel A
+9: Elevator encoder channel B
 
 AIO Ports
 0: Intake distance sensor (Sharp GP2Y0A41SK0F)
@@ -46,6 +46,6 @@ PWM Ports
 6: Intake Motor B
 7: Intake Motor A
 8: Scaler Motor
-9:
+9: Unused?
 
 SPI Port: Gyro (https://www.andymark.com/product-p/am-3555.htm)
