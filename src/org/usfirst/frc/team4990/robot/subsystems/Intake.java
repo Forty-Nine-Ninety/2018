@@ -1,19 +1,16 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import org.usfirst.frc.team4990.robot.RobotMap;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * An Intake.
- * @author Freshman Union
+ * @author Class of '21 (created in 2018 season)
  * 
  */
 
-public class Intake {
-	public TalonMotorController motorL;
-	public TalonMotorController motorR;
-	public AnalogInput infrared;
+public class Intake extends Subsystem{
 	private double speed;
-	private double rate = 0.9;
 	
 	/**
 	 * Initialize inkate.
@@ -22,36 +19,17 @@ public class Intake {
 	 * @param infraredInput Analog Port for Sharp Distance Sensor
 	 */
 	
-	public Intake(TalonMotorController talonMotorController, TalonMotorController talonMotorController2, AnalogInput infraredInput) {
-		motorL = talonMotorController;
-		motorR = talonMotorController2;
-		infrared = infraredInput;
+	public Intake() {
+		
 	}
 	
 	/**
 	 * Enum describing ultrasonic visibility of box. MOVING indicates in between IN and OUT.
-	 * @author Freshman Union
+	 * @author Class of '21 (created in 2018 season)
 	 */
 	
 	public enum BoxPosition {
 		IN, MOVING, OUT
-	}
-	
-	/**
-	 * Intake cube. Does not auto-stop based on sensor. Execute by calling update().
-	 */
-	
-	public void in() {
-		//Set speed
-		speed = rate;
-	}
-	
-	/**
-	 * Outake cube. Does not auto-stop based on sensor. Execute by calling update().
-	 */
-	public void out() {
-		//Set speed
-		speed = -rate;
 	}
 	
 	/**
@@ -68,16 +46,8 @@ public class Intake {
 	 */
 	
 	public void update() {
-		motorL.set(speed);
-		motorR.set(-speed);
-	}
-	
-	/**
-	 * STOPS Intake. (speed 0) Execute by calling update().
-	 */
-	
-	public void stop() {
-		speed = 0;
+		RobotMap.intakeTalonA.set(speed);
+		RobotMap.intakeTalonB.set(-speed);
 	}
 	
 	/**
@@ -86,7 +56,8 @@ public class Intake {
 	 */
 	
 	public double getAnalogInput() {
-		return infrared.getAverageVoltage();
+		return RobotMap.intakeDistanceAnalogInput.getAverageVoltage();
+		
 	}
 	
 	/**
@@ -95,10 +66,9 @@ public class Intake {
 	 */
 	
 	public BoxPosition getBoxPosition() {
-		double periodicAverageInfraredInput = getAnalogInput();
-		if (periodicAverageInfraredInput >= 2 ) {
+		if (getAnalogInput() >= 2 ) {
 			return Intake.BoxPosition.IN;
-		} else if (periodicAverageInfraredInput >= 0.4) {
+		} else if (getAnalogInput() >= 0.4) {
 			return Intake.BoxPosition.MOVING;
 		} else {
 			return Intake.BoxPosition.OUT;
@@ -117,6 +87,11 @@ public class Intake {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+
 	}
 	
 }

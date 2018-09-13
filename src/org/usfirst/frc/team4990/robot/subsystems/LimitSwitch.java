@@ -3,15 +3,19 @@ package org.usfirst.frc.team4990.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class LimitSwitch {
-	private DigitalInput limitSwitch;
+	private DigitalInput dInput;
 	
 	/**
 	 * Initialize limit switch. Use getValue() to read state.
-	 * @param digitalIOChannel
+	 * @param digitalIOChannel DigitalIO on RoboRIO
 	 */
 	
 	public LimitSwitch(int digitalIOChannel) {
-		this.limitSwitch = new DigitalInput(digitalIOChannel);
+		dInput = new DigitalInput(digitalIOChannel);
+	}
+	
+	public LimitSwitch(DigitalInput digitalInput) {
+		dInput = digitalInput;
 	}
 	
 	/**
@@ -20,7 +24,7 @@ public class LimitSwitch {
 	 */
 	
 	public boolean getValue() {
-		return limitSwitch.get();
+		return dInput.get();
 	}
 
 }

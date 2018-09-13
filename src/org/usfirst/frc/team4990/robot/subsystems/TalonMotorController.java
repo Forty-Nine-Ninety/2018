@@ -6,7 +6,7 @@ public class TalonMotorController extends WPI_TalonSRX {
 	
 	/**
 	 * Initialize Talon.
-	 * @param canID CAN bus ID of Talon (0 to 63, set it from the web dashboard)
+	 * @param canID CAN bus ID of Talon (0 to 63, set from the web dashboard)
 	 */
 	public TalonMotorController(int canID) {
 		super(canID);
