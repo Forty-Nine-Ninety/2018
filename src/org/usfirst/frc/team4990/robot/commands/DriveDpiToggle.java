@@ -3,7 +3,7 @@ package org.usfirst.frc.team4990.robot.commands;
 import org.usfirst.frc.team4990.robot.Constants;
 import org.usfirst.frc.team4990.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Ported from old TeleopDriveController
@@ -11,12 +11,25 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  *
  */
 
-public class DriveDpiToggle extends InstantCommand {
+public class DriveDpiToggle extends Command {
 	public DriveDpiToggle() {
-		if (RobotMap.driveTrain.currentThrottleMultiplier == Constants.maxThrottle) {
-			RobotMap.driveTrain.currentThrottleMultiplier = Constants.lowThrottleMultiplier;
-		} else {
-			RobotMap.driveTrain.currentThrottleMultiplier = Constants.maxThrottle;
-		}
+	}
+	
+	public void initialize() {
+		RobotMap.driveTrain.currentThrottleMultiplier = Constants.lowThrottleMultiplier;
+		System.out.println("DriveTrain Multiplier: " + RobotMap.driveTrain.currentThrottleMultiplier);
+	}
+	
+	public void end() {
+		RobotMap.driveTrain.currentThrottleMultiplier = Constants.maxThrottle;
+		System.out.println("DriveTrain Multiplier: " + RobotMap.driveTrain.currentThrottleMultiplier);
+	}
+	
+	public void interrupted() {
+		end();
+	}
+	
+	public boolean isFinished() {
+		return false;
 	}
 }

@@ -33,25 +33,22 @@ public class TeleopIntakeController extends Command{
 	public void execute() {
 		double tempInAxis = RobotMap.opGamepad.getLeftTrigger();
 		double tempOutAxis = RobotMap.opGamepad.getRightTrigger();
-		boolean override = RobotMap.opGamepad.getXButtonPressed();
+		//boolean override = RobotMap.opGamepad.getXButtonPressed();
 
-		if (dir == direction.IN && ((RobotMap.intake.getAnalogInput() < 1.9 || override) || override)) { //left bumper = elevator UP
+		if (dir == direction.IN /*&& ((RobotMap.intake.getAnalogInput() < 1.9 || override) || override)*/) { //left bumper = elevator UP
 			if (tempInAxis > maxSpeed) {
 				RobotMap.intake.setSpeed(maxSpeed);
 			} else { 
 				RobotMap.intake.setSpeed(tempInAxis);
 			}
-			return;
 		} else if (dir == direction.OUT) { 
 			if (tempOutAxis > maxSpeed) {
 				RobotMap.intake.setSpeed(-maxSpeed);
 			} else { 
 				RobotMap.intake.setSpeed(-tempOutAxis); 
 			}
-			return;
 		} else {
 			RobotMap.intake.setSpeed(0.0);
-			return;
 		}
 	}
 	
@@ -64,7 +61,11 @@ public class TeleopIntakeController extends Command{
 	}
 	
 	protected boolean isFinished() {
-		return false;
+		if (dir == direction.IN) {
+			return RobotMap.opGamepad.getLeftTrigger() < 0.05;
+		} else {
+			return RobotMap.opGamepad.getRightTrigger() < 0.05;
+		}
 	}
 
 }

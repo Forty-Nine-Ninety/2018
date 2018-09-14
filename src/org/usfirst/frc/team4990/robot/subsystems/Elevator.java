@@ -78,7 +78,7 @@ public class Elevator extends Subsystem {
 		if ((this.topSwitch.getValue() && this.setSpeed > stopFallingSpeed) || (this.bottomSwitch.getValue() && this.setSpeed < stopFallingSpeed)) {
 			this.elevatorMotor.set(ControlMode.PercentOutput, 0);
 			resetEncoderDistance();
-			System.out.println("Elevator Safety Triggered in update");
+			//System.out.println("Elevator Safety Triggered in update");
 		} else {
 			this.elevatorMotor.set(ControlMode.PercentOutput, setSpeed);
 		}
