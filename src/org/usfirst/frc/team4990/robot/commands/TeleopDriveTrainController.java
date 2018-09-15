@@ -11,8 +11,12 @@ import java.util.*;
  */
 public class TeleopDriveTrainController extends Command {
 	
-	private double lastThrottle = 0;
-	private double lastTurnSteepness = 0;
+	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
+	
+	private DriveMode driveMode;
+	
+	//private double lastThrottle = 0;
+	//private double lastTurnSteepness = 0;
 	
 	private Date lastUpdate = new Date();
 	
@@ -29,38 +33,50 @@ public class TeleopDriveTrainController extends Command {
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		double throttle = getNextThrottle(
+		/*double throttle = getNextThrottle(
 				RobotMap.driveGamepad.getLeftJoystickY(), 
 				this.lastThrottle);
 		
 		double turnSteepness = getNextThrottle(
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
+				*/
+		double throttle = getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
+		
+		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickY());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
+			driveMode = DriveMode.ARC;
 			setArcTrajectory(throttle, -turnSteepness);
 			
 		} else if (throttle != 0 && turnSteepness == 0) { //go forward
+			if (driveMode != DriveMode.STRAIGHT) { //changed modes
+				RobotMap.ahrs.reset();
+			}
+			driveMode = DriveMode.STRAIGHT;
 			RobotMap.driveTrain.setSpeed(throttle, throttle);
 			
 		} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 			/* the right motor's velocity has the opposite sign of the the left motor's
 			 * since the right motor will spin in the opposite direction from the left
 			 */
+			driveMode = DriveMode.TURN;
 			RobotMap.driveTrain.setSpeed(turnSteepness, -turnSteepness);
 			
 		} else {
+			driveMode = DriveMode.NONE;
 			RobotMap.driveTrain.setSpeed(0, 0);
 		}
 		
-		this.lastThrottle = throttle;
-		this.lastTurnSteepness = turnSteepness;
-		this.lastUpdate = new Date();
+		//this.lastThrottle = throttle;
+		//this.lastTurnSteepness = turnSteepness;
+		//this.lastUpdate = new Date();
 	}
 	
 	/**
 	 * Gets next throttle value
-	 * @author Class of '21 (created in 2018 season)
+	 * @deprecated
+	 * @author Class of '21 (modified in 2018 season) & previous coders
 	 * @param throttleInput Current throttle value
 	 * @param lastThrottle Last throttle value
 	 * @return Either 0 if the throttle is below Constants.zeroThrottleThreshold or the new throttle value
@@ -71,6 +87,16 @@ public class TeleopDriveTrainController extends Command {
 		
 		return Math.abs(newThrottle) < Constants.zeroThrottleThreshold ? 0.0 : newThrottle;
 	}
+	
+	/**
+	 * Squares the number provided and keeps sign (+ or -)
+	 * @param throttleInput number to square and keeps sign
+	 * @return squared number provided with same sign
+	 */
+	public double getSquaredThrottle(double throttleInput) {
+		return throttleInput * throttleInput * Math.signum(throttleInput);
+	}
+	
 	/**
 	 * Sets motor for arc turns
 	 * @author Class of '21 (created in 2018 season)
@@ -96,7 +122,7 @@ public class TeleopDriveTrainController extends Command {
 				slowLeft = false;
 			}
 		}
-		else {//What if it's 0 exact?  Or is that not possible? //NVM That's already considered above.
+		else {
 			if (throttle < 0) {
 				slowLeft = false;
 			} else {
