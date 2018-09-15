@@ -142,8 +142,8 @@ public class OI{
 		//default command is (standard) joystick drive
 		
 		//controller check
-		driveStart.whenActive(new ControllerCheck(RobotMap.driveGamepad));
-		opStart.whenActive(new ControllerCheck(RobotMap.opGamepad));
+		driveStart.whenPressed(new ControllerCheck(RobotMap.driveGamepad));
+		opStart.whenPressed(new ControllerCheck(RobotMap.opGamepad));
 		
 		//other
 		
