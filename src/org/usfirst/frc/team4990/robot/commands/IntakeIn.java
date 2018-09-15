@@ -33,7 +33,7 @@ public class IntakeIn extends Command {
 			intake.setSpeed(speed);
 		}
 		
-		intake.update();
+		intake.periodic();
 	}
 	
 	public boolean isFinished() {
@@ -42,7 +42,7 @@ public class IntakeIn extends Command {
 	
 	public void end() {
 		intake.setSpeed(0);
-		intake.update();
+		intake.periodic();
 	}
 	
 	public void interupted() {

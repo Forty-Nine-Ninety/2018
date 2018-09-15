@@ -31,11 +31,11 @@ public class Scaler {
 		return setSpeed;
 	}
 	
-	/**
+	/*(plz don't make this a javadoc because it will override the default javadoc for this method)
 	 * Used to execute speed changes.
 	 */
 	
-	public void update() {
+	public void periodic() {
 		scalerMotor.set(setSpeed);
 	}
 }

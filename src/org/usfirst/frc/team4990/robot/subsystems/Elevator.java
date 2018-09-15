@@ -64,15 +64,11 @@ public class Elevator extends Subsystem {
 		}
 	}
 	
-	/**
-	 * Checks safety and (hopefully) stops it from falling if stopped
+	/* (plz don't make this a javadoc because it will override the default javadoc for this method)
+	 * Checks safety and (hopefully) stops elevator from falling if stopped
 	 */
 	
-	public void update() {
-		
-		if (setSpeed > stopFallingSpeed || setSpeed < stopFallingSpeed) {
-			
-		}
+	public void periodic() {
 		
 		//check limit switches, stop motors if going toward danger
 		if ((this.topSwitch.getValue() && this.setSpeed > stopFallingSpeed) || (this.bottomSwitch.getValue() && this.setSpeed < stopFallingSpeed)) {

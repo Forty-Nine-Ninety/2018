@@ -54,11 +54,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		right.setSpeed(rightSpeed);
 	}
 	
-	/**
-	 * Actually sets the speeds of all drive train motors.
-	 */
-	
-	public void update() {
+	@Override
+	public void periodic() {
 		left.motorGroup.set(left.setSpeed * left.compensate * left.fix_backwards);
 		right.motorGroup.set(right.setSpeed * right.compensate * right.fix_backwards);
 	}

@@ -82,9 +82,7 @@ public class Robot extends TimedRobot {
     }
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
-	    	Scheduler.getInstance().run();
-	    	RobotMap.driveTrain.update();
-	    	RobotMap.elevator.update();
+	    	Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
 	    	simpleDashboardPeriodic();
     }
 
@@ -98,12 +96,8 @@ public class Robot extends TimedRobot {
     
     
     public void teleopPeriodic() { //This function is called periodically during teleop
-    		Scheduler.getInstance().run();
+    		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
 	    	simpleDashboardPeriodic();
-	    	RobotMap.driveTrain.update();
-	    	RobotMap.elevator.update();
-	    	RobotMap.intake.update();
-	    	RobotMap.scaler.update();
     } 
     
     public void testInit() { //TODO add commands for testing
@@ -116,7 +110,7 @@ public class Robot extends TimedRobot {
     }
     
     public void testPeriodic() {
-    		Scheduler.getInstance().run();
+    		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
     		//teleopPeriodic();
     		//System.out.println(ahrs.getAngle());
     }
