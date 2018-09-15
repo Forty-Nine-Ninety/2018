@@ -25,7 +25,9 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -55,6 +57,10 @@ public class RobotMap {
 	
 	public static Gearbox leftGearbox;
 	public static Gearbox rightGearbox;
+	
+	public static SpeedControllerGroup leftMotorGroup;
+	public static SpeedControllerGroup rightMotorGroup;
+	public static DifferentialDrive differentialDrive;
 	
 	public static DriveTrain driveTrain;
 	
@@ -110,6 +116,10 @@ public class RobotMap {
 		
 		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
 		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
+		
+		leftMotorGroup = new SpeedControllerGroup(leftFrontDriveTalon, leftRearDriveTalon);
+		rightMotorGroup = new SpeedControllerGroup(rightFrontDriveTalon, rightRearDriveTalon);
+		differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 					
 		driveTrain = new DriveTrain(leftGearbox, rightGearbox);
 		

@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 
 public class ControllerCheck extends InstantCommand {
+	
 	private F310Gamepad gamepad;
+	
 	public ControllerCheck(F310Gamepad gamepad) {
+		super();
     	this.gamepad = gamepad;
-    	this.setInterruptible(true);
 	}
 	
 	public void initialize() {
@@ -22,10 +24,6 @@ public class ControllerCheck extends InstantCommand {
     	} else if (gamepad.equals(RobotMap.opGamepad)) {
     		System.out.println("Button 7 Pressed on OP GAMEPAD");
     	}
-		super.cancel();
 	}
 	
-	public void start() {
-		initialize();
-	}
 }
