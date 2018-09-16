@@ -42,18 +42,20 @@ public class Robot extends TimedRobot {
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
     	System.out.println("Version 1.29.2018.6.18");
-
     	
     	robotMap = new RobotMap();
     	oi = new OI();
+    	
+    	//CameraServer.getInstance().startAutomaticCapture();
+    	
     	updateAutoDashboard();
     	
     	simpleDashboardPeriodic();
+    	
+    	complexDashboardPeriodic();
 
     	resetSensors();
-    	
-    	liveWindowInit();
-    	
+    		
     }
     
     public void robotPeriodic() {
@@ -127,71 +129,86 @@ public class Robot extends TimedRobot {
 	    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
 	    	autoChooser.addObject("Stay", StartingPosition.STAY);
 	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-	    	SmartDashboard.putData(autoChooser);
-	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
+	    	autoChooser.setName("AutonomusControl","Auto Chooser");
+	    	SmartDashboard.putData("DriveTeam/Auto Chooser",autoChooser);
+	    	SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
 	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
     }
     
     	public void simpleDashboardPeriodic() {
-	    	SmartDashboard.putBoolean("Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    	SmartDashboard.putBoolean("DriveTeam/Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("DriveTeam/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
+	    	SmartDashboard.putBoolean("DriveTeam/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
     
     	public void complexDashboardPeriodic() {
-	    	
+    		
+    		
+    		//Elevator
+    		RobotMap.elevatorTalon.setName("Elevator","Motor");
+    		
+    		//Intake
+    		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
+    		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
+    		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
+    		
+    		//DriveTrain
+    		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
+    		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
+    		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
+    		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
+    		RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
+    		
+    		//General
+    		RobotMap.pdp.setName("General", "PDP");
+    		RobotMap.gyro.setName("General", "SPI Gyro");
+    		RobotMap.ahrs.setName("General", "AHRS Gyro");
+    		
 	    	//Other sensor gauges and data
-	    	SmartDashboard.putNumber("Gyro Heading", RobotMap.gyro.getAngle());
-	    	SmartDashboard.putNumber("Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
-	    	SmartDashboard.putNumber("Left Encoder", RobotMap.driveTrain.left.getDistanceTraveled());
-	    	SmartDashboard.putNumber("Right Encoder", RobotMap.driveTrain.right.getDistanceTraveled());
+    		
+    		SmartDashboard.putData("Debug/PDP",RobotMap.pdp);
+    		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
+	    	SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
+    		
+    		SmartDashboard.putData("Debug/DifferentialDrive", RobotMap.differentialDrive);
+    		
+    		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
+	    	SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
+	    	SmartDashboard.putData("Debug/Left Drive Encoder", RobotMap.driveTrain.left.encoder);
+	    	SmartDashboard.putData("Debug/Right Drive Encoder", RobotMap.driveTrain.right.encoder);
 	    	
-	    	SmartDashboard.putBoolean("Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
-	    	SmartDashboard.putBoolean("Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
+	    	SmartDashboard.putBoolean("Debug/Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
+	    	SmartDashboard.putBoolean("Debug/Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("Debug/Box In and Out At The Same Time", RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
+	    	SmartDashboard.putNumber("Debug/Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
 	    	
-	    	SmartDashboard.putNumber("Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
-	    	SmartDashboard.putNumber("Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
-
-	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    	SmartDashboard.putData("Debug/IntakeAMotorLEFT", RobotMap.intakeTalonA);
+	    	SmartDashboard.putData("Debug/IntakeBMotorRIGHT", RobotMap.intakeTalonB);
 	    	
+	    	SmartDashboard.putBoolean("Debug/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
+	    	SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    
+	    	SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
+	    	SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
+	    	SmartDashboard.putData("Debug/Ultrasonic", RobotMap.ultrasonic);
 	    	
-	    	SmartDashboard.putData("Left Drive Encoder",RobotMap.driveTrain.left.encoder);
-	    	SmartDashboard.putData("Right Drive Encoder",RobotMap.driveTrain.right.encoder);
+	    	SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
+	    	SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
+	    	SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
+	    	SmartDashboard.putData("Debug/Scheduler", Scheduler.getInstance());
 	    	
-	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
+	    	SmartDashboard.updateValues(); 
     }
 
 	public void resetSensors() {
-    		System.out.print("Starting gyro calibration. DON'T MOVE THE ROBOT...");
+    		System.out.println("[SensorReset] Starting gyro calibration. DON'T MOVE THE ROBOT...");
     		RobotMap.gyro.calibrate();
     		RobotMap.ahrs.reset();
-    		System.out.print("Gyro calibration done. Resetting encoders...");
+    		System.out.println("[SensorReset] Gyro calibration done. Resetting encoders...");
     		RobotMap.driveTrain.resetDistanceTraveled();
-    		System.out.print("Sensor reset complete.");
-	}
-	
-	public void liveWindowInit() {
-		//Elevator
-		RobotMap.elevatorTalon.setName("Elevator","Motor");
-		
-		//Intake
-		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
-		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
-		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
-		
-		//DriveTrain
-		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
-		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
-		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
-		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
-		
-		//General
-		RobotMap.gyro.setName("General", "Gyro");
-		RobotMap.ahrs.setName("General", "Gyro");
+    		System.out.println("[SensorReset] complete.");
 	}
 	
 	//ever heard of the tale of last minute code
