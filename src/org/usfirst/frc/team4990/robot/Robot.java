@@ -37,7 +37,166 @@ public class Robot extends TimedRobot {
 
 	public static OI oi;
 	public static RobotMap robotMap;
+	
+	/**
+	 * COMPLETE credit goes to Deep Blue Robotics. Link: https://github.com/DeepBlueRobotics/RobotCode2018/blob/master/Robot2018/src/main/java/org/usfirst/frc/team199/Robot2018/Robot.java
+	 * Benjamin has received permission to use this code. Thank you team 199!
+	 */
+	
+	
+	public static SmartDashboardInterface sd = new SmartDashboardInterface() {
+		
+		/**
+		 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def number to return if no value is retrieved
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+		
+		@Override
+		public double getConst(String key, double def) {
+			Preferences pref = Preferences.getInstance();
+			if (!pref.containsKey("Const/" + key)) {
+				pref.putDouble("Const/" + key, def);
+				if (pref.getDouble("Const/ + key", def) != def) {
+					System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
+					return def;
+				}
+			}
+			return pref.getDouble("Const/" + key, def);
+		}
+		
+		/**
+		 * Retrieves a string from SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def string to return if no value is retrieved
+		 * @author Deep Blue Robotics (Team 199)
+		 */
 
+		@Override
+		public String getString(String key, String def) {
+			Preferences pref = Preferences.getInstance();
+			if (!pref.containsKey("String/" + key)) {
+				pref.putString("String/" + key, def);
+				if (pref.getString("String/ + key", def) != def) {
+					System.err.println("pref Key" + "String/" + key + "already taken by a different type");
+					return def;
+				}
+			}
+			return pref.getString("String/" + key, def);
+		}
+
+		/**
+		 * Adds a constant to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def value to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+		
+		@Override
+		public void putConst(String key, double def) {
+			Preferences pref = Preferences.getInstance();
+			pref.putDouble("Const/" + key, def);
+			if (pref.getDouble("Const/ + key", def) != def) {
+				System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
+			}
+		}
+		
+		/**
+		 * Adds a Sendable to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def data to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+
+		@Override
+		public void putData(String string, Sendable data) {
+			SmartDashboard.putData(string, data);
+		}
+		
+		/**
+		 * Adds a number to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def number to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+
+		@Override
+		public void putNumber(String string, double d) {
+			SmartDashboard.putNumber(string, d);
+		}
+		
+		/**
+		 * Adds a Boolean to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def string to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+
+		@Override
+		public void putBoolean(String string, boolean b) {
+			SmartDashboard.putBoolean(string, b);
+		}
+
+		/*
+		 * if (!SmartDashboard.containsKey("Const/" + key)) { if
+		 * (!SmartDashboard.putNumber("Const/" + key, def)) {
+		 * System.err.println("SmartDashboard Key" + "Const/" + key +
+		 * "already taken by a different type"); return def; } } return
+		 * SmartDashboard.getNumber("Const/" + key, def);
+		 */
+	};
+	
+	/**
+	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
+	 * @param key string key to identify value
+	 * @param def number to return if no value is retrieved
+	 * @author Deep Blue Robotics (Team 199)
+	 */
+
+	public static double getConst(String key, double def) {
+		return sd.getConst(key, def);
+	}
+	
+	/**
+	 * Retrieves a string from SmartDashbaord/Shuffleboard.
+	 * @param key string key to identify value
+	 * @param def string to return if no value is retrieved
+	 * @author Deep Blue Robotics (Team 199)
+	 */
+
+	public static String getString(String key, String def) {
+		return sd.getString(key, def);
+	}
+	
+	
+
+	public static void putConst(String key, double def) {
+		sd.putConst(key, def);
+	}
+
+	/**
+	 * Retrieves a boolean from SmartDashbaord/Shuffleboard.
+	 * @param key string key to identify value
+	 * @param def boolean to return if no value is retrieved
+	 * @author Deep Blue Robotics (Team 199)
+	 */
+	
+	public static boolean getBool(String key, boolean def) {
+		Preferences pref = Preferences.getInstance();
+		if (!pref.containsKey("Bool/" + key)) {
+			pref.putBoolean("Bool/" + key, def);
+			if (pref.getBoolean("Bool/" + key, def) == def) {
+				System.err.println("pref Key" + "Bool/" + key + "already taken by a different type");
+				return def;
+			}
+		}
+		return pref.getBoolean("Bool/" + key, def);
+	}
+	
+	/**
+	 * @author Team 4990
+	 */
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
@@ -103,7 +262,7 @@ public class Robot extends TimedRobot {
     } 
     
     public void testInit() { //TODO add commands for testing
-    		liveWindowInit();
+    		complexDashboardPeriodic();
 	    	startPos = autoChooser.getSelected();
 			if (autonomusCommand != null) {
 				autonomusCommand.start();
@@ -115,6 +274,7 @@ public class Robot extends TimedRobot {
     		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
     		//teleopPeriodic();
     		//System.out.println(ahrs.getAngle());
+    		complexDashboardPeriodic();
     }
     
     /**
