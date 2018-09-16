@@ -63,7 +63,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 			}
 			
 			driveMode = DriveMode.ARC;
-			this.arcDrive(throttle, -turnSteepness, false);
+			this.arcDrive(getSquaredThrottle(throttle), -getSquaredThrottle(turnSteepness), false);
 			RobotMap.driveTrain.setSpeed(leftMotorOutput + arcController.get(), rightMotorOutput - arcController.get());
 			
 			
@@ -74,7 +74,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 			}
 			
 			driveMode = DriveMode.STRAIGHT;
-			this.arcDrive(throttle, turnController.get(), true);
+			this.arcDrive(getSquaredThrottle(throttle), turnController.get(), true);
 			
 		} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 			
@@ -82,7 +82,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 			 * since the right motor will spin in the opposite direction from the left
 			 */
 			driveMode = DriveMode.TURN;
-			RobotMap.driveTrain.setSpeed(turnSteepness, -turnSteepness);
+			RobotMap.driveTrain.setSpeed(getSquaredThrottle(turnSteepness), -getSquaredThrottle(turnSteepness));
 			
 		} else {
 			driveMode = DriveMode.NONE;
