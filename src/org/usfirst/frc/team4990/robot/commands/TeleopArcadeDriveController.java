@@ -2,16 +2,16 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.*;
 
-import edu.wpi.first.wpilibj.Counter;
+//import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
- * Class for controlling drivetrains. NEEDS FURTHER DEVELOPMENT. DO NOT TRY ON ROBOT (YET).
+ * Class for controlling drivetrains. NEEDS FURTHER DEVELOPMENT AND TESTING.
  * @author Class of '21 (created in 2018 season)
- * @deprecated NEEDS FURTHER DEVELOPMENT. DO NOT TRY ON ROBOT (YET).
+ * 
  */
 public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	
@@ -70,7 +70,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 			
 			//arcController.setSetpoint(turnSteepnessCounter.get());
 			this.arcDrive(getSquaredThrottle(throttle), -getSquaredThrottle(turnSteepness), false);
-			RobotMap.driveTrain.setSpeed(leftMotorOutput + arcController.get(), rightMotorOutput - arcController.get());
+			RobotMap.driveTrain.setSpeed(leftMotorOutput /*+ arcController.get()*/, rightMotorOutput /*- arcController.get()*/);
 			
 		} else if (throttle != 0 && turnSteepness == 0) { //go forward
 			if (driveMode != DriveMode.STRAIGHT) { //if mode changed
