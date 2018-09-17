@@ -65,8 +65,6 @@ public class ElevatorPID extends PIDCommand {
 		RobotMap.elevator.setElevatorPower(RobotMap.elevator.stopFallingSpeed);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
 		end();
@@ -76,19 +74,16 @@ public class ElevatorPID extends PIDCommand {
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return this.getPIDController().onTarget();
 	}
 
 	@Override
 	protected double returnPIDInput() {
-		// TODO Auto-generated method stub
 		return RobotMap.elevator.getEncoderDistance(); //add factor to make this return feet from bottom of elevator (or intake to ground?)
 	}
 
 	@Override
 	protected void usePIDOutput(double output) {
-		// TODO Auto-generated method stub
 		RobotMap.elevator.setElevatorPower(output);
 	}
 

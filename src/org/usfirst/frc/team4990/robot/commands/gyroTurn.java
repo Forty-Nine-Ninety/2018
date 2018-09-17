@@ -67,7 +67,6 @@ public class gyroTurn extends PIDCommand {
 
 	@Override
 	protected double returnPIDInput() {
-		// TODO Auto-generated method stub
 		return ahrs.getAngle();
 	}
 

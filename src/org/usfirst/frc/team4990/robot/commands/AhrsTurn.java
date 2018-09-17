@@ -68,7 +68,6 @@ public class AhrsTurn extends Command implements PIDSource, PIDOutput {
 
 	@Override
 	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
 		
 	}
 
