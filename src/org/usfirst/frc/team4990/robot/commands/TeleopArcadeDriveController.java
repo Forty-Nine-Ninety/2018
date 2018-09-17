@@ -159,7 +159,6 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 
 	@Override
 	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
 	}
 	
 	/**

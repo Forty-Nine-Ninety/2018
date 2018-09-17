@@ -43,7 +43,7 @@ public class ElevatorPID extends PIDCommand {
 	
 	public void initalize() {
 		this.setInputRange(0, 5); //minimumInput, maximumInput (in feet?) (fix maximum input)
-		this.getPIDController().setContinuous(false);; 
+		this.getPIDController().setContinuous(false);
 		this.getPIDController().setOutputRange(-0.7, 0.7); //minimumOutput, maximumOutput (motor constraints)
 		this.getPIDController().setPercentTolerance(5);
 		

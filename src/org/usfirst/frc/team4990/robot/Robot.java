@@ -261,7 +261,7 @@ public class Robot extends TimedRobot {
 	    	simpleDashboardPeriodic();
     } 
     
-    public void testInit() { //TODO add commands for testing
+    public void testInit() { 
     		complexDashboardPeriodic();
 	    	startPos = autoChooser.getSelected();
 			if (autonomusCommand != null) {

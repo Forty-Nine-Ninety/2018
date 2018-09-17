@@ -82,11 +82,7 @@ public class Intake extends Subsystem {
 	 */
 	
 	public boolean isBoxPosition(BoxPosition pos) {
-		if (getBoxPosition() == pos) {
-			return true;
-		} else {
-			return false;
-		}
+		return getBoxPosition() == pos;
 	}
 
 	@Override
