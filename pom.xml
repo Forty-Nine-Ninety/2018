@@ -38,6 +38,7 @@
       <url>http://first.wpi.edu/FRC/roborio/maven/release</url>
     </repository>
   </repositories>
+  <dependencies>
   <dependency>
             <groupId>edu.wpi.first.wpiutil</groupId>
             <artifactId>wpiutil-java</artifactId>
