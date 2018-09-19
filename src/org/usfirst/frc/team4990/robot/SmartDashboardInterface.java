@@ -3,6 +3,7 @@ package org.usfirst.frc.team4990.robot;
 import edu.wpi.first.wpilibj.Sendable;
 
 public interface SmartDashboardInterface {
+
 	public double getConst(String key, double def);
 
 	public void putConst(String key, double def);
@@ -14,4 +15,5 @@ public interface SmartDashboardInterface {
 	public void putBoolean(String string, boolean b);
 
 	public String getString(String key, String def);
+
 }
