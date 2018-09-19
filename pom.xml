@@ -131,6 +131,7 @@
             <type>jar</type>
         </dependency>
         <dependency> <!--ctre phoenix-->
+        	<!-- more info https://github.com/Open-RIO/Maven-Mirror/ -->
         	<groupId>openrio.mirror.third.ctre</groupId>
             <artifactId>CTRE-phoenix-java</artifactId>
             <version>5.7.1.0</version>
