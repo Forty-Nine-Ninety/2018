@@ -38,14 +38,9 @@
       <url>http://first.wpi.edu/FRC/roborio/maven/release</url>
     </repository>
     <repository>
-    	<id>ctre</id>
-    	<url>http://dev.imjac.in/maven/thirdparty/frc/ctre/</url>
-    	<!--<url>http://www.ctr-electronics.com/downloads/maven/release/</url>-->
+    	<id>imjac-maven</id>
+    	<url>http://dev.imjac.in/maven/</url>
  	</repository>
-    <repository>
-    	<id>kauai</id>
-      	<url>http://dev.imjac.in/maven/thirdparty/frc/kauai/</url>
-    </repository>
   </repositories>
   <dependencies>
   <dependency>
@@ -131,13 +126,13 @@
             <type>jar</type>
         </dependency>
         <dependency>
-        	<groupId><!--com.ctre.phoenix.core--></groupId>
+        	<groupId>thirdparty.frc.ctre</groupId>
             <artifactId>Toolsuite-Java</artifactId>
             <version>5.0.2.1</version>
             <type>jar</type>
        </dependency> 
         <dependency>
-        	<groupId><!--com.kauailabs.navx--></groupId>
+        	<groupId>thirdparty.frc.kauai</groupId>
             <artifactId>Navx-Java</artifactId>
             <version>3.0.331</version>
             <type>jar</type>
