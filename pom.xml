@@ -38,4 +38,87 @@
       <url>http://first.wpi.edu/FRC/roborio/maven/release</url>
     </repository>
   </repositories>
+  <dependency>
+            <groupId>edu.wpi.first.wpiutil</groupId>
+            <artifactId>wpiutil-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+         <dependency>
+            <groupId>edu.wpi.first.ntcore</groupId>
+            <artifactId>ntcore-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.cscore</groupId>
+            <artifactId>cscore-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>opencv-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>examples</artifactId>
+            <type>zip</type>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>templates</artifactId>
+            <type>zip</type>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>documentation</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <type>zip</type>
+        </dependency>
+
+        <!-- Library sources for debugging WPILib on the Athena -->
+        <dependency>
+            <groupId>edu.wpi.first.ntcore</groupId>
+            <artifactId>ntcore-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.cscore</groupId>
+            <artifactId>cscore-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpiutil</groupId>
+            <artifactId>wpiutil-java</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>opencv-java</artifactId>
+            <classifier>sources</classifier>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>
