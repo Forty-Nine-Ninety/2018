@@ -38,9 +38,14 @@
       <url>http://first.wpi.edu/FRC/roborio/maven/release</url>
     </repository>
     <repository>
-    	<id>imjac-maven</id>
-    	<url>http://dev.imjac.in/maven/</url>
+    	<id>ctre</id>
+    	<url>https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2</url>
  	</repository>
+ 	<repository>
+      <id>kauailabs-maven</id>
+      <name>Kauai Labs Maven Repository</name>
+      <url>http://www.kauailabs.com/maven2</url>
+    </repository>
   </repositories>
   <dependencies>
   <dependency>
@@ -125,17 +130,16 @@
             <version>3.2.0</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-        	<groupId>thirdparty.frc.ctre</groupId>
-            <artifactId>Toolsuite-Java</artifactId>
-            <version>5.0.2.1</version>
+        <dependency> <!--ctre phoenix-->
+        	<groupId>openrio.mirror.third.ctre</groupId>
+            <artifactId>CTRE-phoenix-java</artifactId>
+            <version>5.7.1.0</version>
             <type>jar</type>
        </dependency> 
-        <dependency>
-        	<groupId>thirdparty.frc.kauai</groupId>
-            <artifactId>Navx-Java</artifactId>
-            <version>3.0.331</version>
-            <type>jar</type>
-       </dependency>
+    	<dependency>
+      		<groupId>com.kauailabs.navx.frc</groupId>
+     		 <artifactId>navx_frc</artifactId>
+     		 <version>[3.0,3.1]</version>
+    	</dependency>	
     </dependencies>
 </project>
