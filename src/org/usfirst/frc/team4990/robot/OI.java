@@ -11,6 +11,7 @@ import org.usfirst.frc.team4990.robot.commands.*;
 import org.usfirst.frc.team4990.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -113,32 +114,36 @@ public class OI{
 		
 		opJoystickRightX.setThreshold(0.0391);
 		opJoystickLeftY.setThreshold(0.0078125);
-		opTriggerLeft.setThreshold(0.95);
-		opTriggerRight.setThreshold(0.95);
+		opTriggerLeft.setThreshold(0.01);
+		opTriggerRight.setThreshold(0.01);
 		
 		//intake
+		Command TeleopIntakeControllerOUT = new TeleopIntakeController(TeleopIntakeController.direction.OUT);
+		Command TeleopIntakeControllerIN = new TeleopIntakeController(TeleopIntakeController.direction.IN);
 		//JoystickButtonGroup intakeButtons = new JoystickButtonGroup(opTriggerLeft, opTriggerRight);
-		opTriggerLeft.whileHeld(new TeleopIntakeController(TeleopIntakeController.direction.OUT));
-		opTriggerRight.whileHeld(new TeleopIntakeController(TeleopIntakeController.direction.IN));
-		//intakeButtons.cancelWhenActive(new TeleopIntakeController());
+		opTriggerLeft.whileHeld(TeleopIntakeControllerIN);
+		//opTriggerLeft.cancelWhenActive(TeleopIntakeControllerIN);
+		opTriggerRight.whileHeld(TeleopIntakeControllerOUT);
+		//opTriggerRight.cancelWhenActive(TeleopIntakeControllerOUT);
 
 		//elevator
 		opJoystickRightY.whileHeld(new TeleopElevatorController());
 		//opY.whenPressed(new ElevatorPID());
 		
 		//scaler
-		JoystickButtonGroup scalerButtons = new JoystickButtonGroup(opBumperLeft, opBumperRight);
+		/*JoystickButtonGroup scalerButtons = new JoystickButtonGroup(opBumperLeft, opBumperRight);
 		opBumperLeft.whileHeld(new TeleopScalerController(TeleopScalerController.direction.IN));
 		opBumperRight.whileHeld(new TeleopScalerController(TeleopScalerController.direction.OUT));
 		scalerButtons.cancelWhenActive(new TeleopScalerController());
+		*/
 		
 		//drivetrain
-		driveX.whenPressed(new DriveDpiToggle());
+		driveX.toggleWhenPressed(new DriveDpiToggle());
 		//default command is (standard) joystick drive
 		
 		//controller check
-		driveStart.whileHeld(new ControllerCheck(RobotMap.driveGamepad));
-		opStart.whileHeld(new ControllerCheck(RobotMap.opGamepad));
+		driveStart.whenPressed(new ControllerCheck(RobotMap.driveGamepad));
+		opStart.whenPressed(new ControllerCheck(RobotMap.opGamepad));
 		
 		//other
 		
@@ -204,14 +209,9 @@ public class OI{
 		 */
 
 		public boolean get() {
-			if(THRESHOLD < 0){
-				return m_gamepad.getRawAxis(m_axisNumber) < THRESHOLD;    //Return true if axis value is less than negative threshold
-			} else {
-				return m_gamepad.getRawAxis(m_axisNumber) > THRESHOLD;    //Return true if axis value is greater than positive threshold
-			}
+				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > THRESHOLD;    //Return true if axis value is less than negative threshold
 		}
-
-		}
+	}
 	
 	/**
 	 * based on https://gist.github.com/jcorcoran/5743806

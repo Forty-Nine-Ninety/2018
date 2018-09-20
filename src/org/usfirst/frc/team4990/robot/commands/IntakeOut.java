@@ -34,7 +34,7 @@ public class IntakeOut extends Command {
 
 		}
 
-		intake.update();
+		intake.periodic();
 	}
 	
 	public boolean isFinished() {
@@ -43,7 +43,7 @@ public class IntakeOut extends Command {
 	
 	public void end() {
 		intake.setSpeed(0);
-		intake.update();
+		intake.periodic();
 	}
 	
 	public void interupted() {

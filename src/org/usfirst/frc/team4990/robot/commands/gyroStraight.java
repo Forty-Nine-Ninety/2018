@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class gyroStraight extends PIDCommand implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
-	double kTargetAngleDegrees;
-	double turnControllerOutput;
 
     /* The following PID Controller coefficients will need to be tuned 
      to match the dynamics of your drive system.  Note that the      
@@ -27,9 +25,8 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
     static final double T_kD = 0.00;
     static final double T_kF = 0.00;
     
-    PIDController distanceController = new PIDController(D_kP, D_kI, D_kD, D_kF, dt, this);
-    double kTargetDistance = 60; //Feet? (check distance, should be all the way across field)
-    double distanceControllerOutput;
+    double kTargetAngleDegrees;
+	double turnControllerOutput;
     
     /* The following PID Controller coefficients will need to be tuned 
     to match the dynamics of your drive system.  Note that the      
@@ -42,7 +39,11 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
    static final double D_kD = 0.00;
    static final double D_kF = 0.00;
   
-
+   PIDController distanceController = new PIDController(D_kP, D_kI, D_kD, D_kF, dt, this);
+   double kTargetDistance = 60; //Feet? (check distance, should be all the way across field)
+   double distanceControllerOutput;
+   
+   
 	/**
 	 * Turns left or right
 	 * @param inputDegrees Degrees to turn (Positive = right, negative = left)

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * 
  */
 
-public class Intake extends Subsystem{
+public class Intake extends Subsystem {
 	private double speed;
 	
 	/**
@@ -20,7 +20,7 @@ public class Intake extends Subsystem{
 	 */
 	
 	public Intake() {
-		
+		super();
 	}
 	
 	/**
@@ -41,11 +41,11 @@ public class Intake extends Subsystem{
 		speed = speedInput;
 	}
 	
-	/**
+	/* (plz don't make this a javadoc because it will override the default javadoc for this method)
 	 * Executes new speed of inkate.
 	 */
 	
-	public void update() {
+	public void periodic() {
 		RobotMap.intakeTalonA.set(speed);
 		RobotMap.intakeTalonB.set(-speed);
 	}
@@ -82,11 +82,7 @@ public class Intake extends Subsystem{
 	 */
 	
 	public boolean isBoxPosition(BoxPosition pos) {
-		if (getBoxPosition() == pos) {
-			return true;
-		} else {
-			return false;
-		}
+		return getBoxPosition() == pos;
 	}
 
 	@Override

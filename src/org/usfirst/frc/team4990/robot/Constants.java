@@ -26,7 +26,9 @@ public class Constants {
 	
 	public static final double defaultAccelerationTime = 250;
 	
-	//TODO: figure out actual pulses per revolution and stop compensating by a factor of 2
+	/**
+	 * figure out actual pulses per revolution and stop compensating by a factor of 2
+	 */
 	public static final int pulsesPerRevolution = 250;
 	/**
 	 * units: feet/s

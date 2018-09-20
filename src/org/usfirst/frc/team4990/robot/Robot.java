@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
-import org.usfirst.frc.team4990.robot.commands.*;
+import org.usfirst.frc.team4990.robot.SmartDashboardInterface;
 import org.usfirst.frc.team4990.robot.subsystems.*;
+import org.usfirst.frc.team4990.robot.commands.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,23 +38,184 @@ public class Robot extends TimedRobot {
 
 	public static OI oi;
 	public static RobotMap robotMap;
+	
+	/**
+	 * COMPLETE credit goes to Deep Blue Robotics. Link: https://github.com/DeepBlueRobotics/RobotCode2018/blob/master/Robot2018/src/main/java/org/usfirst/frc/team199/Robot2018/Robot.java
+	 * Benjamin has received permission to use this code. Thank you team 199!
+	 */
+	
+	
+	public static SmartDashboardInterface sd = new SmartDashboardInterface() {
+		
+		/**
+		 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def number to return if no value is retrieved
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+		
+		@Override
+		public double getConst(String key, double def) {
+			Preferences pref = Preferences.getInstance();
+			if (!pref.containsKey("Const/" + key)) {
+				pref.putDouble("Const/" + key, def);
+				if (pref.getDouble("Const/ + key", def) != def) {
+					System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
+					return def;
+				}
+			}
+			return pref.getDouble("Const/" + key, def);
+		}
+		
+		/**
+		 * Retrieves a string from SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def string to return if no value is retrieved
+		 * @author Deep Blue Robotics (Team 199)
+		 */
 
+		@Override
+		public String getString(String key, String def) {
+			Preferences pref = Preferences.getInstance();
+			if (!pref.containsKey("String/" + key)) {
+				pref.putString("String/" + key, def);
+				if (pref.getString("String/ + key", def) != def) {
+					System.err.println("pref Key" + "String/" + key + "already taken by a different type");
+					return def;
+				}
+			}
+			return pref.getString("String/" + key, def);
+		}
+
+		/**
+		 * Adds a constant to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def value to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+		
+		@Override
+		public void putConst(String key, double def) {
+			Preferences pref = Preferences.getInstance();
+			pref.putDouble("Const/" + key, def);
+			if (pref.getDouble("Const/ + key", def) != def) {
+				System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
+			}
+		}
+		
+		/**
+		 * Adds a Sendable to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def data to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+
+		@Override
+		public void putData(String string, Sendable data) {
+			SmartDashboard.putData(string, data);
+		}
+		
+		/**
+		 * Adds a number to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def number to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+
+		@Override
+		public void putNumber(String string, double d) {
+			SmartDashboard.putNumber(string, d);
+		}
+		
+		/**
+		 * Adds a Boolean to SmartDashbaord/Shuffleboard.
+		 * @param key string key to identify value
+		 * @param def string to be stored
+		 * @author Deep Blue Robotics (Team 199)
+		 */
+
+		@Override
+		public void putBoolean(String string, boolean b) {
+			SmartDashboard.putBoolean(string, b);
+		}
+
+		/*
+		 * if (!SmartDashboard.containsKey("Const/" + key)) { if
+		 * (!SmartDashboard.putNumber("Const/" + key, def)) {
+		 * System.err.println("SmartDashboard Key" + "Const/" + key +
+		 * "already taken by a different type"); return def; } } return
+		 * SmartDashboard.getNumber("Const/" + key, def);
+		 */
+	};
+	
+	/**
+	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
+	 * @param key string key to identify value
+	 * @param def number to return if no value is retrieved
+	 * @author Deep Blue Robotics (Team 199)
+	 */
+
+	public static double getConst(String key, double def) {
+		return sd.getConst(key, def);
+	}
+	
+	/**
+	 * Retrieves a string from SmartDashbaord/Shuffleboard.
+	 * @param key string key to identify value
+	 * @param def string to return if no value is retrieved
+	 * @author Deep Blue Robotics (Team 199)
+	 */
+
+	public static String getString(String key, String def) {
+		return sd.getString(key, def);
+	}
+	
+	
+
+	public static void putConst(String key, double def) {
+		sd.putConst(key, def);
+	}
+
+	/**
+	 * Retrieves a boolean from SmartDashbaord/Shuffleboard.
+	 * @param key string key to identify value
+	 * @param def boolean to return if no value is retrieved
+	 * @author Deep Blue Robotics (Team 199)
+	 */
+	
+	public static boolean getBool(String key, boolean def) {
+		Preferences pref = Preferences.getInstance();
+		if (!pref.containsKey("Bool/" + key)) {
+			pref.putBoolean("Bool/" + key, def);
+			if (pref.getBoolean("Bool/" + key, def) == def) {
+				System.err.println("pref Key" + "Bool/" + key + "already taken by a different type");
+				return def;
+			}
+		}
+		return pref.getBoolean("Bool/" + key, def);
+	}
+	
+	/**
+	 * @author Team 4990
+	 */
 
     public void robotInit() { //This function is run when the robot is first started up and should be used for any initialization code.
 
     	System.out.println("Version 1.29.2018.6.18");
-
     	
     	robotMap = new RobotMap();
     	oi = new OI();
+    	
+    	//CameraServer.getInstance().startAutomaticCapture();
+    	
     	updateAutoDashboard();
     	
     	simpleDashboardPeriodic();
+    	
+    	complexDashboardPeriodic();
 
     	resetSensors();
-    	
-    	liveWindowInit();
-    	
+    		
     }
     
     public void robotPeriodic() {
@@ -82,9 +244,7 @@ public class Robot extends TimedRobot {
     }
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
-	    	Scheduler.getInstance().run();
-	    	RobotMap.driveTrain.update();
-	    	RobotMap.elevator.update();
+	    	Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
 	    	simpleDashboardPeriodic();
     }
 
@@ -98,16 +258,12 @@ public class Robot extends TimedRobot {
     
     
     public void teleopPeriodic() { //This function is called periodically during teleop
-    		Scheduler.getInstance().run();
+    		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
 	    	simpleDashboardPeriodic();
-	    	RobotMap.driveTrain.update();
-	    	RobotMap.elevator.update();
-	    	RobotMap.intake.update();
-	    	RobotMap.scaler.update();
     } 
     
-    public void testInit() { //TODO add commands for testing
-    		liveWindowInit();
+    public void testInit() { 
+    		complexDashboardPeriodic();
 	    	startPos = autoChooser.getSelected();
 			if (autonomusCommand != null) {
 				autonomusCommand.start();
@@ -116,9 +272,10 @@ public class Robot extends TimedRobot {
     }
     
     public void testPeriodic() {
-    		Scheduler.getInstance().run();
+    		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
     		//teleopPeriodic();
     		//System.out.println(ahrs.getAngle());
+    		complexDashboardPeriodic();
     }
     
     /**
@@ -133,71 +290,87 @@ public class Robot extends TimedRobot {
 	    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
 	    	autoChooser.addObject("Stay", StartingPosition.STAY);
 	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-	    	SmartDashboard.putData(autoChooser);
-	    	SmartDashboard.putString("Selected Starting Position", startPos.toString());
+	    	autoChooser.setName("AutonomusControl","Auto Chooser");
+	    	SmartDashboard.putData("DriveTeam/Auto Chooser",autoChooser);
+	    	SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
 	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
     }
     
     	public void simpleDashboardPeriodic() {
-	    	SmartDashboard.putBoolean("Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    	SmartDashboard.putBoolean("DriveTeam/Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("DriveTeam/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
+	    	SmartDashboard.putBoolean("DriveTeam/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    	SmartDashboard.putNumber("DriveTeam/AHRS Gyro", RobotMap.ahrs.getAngle());
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
     
     	public void complexDashboardPeriodic() {
-	    	
+    		
+    		
+    		//Elevator
+    		RobotMap.elevatorTalon.setName("Elevator","Motor");
+    		
+    		//Intake
+    		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
+    		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
+    		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
+    		
+    		//DriveTrain
+    		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
+    		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
+    		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
+    		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
+    		//RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
+    		
+    		//General
+    		RobotMap.pdp.setName("General", "PDP");
+    		RobotMap.gyro.setName("General", "SPI Gyro");
+    		RobotMap.ahrs.setName("General", "AHRS Gyro");
+    		
 	    	//Other sensor gauges and data
-	    	SmartDashboard.putNumber("Gyro Heading", RobotMap.gyro.getAngle());
-	    	SmartDashboard.putNumber("Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
-	    	SmartDashboard.putNumber("Left Encoder", RobotMap.driveTrain.left.getDistanceTraveled());
-	    	SmartDashboard.putNumber("Right Encoder", RobotMap.driveTrain.right.getDistanceTraveled());
+    		
+    		SmartDashboard.putData("Debug/PDP",RobotMap.pdp);
+    		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
+	    	SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
+    		
+    		//SmartDashboard.putData("Debug/DifferentialDrive", RobotMap.differentialDrive);
+    		
+    		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
+	    	SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
+	    	SmartDashboard.putData("Debug/Left Drive Encoder", RobotMap.driveTrain.left.encoder);
+	    	SmartDashboard.putData("Debug/Right Drive Encoder", RobotMap.driveTrain.right.encoder);
 	    	
-	    	SmartDashboard.putBoolean("Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
-	    	SmartDashboard.putBoolean("Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-	    	SmartDashboard.putBoolean("Box In and Out At The Same Time", RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
+	    	SmartDashboard.putBoolean("Debug/Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
+	    	SmartDashboard.putBoolean("Debug/Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
+	    	SmartDashboard.putBoolean("Debug/Box In and Out At The Same Time", RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
+	    	SmartDashboard.putNumber("Debug/Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
 	    	
-	    	SmartDashboard.putNumber("Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
-	    	SmartDashboard.putNumber("Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
-
-	    	SmartDashboard.putBoolean("Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-	    	SmartDashboard.putBoolean("Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    	SmartDashboard.putData("Debug/IntakeAMotorLEFT", RobotMap.intakeTalonA);
+	    	SmartDashboard.putData("Debug/IntakeBMotorRIGHT", RobotMap.intakeTalonB);
 	    	
+	    	SmartDashboard.putBoolean("Debug/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
+	    	SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    
+	    	SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
+	    	SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
+	    	SmartDashboard.putData("Debug/Ultrasonic", RobotMap.ultrasonic);
 	    	
-	    	SmartDashboard.putData("Left Drive Encoder",RobotMap.driveTrain.left.encoder);
-	    	SmartDashboard.putData("Right Drive Encoder",RobotMap.driveTrain.right.encoder);
+	    	SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
+	    	SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
+	    	SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
+	    	SmartDashboard.putData("Debug/Scheduler", Scheduler.getInstance());
 	    	
-	    	SmartDashboard.updateValues(); //always run at END of dashboardPeriodic
+	    	SmartDashboard.updateValues(); 
     }
 
 	public void resetSensors() {
-    		System.out.print("Starting gyro calibration. DON'T MOVE THE ROBOT...");
+    		System.out.println("[SensorReset] Starting gyro calibration. DON'T MOVE THE ROBOT...");
     		RobotMap.gyro.calibrate();
     		RobotMap.ahrs.reset();
-    		System.out.print("Gyro calibration done. Resetting encoders...");
+    		System.out.println("[SensorReset] Gyro calibration done. Resetting encoders...");
     		RobotMap.driveTrain.resetDistanceTraveled();
-    		System.out.print("Sensor reset complete.");
-	}
-	
-	public void liveWindowInit() {
-		//Elevator
-		RobotMap.elevatorTalon.setName("Elevator","Motor");
-		
-		//Intake
-		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
-		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
-		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
-		
-		//DriveTrain
-		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain","LeftMotors");
-		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
-		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
-		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
-		
-		//General
-		RobotMap.gyro.setName("General", "Gyro");
-		RobotMap.ahrs.setName("General", "Gyro");
+    		System.out.println("[SensorReset] complete.");
 	}
 	
 	//ever heard of the tale of last minute code

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
-	public double currentThrottleMultiplier;
+	public double currentThrottleMultiplier = 1.0;
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
@@ -30,7 +30,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		// The right gearbox is backwards
 		this.right.fix_backwards = -1.0;
 		// the bot swerves to the right, so slow down left side
-		this.left.compensate = 0.9;
+		this.left.compensate = 1.0;
+		this.right.compensate = 1.0;
 	}
 	
 	/**
@@ -54,11 +55,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		right.setSpeed(rightSpeed);
 	}
 	
-	/**
-	 * Actually sets the speeds of all drive train motors.
-	 */
-	
-	public void update() {
+	@Override
+	public void periodic() {
 		left.motorGroup.set(left.setSpeed * left.compensate * left.fix_backwards);
 		right.motorGroup.set(right.setSpeed * right.compensate * right.fix_backwards);
 	}
@@ -81,14 +79,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		// TODO Auto-generated method stub
-		return null;
+		return PIDSourceType.kDisplacement;
 	}
 	/**
 	 * Returns raw average left/right encoder value, in unknown units.

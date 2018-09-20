@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.RobotMap;
+import org.usfirst.frc.team4990.robot.commands.TeleopElevatorController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -64,21 +65,17 @@ public class Elevator extends Subsystem {
 		}
 	}
 	
-	/**
-	 * Checks safety and (hopefully) stops it from falling if stopped
+	/* (plz don't make this a javadoc because it will override the default javadoc for this method)
+	 * Checks safety and (hopefully) stops elevator from falling if stopped
 	 */
 	
-	public void update() {
-		
-		if (setSpeed > stopFallingSpeed || setSpeed < stopFallingSpeed) {
-			
-		}
+	public void periodic() {
 		
 		//check limit switches, stop motors if going toward danger
 		if ((this.topSwitch.getValue() && this.setSpeed > stopFallingSpeed) || (this.bottomSwitch.getValue() && this.setSpeed < stopFallingSpeed)) {
 			this.elevatorMotor.set(ControlMode.PercentOutput, 0);
 			resetEncoderDistance();
-			System.out.println("Elevator Safety Triggered in update");
+			//System.out.println("Elevator Safety Triggered in update");
 		} else {
 			this.elevatorMotor.set(ControlMode.PercentOutput, setSpeed);
 		}
@@ -122,7 +119,6 @@ public class Elevator extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		new TeleopElevatorController();
 	}
 }

@@ -23,12 +23,11 @@ public class TeleopElevatorController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		RobotMap.elevator.setElevatorPower(Math.abs(RobotMap.opGamepad.getRightJoystickY()) + RobotMap.elevator.stopFallingSpeed);
+		RobotMap.elevator.setElevatorPower(-1* RobotMap.opGamepad.getRightJoystickY() + RobotMap.elevator.stopFallingSpeed);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
