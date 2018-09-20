@@ -43,7 +43,7 @@ public class TeleopDriveTrainController extends Command {
 				*/
 		double throttle = getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
 		
-		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickY());
+		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
