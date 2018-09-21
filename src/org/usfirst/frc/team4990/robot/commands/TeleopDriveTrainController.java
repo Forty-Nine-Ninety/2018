@@ -2,23 +2,28 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.*;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.PIDCommand;
 
 import java.util.*;
 /**
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
  */
-public class TeleopDriveTrainController extends Command {
+public class TeleopDriveTrainController extends Command{
 	
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	
 	private DriveMode driveMode;
 	
-	//private double lastThrottle = 0;
-	//private double lastTurnSteepness = 0;
+	private double lastThrottle = 0;
+	private double lastTurnSteepness = 0;
 	
 	private Date lastUpdate = new Date();
+	
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -41,9 +46,9 @@ public class TeleopDriveTrainController extends Command {
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 				*/
-		double throttle = getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
+		double throttle = getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle);
 		
-		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickY());
+		double turnSteepness = getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastTurnSteepness);
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
@@ -68,9 +73,9 @@ public class TeleopDriveTrainController extends Command {
 			RobotMap.driveTrain.setSpeed(0, 0);
 		}
 		
-		//this.lastThrottle = throttle;
-		//this.lastTurnSteepness = turnSteepness;
-		//this.lastUpdate = new Date();
+		this.lastThrottle = throttle;
+		this.lastTurnSteepness = turnSteepness;
+		this.lastUpdate = new Date();
 	}
 	
 	/**

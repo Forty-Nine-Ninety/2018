@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
-import org.usfirst.frc.team4990.robot.commands.*;
+import org.usfirst.frc.team4990.robot.SmartDashboardInterface;
 import org.usfirst.frc.team4990.robot.subsystems.*;
+import org.usfirst.frc.team4990.robot.commands.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -299,6 +300,7 @@ public class Robot extends TimedRobot {
 	    	SmartDashboard.putBoolean("DriveTeam/Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
 	    	SmartDashboard.putBoolean("DriveTeam/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("DriveTeam/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
+	    	SmartDashboard.putNumber("DriveTeam/AHRS Gyro", RobotMap.ahrs.getAngle());
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
@@ -319,7 +321,7 @@ public class Robot extends TimedRobot {
     		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
     		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
     		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
-    		RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
+    		//RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
     		
     		//General
     		RobotMap.pdp.setName("General", "PDP");
@@ -332,7 +334,7 @@ public class Robot extends TimedRobot {
     		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
 	    	SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
     		
-    		SmartDashboard.putData("Debug/DifferentialDrive", RobotMap.differentialDrive);
+    		//SmartDashboard.putData("Debug/DifferentialDrive", RobotMap.differentialDrive);
     		
     		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
 	    	SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
