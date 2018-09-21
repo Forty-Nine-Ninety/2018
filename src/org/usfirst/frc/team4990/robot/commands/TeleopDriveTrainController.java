@@ -5,6 +5,7 @@ import org.usfirst.frc.team4990.robot.*;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.*;
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
  */
-public class TeleopDriveTrainController extends PIDCommand implements PIDSource{
+public class TeleopDriveTrainController extends Command{
 	
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	
@@ -23,14 +24,12 @@ public class TeleopDriveTrainController extends PIDCommand implements PIDSource{
 	
 	private Date lastUpdate = new Date();
 	
-	private PIDController velocityController = new PIDController(0.03, 0, 0, 0, RobotMap.ahrs, this);
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public TeleopDriveTrainController() {
-		super(0.9, 0, 0, this, this)
 		requires(RobotMap.driveTrain);
 	}
 	
@@ -170,33 +169,6 @@ public class TeleopDriveTrainController extends PIDCommand implements PIDSource{
 	@Override
 	protected void end() {
 		RobotMap.driveTrain.setSpeed(0,0);
-	}
-
-	@Override
-	public void setPIDSourceType(PIDSourceType pidSource) {
-		
-	}
-
-	@Override
-	public PIDSourceType getPIDSourceType() {
-		return null;
-	}
-
-	@Override
-	public double pidGet() {
-		return RobotMap.driveGamepad.getLeftJoystickY();
-	}
-
-	@Override
-	protected double returnPIDInput() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	protected void usePIDOutput(double output) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
