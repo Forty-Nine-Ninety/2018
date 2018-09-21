@@ -2,29 +2,35 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.*;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.PIDCommand;
 
 import java.util.*;
 /**
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
  */
-public class TeleopDriveTrainController extends Command {
+public class TeleopDriveTrainController extends PIDCommand implements PIDSource{
 	
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	
 	private DriveMode driveMode;
 	
-	//private double lastThrottle = 0;
-	//private double lastTurnSteepness = 0;
+	private double lastThrottle = 0;
+	private double lastTurnSteepness = 0;
 	
 	private Date lastUpdate = new Date();
+	
+	private PIDController velocityController = new PIDController(0.03, 0, 0, 0, RobotMap.ahrs, this);
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public TeleopDriveTrainController() {
+		super(0.9, 0, 0, this, this)
 		requires(RobotMap.driveTrain);
 	}
 	
@@ -41,9 +47,9 @@ public class TeleopDriveTrainController extends Command {
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 				*/
-		double throttle = getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
+		double throttle = getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle);
 		
-		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
+		double turnSteepness = getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastTurnSteepness);
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
@@ -68,9 +74,9 @@ public class TeleopDriveTrainController extends Command {
 			RobotMap.driveTrain.setSpeed(0, 0);
 		}
 		
-		//this.lastThrottle = throttle;
-		//this.lastTurnSteepness = turnSteepness;
-		//this.lastUpdate = new Date();
+		this.lastThrottle = throttle;
+		this.lastTurnSteepness = turnSteepness;
+		this.lastUpdate = new Date();
 	}
 	
 	/**
@@ -164,6 +170,33 @@ public class TeleopDriveTrainController extends Command {
 	@Override
 	protected void end() {
 		RobotMap.driveTrain.setSpeed(0,0);
+	}
+
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		return null;
+	}
+
+	@Override
+	public double pidGet() {
+		return RobotMap.driveGamepad.getLeftJoystickY();
+	}
+
+	@Override
+	protected double returnPIDInput() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void usePIDOutput(double output) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
