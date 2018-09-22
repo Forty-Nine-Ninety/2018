@@ -139,11 +139,12 @@ public class OI{
 		
 		//drivetrain
 		driveX.toggleWhenPressed(new DriveDpiToggle());
+		driveY.toggleWhenPressed(new stickShapingToggle());
 		//default command is (standard) joystick drive
 		
 		//controller check
-		driveStart.whenPressed(new ControllerCheck(RobotMap.driveGamepad));
-		opStart.whenPressed(new ControllerCheck(RobotMap.opGamepad));
+		driveStart.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
+		opStart.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 		
 		//other
 		

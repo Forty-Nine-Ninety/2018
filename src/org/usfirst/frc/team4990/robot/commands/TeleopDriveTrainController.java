@@ -42,9 +42,9 @@ public class TeleopDriveTrainController extends Command{
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 				*/
-		double throttle = getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle);
+		double throttle = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle) : getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
 		
-		double turnSteepness = getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastTurnSteepness);
+		double turnSteepness = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastThrottle) : getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;

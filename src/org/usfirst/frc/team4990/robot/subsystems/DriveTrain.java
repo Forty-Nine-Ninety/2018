@@ -11,6 +11,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
 	public double currentThrottleMultiplier = 1.0;
 	
+	public boolean oldStickShapingMethod = true;
+	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
 	 * @param talonMotorController First Left Motor
