@@ -44,7 +44,7 @@ public class TeleopDriveTrainController extends Command{
 				*/
 		double throttle = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle) : getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
 		
-		double turnSteepness = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastThrottle) : getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
+		double turnSteepness = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastTurnSteepness) : getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
@@ -76,7 +76,6 @@ public class TeleopDriveTrainController extends Command{
 	
 	/**
 	 * Gets next throttle value
-	 * @deprecated
 	 * @author Class of '21 (modified in 2018 season) & previous coders
 	 * @param throttleInput Current throttle value
 	 * @param lastThrottle Last throttle value
@@ -95,7 +94,7 @@ public class TeleopDriveTrainController extends Command{
 	 * @return squared number provided with same sign
 	 */
 	public double getSquaredThrottle(double throttleInput) {
-		return throttleInput * throttleInput * Math.signum(throttleInput);
+		return throttleInput * throttleInput * Math.signum(throttleInput) * RobotMap.driveTrain.currentThrottleMultiplier;
 	}
 	
 	/**

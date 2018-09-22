@@ -19,7 +19,7 @@ public class Elevator extends Subsystem {
 	
 	public double stopFallingSpeed = 0.05;
 	
-	private double setSpeed = 0;
+	public double setSpeed = 0;
 	
 	public String status = "Initializing"; 
 	
@@ -49,7 +49,7 @@ public class Elevator extends Subsystem {
 		if ((topSwitch.getValue() && power > 0) || (bottomSwitch.getValue() && power < 0)) {
 			this.setSpeed = 0;
 			status = topSwitch.getValue() ? "Safety Triggered in setElevatorPower, Top switch" : "Safety Triggered in setElevatorPower, Bottom switch";
-		} else if (bottomSwitch.getValue() && power == 0 || bottomSwitch.getValue() && power == stopFallingSpeed) {
+		} else if (bottomSwitch.getValue() && power == 0 || bottomSwitch.getValue() && power == stopFallingSpeed || bottomSwitch.getValue() && power == 0.0578125) {
 			this.setSpeed = 0;
 			status = "At bottom, motor off";
 		} else {
@@ -62,8 +62,8 @@ public class Elevator extends Subsystem {
 					status = "going up";
 				}
 			} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
-				if (-power > maxSpeed) {
-					this.setSpeed = maxSpeed;
+				if (-power >= maxSpeed - stopFallingSpeed) {
+					this.setSpeed = -maxSpeed + stopFallingSpeed;
 					status = "going down, max speed";
 				} else { 
 					this.setSpeed = power; 

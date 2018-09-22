@@ -1,20 +1,20 @@
 {
-  "dividerPosition": 0.18753933291378225,
+  "dividerPosition": 0.2857142857142857,
   "tabPane": [
     {
-      "title": "Tab 1",
+      "title": "Main",
       "autoPopulate": true,
       "autoPopulatePrefix": "",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 64.0,
         "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
+        "hgap": 8.0,
+        "vgap": 8.0,
         "tiles": {
           "0,0": {
             "size": [
-              3,
-              1
+              5,
+              2
             ],
             "content": {
               "_type": "Basic FMS Info",
@@ -22,10 +22,10 @@
               "_title": "/FMSInfo"
             }
           },
-          "0,1": {
+          "0,2": {
             "size": [
-              3,
-              2
+              5,
+              4
             ],
             "content": {
               "_type": "PDP",
@@ -34,7 +34,7 @@
               "showIndicatorText": true
             }
           },
-          "5,2": {
+          "8,1": {
             "size": [
               2,
               1
@@ -47,31 +47,31 @@
           },
           "5,1": {
             "size": [
-              2,
+              3,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/DriveTeam/Elevator Bottom Limit Switch",
-              "_title": "/SmartDashboard/DriveTeam/Elevator Bottom Limit Switch",
+              "_source0": "network_table:///SmartDashboard/Debug/Elevator Bottom Limit Switch",
+              "_title": "Bottom Limit Switch",
               "colorWhenTrue": "#7CFC00FF",
               "colorWhenFalse": "#8B0000FF"
             }
           },
           "5,0": {
             "size": [
-              2,
+              3,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/DriveTeam/Elevator Top Limit Switch",
-              "_title": "/SmartDashboard/DriveTeam/Elevator Top Limit Switch",
+              "_source0": "network_table:///SmartDashboard/Debug/Elevator Top Limit Switch",
+              "_title": "Top Limit Switch",
               "colorWhenTrue": "#7CFC00FF",
               "colorWhenFalse": "#8B0000FF"
             }
           },
-          "3,2": {
+          "8,0": {
             "size": [
               2,
               1
@@ -82,10 +82,10 @@
               "_title": "/SmartDashboard/Drive/Selected Starting Position"
             }
           },
-          "3,0": {
+          "5,2": {
             "size": [
-              2,
-              2
+              5,
+              4
             ],
             "content": {
               "_type": "Gyro",
@@ -95,120 +95,34 @@
               "startAngle": 180.0,
               "tickMarkRingVisible": true
             }
+          },
+          "0,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///SmartDashboard/Elevator/Status",
+              "_title": "SmartDashboard/Elevator/Status"
+            }
+          },
+          "4,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Debug/Elevator Motor",
+              "_title": "SmartDashboard/Debug/Elevator Motor"
+            }
           }
         }
       }
     },
     {
-      "title": "Tab 2",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 3",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 4",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 5",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 6",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 7",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 8",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 9",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 10",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 11",
+      "title": "Big Graph",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -219,13 +133,13 @@
         "tiles": {
           "0,0": {
             "size": [
-              8,
+              7,
               5
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Debug/Throttle Input",
-              "_source1": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
+              "_source0": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
+              "_source1": "network_table:///SmartDashboard/Debug/Throttle Input",
               "_title": "Graph (2 sources)",
               "Visible time": 30.0,
               "LiveWindow/DriveTrain/LeftMotors/Value visible": true,

@@ -352,7 +352,7 @@ public class Robot extends TimedRobot {
 	    	
 	    	SmartDashboard.putBoolean("Debug/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-	    	SmartDashboard.putData("Debug/Elevator Motor", RobotMap.elevatorTalon);
+	    	SmartDashboard.putNumber("Debug/Elevator Motor", RobotMap.elevator.setSpeed);
 	    	
 	    	SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
 	    	SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
