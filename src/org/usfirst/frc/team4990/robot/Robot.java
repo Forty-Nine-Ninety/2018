@@ -259,7 +259,7 @@ public class Robot extends TimedRobot {
     
     public void teleopPeriodic() { //This function is called periodically during teleop
     		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
-	    	simpleDashboardPeriodic();
+	    	complexDashboardPeriodic();
     } 
     
     public void testInit() { 
@@ -289,7 +289,7 @@ public class Robot extends TimedRobot {
 	    	autoChooser.addObject("Middle", StartingPosition.MID);
 	    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
 	    	autoChooser.addObject("Stay", StartingPosition.STAY);
-	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
+	    	 ;autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
 	    	autoChooser.setName("AutonomusControl","Auto Chooser");
 	    	SmartDashboard.putData("DriveTeam/Auto Chooser",autoChooser);
 	    	SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());

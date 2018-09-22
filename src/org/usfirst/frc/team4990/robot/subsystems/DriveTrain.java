@@ -32,11 +32,17 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		// the bot swerves to the right, so slow down left side
 		this.left.compensate = 1.0;
 		this.right.compensate = 1.0;
-		double openLoop = 0.5;
-		this.left.frontMotor.configOpenloopRamp(openLoop, 0);
-		this.left.rearMotor.configOpenloopRamp(openLoop, 0);
-		this.right.frontMotor.configOpenloopRamp(openLoop, 0);
-		this.right.rearMotor.configOpenloopRamp(openLoop, 0);
+		
+		/**
+		 * ramp down time in seconds.
+		 */
+		
+		double rampDownTime = 0.2; 
+		
+		this.left.frontMotor.configOpenloopRamp(rampDownTime, 0);
+		this.left.rearMotor.configOpenloopRamp(rampDownTime, 0);
+		this.right.frontMotor.configOpenloopRamp(rampDownTime, 0);
+		this.right.rearMotor.configOpenloopRamp(rampDownTime, 0);
 	}
 	
 	/**
