@@ -210,9 +210,7 @@ public class Robot extends TimedRobot {
     	
     	updateAutoDashboard();
     	
-    	simpleDashboardPeriodic();
-    	
-    	complexDashboardPeriodic();
+    	smartDashboardInit();
 
     	resetSensors();
     		
@@ -224,12 +222,15 @@ public class Robot extends TimedRobot {
     
     public void disabledInit() {
     		System.out.println("ROBOT DISABLED.");
+    		if (autonomusCommand != null) {
+    			autonomusCommand.cancel();
+    		}
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
     		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { //runs around every 1 second
     			startPos = autoChooser.getSelected();
-    			simpleDashboardPeriodic();
+    			smartDashboardPeriodic();
     			updateAutoDashboard();
     		}
     		
@@ -245,7 +246,7 @@ public class Robot extends TimedRobot {
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
 	    	Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
-	    	simpleDashboardPeriodic();
+	    	smartDashboardPeriodic();
     }
 
     public void teleopInit() { //This function is called at the start of teleop
@@ -259,11 +260,11 @@ public class Robot extends TimedRobot {
     
     public void teleopPeriodic() { //This function is called periodically during teleop
     		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
-	    	complexDashboardPeriodic();
+    		smartDashboardPeriodic();
     } 
     
     public void testInit() { 
-    		complexDashboardPeriodic();
+    		smartDashboardPeriodic();
 	    	startPos = autoChooser.getSelected();
 			if (autonomusCommand != null) {
 				autonomusCommand.start();
@@ -275,7 +276,7 @@ public class Robot extends TimedRobot {
     		Scheduler.getInstance().run(); //runs execute() of current commands and period() of subsystems.
     		//teleopPeriodic();
     		//System.out.println(ahrs.getAngle());
-    		complexDashboardPeriodic();
+    		smartDashboardPeriodic();
     }
     
     /**
@@ -301,13 +302,12 @@ public class Robot extends TimedRobot {
 	    	SmartDashboard.putBoolean("DriveTeam/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("DriveTeam/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
 	    	SmartDashboard.putNumber("DriveTeam/AHRS Gyro", RobotMap.ahrs.getAngle());
+	    	SmartDashboard.putString("DriveTeam/Elevator Status", RobotMap.elevator.status);
 	    	
 	    	SmartDashboard.updateValues(); //always run at END of simpleDashboardPeriodic
     	}
-    
-    	public void complexDashboardPeriodic() {
-    		
-    		
+    	
+    	public void smartDashboardInit() {
     		//Elevator
     		RobotMap.elevatorTalon.setName("Elevator","Motor");
     		
@@ -327,8 +327,9 @@ public class Robot extends TimedRobot {
     		RobotMap.pdp.setName("General", "PDP");
     		RobotMap.gyro.setName("General", "SPI Gyro");
     		RobotMap.ahrs.setName("General", "AHRS Gyro");
-    		
-	    	//Other sensor gauges and data
+    	}
+    
+    	public void smartDashboardPeriodic() {
     		
     		SmartDashboard.putData("Debug/PDP",RobotMap.pdp);
     		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
@@ -351,7 +352,8 @@ public class Robot extends TimedRobot {
 	    	
 	    	SmartDashboard.putBoolean("Debug/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
 	    	SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-	    
+	    	SmartDashboard.putData("Debug/Elevator Motor", RobotMap.elevatorTalon);
+	    	
 	    	SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
 	    	SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
 	    	SmartDashboard.putData("Debug/Ultrasonic", RobotMap.ultrasonic);

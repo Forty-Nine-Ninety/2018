@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
 	
@@ -19,6 +20,8 @@ public class Elevator extends Subsystem {
 	public double stopFallingSpeed = 0.05;
 	
 	private double setSpeed = 0;
+	
+	public String status = "Initializing"; 
 	
 	/**
 	 * Initializes elevator.
@@ -45,22 +48,30 @@ public class Elevator extends Subsystem {
 	public void setElevatorPower(double power) {	
 		if ((topSwitch.getValue() && power > 0) || (bottomSwitch.getValue() && power < 0)) {
 			this.setSpeed = 0;
-			System.out.println("Elevator Safety Triggered in setElevatorPower");
+			status = topSwitch.getValue() ? "Safety Triggered in setElevatorPower, Top switch" : "Safety Triggered in setElevatorPower, Bottom switch";
+		} else if (bottomSwitch.getValue() && power == 0 || bottomSwitch.getValue() && power == stopFallingSpeed) {
+			this.setSpeed = 0;
+			status = "At bottom, motor off";
 		} else {
 			if (power > stopFallingSpeed) { //right joystick positive = elevator UP
 				if (power > maxSpeed) {
 					this.setSpeed = maxSpeed;
+					status = "going up, max speed";
 				} else { 
-					this.setSpeed = power; 
+					this.setSpeed = power;
+					status = "going up";
 				}
 			} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
 				if (-power > maxSpeed) {
 					this.setSpeed = maxSpeed;
+					status = "going down, max speed";
 				} else { 
 					this.setSpeed = power; 
+					status = "going down";
 				}
 			} else {
 				this.setSpeed = stopFallingSpeed;
+				status = "stopped";
 			}
 		}
 	}
@@ -80,6 +91,7 @@ public class Elevator extends Subsystem {
 			this.elevatorMotor.set(ControlMode.PercentOutput, setSpeed);
 		}
 		
+		SmartDashboard.putString("Elevator/Status", status);
 	}
 	
 	/**
