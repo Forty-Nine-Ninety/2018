@@ -321,7 +321,7 @@ public class Robot extends TimedRobot {
     		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain","RightMotors");
     		RobotMap.driveTrain.left.encoder.setName("DriveTrain","LeftEncoder");
     		RobotMap.driveTrain.right.encoder.setName("DriveTrain","RightEncoder");
-    		//RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
+    		//RobotMap.driveTrain.teleopDriveTrainController.turnController.setName("DriveTrain", "TeleopTurnController");
     		
     		//General
     		RobotMap.pdp.setName("General", "PDP");
@@ -334,6 +334,8 @@ public class Robot extends TimedRobot {
     		SmartDashboard.putData("Debug/PDP",RobotMap.pdp);
     		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
 	    	SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
+	    	SmartDashboard.putString("Debug/DriveMode", TeleopDriveTrainController.driveMode.toString());
+	    	SmartDashboard.putData(TeleopDriveTrainController.turnController);
     		
     		//SmartDashboard.putData("Debug/DifferentialDrive", RobotMap.differentialDrive);
     		
@@ -362,6 +364,7 @@ public class Robot extends TimedRobot {
 	    	SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
 	    	SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
 	    	SmartDashboard.putData("Debug/Scheduler", Scheduler.getInstance());
+	    	SmartDashboard.putData("Debug/AutonomusCommandGroup", autonomusCommand);
 	    	
 	    	SmartDashboard.updateValues(); 
     }

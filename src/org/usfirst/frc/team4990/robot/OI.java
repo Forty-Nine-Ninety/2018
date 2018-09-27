@@ -56,6 +56,8 @@ public class OI{
 	JoystickAnalogButton opJoystickRightX = new JoystickAnalogButton(opGamepad, 4);
 	JoystickAnalogButton opJoystickRightY = new JoystickAnalogButton(opGamepad, 5);
 	
+	
+	
 	/* CREATING BUTTONS
 	One type of button is a joystick button which is any button on a
 	joystick.
@@ -127,7 +129,10 @@ public class OI{
 		//opTriggerRight.cancelWhenActive(TeleopIntakeControllerOUT);
 
 		//elevator
-		opJoystickRightY.whileHeld(new TeleopElevatorController());
+		
+		Command teleopElevatorController = new TeleopElevatorController();
+		
+		opJoystickRightY.whileHeld(teleopElevatorController);
 		//opY.whenPressed(new ElevatorPID());
 		
 		//scaler

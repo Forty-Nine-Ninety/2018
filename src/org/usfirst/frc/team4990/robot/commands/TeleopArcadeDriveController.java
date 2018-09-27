@@ -25,10 +25,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	
     double leftMotorOutput;
     double rightMotorOutput;
-    
-    //private Counter turnSteepnessCounter = new Counter();
-			
-	
+				
 	/**
 	 * Constructor for TeleopDriveTrainController
 	 * @author Class of '21 (created in 2018 season)

@@ -13,6 +13,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	
 	public boolean oldStickShapingMethod = true;
 	
+	public TeleopDriveTrainController teleopDriveTrainController;
+	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
 	 * @param talonMotorController First Left Motor
@@ -86,7 +88,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	@Override
 	protected void initDefaultCommand() {
 		if (DriverStation.getInstance().isOperatorControl()) {
-		this.setDefaultCommand(new TeleopDriveTrainController());
+		teleopDriveTrainController = new TeleopDriveTrainController();
+		super.setDefaultCommand(teleopDriveTrainController);
 		}
 	}
 

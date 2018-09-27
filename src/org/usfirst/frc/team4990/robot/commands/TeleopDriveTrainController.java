@@ -2,6 +2,8 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.*;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 
 import java.util.*;
@@ -9,17 +11,18 @@ import java.util.*;
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
  */
-public class TeleopDriveTrainController extends Command{
+public class TeleopDriveTrainController extends Command implements PIDOutput{
 	
-	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
+	public enum DriveMode { STRAIGHT, ARC, TURN, NONE };
 	
-	private DriveMode driveMode;
+	public static DriveMode driveMode;
 	
 	private double lastThrottle = 0;
 	private double lastTurnSteepness = 0;
 	
 	private Date lastUpdate = new Date();
 	
+	public static PIDController turnController = new PIDController(0.03, 0, 0, 0, RobotMap.ahrs, RobotMap.driveTrain.teleopDriveTrainController);
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -27,6 +30,12 @@ public class TeleopDriveTrainController extends Command{
 	 */
 	public TeleopDriveTrainController() {
 		requires(RobotMap.driveTrain);
+		
+		turnController.setSetpoint(0);
+		turnController.setInputRange(-180, 180);
+		turnController.setContinuous(true);
+		turnController.setOutputRange(-0.3, 0.3);
+		turnController.setName("TeleopDrive", "turnController");
 	}
 	
 	/**
@@ -34,14 +43,7 @@ public class TeleopDriveTrainController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		/*double throttle = getNextThrottle(
-				RobotMap.driveGamepad.getLeftJoystickY(), 
-				this.lastThrottle);
-		
-		double turnSteepness = getNextThrottle(
-				RobotMap.driveGamepad.getRightJoystickX(),
-				this.lastTurnSteepness);
-				*/
+
 		double throttle = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle) : getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
 		
 		double turnSteepness = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastTurnSteepness) : getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
@@ -53,9 +55,11 @@ public class TeleopDriveTrainController extends Command{
 		} else if (throttle != 0 && turnSteepness == 0) { //go forward
 			if (driveMode != DriveMode.STRAIGHT) { //changed modes
 				RobotMap.ahrs.reset();
+				turnController.enable();
 			}
+			
 			driveMode = DriveMode.STRAIGHT;
-			RobotMap.driveTrain.setSpeed(throttle, throttle);
+			RobotMap.driveTrain.setSpeed(throttle - turnController.get(), throttle + turnController.get());
 			
 		} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 			/* the right motor's velocity has the opposite sign of the the left motor's
@@ -67,6 +71,10 @@ public class TeleopDriveTrainController extends Command{
 		} else {
 			driveMode = DriveMode.NONE;
 			RobotMap.driveTrain.setSpeed(0, 0);
+		}
+		
+		if (driveMode != DriveMode.STRAIGHT && turnController.isEnabled()) {
+			turnController.disable();
 		}
 		
 		this.lastThrottle = throttle;
@@ -164,6 +172,11 @@ public class TeleopDriveTrainController extends Command{
 	@Override
 	protected void end() {
 		RobotMap.driveTrain.setSpeed(0,0);
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		//use turnController.get() instead.
 	}
 
 }
