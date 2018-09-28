@@ -22,7 +22,7 @@ public class TeleopDriveTrainController extends Command implements PIDOutput{
 	
 	private Date lastUpdate = new Date();
 	
-	public static PIDController turnController = new PIDController(0.03, 0, 0, 0, RobotMap.ahrs, RobotMap.driveTrain.teleopDriveTrainController);
+	public static PIDController teleopTurnController = new PIDController(0.03, 0, 0, 0, RobotMap.ahrs, RobotMap.driveTrain.teleopDriveTrainController);
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -31,11 +31,11 @@ public class TeleopDriveTrainController extends Command implements PIDOutput{
 	public TeleopDriveTrainController() {
 		requires(RobotMap.driveTrain);
 		
-		turnController.setSetpoint(0);
-		turnController.setInputRange(-180, 180);
-		turnController.setContinuous(true);
-		turnController.setOutputRange(-0.3, 0.3);
-		turnController.setName("TeleopDrive", "turnController");
+		teleopTurnController.setSetpoint(0);
+		teleopTurnController.setInputRange(-180, 180);
+		teleopTurnController.setContinuous(true);
+		teleopTurnController.setOutputRange(-0.3, 0.3);
+		teleopTurnController.setName("TeleopDrive", "turnController");
 	}
 	
 	/**
@@ -55,11 +55,11 @@ public class TeleopDriveTrainController extends Command implements PIDOutput{
 		} else if (throttle != 0 && turnSteepness == 0) { //go forward
 			if (driveMode != DriveMode.STRAIGHT) { //changed modes
 				RobotMap.ahrs.reset();
-				turnController.enable();
+				teleopTurnController.enable();
 			}
 			
 			driveMode = DriveMode.STRAIGHT;
-			RobotMap.driveTrain.setSpeed(throttle - turnController.get(), throttle + turnController.get());
+			RobotMap.driveTrain.setSpeed(throttle - teleopTurnController.get(), throttle + teleopTurnController.get());
 			
 		} else if (throttle == 0 && turnSteepness != 0) { //spin in place
 			/* the right motor's velocity has the opposite sign of the the left motor's
@@ -73,8 +73,8 @@ public class TeleopDriveTrainController extends Command implements PIDOutput{
 			RobotMap.driveTrain.setSpeed(0, 0);
 		}
 		
-		if (driveMode != DriveMode.STRAIGHT && turnController.isEnabled()) {
-			turnController.disable();
+		if (driveMode != DriveMode.STRAIGHT && teleopTurnController.isEnabled()) {
+			teleopTurnController.disable();
 		}
 		
 		this.lastThrottle = throttle;

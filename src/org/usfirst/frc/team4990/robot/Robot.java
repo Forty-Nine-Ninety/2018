@@ -335,7 +335,7 @@ public class Robot extends TimedRobot {
     		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
 	    	SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
 	    	SmartDashboard.putString("Debug/DriveMode", TeleopDriveTrainController.driveMode.toString());
-	    	SmartDashboard.putData(TeleopDriveTrainController.turnController);
+	    	SmartDashboard.putData(TeleopDriveTrainController.teleopTurnController);
     		
     		//SmartDashboard.putData("Debug/DifferentialDrive", RobotMap.differentialDrive);
     		
