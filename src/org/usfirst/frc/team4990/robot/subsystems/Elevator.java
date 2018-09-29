@@ -59,7 +59,11 @@ public class Elevator extends Subsystem {
 					status = "going up, max speed";
 				} else { 
 					this.setSpeed = power;
-					status = "going up";
+					if (setSpeed == 0.0578125) {
+						status = "holding position, motor on";
+					} else {
+						status = "going up";
+					}
 				}
 			} else if (power < stopFallingSpeed) { //right joystick negative = elevator DOWN
 				if (-power >= maxSpeed - stopFallingSpeed) {
