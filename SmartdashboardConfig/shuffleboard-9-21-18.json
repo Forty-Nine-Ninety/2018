@@ -84,7 +84,7 @@
           },
           "3,2": {
             "size": [
-              5,
+              4,
               1
             ],
             "content": {
@@ -107,18 +107,7 @@
               "tickMarkRingVisible": true
             }
           },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Debug/Elevator Motor",
-              "_title": "/SmartDashboard/Debug/Elevator Motor"
-            }
-          },
-          "5,3": {
+          "3,3": {
             "size": [
               2,
               1
@@ -129,7 +118,7 @@
               "_title": "SmartDashboard/Debug/DriveTrainSubsystem"
             }
           },
-          "7,3": {
+          "5,3": {
             "size": [
               2,
               1
@@ -138,6 +127,41 @@
               "_type": "Basic Subsystem",
               "_source0": "network_table:///SmartDashboard/Debug/ElevatorSubsystem",
               "_title": "SmartDashboard/Debug/ElevatorSubsystem"
+            }
+          },
+          "0,3": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Debug/PDP/Voltage",
+              "_title": "SmartDashboard/Debug/PDP/Voltage",
+              "Visible time": 30.0,
+              "SmartDashboard/Debug/PDP/Voltage visible": true
+            }
+          },
+          "7,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/DriveTeam/Eject Box Chooser",
+              "_title": "SmartDashboard/DriveTeam/Eject Box Chooser"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive/Selected Eject Box",
+              "_title": "SmartDashboard/Drive/Selected Eject Box"
             }
           }
         }

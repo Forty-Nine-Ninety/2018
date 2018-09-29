@@ -13,7 +13,7 @@ public class AutonomusCommand extends CommandGroup {
 		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
 			//if there is no game message (string) OR just cross auto line
 			//System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
-			addSequential(new RobotDriveStraight(3.1, 0.3)); //forward 11 feet?
+			addSequential(new RobotDriveStraight()); //forward 11 feet?
 			//addSequential(new gyroStraight(11));
 		} else if (gameData.charAt(0) == 'L') {
 			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
@@ -102,10 +102,10 @@ public class AutonomusCommand extends CommandGroup {
 			//System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
 			addSequential(new RobotDriveStraight()); //forward 140 in 
 		}
-		
+		/*
 		if (Robot.ejectBoxChooser.getSelected()) {
 			addSequential(new MoveElevatorTime(1, 0.2));
-		}
+		}*/
 
 	}
 }
