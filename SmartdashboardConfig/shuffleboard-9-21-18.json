@@ -1,20 +1,20 @@
 {
-  "dividerPosition": 0.2857142857142857,
+  "dividerPosition": 0.17762326169405815,
   "tabPane": [
     {
       "title": "Main",
       "autoPopulate": true,
       "autoPopulatePrefix": "",
       "widgetPane": {
-        "gridSize": 64.0,
+        "gridSize": 128.0,
         "showGrid": true,
         "hgap": 8.0,
         "vgap": 8.0,
         "tiles": {
           "0,0": {
             "size": [
-              5,
-              2
+              3,
+              1
             ],
             "content": {
               "_type": "Basic FMS Info",
@@ -22,10 +22,10 @@
               "_title": "/FMSInfo"
             }
           },
-          "0,2": {
+          "0,1": {
             "size": [
-              5,
-              4
+              3,
+              2
             ],
             "content": {
               "_type": "PDP",
@@ -34,7 +34,7 @@
               "showIndicatorText": true
             }
           },
-          "8,1": {
+          "7,0": {
             "size": [
               2,
               1
@@ -47,7 +47,7 @@
           },
           "5,1": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
@@ -60,7 +60,7 @@
           },
           "5,0": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
@@ -71,7 +71,7 @@
               "colorWhenFalse": "#8B0000FF"
             }
           },
-          "8,0": {
+          "7,1": {
             "size": [
               2,
               1
@@ -82,24 +82,10 @@
               "_title": "/SmartDashboard/Drive/Selected Starting Position"
             }
           },
-          "5,2": {
-            "size": [
-              5,
-              4
-            ],
-            "content": {
-              "_type": "Gyro",
-              "_source0": "network_table:///SmartDashboard/Debug/AHRS Gyro",
-              "_title": "/SmartDashboard/Debug/AHRS Gyro",
-              "majorTickSpace": 45.0,
-              "startAngle": 180.0,
-              "tickMarkRingVisible": true
-            }
-          },
-          "0,6": {
+          "3,2": {
             "size": [
               4,
-              2
+              1
             ],
             "content": {
               "_type": "Large Text",
@@ -107,15 +93,34 @@
               "_title": "SmartDashboard/Elevator/Status"
             }
           },
-          "4,6": {
+          "3,0": {
             "size": [
-              4,
+              2,
               2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Debug/Elevator Motor",
-              "_title": "SmartDashboard/Debug/Elevator Motor"
+              "_type": "Gyro",
+              "_source0": "network_table:///LiveWindow/General/AHRS Gyro",
+              "_title": "/LiveWindow/General/AHRS Gyro",
+              "majorTickSpace": 45.0,
+              "startAngle": 180.0,
+              "tickMarkRingVisible": true
+            }
+          },
+          "7,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Voltage View",
+              "_source0": "network_table:///SmartDashboard/Debug/Analog Infrared Voltage",
+              "_title": "SmartDashboard/Debug/Analog Infrared Voltage",
+              "min": 0.0,
+              "max": 5.0,
+              "center": 0.0,
+              "orientation": "HORIZONTAL",
+              "numTickMarks": 5.0
             }
           }
         }

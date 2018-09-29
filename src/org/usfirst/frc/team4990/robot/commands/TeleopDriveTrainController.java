@@ -42,9 +42,9 @@ public class TeleopDriveTrainController extends Command{
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 				*/
-		double throttle = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getLeftJoystickY(), lastThrottle) : getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
+		double throttle = getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
 		
-		double turnSteepness = RobotMap.driveTrain.oldStickShapingMethod ? getNextThrottle(RobotMap.driveGamepad.getRightJoystickX(), lastTurnSteepness) : getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
+		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
@@ -72,20 +72,6 @@ public class TeleopDriveTrainController extends Command{
 		this.lastThrottle = throttle;
 		this.lastTurnSteepness = turnSteepness;
 		this.lastUpdate = new Date();
-	}
-	
-	/**
-	 * Gets next throttle value
-	 * @author Class of '21 (modified in 2018 season) & previous coders
-	 * @param throttleInput Current throttle value
-	 * @param lastThrottle Last throttle value
-	 * @return Either 0 if the throttle is below Constants.zeroThrottleThreshold or the new throttle value
-	 */
-	public double getNextThrottle(double throttleInput, double lastThrottle) {
-		double acceleration = ((throttleInput * RobotMap.driveTrain.currentThrottleMultiplier) - lastThrottle) / Constants.defaultAccelerationTime;
-		double newThrottle = lastThrottle + ((new Date().getTime() - this.lastUpdate.getTime()) * acceleration);
-		
-		return Math.abs(newThrottle) < Constants.zeroThrottleThreshold ? 0.0 : newThrottle;
 	}
 	
 	/**

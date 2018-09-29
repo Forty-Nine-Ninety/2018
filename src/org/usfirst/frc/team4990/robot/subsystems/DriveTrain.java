@@ -31,9 +31,9 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		
 		// The right gearbox is backwards
 		this.right.fix_backwards = -1.0;
-		// the bot swerves to the right, so slow down left side
+		// the bot swerves to the left, so slow down right side
 		this.left.compensate = 1.0;
-		this.right.compensate = 1.0;
+		this.right.compensate = 0.99;
 		
 		/**
 		 * ramp down time in seconds.

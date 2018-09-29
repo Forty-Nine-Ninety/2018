@@ -139,7 +139,6 @@ public class OI{
 		
 		//drivetrain
 		driveX.toggleWhenPressed(new DriveDpiToggle());
-		driveY.toggleWhenPressed(new stickShapingToggle());
 		//default command is (standard) joystick drive
 		
 		//controller check
