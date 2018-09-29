@@ -1,12 +1,16 @@
 package org.usfirst.frc.team4990.robot;
-//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.command.*;
-import edu.wpi.first.wpilibj.smartdashboard.*;
+import org.usfirst.frc.team4990.robot.commands.AutonomusCommand;
+import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
-import org.usfirst.frc.team4990.robot.SmartDashboardInterface;
-import org.usfirst.frc.team4990.robot.subsystems.*;
-import org.usfirst.frc.team4990.robot.commands.*;
+//This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,9 +35,12 @@ public class Robot extends TimedRobot {
 		FORWARD
 	};
 
-	public SendableChooser<StartingPosition> autoChooser;
-	public StartingPosition startPos = StartingPosition.FORWARD;
+	static public SendableChooser<StartingPosition> autoChooser;
+	static public StartingPosition startPos = StartingPosition.FORWARD;
 	
+	static public SendableChooser<Boolean> ejectBoxChooser;
+	static public Boolean ejectBoxSelection = false;
+
 	public Command autonomusCommand;
 
 	public static OI oi;
@@ -230,6 +237,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
 		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { //runs around every 1 second
 			startPos = autoChooser.getSelected();
+			ejectBoxSelection = ejectBoxChooser.getSelected();
 			smartDashboardPeriodic();
 			updateAutoDashboard();
 		}
@@ -295,7 +303,16 @@ public class Robot extends TimedRobot {
 	    	autoChooser.setName("AutonomusControl","Auto Chooser");
 	    	SmartDashboard.putData("DriveTeam/Auto Chooser",autoChooser);
 	    	SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
+
+		ejectBoxChooser = new SendableChooser<Boolean>();
+		ejectBoxChooser.addObject("TRUE", true);
+		ejectBoxChooser.addDefault("FALSE", false);
+		ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
+		SmartDashboard.putData("DriveTeam/Eject Box Chooser", ejectBoxChooser);
+		SmartDashboard.putString("Drive/Selected Eject Box", ejectBoxSelection.toString());
+
 	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
+
     }
     
     	public void simpleDashboardPeriodic() {

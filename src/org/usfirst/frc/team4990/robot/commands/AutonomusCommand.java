@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -102,5 +103,9 @@ public class AutonomusCommand extends CommandGroup {
 			addSequential(new RobotDriveStraight()); //forward 140 in 
 		}
 		
+		if (Robot.ejectBoxChooser.getSelected()) {
+			addSequential(new MoveElevatorTime(1, 0.2));
+		}
+
 	}
 }
