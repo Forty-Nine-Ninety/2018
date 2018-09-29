@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 	public SendableChooser<StartingPosition> autoChooser;
 	public StartingPosition startPos = StartingPosition.FORWARD;
 	
-	public AutonomusCommand autonomusCommand;
+	public Command autonomusCommand;
 
 	public static OI oi;
 	public static RobotMap robotMap;
@@ -221,27 +221,27 @@ public class Robot extends TimedRobot {
     }
     
     public void disabledInit() {
-    		System.out.println("ROBOT DISABLED.");
-    		if (autonomusCommand != null) {
-    			autonomusCommand.cancel();
-    		}
+    	System.out.println("ROBOT DISABLED.");
+    	if (autonomusCommand != null) {
+    		autonomusCommand.cancel();
+    	}
     }
 
     public void disabledPeriodic() { //This function is run periodically when the robot is DISABLED. Be careful.
-    		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { //runs around every 1 second
-    			startPos = autoChooser.getSelected();
-    			smartDashboardPeriodic();
-    			updateAutoDashboard();
-    		}
-    		
+		if (System.currentTimeMillis() % 200 > 0 && System.currentTimeMillis() % 500 < 50) { //runs around every 1 second
+			startPos = autoChooser.getSelected();
+			smartDashboardPeriodic();
+			updateAutoDashboard();
+		}
+		
     }
 
     public void autonomousInit() { //This function is called at the start of autonomous
-	    	startPos = autoChooser.getSelected();
-			if (autonomusCommand != null) {
-				autonomusCommand.start();
-			}
-	    	System.out.println("Auto Init complete");
+    	startPos = autoChooser.getSelected();
+		autonomusCommand = new AutonomusCommand(startPos, DriverStation.getInstance().getGameSpecificMessage());
+		autonomusCommand.start();
+
+    	System.out.println("Auto Init complete");
     }
 
     public void autonomousPeriodic() { //This function is called periodically during autonomous
@@ -267,6 +267,7 @@ public class Robot extends TimedRobot {
     		smartDashboardPeriodic();
 	    	startPos = autoChooser.getSelected();
 			if (autonomusCommand != null) {
+				autonomusCommand = new AutonomusCommand(startPos, DriverStation.getInstance().getGameSpecificMessage());
 				autonomusCommand.start();
 			}
     		//teleopInit();
@@ -361,8 +362,9 @@ public class Robot extends TimedRobot {
 	    	SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
 	    	SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
 	    	SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
-	    	SmartDashboard.putData("Debug/Scheduler", Scheduler.getInstance());
-	    	
+	    	if (autonomusCommand != null) {
+	    		SmartDashboard.putData("Debug/AutonomusCommand", this.autonomusCommand);
+	    	}
 	    	SmartDashboard.updateValues(); 
     }
 

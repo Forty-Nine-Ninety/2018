@@ -8,7 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class gyroStraight extends PIDCommand implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
@@ -34,33 +34,28 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
     controllers by displaying a form where you can enter new P, I,  
     and D constants and test the mechanism.                         */
    
-   static final double D_kP = 0.03;
+   static final double D_kP = 1;
    static final double D_kI = 0.00;
    static final double D_kD = 0.00;
    static final double D_kF = 0.00;
   
    PIDController distanceController = new PIDController(D_kP, D_kI, D_kD, D_kF, dt, this);
-   double kTargetDistance = 60; //Feet? (check distance, should be all the way across field)
+   double kTargetDistance = 6; //Feet? (check distance, should be distance to switch)
    double distanceControllerOutput;
-   
-   
-	/**
-	 * Turns left or right
-	 * @param inputDegrees Degrees to turn (Positive = right, negative = left)
-	 */
 	
 	public gyroStraight(double distance) {
 		super("StraightController", T_kP, T_kI, T_kD);
 		kTargetDistance = distance;
-		requires(RobotMap.driveTrain);
+		//requires(RobotMap.driveTrain);
 	}
 
 	public gyroStraight() {
 		super("StraightController", T_kP, T_kI, T_kD);
-		requires(RobotMap.driveTrain);
+		//requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
+		System.out.println("Initalizing gyroStraight with distance " + kTargetDistance);
 	    this.setInputRange(-180.0f, 180.0f);
 	    this.getPIDController().setOutputRange(-0.3, 0.3);
 	    this.getPIDController().setAbsoluteTolerance(3);
@@ -68,17 +63,17 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
 	    this.getPIDController().setContinuous(true);
 	    
 	    this.setName("DriveSystem", "StraightController");    
-	    LiveWindow.add(this);
+	    SmartDashboard.putData(this);
 
 		ahrs.zeroYaw();
 		
 		distanceController.setOutputRange(-0.7, 0.7);
 		distanceController.setAbsoluteTolerance(0.2); //approximately 2.4 in
 		distanceController.setContinuous(false);
-	    distanceController.setSetpoint(0);
+	    distanceController.setSetpoint(this.kTargetDistance);
 		
-		distanceController.setName("DriveSystem", "StraightController");    
-	    LiveWindow.add(distanceController);
+		distanceController.setName("DriveSystem", "DistanceController");    
+		SmartDashboard.putData(distanceController);
 	  
 		dt.left.encoder.reset();
 		dt.right.encoder.reset();
@@ -87,12 +82,13 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
 	}
 
 	public void execute() {
-		
+		System.out.println("This should be running in execute() of gyroStreight");
 	}
 	
 	public void end() {
 		//PIDCommands automatically disable internal PID controller.
 		distanceController.disable();
+		this.getPIDController().disable();
 	}
 	
 	public void interrupted() {
@@ -100,7 +96,7 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
 	}
 	
 	public boolean isFinished() {
-		return this.getPIDController().onTarget();
+		return this.timeSinceInitialized() > 15;//this.getPIDController().onTarget();
 	}
 
 

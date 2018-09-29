@@ -2,9 +2,8 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-
-import java.util.*;
 /**
  * Class for controlling drivetrains.
  * @author Class of '21 (created in 2018 season)
@@ -13,13 +12,7 @@ public class TeleopDriveTrainController extends Command{
 	
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	
-	private DriveMode driveMode;
-	
-	private double lastThrottle = 0;
-	private double lastTurnSteepness = 0;
-	
-	private Date lastUpdate = new Date();
-	
+	public DriveMode driveMode;	
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -68,10 +61,6 @@ public class TeleopDriveTrainController extends Command{
 			driveMode = DriveMode.NONE;
 			RobotMap.driveTrain.setSpeed(0, 0);
 		}
-		
-		this.lastThrottle = throttle;
-		this.lastTurnSteepness = turnSteepness;
-		this.lastUpdate = new Date();
 	}
 	
 	/**
@@ -144,7 +133,7 @@ public class TeleopDriveTrainController extends Command{
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return !DriverStation.getInstance().isOperatorControl();
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 /**
  * Class for controlling drivetrains. NEEDS FURTHER DEVELOPMENT AND TESTING.
  * @author Class of '21 (created in 2018 season)
- * 
+ * @deprecated
  */
 public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	
@@ -52,8 +52,9 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	}
 	
 	/**
-	 * Updates class variable values and sets motor speeds
+	 * Updates class variable values and sets motor speeds. NEEDS FURTHER DEVELOPMENT
 	 * @author Class of '21 (created in 2018 season)
+	 * @deprecated
 	 */
 	public void execute() {
 

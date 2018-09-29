@@ -2,7 +2,6 @@ package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -85,9 +84,9 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
 	@Override
 	protected void initDefaultCommand() {
-		if (DriverStation.getInstance().isOperatorControl()) {
+		//if (DriverStation.getInstance().isOperatorControl()) {
 		this.setDefaultCommand(new TeleopDriveTrainController());
-		}
+		//}
 	}
 
 	@Override
@@ -105,14 +104,15 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	 */
 	
 	public double getEncoderDistance() {
-		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+		return (/*left.encoder.getDistance() * */right.encoder.getDistance()); ///2;
 	}
 
 	/**
-	 * Returns average left/right encoder value, in feet.
+	 * Returns right encoder value, in feet.
 	 */
 	public double pidGet() {
-		return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+		//return (left.encoder.getDistance() * right.encoder.getDistance())/2;
+		return right.encoder.getDistance();
 	}
 		
 }
