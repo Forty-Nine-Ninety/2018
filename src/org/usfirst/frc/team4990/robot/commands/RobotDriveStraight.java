@@ -26,15 +26,6 @@ public class RobotDriveStraight extends Command {
 		this.speed = speed;
 		//requires(RobotMap.driveTrain);
 	}
-	
-	public RobotDriveStraight(double time, double speed, double distance) {
-		requires(RobotMap.driveTrain);
-		kTargetTime = time;
-		this.speed = speed;
-		this.targetDistance = distance;
-		this.useEncoders = true;
-		//requires(RobotMap.driveTrain);
-	}
 
 	public RobotDriveStraight() {
 		requires(RobotMap.driveTrain);
@@ -60,13 +51,7 @@ public class RobotDriveStraight extends Command {
 	}
 	
 	public boolean isFinished() {
-		if (this.timeSinceInitialized() >= this.kTargetTime) {
-			return true;
-		} else if (useEncoders) {
-			return Math.abs(dt.right.encoder.getDistance()) > targetDistance;
-		} else {
-			return false;
-		}
+		return this.timeSinceInitialized() >= this.kTargetTime;
 	}
 
 }
