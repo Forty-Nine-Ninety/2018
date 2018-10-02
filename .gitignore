@@ -17,3 +17,4 @@ hs_err_pid*
 .classpath
 
 /build/jars/**
+dist/FRCUserProgram.jar

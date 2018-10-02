@@ -3,6 +3,7 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 /**
  * Command that controls elevator in teleop
@@ -28,7 +29,7 @@ public class TeleopElevatorController extends Command{
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return !DriverStation.getInstance().isOperatorControl();
 	}
 	
 	public void end() {

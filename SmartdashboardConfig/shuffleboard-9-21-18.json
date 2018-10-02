@@ -78,7 +78,7 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive/Selected Starting Position",
+              "_source0": "network_table:///SmartDashboard/DriveTeam/Auto Chooser/selected",
               "_title": "/SmartDashboard/Drive/Selected Starting Position"
             }
           },
@@ -118,7 +118,7 @@
               "_title": "SmartDashboard/Debug/DriveTrainSubsystem"
             }
           },
-          "5,3": {
+          "3,4": {
             "size": [
               2,
               1
@@ -142,26 +142,15 @@
               "SmartDashboard/Debug/PDP/Voltage visible": true
             }
           },
-          "7,3": {
+          "5,3": {
             "size": [
               2,
               1
             ],
             "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/DriveTeam/Eject Box Chooser",
-              "_title": "SmartDashboard/DriveTeam/Eject Box Chooser"
-            }
-          },
-          "7,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive/Selected Eject Box",
-              "_title": "SmartDashboard/Drive/Selected Eject Box"
+              "_source0": "network_table:///SmartDashboard/Debug/Ultrasonic",
+              "_title": "SmartDashboard/Debug/Ultrasonic"
             }
           }
         }
@@ -184,8 +173,8 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
-              "_source1": "network_table:///SmartDashboard/Debug/Throttle Input",
+              "_source0": "network_table:///SmartDashboard/Debug/Throttle Input",
+              "_source1": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
               "_title": "Graph (2 sources)",
               "Visible time": 30.0,
               "LiveWindow/DriveTrain/LeftMotors/Value visible": true,

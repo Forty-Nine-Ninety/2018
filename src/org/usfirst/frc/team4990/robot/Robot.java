@@ -3,7 +3,6 @@ import org.usfirst.frc.team4990.robot.commands.AutonomusCommand;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -27,12 +26,14 @@ public class Robot extends TimedRobot {
 	 *
 	 */
 	public enum StartingPosition {
-		LEFT, 
-		MID, 
-		RIGHT, 
-		ERROR,
+		//LEFT, 
+		//MID, 
+		//RIGHT, 
+		//ERROR,
 		STAY, 
-		FORWARD
+		FORWARD,
+		FORWARD_AND_UP_LEFT,
+		FORWARD_AND_UP_RIGHT
 	};
 
 	static public SendableChooser<StartingPosition> autoChooser;
@@ -246,7 +247,7 @@ public class Robot extends TimedRobot {
 
     public void autonomousInit() { //This function is called at the start of autonomous
     	startPos = autoChooser.getSelected();
-		autonomusCommand = new AutonomusCommand(startPos, DriverStation.getInstance().getGameSpecificMessage());
+		autonomusCommand = new AutonomusCommand();
 		autonomusCommand.start();
 
     	System.out.println("Auto Init complete");
@@ -275,7 +276,7 @@ public class Robot extends TimedRobot {
     		smartDashboardPeriodic();
 	    	startPos = autoChooser.getSelected();
 			if (autonomusCommand != null) {
-				autonomusCommand = new AutonomusCommand(startPos, DriverStation.getInstance().getGameSpecificMessage());
+				autonomusCommand = new AutonomusCommand();
 				autonomusCommand.start();
 			}
     		//teleopInit();
@@ -295,22 +296,26 @@ public class Robot extends TimedRobot {
     public void updateAutoDashboard() {
 	    	//Auto chooser
 	    	autoChooser = new SendableChooser<StartingPosition>();
-	    	autoChooser.addObject("Left", StartingPosition.LEFT);
-	    	autoChooser.addObject("Middle", StartingPosition.MID);
-	    	autoChooser.addObject("Right",  StartingPosition.RIGHT);
-	    	autoChooser.addObject("Stay", StartingPosition.STAY);
+	    	//autoChooser.addObject("Left", StartingPosition.LEFT);
+	    	//autoChooser.addObject("Middle", StartingPosition.MID);
+	    	//autoChooser.addObject("Right",  StartingPosition.RIGHT);
 	    	autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
+	    	autoChooser.addObject("Stay", StartingPosition.STAY);
+	    	autoChooser.addObject("Forward and outake, robot on LEFT", StartingPosition.FORWARD_AND_UP_LEFT);
+	    	autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
+	    	
 	    	autoChooser.setName("AutonomusControl","Auto Chooser");
+	    	startPos = autoChooser.getSelected();
 	    	SmartDashboard.putData("DriveTeam/Auto Chooser",autoChooser);
 	    	SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
-
-		ejectBoxChooser = new SendableChooser<Boolean>();
-		ejectBoxChooser.addObject("TRUE", true);
-		ejectBoxChooser.addDefault("FALSE", false);
-		ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
-		SmartDashboard.putData("DriveTeam/Eject Box Chooser", ejectBoxChooser);
-		SmartDashboard.putString("Drive/Selected Eject Box", ejectBoxSelection.toString());
-
+	    	
+			ejectBoxChooser = new SendableChooser<Boolean>();
+			ejectBoxChooser.addObject("TRUE", true);
+			ejectBoxChooser.addDefault("FALSE", false);
+			ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
+			SmartDashboard.putData("DriveTeam/Eject Box Chooser", ejectBoxChooser);
+			SmartDashboard.putString("Drive/Selected Eject Box", ejectBoxSelection.toString());
+	    	
 	    	SmartDashboard.updateValues(); //always run at END of updateAutoDashboard
 
     }
@@ -345,6 +350,7 @@ public class Robot extends TimedRobot {
     		RobotMap.pdp.setName("General", "PDP");
     		RobotMap.gyro.setName("General", "SPI Gyro");
     		RobotMap.ahrs.setName("General", "AHRS Gyro");
+    		RobotMap.ultrasonic.setName("General", "Ultrasonic");
     	}
     
     	public void smartDashboardPeriodic() {
@@ -374,7 +380,7 @@ public class Robot extends TimedRobot {
 	    	
 	    	SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
 	    	SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
-	    	SmartDashboard.putData("Debug/Ultrasonic", RobotMap.ultrasonic);
+	    	SmartDashboard.putNumber("Debug/Ultrasonic", RobotMap.ultrasonic.getRangeInches());
 	    	
 	    	SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
 	    	SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);

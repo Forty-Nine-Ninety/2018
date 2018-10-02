@@ -10,6 +10,7 @@ public class IntakeOut extends Command {
 	private Intake intake;
 	private boolean isFinished;
 	private double speed = -0.6;
+	private double timeout = 0;
 	
 	/**
 	 * Makes intake throw whatever is inside out
@@ -19,6 +20,13 @@ public class IntakeOut extends Command {
 		requires(RobotMap.intake);
 		this.intake = RobotMap.intake;
 		this.isFinished = false;
+	}
+	
+	public IntakeOut(double time) {
+		requires(RobotMap.intake);
+		this.intake = RobotMap.intake;
+		this.isFinished = false;
+		this.timeout = time;
 	}
 	
 	public void initialize() {
@@ -38,7 +46,7 @@ public class IntakeOut extends Command {
 	}
 	
 	public boolean isFinished() {
-		return isFinished;
+		return timeout > 0 ? this.timeSinceInitialized() >= timeout : isFinished;
 	}
 	
 	public void end() {

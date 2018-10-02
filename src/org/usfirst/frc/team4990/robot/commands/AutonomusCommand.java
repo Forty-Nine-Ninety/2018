@@ -1,20 +1,28 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomusCommand extends CommandGroup {
 	
-	public AutonomusCommand(StartingPosition s, String gameData) {
+	public AutonomusCommand() {
 		System.out.println("Auto Logic INIT");
+		StartingPosition s = Robot.startPos;
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		if (gameData.length() == 0 || s == StartingPosition.FORWARD) {
+		if (s != StartingPosition.STAY) {
 			//if there is no game message (string) OR just cross auto line
 			//System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
 			addSequential(new RobotDriveStraight()); //forward 11 feet?
-			//addSequential(new gyroStraight(11));
-		} else if (gameData.charAt(0) == 'L') {
+		} 
+		if ((s == StartingPosition.FORWARD_AND_UP_LEFT && gameData.charAt(0) == 'L') && (s == StartingPosition.FORWARD_AND_UP_RIGHT && gameData.charAt(0) == 'R')) {
+			addSequential(new MoveElevatorTime(2, 0.5));
+			addSequential(new IntakeOut(3));
+		}
+		/*else if (gameData.charAt(0) == 'L') {
 			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());
 			//Left side is ours
 			switch(s) {
@@ -100,11 +108,7 @@ public class AutonomusCommand extends CommandGroup {
 			//System.out.println("Error: Unknown game data: " + gameData.charAt(0) + " StartingPostion " + s.toString());
 			//System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
 			addSequential(new RobotDriveStraight()); //forward 140 in 
-		}
-		/*
-		 * if (Robot.ejectBoxChooser.getSelected()) { addSequential(new
-		 * MoveElevatorTime(1, 0.2)); //time, power }
-		 */
+		}*/
 
 	}
 }
