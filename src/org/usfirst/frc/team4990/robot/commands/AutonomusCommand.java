@@ -9,16 +9,18 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomusCommand extends CommandGroup {
 	
 	public AutonomusCommand() {
-		System.out.println("Auto Logic INIT");
+		
 		StartingPosition s = Robot.startPos;
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		System.out.println("Auto Logic INIT, gameData = " + gameData + "startPos = "+ s.toString());
 		
 		if (s != StartingPosition.STAY) {
 			//if there is no game message (string) OR just cross auto line
 			//System.out.println("Only Crossing Auto Line: gyroStraight((140/12), true)");
 			addSequential(new RobotDriveStraight()); //forward 11 feet?
 		} 
-		if ((s == StartingPosition.FORWARD_AND_UP_LEFT && gameData.charAt(0) == 'L') && (s == StartingPosition.FORWARD_AND_UP_RIGHT && gameData.charAt(0) == 'R')) {
+		if ((s == StartingPosition.FORWARD_AND_UP_LEFT && gameData.charAt(0) == 'L') || (s == StartingPosition.FORWARD_AND_UP_RIGHT && gameData.charAt(0) == 'R')) {
+			System.out.println("Added move elevator time and intake out commands.");
 			addSequential(new MoveElevatorTime(2, 0.5));
 			addSequential(new IntakeOut(3));
 		}

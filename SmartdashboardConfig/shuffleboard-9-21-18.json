@@ -129,19 +129,6 @@
               "_title": "SmartDashboard/Debug/ElevatorSubsystem"
             }
           },
-          "0,3": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Debug/PDP/Voltage",
-              "_title": "SmartDashboard/Debug/PDP/Voltage",
-              "Visible time": 30.0,
-              "SmartDashboard/Debug/PDP/Voltage visible": true
-            }
-          },
           "5,3": {
             "size": [
               2,
@@ -173,8 +160,8 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Debug/Throttle Input",
-              "_source1": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
+              "_source0": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
+              "_source1": "network_table:///SmartDashboard/Debug/Throttle Input",
               "_title": "Graph (2 sources)",
               "Visible time": 30.0,
               "LiveWindow/DriveTrain/LeftMotors/Value visible": true,

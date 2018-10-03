@@ -30,7 +30,7 @@ public class MoveElevatorTime extends Command {
 	}
 	
 	public void end() {
-		RobotMap.elevator.setElevatorPower(0);
+		RobotMap.elevator.setElevatorPower(RobotMap.elevator.stopFallingSpeed);
 	}
 	
 	public void interrupted() {
