@@ -160,8 +160,8 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
-              "_source1": "network_table:///SmartDashboard/Debug/Throttle Input",
+              "_source0": "network_table:///SmartDashboard/Debug/Throttle Input",
+              "_source1": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
               "_title": "Graph (2 sources)",
               "Visible time": 30.0,
               "LiveWindow/DriveTrain/LeftMotors/Value visible": true,

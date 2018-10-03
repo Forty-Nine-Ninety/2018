@@ -22,6 +22,7 @@ public class AutonomusCommand extends CommandGroup {
 		if ((s == StartingPosition.FORWARD_AND_UP_LEFT && gameData.charAt(0) == 'L') || (s == StartingPosition.FORWARD_AND_UP_RIGHT && gameData.charAt(0) == 'R')) {
 			System.out.println("Added move elevator time and intake out commands.");
 			addSequential(new MoveElevatorTime(2, 0.5));
+			addParallel(new MoveElevatorTime(3.2, 0.1)); //Immediately starts next command
 			addSequential(new IntakeOut(3));
 		}
 		/*else if (gameData.charAt(0) == 'L') {

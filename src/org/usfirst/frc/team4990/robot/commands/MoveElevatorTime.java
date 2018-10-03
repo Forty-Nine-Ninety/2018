@@ -25,12 +25,12 @@ public class MoveElevatorTime extends Command {
 	
 	public void execute() {
 		RobotMap.elevator.setElevatorPower(power);
-		System.out.println("MoveElevatorTime. input power: " + power + " setpower: " + RobotMap.elevator.setSpeed + "time: " + this.timeSinceInitialized());
+		System.out.println("MoveElevatorTime. input power: " + power + " setpower: " + RobotMap.elevator.setSpeed + " time: " + this.timeSinceInitialized());
 		RobotMap.elevator.periodic();
 	}
 	
 	public void end() {
-		RobotMap.elevator.setElevatorPower(RobotMap.elevator.stopFallingSpeed);
+		RobotMap.elevator.setElevatorPower(0);
 	}
 	
 	public void interrupted() {

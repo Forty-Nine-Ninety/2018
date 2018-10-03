@@ -9,20 +9,18 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RobotDriveStraight extends Command {
 	DriveTrain dt = RobotMap.driveTrain;
 
-	double kTargetTime = 2.8; 
+	public static double targetTime = 2.8; 
 	double speed = 0.3;
-	boolean useEncoders = false;
-	double targetDistance = 4.7; //feet?
 	
 	public RobotDriveStraight(double time) {
 		requires(RobotMap.driveTrain);
-		kTargetTime = time;
+		RobotDriveStraight.targetTime = time;
 		//requires(RobotMap.driveTrain);
 	}
 	
 	public RobotDriveStraight(double time, double speed) {
 		requires(RobotMap.driveTrain);
-		kTargetTime = time;
+		RobotDriveStraight.targetTime = time;
 		this.speed = speed;
 		//requires(RobotMap.driveTrain);
 	}
@@ -33,13 +31,13 @@ public class RobotDriveStraight extends Command {
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing gyroStraight with time " + kTargetTime);
+		System.out.println("Initalizing gyroStraight with time " + RobotDriveStraight.targetTime);
 		dt.right.encoder.reset();
 		dt.setSpeed(speed);
 	}
 
 	public void execute() {
-		System.out.println("RobotDriveStraight. Time: " + this.timeSinceInitialized() + "Distance: " + Math.abs(dt.right.encoder.getDistance()));
+		System.out.println("RobotDriveStraight. Time: " + this.timeSinceInitialized() + " stopping at: " + RobotDriveStraight.targetTime);
 	}
 	
 	public void end() {
@@ -51,7 +49,7 @@ public class RobotDriveStraight extends Command {
 	}
 	
 	public boolean isFinished() {
-		return this.timeSinceInitialized() >= this.kTargetTime;
+		return this.timeSinceInitialized() >= RobotDriveStraight.targetTime;
 	}
 
 }

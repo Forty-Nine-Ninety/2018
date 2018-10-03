@@ -30,18 +30,19 @@ public class IntakeOut extends Command {
 	}
 	
 	public void initialize() {
-		//nothing.
+		System.out.println("IntakeOut Starting");
 	}
 	
 	public void execute() {
-		BoxPosition boxPos = intake.getBoxPosition();
+		/*BoxPosition boxPos = intake.getBoxPosition();
 		if (boxPos.equals(BoxPosition.OUT)) {
 			isFinished = true;
 		} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.IN)) {
 			intake.setSpeed(speed);
 
-		}
-
+		}*/
+		intake.setSpeed(speed);
+		System.out.println("IntakeOut. time: " + this.timeSinceInitialized());
 		intake.periodic();
 	}
 	
