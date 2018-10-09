@@ -38,7 +38,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		 * ramp down time in seconds.
 		 */
 		
-		double rampDownTime = 0.2; 
+		double rampDownTime = 0.3; 
 		
 		this.left.frontMotor.configOpenloopRamp(rampDownTime, 0);
 		this.left.rearMotor.configOpenloopRamp(rampDownTime, 0);
