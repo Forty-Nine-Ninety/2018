@@ -25,9 +25,6 @@ public class Elevator extends Subsystem {
 	
 	/**
 	 * Initializes elevator.
-	 * @param elevatorMotor Talon for motor used to drive elevator
-	 * @param topSwitchChannel DIO channel for top limit switch
-	 * @param bottomSwitchChannel DIO channel for bottom limit switch
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	

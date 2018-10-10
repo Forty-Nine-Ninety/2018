@@ -14,19 +14,13 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
-	 * @param talonMotorController First Left Motor
-	 * @param talonMotorController2 Second Left Motor
-	 * @param rightotor1 First Right Motor
-	 * @param talonMotorController4 Second Right Motor
-	 * @param leftEncoderChannelA Encoder for Left gearbox (Signal, Ground and 5v)
-	 * @param leftEncoderChannelB Encoder for Left gearbox (just Signal)
-	 * @param rightEncoderChannelA Encoder for Right gearbox (Signal, Ground and 5v)
-	 * @param rightEncoderChannelB Encoder for right gearbox (just Signal)
+	 * @param leftGearbox left gearbox
+	 * @param rightGearbox right gearbox
 	 * @author Class of '21 (created in 2018 season)
 	 */
-	public DriveTrain(Gearbox gearbox, Gearbox gearbox2) {
-		this.left = gearbox;
-		this.right = gearbox2;
+	public DriveTrain(Gearbox leftGearbox, Gearbox rightGearbox) {
+		this.left = leftGearbox;
+		this.right = rightGearbox;
 		
 		// The right gearbox is backwards
 		this.right.fix_backwards = -1.0;

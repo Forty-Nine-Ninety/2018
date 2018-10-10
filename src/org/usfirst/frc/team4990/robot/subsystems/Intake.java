@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import org.usfirst.frc.team4990.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -11,13 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
 	private double speed;
-	
-	/**
-	 * Initialize inkate.
-	 * @param talonMotorController PWM port for LEFT talon
-	 * @param talonMotorController2 PWM port for RIGHT talon
-	 * @param infraredInput Analog Port for Sharp Distance Sensor
-	 */
 	
 	public Intake() {
 		super();

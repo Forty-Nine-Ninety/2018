@@ -26,7 +26,7 @@ public class gyroTurn extends PIDCommand {
 
 	/**
 	 * Turns left or right
-	 * @param inputDegrees Degrees to turn (Positive = right, negative = left)
+	 * @param degrees Degrees to turn (Positive = right, negative = left)
 	 */
 	
 	public gyroTurn(double degrees) {

@@ -7,10 +7,14 @@
 
 package org.usfirst.frc.team4990.robot;
 
-import org.usfirst.frc.team4990.robot.commands.*;
-import org.usfirst.frc.team4990.robot.subsystems.*;
+import org.usfirst.frc.team4990.robot.commands.ControllerCheck;
+import org.usfirst.frc.team4990.robot.commands.DriveDpiToggle;
+import org.usfirst.frc.team4990.robot.commands.TeleopElevatorController;
+import org.usfirst.frc.team4990.robot.commands.TeleopIntakeController;
+import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
-import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -163,8 +167,11 @@ public class OI{
 		/**
 		 * Create a button for triggering commands off a joystick's analog axis
 		 * 
-		 * @param joystick The GenericHID object that has the button (e.g. Joystick, KinectStick, etc)
-		 * @param axisNumber The axis number
+		 * @param gamepad
+		 *            The GenericHID object that has the button (e.g. Joystick,
+		 *            KinectStick, etc)
+		 * @param axisNumber
+		 *            The axis number
 		 */
 		public JoystickAnalogButton(F310Gamepad gamepad, int axisNumber) {
 			m_gamepad = gamepad;

@@ -15,7 +15,8 @@ public class Scaler {
 	
 	/**
 	 * Set speed for scaler. Use update() to execute.
-	 * @param power
+	 * 
+	 * @param speed
 	 */
 	
 	public void setSpeed(double speed) {

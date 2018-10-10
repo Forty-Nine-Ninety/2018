@@ -120,14 +120,14 @@ public class Robot extends TimedRobot {
 		 */
 
 		@Override
-		public void putData(String string, Sendable data) {
-			SmartDashboard.putData(string, data);
+		public void putData(String key, Sendable def) {
+			SmartDashboard.putData(key, def);
 		}
 		
 		/**
 		 * Adds a number to SmartDashbaord/Shuffleboard.
-		 * @param key string key to identify value
-		 * @param def number to be stored
+		 * @param string string key to identify value
+		 * @param d number to be stored
 		 * @author Deep Blue Robotics (Team 199)
 		 */
 
@@ -138,8 +138,11 @@ public class Robot extends TimedRobot {
 		
 		/**
 		 * Adds a Boolean to SmartDashbaord/Shuffleboard.
-		 * @param key string key to identify value
-		 * @param def string to be stored
+		 * 
+		 * @param b
+		 *            string key to identify value
+		 * @param string
+		 *            string to be stored
 		 * @author Deep Blue Robotics (Team 199)
 		 */
 

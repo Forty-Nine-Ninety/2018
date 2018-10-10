@@ -164,7 +164,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	
 	/**
 	 * Squares the number provided and keeps sign (+ or -)
-	 * @param throttleInput number to square and keeps sign
+	 * @param value number to square and keeps sign
 	 * @return squared number provided with same sign
 	 */
 	public double getSquaredThrottle(double value) {

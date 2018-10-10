@@ -9,8 +9,8 @@ public class MoveElevatorTime extends Command {
 
 	/**
 	 * Moves elevator for duration.
-	 * @param time in seconds
-	 * @param power 0 to 1 for up, 0 to -1 for down
+	 * @param t in seconds
+	 * @param power_input 0 to 1 for up, 0 to -1 for down
 	 */
 	
 	public MoveElevatorTime(double t, double power_input) {

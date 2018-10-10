@@ -6,7 +6,7 @@ public class wait extends TimedCommand {
 	
 	/**
 	 * Makes robot wait.
-	 * @param time Time to wait for in seconds
+	 * @param t Time to wait for in seconds
 	 */
 	public wait(double t) {
 		super(t);
