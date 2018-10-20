@@ -1,11 +1,13 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.commands.TeleopElevatorController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,14 +17,16 @@ public class Elevator extends Subsystem {
 	
 	public LimitSwitch topSwitch, bottomSwitch;
 	
-	public double maxSpeed = 1.0;
+	public double maxSpeed = Robot.getConst("Elevator/maxSpeed", 1.0);
 	
-	public double stopFallingSpeed = 0.05;
+	public double stopFallingSpeed = Robot.getConst("Elevator/stopFallingSpeed", 0.05);
 	
 	public double setSpeed = 0;
 	
 	public String status = "Initializing"; 
 	
+	public Command defaultCommand = new TeleopElevatorController();
+
 	/**
 	 * Initializes elevator.
 	 * @author Class of '21 (created in 2018 season)
@@ -56,7 +60,7 @@ public class Elevator extends Subsystem {
 					status = "going up, max speed";
 				} else { 
 					this.setSpeed = power;
-					if (setSpeed == 0.0578125) {
+					if (setSpeed == 0.0578125) { // stick deadband
 						status = "holding position, motor on";
 					} else {
 						status = "going up";
@@ -132,6 +136,6 @@ public class Elevator extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		new TeleopElevatorController();
+		this.setDefaultCommand(defaultCommand);
 	}
 }

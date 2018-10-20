@@ -1,11 +1,13 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ultrasonicStop extends Command {
+public class UltrasonicStop extends Command {
 	
-	static double stopDistance = 20;
+	static double stopDistance = Robot.getConst("UltrasonicStop/DefaultStopDistance", 20); // inches?
 	Command command;
 
 	/**
@@ -13,7 +15,7 @@ public class ultrasonicStop extends Command {
 	 * @param distance in inches
 	 */
 	
-	public ultrasonicStop(double distance, Command command) {
+	public UltrasonicStop(double distance, Command command) {
 		requires(RobotMap.driveTrain);
 		stopDistance = distance;
 		this.command = command;
@@ -22,7 +24,7 @@ public class ultrasonicStop extends Command {
 	/**
 	 * Command for stopping when robot becomes within <b>20</b> inches of object.
 	 */
-	public ultrasonicStop() {
+	public UltrasonicStop() {
 		requires(RobotMap.driveTrain);
 	}
 	

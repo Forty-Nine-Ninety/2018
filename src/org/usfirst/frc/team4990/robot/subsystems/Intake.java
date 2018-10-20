@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,7 +15,6 @@ public class Intake extends Subsystem {
 	private double speed;
 	
 	public Intake() {
-		super();
 	}
 	
 	/**
@@ -60,9 +60,9 @@ public class Intake extends Subsystem {
 	 */
 	
 	public BoxPosition getBoxPosition() {
-		if (getAnalogInput() >= 2 ) {
+		if (getAnalogInput() >= Robot.getConst("Intake/BoxPosInThreshold", 0.2)) {
 			return Intake.BoxPosition.IN;
-		} else if (getAnalogInput() >= 0.4) {
+		} else if (getAnalogInput() >= Robot.getConst("Intake/BoxPosInThreshold", 0.24)) {
 			return Intake.BoxPosition.MOVING;
 		} else {
 			return Intake.BoxPosition.OUT;

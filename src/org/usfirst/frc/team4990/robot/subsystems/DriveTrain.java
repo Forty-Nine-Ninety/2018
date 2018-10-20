@@ -1,16 +1,16 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
-	public double currentThrottleMultiplier = 1.0;
-	
-	public boolean oldStickShapingMethod = true;
+	public Command defaultCommand = new TeleopDriveTrainController();
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
@@ -25,14 +25,14 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		// The right gearbox is backwards
 		this.right.fix_backwards = -1.0;
 		// the bot swerves to the left, so slow down right side
-		this.left.compensate = 1.0;
-		this.right.compensate = 0.99;
+		this.left.compensate = Robot.getConst("leftGearbox/compensate", 1.0);
+		this.right.compensate = Robot.getConst("rightGearbox/compensate", 0.99);
 		
 		/**
 		 * ramp down time in seconds.
 		 */
 		
-		double rampDownTime = 0.3; 
+		double rampDownTime = Robot.getConst("DriveTrain/rampDownTime", 0.3);
 		
 		this.left.frontMotor.configOpenloopRamp(rampDownTime, 0);
 		this.left.rearMotor.configOpenloopRamp(rampDownTime, 0);
@@ -79,7 +79,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	@Override
 	protected void initDefaultCommand() {
 		//if (DriverStation.getInstance().isOperatorControl()) {
-		this.setDefaultCommand(new TeleopDriveTrainController());
+		this.setDefaultCommand(defaultCommand);
 		//}
 	}
 

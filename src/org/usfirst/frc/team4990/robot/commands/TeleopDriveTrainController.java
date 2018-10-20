@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.*;
+import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -13,6 +13,10 @@ public class TeleopDriveTrainController extends Command{
 	public enum DriveMode { STRAIGHT, ARC, TURN, NONE }
 	
 	public DriveMode driveMode;	
+	
+	public static double currentThrottleMultiplier = 1;
+
+	public static boolean oldStickShapingMethod = false;
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -69,7 +73,7 @@ public class TeleopDriveTrainController extends Command{
 	 * @return squared number provided with same sign
 	 */
 	public double getSquaredThrottle(double throttleInput) {
-		return throttleInput * throttleInput * Math.signum(throttleInput) * RobotMap.driveTrain.currentThrottleMultiplier;
+		return throttleInput * throttleInput * Math.signum(throttleInput) * currentThrottleMultiplier;
 	}
 	
 	/**

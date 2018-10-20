@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Constants;
-import org.usfirst.frc.team4990.robot.RobotMap;
+import org.usfirst.frc.team4990.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,13 +15,15 @@ public class DriveDpiToggle extends Command {
 	}
 	
 	public void initialize() {
-		RobotMap.driveTrain.currentThrottleMultiplier = Constants.lowThrottleMultiplier;
-		System.out.println("DriveTrain Multiplier: " + RobotMap.driveTrain.currentThrottleMultiplier);
+		TeleopDriveTrainController.currentThrottleMultiplier = Robot.getConst("DriveDpiToggle/lowThrottleMultiplier",
+				0.25);
+		System.out.println("DriveTrain Multiplier: " + TeleopDriveTrainController.currentThrottleMultiplier);
 	}
 	
 	public void end() {
-		RobotMap.driveTrain.currentThrottleMultiplier = Constants.maxThrottle;
-		System.out.println("DriveTrain Multiplier: " + RobotMap.driveTrain.currentThrottleMultiplier);
+		TeleopDriveTrainController.currentThrottleMultiplier = Robot.getConst("DriveDpiToggle/maxThrottleMultiplier",
+				1.0);
+		System.out.println("DriveTrain Multiplier: " + TeleopDriveTrainController.currentThrottleMultiplier);
 	}
 	
 	public void interrupted() {

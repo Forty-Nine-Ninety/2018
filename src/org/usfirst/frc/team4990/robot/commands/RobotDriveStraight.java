@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
@@ -9,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RobotDriveStraight extends Command {
 	DriveTrain dt = RobotMap.driveTrain;
 
-	public static double targetTime = 2.8; 
-	double speed = 0.3;
+	public static double targetTime = Robot.getConst("RobotDriveStraight/defaultTargetTime", 2.8);
+	double speed = Robot.getConst("RobotDriveStraight/defaultSpeed", 0.3);
 	
 	public RobotDriveStraight(double time) {
 		requires(RobotMap.driveTrain);
@@ -31,7 +32,7 @@ public class RobotDriveStraight extends Command {
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing gyroStraight with time " + RobotDriveStraight.targetTime);
+		System.out.println("Initalizing GyroStraight with time " + RobotDriveStraight.targetTime);
 		dt.right.encoder.reset();
 		dt.setSpeed(speed);
 	}

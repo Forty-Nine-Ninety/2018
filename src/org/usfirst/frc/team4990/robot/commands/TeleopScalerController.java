@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,10 +30,10 @@ public class TeleopScalerController extends Command{
 	 */
 	public void initalize() {		
 		if (dir == direction.IN) {
-			RobotMap.scaler.setSpeed(-0.7);
+			RobotMap.scaler.setSpeed(-Robot.getConst("TeleopScalerController/speed", 0.7));
 			return;
 		} if (dir == direction.OUT) {
-			RobotMap.scaler.setSpeed(0.7);
+			RobotMap.scaler.setSpeed(Robot.getConst("TeleopScalerController/speed", 0.7));
 			return;
 		} else {
 			RobotMap.scaler.setSpeed(0);
