@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,7 +16,7 @@ public class TeleopIntakeController extends Command{
 	
 	private direction dir;
 
-	private double maxSpeed = 0.65;
+	private double maxSpeed = Robot.getConst("TeleopIntakeController/maxSpeed", 0.65);
 	/**
 	 * Constructor for class
 	 * @author Class of '21 (created in 2018 season)
@@ -62,9 +63,9 @@ public class TeleopIntakeController extends Command{
 	
 	protected boolean isFinished() {
 		if (dir == direction.IN) {
-			return RobotMap.opGamepad.getLeftTrigger() < 0.05;
+			return RobotMap.opGamepad.getLeftTrigger() < Robot.getConst("TeleopIntakeController/triggerDeadband", 0.05);
 		} else {
-			return RobotMap.opGamepad.getRightTrigger() < 0.05;
+			return RobotMap.opGamepad.getRightTrigger() < Robot.getConst("TeleopIntakeController/triggerDeadband", 0.05);
 		}
 	}
 

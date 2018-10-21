@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class gyroStraight extends PIDCommand implements PIDOutput{
+public class GyroStraight extends PIDCommand implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
 
@@ -19,46 +20,33 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
      SmartDashboard in Test mode has support for helping you tune    
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
-    
-    static final double T_kP = 0.03;
-    static final double T_kI = 0.00;
-    static final double T_kD = 0.00;
-    static final double T_kF = 0.00;
-    
-    double kTargetAngleDegrees;
-	double turnControllerOutput;
-    
-    /* The following PID Controller coefficients will need to be tuned 
-    to match the dynamics of your drive system.  Note that the      
-    SmartDashboard in Test mode has support for helping you tune    
-    controllers by displaying a form where you can enter new P, I,  
-    and D constants and test the mechanism.                         */
-   
-   static final double D_kP = 1;
-   static final double D_kI = 0.00;
-   static final double D_kD = 0.00;
-   static final double D_kF = 0.00;
   
-   PIDController distanceController = new PIDController(D_kP, D_kI, D_kD, D_kF, dt, this);
-   double kTargetDistance = 6; //Feet? (check distance, should be distance to switch)
-   double distanceControllerOutput;
+	PIDController distanceController = new PIDController(Robot.getConst("GyroStraight/distance_kP", 1),
+			Robot.getConst("GyroStraight/distance_kI", 0), Robot.getConst("GyroStraight/distance_kD", 0), 0, dt, this);
+	double kTargetDistance = Robot.getConst("GyroStraight/defaultDistance", 6); // Feet? (check distance, should be
+																				// distance to switch)
+	double distanceControllerOutput, turnControllerOutput;
 	
-	public gyroStraight(double distance) {
-		super("StraightController", T_kP, T_kI, T_kD);
+	public GyroStraight(double distance) {
+		super("StraightController", Robot.getConst("GyroStraight/turn_kP", 0.03),
+				Robot.getConst("GyroStraight/turn_kP", 0), Robot.getConst("GyroStraight/turn_kP", 0));
 		kTargetDistance = distance;
 		//requires(RobotMap.driveTrain);
 	}
 
-	public gyroStraight() {
-		super("StraightController", T_kP, T_kI, T_kD);
+	public GyroStraight() {
+		super("StraightController", Robot.getConst("GyroStraight/turn_kP", 0.03),
+				Robot.getConst("GyroStraight/turn_kP", 0), Robot.getConst("GyroStraight/turn_kP", 0));
 		//requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing gyroStraight with distance " + kTargetDistance);
-	    this.setInputRange(-180.0f, 180.0f);
-	    this.getPIDController().setOutputRange(-0.3, 0.3);
-	    this.getPIDController().setAbsoluteTolerance(3);
+		System.out.println("Initalizing GyroStraight with distance " + kTargetDistance);
+		this.setInputRange(-Robot.getConst("GyroStraight/straight_inputRange", 180.0f),
+				Robot.getConst("GyroStraight/straight_inputRange", 180.0f));
+		this.getPIDController().setOutputRange(-Robot.getConst("GyroStraight/straight_outputRange", 0.3),
+				Robot.getConst("GyroStraight/straight_outputRange", 0.3));
+		this.getPIDController().setAbsoluteTolerance(Robot.getConst("GyroStraight/straight_absoluteTolerance", 3));
 	    this.setSetpoint(0);
 	    this.getPIDController().setContinuous(true);
 	    
@@ -67,8 +55,11 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
 
 		ahrs.zeroYaw();
 		
-		distanceController.setOutputRange(-0.7, 0.7);
-		distanceController.setAbsoluteTolerance(0.2); //approximately 2.4 in
+		distanceController.setOutputRange(-Robot.getConst("GyroStraight/distance_outputRange", 0.7),
+				Robot.getConst("GyroStraight/distance_outputRange", 0.7));
+		distanceController.setAbsoluteTolerance(Robot.getConst("GyroStraight/distance_absoluteTolerance", 0.2)); // approximately
+																													// 2.4
+																													// in
 		distanceController.setContinuous(false);
 	    distanceController.setSetpoint(this.kTargetDistance);
 		
@@ -96,7 +87,7 @@ public class gyroStraight extends PIDCommand implements PIDOutput{
 	}
 	
 	public boolean isFinished() {
-		return this.timeSinceInitialized() > 15;//this.getPIDController().onTarget();
+		return this.timeSinceInitialized() > Robot.getConst("GyroStraight/timeout", 15);// this.getPIDController().onTarget();
 	}
 
 

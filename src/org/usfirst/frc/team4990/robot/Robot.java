@@ -267,6 +267,9 @@ public class Robot extends TimedRobot {
 			autonomusCommand.cancel();
 		}
 
+		RobotMap.driveTrain.left.clearStickyFaults();
+		RobotMap.driveTrain.right.clearStickyFaults();
+
     }
 
     

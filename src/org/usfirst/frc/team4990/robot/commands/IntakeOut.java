@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
@@ -8,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class IntakeOut extends Command {
 	private Intake intake;
 	private boolean isFinished;
-	private double speed = -0.6;
 	private double timeout = 0;
 	
 	/**
@@ -40,7 +40,7 @@ public class IntakeOut extends Command {
 			intake.setSpeed(speed);
 
 		}*/
-		intake.setSpeed(speed);
+		intake.setSpeed(Robot.getConst("IntakeOut/speed", -0.6));
 		System.out.println("IntakeOut. time: " + this.timeSinceInitialized());
 		intake.periodic();
 	}

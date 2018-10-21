@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
@@ -8,7 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-public class gyroTurn extends PIDCommand {
+public class GyroTurn extends PIDCommand {
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
     double kTargetAngleDegrees;
@@ -18,27 +19,24 @@ public class gyroTurn extends PIDCommand {
      SmartDashboard in Test mode has support for helping you tune    
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
-    
-    static final double kP = 0.03;
-    static final double kI = 0.00;
-    static final double kD = 0.00;
-    static final double kF = 0.00;
 
 	/**
 	 * Turns left or right
 	 * @param degrees Degrees to turn (Positive = right, negative = left)
 	 */
 	
-	public gyroTurn(double degrees) {
-		super("TurnController", kP, kI, kD);
+	public GyroTurn(double degrees) {
+		super("TurnController", Robot.getConst("GyroTurn/kP", 0.03), Robot.getConst("GyroTurn/kI", 0),
+				Robot.getConst("GyroTurn/kD", 0));
 		kTargetAngleDegrees = degrees;
 		requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
-	    this.setInputRange(-180.0f, 180.0f);
+		this.setInputRange(-Robot.getConst("GyroTurn/inputRange", 180.0f),
+				Robot.getConst("GyroTurn/inputRange", 180.0f));
 	    this.getPIDController().setOutputRange(-1.0, 1.0);
-	    this.getPIDController().setAbsoluteTolerance(3);
+		this.getPIDController().setAbsoluteTolerance(Robot.getConst("GyroTurn/absoluteTolerance", 3));
 	    
 	    this.getPIDController().setContinuous(true);
 	    this.setName("DriveSystem", "RotateController");

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -15,12 +13,12 @@ public class stickShapingToggle extends Command {
 	}
 	
 	public void initialize() {
-		RobotMap.driveTrain.oldStickShapingMethod = false;
+		TeleopDriveTrainController.oldStickShapingMethod = false;
 		System.out.println("StickShaping Method: NEW");
 	}
 	
 	public void end() {
-		RobotMap.driveTrain.oldStickShapingMethod = true;
+		TeleopDriveTrainController.oldStickShapingMethod = true;
 		System.out.println("StickShaping Method: OLD");
 	}
 	

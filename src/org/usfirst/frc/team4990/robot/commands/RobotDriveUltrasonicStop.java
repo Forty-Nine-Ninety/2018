@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
@@ -9,9 +10,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RobotDriveUltrasonicStop extends Command {
 	DriveTrain dt = RobotMap.driveTrain;
 
-	double targetDistance = 12; // inches?
-	double speed = 0.3;
-	double timeout = 4; // seconds
+	double targetDistance = Robot.getConst("RobotDriveStraight/defaultTargetDistance", 12); // inches?
+	double speed = Robot.getConst("RobotDriveStraight/defaultSpeed", 0.3);
+	double timeout = Robot.getConst("RobotDriveStraight/defaultTimeout", 4); // seconds
 	
 	public RobotDriveUltrasonicStop(double distance, double speed, double timeout) {
 		requires(RobotMap.driveTrain);
