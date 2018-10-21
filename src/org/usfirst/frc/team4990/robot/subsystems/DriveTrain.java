@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
 	public Command defaultCommand = new TeleopDriveTrainController();
+	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 	
 	/**
 	 * Includes 4 driving motors and 2 encoders. All passed as gearbox constructors!
@@ -85,12 +86,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		
+		pidSourceType = pidSource;
 	}
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		return PIDSourceType.kDisplacement;
+		return this.pidSourceType;
 	}
 	/**
 	 * Returns raw average left/right encoder value, in unknown units.
