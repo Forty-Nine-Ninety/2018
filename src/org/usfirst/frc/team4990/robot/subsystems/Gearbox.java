@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.Constants;
-
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
@@ -23,9 +21,10 @@ public class Gearbox {
 		this.compensate = 1.0;
 		this.fix_backwards = 1.0;
 		
-		this.encoder.setDistancePerPulse(Constants.feetPerWheelRevolution / Constants.pulsesPerRevolution);
-		this.encoder.setMinRate(Constants.gearboxEncoderMinRate);
-		this.encoder.setSamplesToAverage(Constants.gearboxEncoderSamplesToAvg);
+		this.encoder.setDistancePerPulse(
+				/* feetPerWheelRevolution */ (4.0 / 12.0 * Math.PI) / /* pulsesPerRevolution */ 250);
+		this.encoder.setMinRate(0);
+		this.encoder.setSamplesToAverage(/* gearboxEncoderSamplesToAvg */ 5);
 	}
 	
 	public void update() {
