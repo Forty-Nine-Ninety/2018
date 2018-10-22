@@ -1,0 +1,51 @@
+CAN Bus IDs:
+0: Default, no device
+1: Drive Train A
+2: Drive Train B
+3: Drive Train C
+4: Drive Train D
+5: 
+6: Elevator Motor A
+7: Intake Motor B
+8: Intake Motor A
+9: Scaler Motor
+...
+0: PDP
+
+DIO Ports
+0: leftEncoderChannelA
+1: leftEncoderChannelB
+2: rightEncoderChannelA
+3: rightEncoderChannelB
+4: Ultrasonic Ping (output)
+5: Ultrasonic Echo (output)
+6: Top elevator limit switch
+7: Bottom elevator limit switch
+8: Elevator encoder channel A
+9: Elevator encoder channel B
+
+AIO Ports
+0: Intake distance sensor (Sharp GP2Y0A41SK0F)
+1: None (taped off)
+2: None (taped off)
+3: None (taped off)
+4: None (taped off)
+5: None (taped off)
+6: None (taped off)
+7: None (taped off)
+8: None (taped off)
+9: None (taped off)
+
+PWM Ports
+0: Drive Train A
+1: Drive Train B
+2: Drive Train C
+3: Drive Train D
+4: Elevator Motor B
+5: Elevator Motor A
+6: Intake Motor B
+7: Intake Motor A
+8: Scaler Motor
+9: Unused?
+
+SPI Port: Gyro (https://www.andymark.com/product-p/am-3555.htm)
