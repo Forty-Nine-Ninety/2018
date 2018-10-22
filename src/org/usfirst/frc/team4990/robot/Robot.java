@@ -6,7 +6,6 @@ import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -54,6 +53,7 @@ public class Robot extends TimedRobot {
 	 */
 
 	public static SmartDashboardInterface sd = new SmartDashboardInterface() {
+		Preferences pref = Preferences.getInstance();
 
 		/**
 		 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 
 		@Override
 		public double getConst(String key, double def) {
-			Preferences pref = Preferences.getInstance();
+
 			if (!pref.containsKey("Const/" + key)) {
 				pref.putDouble("Const/" + key, def);
 				if (pref.getDouble("Const/ + key", def) != def) {
@@ -90,7 +90,6 @@ public class Robot extends TimedRobot {
 
 		@Override
 		public String getString(String key, String def) {
-			Preferences pref = Preferences.getInstance();
 			if (!pref.containsKey("String/" + key)) {
 				pref.putString("String/" + key, def);
 				if (pref.getString("String/ + key", def) != def) {
@@ -113,65 +112,52 @@ public class Robot extends TimedRobot {
 
 		@Override
 		public void putConst(String key, double def) {
-			Preferences pref = Preferences.getInstance();
 			pref.putDouble("Const/" + key, def);
 			if (pref.getDouble("Const/ + key", def) != def) {
 				System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
 			}
 		}
 
+		@Override
+		public void putString(String string, String def) {
+			pref.putString("String/" + string, def);
+			if (pref.getString("String/ + key", def) != def) {
+				System.err.println("pref Key" + "String/" + def + "already taken by a different type");
+			}
+
+		}
+
 		/**
-		 * Adds a Sendable to SmartDashbaord/Shuffleboard.
+		 * Retrieves a boolean from SmartDashbaord/Shuffleboard.
 		 * 
 		 * @param key
 		 *            string key to identify value
 		 * @param def
-		 *            data to be stored
+		 *            boolean to return if no value is retrieved
 		 * @author Deep Blue Robotics (Team 199)
 		 */
 
-		@Override
-		public void putData(String key, Sendable def) {
-			SmartDashboard.putData(key, def);
+		@SuppressWarnings("unused")
+		public boolean getBool(String key, boolean def) {
+			Preferences pref = Preferences.getInstance();
+			if (!pref.containsKey("Bool/" + key)) {
+				pref.putBoolean("Bool/" + key, def);
+				if (pref.getBoolean("Bool/" + key, def) == def) {
+					System.err.println("pref Key" + "Bool/" + key + "already taken by a different type");
+					return def;
+				}
+			}
+			return pref.getBoolean("Bool/" + key, def);
 		}
 
-		/**
-		 * Adds a number to SmartDashbaord/Shuffleboard.
-		 * 
-		 * @param string
-		 *            string key to identify value
-		 * @param d
-		 *            number to be stored
-		 * @author Deep Blue Robotics (Team 199)
-		 */
-
 		@Override
-		public void putNumber(String string, double d) {
-			SmartDashboard.putNumber(string, d);
+		public void putBool(String string, Boolean def) {
+			pref.putBoolean("Boolean/" + string, def);
+			if (pref.getBoolean("Boolean/ + key", def) != def) {
+				System.err.println("pref Key" + "Boolean/" + def + "already taken by a different type");
+			}
+
 		}
-
-		/**
-		 * Adds a Boolean to SmartDashbaord/Shuffleboard.
-		 * 
-		 * @param b
-		 *            string key to identify value
-		 * @param string
-		 *            string to be stored
-		 * @author Deep Blue Robotics (Team 199)
-		 */
-
-		@Override
-		public void putBoolean(String string, boolean b) {
-			SmartDashboard.putBoolean(string, b);
-		}
-
-		/*
-		 * if (!SmartDashboard.containsKey("Const/" + key)) { if
-		 * (!SmartDashboard.putNumber("Const/" + key, def)) {
-		 * System.err.println("SmartDashboard Key" + "Const/" + key +
-		 * "already taken by a different type"); return def; } } return
-		 * SmartDashboard.getNumber("Const/" + key, def);
-		 */
 	};
 
 	/**

@@ -4,16 +4,13 @@ import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.commands.TeleopElevatorController;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
 	
-	public TalonSRX elevatorMotor;
+	public TalonMotorController elevatorMotor;
 	
 	public LimitSwitch topSwitch, bottomSwitch;
 	
@@ -89,11 +86,11 @@ public class Elevator extends Subsystem {
 		
 		//check limit switches, stop motors if going toward danger
 		if ((this.topSwitch.getValue() && this.setSpeed > stopFallingSpeed) || (this.bottomSwitch.getValue() && this.setSpeed < stopFallingSpeed)) {
-			this.elevatorMotor.set(ControlMode.PercentOutput, 0);
+			this.elevatorMotor.set(0);
 			resetEncoderDistance();
 			//System.out.println("Elevator Safety Triggered in update");
 		} else {
-			this.elevatorMotor.set(ControlMode.PercentOutput, setSpeed);
+			this.elevatorMotor.set(setSpeed);
 		}
 		
 		SmartDashboard.putString("Elevator/Status", status);
