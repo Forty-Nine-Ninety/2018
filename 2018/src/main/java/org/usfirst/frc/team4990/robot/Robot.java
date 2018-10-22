@@ -43,8 +43,9 @@ public class Robot extends TimedRobot {
 
 	public Command autonomusCommand;
 
-	public static OI oi;
 	public static RobotMap robotMap;
+	public static OI oi;
+	
 
 	/**
 	 * COMPLETE credit goes to Deep Blue Robotics. Link:

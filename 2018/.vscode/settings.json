@@ -11,5 +11,6 @@
     ".project": true
   },
   "wpilib.online": true,
-  "wpilib.autoStartRioLog": true
+  "wpilib.autoStartRioLog": true,
+  "wpilib.autoSaveOnDeploy": true
 }

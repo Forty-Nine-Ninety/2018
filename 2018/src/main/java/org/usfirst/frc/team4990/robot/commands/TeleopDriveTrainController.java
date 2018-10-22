@@ -23,7 +23,9 @@ public class TeleopDriveTrainController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public TeleopDriveTrainController() {
-		requires(RobotMap.driveTrain);
+		if (RobotMap.driveTrain != null) {
+			requires(RobotMap.driveTrain);
+		}
 	}
 	
 	/**
