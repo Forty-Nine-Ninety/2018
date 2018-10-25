@@ -1,10 +1,10 @@
 {
-  "dividerPosition": 0.18078381795195955,
+  "dividerPosition": 0.18331226295828065,
   "tabPane": [
     {
       "title": "Main",
       "autoPopulate": true,
-      "autoPopulatePrefix": "",
+      "autoPopulatePrefix": "/SmartDashboard/",
       "widgetPane": {
         "gridSize": 128.0,
         "showGrid": true,
@@ -25,7 +25,7 @@
           "0,1": {
             "size": [
               3,
-              2
+              3
             ],
             "content": {
               "_type": "PDP",
@@ -84,7 +84,7 @@
           },
           "3,2": {
             "size": [
-              4,
+              6,
               1
             ],
             "content": {
@@ -107,7 +107,7 @@
               "tickMarkRingVisible": true
             }
           },
-          "3,3": {
+          "7,3": {
             "size": [
               2,
               1
@@ -118,7 +118,7 @@
               "_title": "SmartDashboard/Debug/DriveTrainSubsystem"
             }
           },
-          "3,4": {
+          "5,3": {
             "size": [
               2,
               1
@@ -129,22 +129,22 @@
               "_title": "SmartDashboard/Debug/ElevatorSubsystem"
             }
           },
-          "5,3": {
+          "3,3": {
             "size": [
               2,
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Debug/Ultrasonic",
-              "_title": "SmartDashboard/Debug/Ultrasonic"
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Debug/IntakeSubsystem",
+              "_title": "/SmartDashboard/Debug/IntakeSubsystem"
             }
           }
         }
       }
     },
     {
-      "title": "Big Graph",
+      "title": "Tab 2",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -155,52 +155,14 @@
         "tiles": {
           "0,0": {
             "size": [
-              7,
-              5
+              9,
+              4
             ],
             "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Debug/Throttle Input",
-              "_source1": "network_table:///LiveWindow/DriveTrain/LeftMotors/Value",
-              "_title": "Graph (2 sources)",
-              "Visible time": 30.0,
-              "LiveWindow/DriveTrain/LeftMotors/Value visible": true,
-              "SmartDashboard/Debug/Throttle Input visible": true
-            }
-          }
-        }
-      }
-    },
-    {
-      "title": "Tab 3",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {
-          "0,0": {
-            "size": [
-              2,
-              3
-            ],
-            "content": {
-              "_type": "PID Command",
-              "_source0": "network_table:///SmartDashboard/StraightController",
-              "_title": "SmartDashboard/StraightController"
-            }
-          },
-          "2,0": {
-            "size": [
-              2,
-              3
-            ],
-            "content": {
-              "_type": "PID Controller",
-              "_source0": "network_table:///SmartDashboard/DistanceController",
-              "_title": "SmartDashboard/DistanceController"
+              "_type": "Robot Preferences",
+              "_source0": "network_table:///Preferences",
+              "_title": "/Preferences",
+              "searchBoxVisible": true
             }
           }
         }
