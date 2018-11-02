@@ -1,17 +1,17 @@
 {
-  "dividerPosition": 0.18331226295828065,
+  "dividerPosition": 0.1820480404551201,
   "tabPane": [
     {
       "title": "Main",
       "autoPopulate": true,
       "autoPopulatePrefix": "/SmartDashboard/",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 120.0,
         "showGrid": true,
         "hgap": 8.0,
         "vgap": 8.0,
         "tiles": {
-          "0,0": {
+          "4,3": {
             "size": [
               3,
               1
@@ -22,7 +22,7 @@
               "_title": "/FMSInfo"
             }
           },
-          "0,1": {
+          "7,2": {
             "size": [
               3,
               3
@@ -34,7 +34,7 @@
               "showIndicatorText": true
             }
           },
-          "7,0": {
+          "8,1": {
             "size": [
               2,
               1
@@ -45,7 +45,7 @@
               "_title": "/SmartDashboard/DriveTeam/Auto Chooser"
             }
           },
-          "5,1": {
+          "4,1": {
             "size": [
               2,
               1
@@ -58,7 +58,7 @@
               "colorWhenFalse": "#8B0000FF"
             }
           },
-          "5,0": {
+          "4,0": {
             "size": [
               2,
               1
@@ -71,7 +71,7 @@
               "colorWhenFalse": "#8B0000FF"
             }
           },
-          "7,1": {
+          "8,0": {
             "size": [
               2,
               1
@@ -82,9 +82,9 @@
               "_title": "/SmartDashboard/Drive/Selected Starting Position"
             }
           },
-          "3,2": {
+          "4,2": {
             "size": [
-              6,
+              3,
               1
             ],
             "content": {
@@ -93,7 +93,7 @@
               "_title": "SmartDashboard/Elevator/Status"
             }
           },
-          "3,0": {
+          "6,0": {
             "size": [
               2,
               2
@@ -107,44 +107,29 @@
               "tickMarkRingVisible": true
             }
           },
-          "7,3": {
+          "0,0": {
             "size": [
-              2,
-              1
+              4,
+              4
             ],
             "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///SmartDashboard/Debug/DriveTrainSubsystem",
-              "_title": "SmartDashboard/Debug/DriveTrainSubsystem"
-            }
-          },
-          "5,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///SmartDashboard/Debug/ElevatorSubsystem",
-              "_title": "SmartDashboard/Debug/ElevatorSubsystem"
-            }
-          },
-          "3,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///SmartDashboard/Debug/IntakeSubsystem",
-              "_title": "/SmartDashboard/Debug/IntakeSubsystem"
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "showControls": true,
+              "showCrosshair": true,
+              "crosshairColor": "#FFFFFFFF",
+              "compression": 84.0,
+              "fps": 20,
+              "imageWidth": 400,
+              "imageHeight": 300
             }
           }
         }
       }
     },
     {
-      "title": "Tab 2",
+      "title": "Preferences",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -155,8 +140,8 @@
         "tiles": {
           "0,0": {
             "size": [
-              9,
-              4
+              8,
+              5
             ],
             "content": {
               "_type": "Robot Preferences",
