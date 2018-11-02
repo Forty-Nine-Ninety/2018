@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
 	 * Benjamin has received permission to use this code. Thank you team 199!
 	 */
 
-	public static SmartDashboardInterface sd = new SmartDashboardInterface();
+	public static SmartDashboardController smartDashboardController = new SmartDashboardController();
 
 	/**
 	 * @author Team 4990
@@ -68,9 +68,9 @@ public class Robot extends TimedRobot {
 
 		// CameraServer.getInstance().startAutomaticCapture();
 
-		updateAutoDashboard();
+		smartDashboardController.updateAutoDashboard();
 
-		smartDashboardInit();
+		smartDashboardController.smartDashboardInit();
 
 		resetSensors();
 
@@ -92,8 +92,8 @@ public class Robot extends TimedRobot {
 																								// second
 			startPos = autoChooser.getSelected();
 			ejectBoxSelection = ejectBoxChooser.getSelected();
-			smartDashboardPeriodic();
-			updateAutoDashboard();
+			smartDashboardController.smartDashboardPeriodic();
+			smartDashboardController.updateAutoDashboard();
 		}
 
 	}
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
 
 	public void autonomousPeriodic() { // This function is called periodically during autonomous
 		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
-		smartDashboardPeriodic();
+		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public void teleopInit() { // This function is called at the start of teleop
@@ -123,11 +123,11 @@ public class Robot extends TimedRobot {
 
 	public void teleopPeriodic() { // This function is called periodically during teleop
 		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
-		smartDashboardPeriodic();
+		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public void testInit() {
-		smartDashboardPeriodic();
+		smartDashboardController.smartDashboardPeriodic();
 		startPos = autoChooser.getSelected();
 		if (autonomusCommand != null) {
 			autonomusCommand = new AutonomusCommand();
@@ -140,112 +140,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run(); // runs execute() of current commands and period() of subsystems.
 		// teleopPeriodic();
 		// System.out.println(ahrs.getAngle());
-		smartDashboardPeriodic();
-	}
-
-	/**
-	 * Adds SendableChooser to SmartDashboard for Auto route choosing.
-	 */
-
-	public void updateAutoDashboard() {
-		// Auto chooser
-		autoChooser = new SendableChooser<StartingPosition>();
-		// autoChooser.addObject("Left", StartingPosition.LEFT);
-		// autoChooser.addObject("Middle", StartingPosition.MID);
-		// autoChooser.addObject("Right", StartingPosition.RIGHT);
-		autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-		autoChooser.addObject("Stay", StartingPosition.STAY);
-		autoChooser.addObject("Forward and outake, robot on LEFT", StartingPosition.FORWARD_AND_UP_LEFT);
-		autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
-
-		autoChooser.setName("AutonomusControl", "Auto Chooser");
-		startPos = autoChooser.getSelected();
-		SmartDashboard.putData("DriveTeam/Auto Chooser", autoChooser);
-		SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
-
-		ejectBoxChooser = new SendableChooser<Boolean>();
-		ejectBoxChooser.addObject("TRUE", true);
-		ejectBoxChooser.addDefault("FALSE", false);
-		ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
-		SmartDashboard.putData("DriveTeam/Eject Box Chooser", ejectBoxChooser);
-		SmartDashboard.putString("Drive/Selected Eject Box", ejectBoxSelection.toString());
-
-		SmartDashboard.updateValues(); // always run at END of updateAutoDashboard
-
-	}
-
-	public void simpleDashboardPeriodic() {
-		SmartDashboard.putBoolean("DriveTeam/Box", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-		SmartDashboard.putBoolean("DriveTeam/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-		SmartDashboard.putBoolean("DriveTeam/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-		SmartDashboard.putNumber("DriveTeam/AHRS Gyro", RobotMap.ahrs.getAngle());
-		SmartDashboard.putString("DriveTeam/Elevator Status", RobotMap.elevator.status);
-
-		SmartDashboard.updateValues(); // always run at END of simpleDashboardPeriodic
-	}
-
-	public void smartDashboardInit() {
-		// Elevator
-		RobotMap.elevatorTalon.setName("Elevator", "Motor");
-
-		// Intake
-		RobotMap.intakeTalonA.setName("Intake", "LeftMotor");
-		RobotMap.intakeTalonB.setName("Intake", "RightMotor");
-		RobotMap.intakeDistanceAnalogInput.setName("Intake", "Infrared");
-
-		// DriveTrain
-		RobotMap.driveTrain.left.motorGroup.setName("DriveTrain", "LeftMotors");
-		RobotMap.driveTrain.right.motorGroup.setName("DriveTrain", "RightMotors");
-		RobotMap.driveTrain.left.encoder.setName("DriveTrain", "LeftEncoder");
-		RobotMap.driveTrain.right.encoder.setName("DriveTrain", "RightEncoder");
-		// RobotMap.differentialDrive.setName("DriveTrain", "DifferentialDrive");
-
-		// General
-		RobotMap.pdp.setName("General", "PDP");
-		RobotMap.gyro.setName("General", "SPI Gyro");
-		RobotMap.ahrs.setName("General", "AHRS Gyro");
-		RobotMap.ultrasonic.setName("General", "Ultrasonic");
-	}
-
-	public void smartDashboardPeriodic() {
-
-		SmartDashboard.putData("Debug/PDP", RobotMap.pdp);
-		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
-		SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
-		SmartDashboard.putNumber("Debug/AutoDriveTime", RobotDriveStraight.targetTime);
-
-		// SmartDashboard.putData("Debug/DifferentialDrive",
-		// RobotMap.differentialDrive);
-
-		SmartDashboard.putNumber("Debug/Left Encoder Distance", RobotMap.driveTrain.left.getDistanceTraveled());
-		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
-		SmartDashboard.putData("Debug/Left Drive Encoder", RobotMap.driveTrain.left.encoder);
-		SmartDashboard.putData("Debug/Right Drive Encoder", RobotMap.driveTrain.right.encoder);
-
-		SmartDashboard.putBoolean("Debug/Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
-		SmartDashboard.putBoolean("Debug/Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
-		SmartDashboard.putBoolean("Debug/Box In and Out At The Same Time",
-				RobotMap.intake.isBoxPosition(Intake.BoxPosition.MOVING));
-		SmartDashboard.putNumber("Debug/Analog Infrared Voltage", RobotMap.intake.getAnalogInput());
-
-		SmartDashboard.putData("Debug/IntakeAMotorLEFT", RobotMap.intakeTalonA);
-		SmartDashboard.putData("Debug/IntakeBMotorRIGHT", RobotMap.intakeTalonB);
-
-		SmartDashboard.putBoolean("Debug/Elevator Top Limit Switch", RobotMap.elevator.isTopSwitched());
-		SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
-		SmartDashboard.putNumber("Debug/Elevator Motor", RobotMap.elevator.setSpeed);
-
-		SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
-		SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
-		SmartDashboard.putNumber("Debug/Ultrasonic", RobotMap.ultrasonic.getRangeInches());
-
-		SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
-		SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
-		SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
-		if (autonomusCommand != null) {
-			SmartDashboard.putData("Debug/AutonomusCommand", this.autonomusCommand);
-		}
-		SmartDashboard.updateValues();
+		smartDashboardController.smartDashboardPeriodic();
 	}
 
 	public void resetSensors() {
