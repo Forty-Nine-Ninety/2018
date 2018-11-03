@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.commands.TeleopDriveTrainController;
 import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import edu.wpi.first.wpilibj.PIDSource;

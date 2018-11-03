@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
-import org.usfirst.frc.team4990.robot.Robot;
-
+import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**

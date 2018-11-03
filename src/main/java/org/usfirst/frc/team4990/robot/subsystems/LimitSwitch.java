@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import org.usfirst.frc.team4990.robot.SmartDashboardController;
 public class LimitSwitch {
 	private DigitalInput dInput;
 	

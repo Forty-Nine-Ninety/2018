@@ -1,9 +1,12 @@
 package org.usfirst.frc.team4990.robot;
 
+import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
+import org.usfirst.frc.team4990.robot.commands.RobotDriveStraight;
+import org.usfirst.frc.team4990.robot.subsystems.Intake;
+
 import edu.wpi.first.wpilibj.Preferences;
-import org.usfirst.frc.team4990.robot.*;
-import org.usfirst.frc.team4990.robot.commands.*;
-import org.usfirst.frc.team4990.robot.subsystems.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardController {
 
@@ -68,16 +71,16 @@ public class SmartDashboardController {
 		Robot.autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
 
 		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
-		startPos = Robot.autoChooser.getSelected();
+		Robot.startPos = Robot.autoChooser.getSelected();
 		SmartDashboard.putData("DriveTeam/Auto Chooser", Robot.autoChooser);
-		SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
+		SmartDashboard.putString("Drive/Selected Starting Position", Robot.startPos.toString());
 
-		ejectBoxChooser = new SendableChooser<Boolean>();
-		ejectBoxChooser.addObject("TRUE", true);
-		ejectBoxChooser.addDefault("FALSE", false);
-		ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
-		SmartDashboard.putData("DriveTeam/Eject Box Chooser", ejectBoxChooser);
-		SmartDashboard.putString("Drive/Selected Eject Box", ejectBoxSelection.toString());
+		Robot.ejectBoxChooser = new SendableChooser<Boolean>();
+		Robot.ejectBoxChooser.addObject("TRUE", true);
+		Robot.ejectBoxChooser.addDefault("FALSE", false);
+		Robot.ejectBoxChooser.setName("AutonomusControl", "Eject Box Chooser");
+		SmartDashboard.putData("DriveTeam/Eject Box Chooser", Robot.ejectBoxChooser);
+		SmartDashboard.putString("Drive/Selected Eject Box", Robot.ejectBoxSelection.toString());
 
 		SmartDashboard.updateValues(); // always run at END of updateAutoDashboard
 
@@ -141,8 +144,8 @@ public class SmartDashboardController {
 		SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
 		SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
 		SmartDashboard.putData("Debug/IntakeSubsystem", RobotMap.intake);
-		if (autonomusCommand != null) {
-			SmartDashboard.putData("Debug/AutonomusCommand", this.autonomusCommand);
+		if (Robot.autonomusCommand != null) {
+			SmartDashboard.putData("Debug/AutonomusCommand", Robot.autonomusCommand);
 		}
 		SmartDashboard.updateValues();
 	}

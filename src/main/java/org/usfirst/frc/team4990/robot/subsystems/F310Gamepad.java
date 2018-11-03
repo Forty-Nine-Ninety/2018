@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team4990.robot.SmartDashboardController;
 public class F310Gamepad extends Joystick {
 	
 	/**
