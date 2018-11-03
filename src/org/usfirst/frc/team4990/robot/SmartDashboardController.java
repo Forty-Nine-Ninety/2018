@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4990.robot;
 
 import edu.wpi.first.wpilibj.Preferences;
+import org.usfirst.frc.team4990.robot.*;
+import org.usfirst.frc.team4990.robot.commands.*;
+import org.usfirst.frc.team4990.robot.subsystems.*;
 
 public class SmartDashboardController {
 
