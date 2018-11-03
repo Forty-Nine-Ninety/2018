@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class SmartDashboardController {
 
-	private Preferences preferences = Preferences.getInstance();
+	private static Preferences preferences = Preferences.getInstance();
 
 	/**
 	 * Retrieves a numerical constant from SmartDashbaord/Shuffleboard.
@@ -16,7 +16,7 @@ public class SmartDashboardController {
 	 * @author Deep Blue Robotics (Team 199)
 	 */
 
-	public double getConst(String key, double def) {
+	public static double getConst(String key, double def) {
 
 		if (!preferences.containsKey("Const/" + key)) {
 			preferences.putDouble("Const/" + key, def);
@@ -26,28 +26,6 @@ public class SmartDashboardController {
 			}
 		}
 		return preferences.getDouble("Const/" + key, def);
-	}
-
-	/**
-	 * Retrieves a string from SmartDashbaord/Shuffleboard.
-	 * 
-	 * @param key
-	 *            string key to identify value
-	 * @param def
-	 *            string to return if no value is retrieved
-	 * @author Deep Blue Robotics (Team 199)
-	 */
-
-	
-	public String getString(String key, String def) {
-		if (!preferences.containsKey("String/" + key)) {
-			preferences.putString("String/" + key, def);
-			if (preferences.getString("String/ + key", def) != def) {
-				System.err.println("pref Key" + "String/" + key + "already taken by a different type");
-				return def;
-			}
-		}
-		return preferences.getString("String/" + key, def);
 	}
 
 	/**
@@ -61,49 +39,10 @@ public class SmartDashboardController {
 	 */
 
 	
-	public void putConst(String key, double def) {
+	public static void putConst(String key, double def) {
 		preferences.putDouble("Const/" + key, def);
 		if (preferences.getDouble("Const/ + key", def) != def) {
 			System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
-		}
-	}
-
-	
-	public void putString(String string, String def) {
-		preferences.putString("String/" + string, def);
-		if (preferences.getString("String/ + key", def) != def) {
-			System.err.println("pref Key" + "String/" + def + "already taken by a different type");
-		}
-
-	}
-
-	/**
-	 * Retrieves a boolean from SmartDashbaord/Shuffleboard.
-	 * 
-	 * @param key
-	 *            string key to identify value
-	 * @param def
-	 *            boolean to return if no value is retrieved
-	 * @author Deep Blue Robotics (Team 199)
-	 */
-
-	@SuppressWarnings("unused")
-	public boolean getBool(String key, boolean def) {
-		if (!preferences.containsKey("Bool/" + key)) {
-			preferences.putBoolean("Bool/" + key, def);
-			if (preferences.getBoolean("Bool/" + key, def) == def) {
-				System.err.println("pref Key" + "Bool/" + key + "already taken by a different type");
-				return def;
-			}
-		}
-		return preferences.getBoolean("Bool/" + key, def);
-	}
-
-	
-	public void putBool(String string, Boolean def) {
-		preferences.putBoolean("Boolean/" + string, def);
-		if (preferences.getBoolean("Boolean/ + key", def) != def) {
-			System.err.println("pref Key" + "Boolean/" + def + "already taken by a different type");
 		}
 
 	}
@@ -114,20 +53,20 @@ public class SmartDashboardController {
 	 * Adds SendableChooser to SmartDashboard for Auto route choosing.
 	 */
 
-	public void updateAutoDashboard() {
+	public static void updateAutoDashboard() {
 		// Auto chooser
-		autoChooser = new SendableChooser<StartingPosition>();
-		// autoChooser.addObject("Left", StartingPosition.LEFT);
-		// autoChooser.addObject("Middle", StartingPosition.MID);
-		// autoChooser.addObject("Right", StartingPosition.RIGHT);
-		autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
-		autoChooser.addObject("Stay", StartingPosition.STAY);
-		autoChooser.addObject("Forward and outake, robot on LEFT", StartingPosition.FORWARD_AND_UP_LEFT);
-		autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
+		Robot.autoChooser = new SendableChooser<StartingPosition>();
+		// Robot.autoChooser.addObject("Left", StartingPosition.LEFT);
+		// Robot.autoChooser.addObject("Middle", StartingPosition.MID);
+		// Robot.autoChooser.addObject("Right", StartingPosition.RIGHT);
+		Robot.autoChooser.addDefault("Forward (cross line)", StartingPosition.FORWARD);
+		Robot.autoChooser.addObject("Stay", StartingPosition.STAY);
+		Robot.autoChooser.addObject("Forward and outake, robot on LEFT", StartingPosition.FORWARD_AND_UP_LEFT);
+		Robot.autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
 
-		autoChooser.setName("AutonomusControl", "Auto Chooser");
-		startPos = autoChooser.getSelected();
-		SmartDashboard.putData("DriveTeam/Auto Chooser", autoChooser);
+		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
+		startPos = Robot.autoChooser.getSelected();
+		SmartDashboard.putData("DriveTeam/Auto Chooser", Robot.autoChooser);
 		SmartDashboard.putString("Drive/Selected Starting Position", startPos.toString());
 
 		ejectBoxChooser = new SendableChooser<Boolean>();
@@ -141,7 +80,7 @@ public class SmartDashboardController {
 
 	}
 
-	public void smartDashboardInit() {
+	public static void smartDashboardInit() {
 		// Elevator
 		RobotMap.elevatorTalon.setName("Elevator", "Motor");
 

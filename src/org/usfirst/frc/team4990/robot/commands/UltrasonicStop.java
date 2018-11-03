@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class UltrasonicStop extends Command {
 	
-	static double stopDistance = Robot.getConst("UltrasonicStop/DefaultStopDistance", 20); // inches?
+	static double stopDistance = SmartDashboardController.getConst("UltrasonicStop/DefaultStopDistance", 20); // inches?
 	Command command;
 
 	/**

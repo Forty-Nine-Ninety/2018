@@ -30,10 +30,10 @@ public class TeleopScalerController extends Command{
 	 */
 	public void initalize() {		
 		if (dir == direction.IN) {
-			RobotMap.scaler.setSpeed(-Robot.getConst("TeleopScalerController/speed", 0.7));
+			RobotMap.scaler.setSpeed(-SmartDashboardController.getConst("TeleopScalerController/speed", 0.7));
 			return;
 		} if (dir == direction.OUT) {
-			RobotMap.scaler.setSpeed(Robot.getConst("TeleopScalerController/speed", 0.7));
+			RobotMap.scaler.setSpeed(SmartDashboardController.getConst("TeleopScalerController/speed", 0.7));
 			return;
 		} else {
 			RobotMap.scaler.setSpeed(0);

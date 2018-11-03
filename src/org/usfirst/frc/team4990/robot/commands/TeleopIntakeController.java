@@ -16,7 +16,7 @@ public class TeleopIntakeController extends Command{
 	
 	private direction dir;
 
-	private double maxSpeed = Robot.getConst("TeleopIntakeController/maxSpeed", 0.65);
+	private double maxSpeed = SmartDashboardController.getConst("TeleopIntakeController/maxSpeed", 0.65);
 	/**
 	 * Constructor for class
 	 * @author Class of '21 (created in 2018 season)
@@ -63,9 +63,9 @@ public class TeleopIntakeController extends Command{
 	
 	protected boolean isFinished() {
 		if (dir == direction.IN) {
-			return RobotMap.opGamepad.getLeftTrigger() < Robot.getConst("TeleopIntakeController/triggerDeadband", 0.05);
+			return RobotMap.opGamepad.getLeftTrigger() < SmartDashboardController.getConst("TeleopIntakeController/triggerDeadband", 0.05);
 		} else {
-			return RobotMap.opGamepad.getRightTrigger() < Robot.getConst("TeleopIntakeController/triggerDeadband", 0.05);
+			return RobotMap.opGamepad.getRightTrigger() < SmartDashboardController.getConst("TeleopIntakeController/triggerDeadband", 0.05);
 		}
 	}
 

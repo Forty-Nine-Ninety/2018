@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RobotDriveStraight extends Command {
 	DriveTrain dt = RobotMap.driveTrain;
 
-	public static double targetTime = Robot.getConst("RobotDriveStraight/defaultTargetTime", 2.8);
-	double speed = Robot.getConst("RobotDriveStraight/defaultSpeed", 0.3);
+	public static double targetTime = SmartDashboardController.getConst("RobotDriveStraight/defaultTargetTime", 2.8);
+	double speed = SmartDashboardController.getConst("RobotDriveStraight/defaultSpeed", 0.3);
 	
 	public RobotDriveStraight(double time) {
 		requires(RobotMap.driveTrain);

@@ -60,9 +60,9 @@ public class Intake extends Subsystem {
 	 */
 	
 	public BoxPosition getBoxPosition() {
-		if (getAnalogInput() >= Robot.getConst("Intake/BoxPosInThreshold", 0.2)) {
+		if (getAnalogInput() >= SmartDashboardController.getConst("Intake/BoxPosInThreshold", 0.2)) {
 			return Intake.BoxPosition.IN;
-		} else if (getAnalogInput() >= Robot.getConst("Intake/BoxPosInThreshold", 0.24)) {
+		} else if (getAnalogInput() >= SmartDashboardController.getConst("Intake/BoxPosInThreshold", 0.24)) {
 			return Intake.BoxPosition.MOVING;
 		} else {
 			return Intake.BoxPosition.OUT;

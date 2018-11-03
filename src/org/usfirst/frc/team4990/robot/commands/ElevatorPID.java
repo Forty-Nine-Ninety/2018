@@ -29,26 +29,26 @@ public class ElevatorPID extends PIDCommand {
 	 */
 
 	public ElevatorPID(double setpoint) {
-		super("ElevatorPID", Robot.getConst("ElevatorPID/kP", 0.2), Robot.getConst("ElevatorPID/kI", 0),
-				Robot.getConst("ElevatorPID/kD", 0), 0);
+		super("ElevatorPID", SmartDashboardController.getConst("ElevatorPID/kP", 0.2), SmartDashboardController.getConst("ElevatorPID/kI", 0),
+				SmartDashboardController.getConst("ElevatorPID/kD", 0), 0);
 		requires(RobotMap.elevator);
 		this.setSetpoint(setpoint);
 	}
 
 	public ElevatorPID() {
-		super("ElevatorPID", Robot.getConst("ElevatorPID/kP", 0.2), Robot.getConst("ElevatorPID/kI", 0),
-				Robot.getConst("ElevatorPID/kD", 0), 0);
+		super("ElevatorPID", SmartDashboardController.getConst("ElevatorPID/kP", 0.2), SmartDashboardController.getConst("ElevatorPID/kI", 0),
+				SmartDashboardController.getConst("ElevatorPID/kD", 0), 0);
 		requires(RobotMap.elevator);
-		this.setSetpoint(Robot.getConst("ElevatorPID/defaultSetpoint", 4));
+		this.setSetpoint(SmartDashboardController.getConst("ElevatorPID/defaultSetpoint", 4));
 	}
 
 	public void initalize() {
-		this.setInputRange(0, Robot.getConst("ElevatorPID/maxInput", 5)); // minimumInput, maximumInput (in feet?) (fix
+		this.setInputRange(0, SmartDashboardController.getConst("ElevatorPID/maxInput", 5)); // minimumInput, maximumInput (in feet?) (fix
 																			// maximum input)
 		this.getPIDController().setContinuous(false);
-		this.getPIDController().setOutputRange(-Robot.getConst("ElevatorPID/outputRange", 0.7),
-				Robot.getConst("ElevatorPID/outputRange", 0.7)); // minimumOutput, maximumOutput (motor constraints)
-		this.getPIDController().setPercentTolerance(Robot.getConst("ElevatorPID/percentTolerance", 5));
+		this.getPIDController().setOutputRange(-SmartDashboardController.getConst("ElevatorPID/outputRange", 0.7),
+				SmartDashboardController.getConst("ElevatorPID/outputRange", 0.7)); // minimumOutput, maximumOutput (motor constraints)
+		this.getPIDController().setPercentTolerance(SmartDashboardController.getConst("ElevatorPID/percentTolerance", 5));
 
 		this.setName("Elevator", "ElevatorPIDController");
 		LiveWindow.add(this);

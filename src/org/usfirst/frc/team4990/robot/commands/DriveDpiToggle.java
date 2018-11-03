@@ -15,13 +15,13 @@ public class DriveDpiToggle extends Command {
 	}
 	
 	public void initialize() {
-		TeleopDriveTrainController.currentThrottleMultiplier = Robot.getConst("DriveDpiToggle/lowThrottleMultiplier",
+		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/lowThrottleMultiplier",
 				0.25);
 		System.out.println("DriveTrain Multiplier: " + TeleopDriveTrainController.currentThrottleMultiplier);
 	}
 	
 	public void end() {
-		TeleopDriveTrainController.currentThrottleMultiplier = Robot.getConst("DriveDpiToggle/maxThrottleMultiplier",
+		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/maxThrottleMultiplier",
 				1.0);
 		System.out.println("DriveTrain Multiplier: " + TeleopDriveTrainController.currentThrottleMultiplier);
 	}

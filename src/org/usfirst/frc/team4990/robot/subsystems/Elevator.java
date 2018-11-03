@@ -14,9 +14,9 @@ public class Elevator extends Subsystem {
 	
 	public LimitSwitch topSwitch, bottomSwitch;
 	
-	public double maxSpeed = Robot.getConst("Elevator/maxSpeed", 1.0);
+	public double maxSpeed = SmartDashboardController.getConst("Elevator/maxSpeed", 1.0);
 	
-	public double stopFallingSpeed = Robot.getConst("Elevator/stopFallingSpeed", 0.05);
+	public double stopFallingSpeed = SmartDashboardController.getConst("Elevator/stopFallingSpeed", 0.05);
 	
 	public double setSpeed = 0;
 	

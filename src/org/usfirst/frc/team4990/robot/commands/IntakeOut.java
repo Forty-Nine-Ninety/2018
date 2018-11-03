@@ -40,7 +40,7 @@ public class IntakeOut extends Command {
 			intake.setSpeed(speed);
 
 		}*/
-		intake.setSpeed(Robot.getConst("IntakeOut/speed", -0.6));
+		intake.setSpeed(SmartDashboardController.getConst("IntakeOut/speed", -0.6));
 		System.out.println("IntakeOut. time: " + this.timeSinceInitialized());
 		intake.periodic();
 	}

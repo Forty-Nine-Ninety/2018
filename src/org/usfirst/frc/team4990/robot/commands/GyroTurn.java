@@ -26,17 +26,17 @@ public class GyroTurn extends PIDCommand {
 	 */
 	
 	public GyroTurn(double degrees) {
-		super("TurnController", Robot.getConst("GyroTurn/kP", 0.03), Robot.getConst("GyroTurn/kI", 0),
-				Robot.getConst("GyroTurn/kD", 0));
+		super("TurnController", SmartDashboardController.getConst("GyroTurn/kP", 0.03), SmartDashboardController.getConst("GyroTurn/kI", 0),
+				SmartDashboardController.getConst("GyroTurn/kD", 0));
 		kTargetAngleDegrees = degrees;
 		requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
-		this.setInputRange(-Robot.getConst("GyroTurn/inputRange", 180.0f),
-				Robot.getConst("GyroTurn/inputRange", 180.0f));
+		this.setInputRange(-SmartDashboardController.getConst("GyroTurn/inputRange", 180.0f),
+				SmartDashboardController.getConst("GyroTurn/inputRange", 180.0f));
 	    this.getPIDController().setOutputRange(-1.0, 1.0);
-		this.getPIDController().setAbsoluteTolerance(Robot.getConst("GyroTurn/absoluteTolerance", 3));
+		this.getPIDController().setAbsoluteTolerance(SmartDashboardController.getConst("GyroTurn/absoluteTolerance", 3));
 	    
 	    this.getPIDController().setContinuous(true);
 	    this.setName("DriveSystem", "RotateController");

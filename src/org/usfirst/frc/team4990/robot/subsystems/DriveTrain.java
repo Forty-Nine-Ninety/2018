@@ -29,14 +29,14 @@ public class DriveTrain extends Subsystem implements PIDSource {
 		// The right gearbox is backwards
 		this.right.fix_backwards = -1.0;
 		// the bot swerves to the left, so slow down right side
-		this.left.compensate = Robot.getConst("leftGearbox/compensate", 1.0);
-		this.right.compensate = Robot.getConst("rightGearbox/compensate", 0.99);
+		this.left.compensate = SmartDashboardController.getConst("leftGearbox/compensate", 1.0);
+		this.right.compensate = SmartDashboardController.getConst("rightGearbox/compensate", 0.99);
 
 		/**
 		 * ramp down time in seconds.
 		 */
 
-		double rampDownTime = Robot.getConst("DriveTrain/rampDownTime", 0.3);
+		double rampDownTime = SmartDashboardController.getConst("DriveTrain/rampDownTime", 0.3);
 
 		this.left.frontMotor.configOpenloopRamp(rampDownTime, 0);
 		this.left.rearMotor.configOpenloopRamp(rampDownTime, 0);

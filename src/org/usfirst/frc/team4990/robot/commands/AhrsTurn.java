@@ -2,6 +2,7 @@ package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.Robot;
 import org.usfirst.frc.team4990.robot.RobotMap;
+import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -37,13 +38,13 @@ public class AhrsTurn extends Command implements PIDSource, PIDOutput {
 	
 	public void initialize() {
 		
-		yawPIDController = new PIDController(Robot.getConst("AhrsTurn/kP", 0.03), Robot.getConst("AhrsTurn/kP", 0),
-				Robot.getConst("AhrsTurn/kP", 0), this, this);
+		yawPIDController = new PIDController(SmartDashboardController.getConst("AhrsTurn/kP", 0.03), SmartDashboardController.getConst("AhrsTurn/kP", 0),
+			SmartDashboardController.getConst("AhrsTurn/kP", 0), this, this);
 		yawPIDController.setInputRange(-180f, 180f);
 		//ahrs.setPIDSourceType(PIDSourceType.kRate);
 		yawPIDController.setSetpoint(heading);
-		yawPIDController.setOutputRange(-Robot.getConst("AhrsTurn/maxSpeed", 0.65),
-				Robot.getConst("AhrsTurn/maxSpeed", 0.65));
+		yawPIDController.setOutputRange(-SmartDashboardController.getConst("AhrsTurn/maxSpeed", 0.65),
+			SmartDashboardController.getConst("AhrsTurn/maxSpeed", 0.65));
         yawPIDController.setAbsoluteTolerance(3);
         yawPIDController.setContinuous(true);
         yawPIDController.enable();
@@ -54,11 +55,11 @@ public class AhrsTurn extends Command implements PIDSource, PIDOutput {
 		if (yawPIDController.onTarget()) { //go straight
 			dt.setSpeed(0);
 		} else if (yawPIDController.get() > 0) { //turn right?
-			dt.setSpeed(Robot.getConst("AhrsTurn/regSpeed", 0.35) + yawPIDController.get(),
-					Robot.getConst("AhrsTurn/regSpeed", 0.35) - yawPIDController.get());
+			dt.setSpeed(SmartDashboardController.getConst("AhrsTurn/regSpeed", 0.35) + yawPIDController.get(),
+			SmartDashboardController.getConst("AhrsTurn/regSpeed", 0.35) - yawPIDController.get());
 		} else if (yawPIDController.get() < 0) {//turn left?
-			dt.setSpeed(Robot.getConst("AhrsTurn/regSpeed", 0.35) - yawPIDController.get(),
-					Robot.getConst("AhrsTurn/regSpeed", 0.35) + yawPIDController.get());
+			dt.setSpeed(SmartDashboardController.getConst("AhrsTurn/regSpeed", 0.35) - yawPIDController.get(),
+			SmartDashboardController.getConst("AhrsTurn/regSpeed", 0.35) + yawPIDController.get());
 		}
 	}
 

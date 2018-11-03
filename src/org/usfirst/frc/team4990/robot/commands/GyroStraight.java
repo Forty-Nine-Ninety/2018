@@ -21,32 +21,32 @@ public class GyroStraight extends PIDCommand implements PIDOutput{
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
   
-	PIDController distanceController = new PIDController(Robot.getConst("GyroStraight/distance_kP", 1),
-			Robot.getConst("GyroStraight/distance_kI", 0), Robot.getConst("GyroStraight/distance_kD", 0), 0, dt, this);
-	double kTargetDistance = Robot.getConst("GyroStraight/defaultDistance", 6); // Feet? (check distance, should be
+	PIDController distanceController = new PIDController(SmartDashboardController.getConst("GyroStraight/distance_kP", 1),
+			SmartDashboardController.getConst("GyroStraight/distance_kI", 0), SmartDashboardController.getConst("GyroStraight/distance_kD", 0), 0, dt, this);
+	double kTargetDistance = SmartDashboardController.getConst("GyroStraight/defaultDistance", 6); // Feet? (check distance, should be
 																				// distance to switch)
 	double distanceControllerOutput, turnControllerOutput;
 	
 	public GyroStraight(double distance) {
-		super("StraightController", Robot.getConst("GyroStraight/turn_kP", 0.03),
-				Robot.getConst("GyroStraight/turn_kP", 0), Robot.getConst("GyroStraight/turn_kP", 0));
+		super("StraightController", SmartDashboardController.getConst("GyroStraight/turn_kP", 0.03),
+				SmartDashboardController.getConst("GyroStraight/turn_kP", 0), SmartDashboardController.getConst("GyroStraight/turn_kP", 0));
 		kTargetDistance = distance;
 		//requires(RobotMap.driveTrain);
 	}
 
 	public GyroStraight() {
-		super("StraightController", Robot.getConst("GyroStraight/turn_kP", 0.03),
-				Robot.getConst("GyroStraight/turn_kP", 0), Robot.getConst("GyroStraight/turn_kP", 0));
+		super("StraightController", SmartDashboardController.getConst("GyroStraight/turn_kP", 0.03),
+				SmartDashboardController.getConst("GyroStraight/turn_kP", 0), SmartDashboardController.getConst("GyroStraight/turn_kP", 0));
 		//requires(RobotMap.driveTrain);
 	}
 
 	public void initialize() {
 		System.out.println("Initalizing GyroStraight with distance " + kTargetDistance);
-		this.setInputRange(-Robot.getConst("GyroStraight/straight_inputRange", 180.0f),
-				Robot.getConst("GyroStraight/straight_inputRange", 180.0f));
-		this.getPIDController().setOutputRange(-Robot.getConst("GyroStraight/straight_outputRange", 0.3),
-				Robot.getConst("GyroStraight/straight_outputRange", 0.3));
-		this.getPIDController().setAbsoluteTolerance(Robot.getConst("GyroStraight/straight_absoluteTolerance", 3));
+		this.setInputRange(-SmartDashboardController.getConst("GyroStraight/straight_inputRange", 180.0f),
+				SmartDashboardController.getConst("GyroStraight/straight_inputRange", 180.0f));
+		this.getPIDController().setOutputRange(-SmartDashboardController.getConst("GyroStraight/straight_outputRange", 0.3),
+				SmartDashboardController.getConst("GyroStraight/straight_outputRange", 0.3));
+		this.getPIDController().setAbsoluteTolerance(SmartDashboardController.getConst("GyroStraight/straight_absoluteTolerance", 3));
 	    this.setSetpoint(0);
 	    this.getPIDController().setContinuous(true);
 	    
@@ -55,9 +55,9 @@ public class GyroStraight extends PIDCommand implements PIDOutput{
 
 		ahrs.zeroYaw();
 		
-		distanceController.setOutputRange(-Robot.getConst("GyroStraight/distance_outputRange", 0.7),
-				Robot.getConst("GyroStraight/distance_outputRange", 0.7));
-		distanceController.setAbsoluteTolerance(Robot.getConst("GyroStraight/distance_absoluteTolerance", 0.2)); // approximately
+		distanceController.setOutputRange(-SmartDashboardController.getConst("GyroStraight/distance_outputRange", 0.7),
+				SmartDashboardController.getConst("GyroStraight/distance_outputRange", 0.7));
+		distanceController.setAbsoluteTolerance(SmartDashboardController.getConst("GyroStraight/distance_absoluteTolerance", 0.2)); // approximately
 																													// 2.4
 																													// in
 		distanceController.setContinuous(false);
@@ -87,7 +87,7 @@ public class GyroStraight extends PIDCommand implements PIDOutput{
 	}
 	
 	public boolean isFinished() {
-		return this.timeSinceInitialized() > Robot.getConst("GyroStraight/timeout", 15);// this.getPIDController().onTarget();
+		return this.timeSinceInitialized() > SmartDashboardController.getConst("GyroStraight/timeout", 15);// this.getPIDController().onTarget();
 	}
 
 

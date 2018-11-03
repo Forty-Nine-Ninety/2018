@@ -30,7 +30,7 @@ public class IntakeIn extends Command {
 		if (boxPos.equals(BoxPosition.IN)) {
 			isFinished = true;
 		} else if (boxPos.equals(BoxPosition.MOVING) || boxPos.equals(BoxPosition.OUT)) {
-			intake.setSpeed(Robot.getConst("IntakeIn/speed", 0.6));
+			intake.setSpeed(SmartDashboardController.getConst("IntakeIn/speed", 0.6));
 		}
 		
 		intake.periodic();
