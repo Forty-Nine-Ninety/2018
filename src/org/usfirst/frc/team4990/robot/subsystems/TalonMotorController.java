@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import org.usfirst.frc.team4990.robot.SmartDashboardController;
 public class TalonMotorController extends WPI_TalonSRX {
 
 	/**

@@ -2,7 +2,7 @@ package org.usfirst.frc.team4990.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-
+import org.usfirst.frc.team4990.robot.SmartDashboardController;
 public class Gearbox {
 	public TalonMotorController frontMotor, rearMotor;
 	public SpeedControllerGroup motorGroup;

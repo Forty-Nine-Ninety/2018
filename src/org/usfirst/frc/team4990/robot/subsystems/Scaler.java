@@ -1,5 +1,5 @@
 package org.usfirst.frc.team4990.robot.subsystems;
-
+import org.usfirst.frc.team4990.robot.SmartDashboardController;
 public class Scaler {
 	private TalonMotorController scalerMotor;
 	private double setSpeed;

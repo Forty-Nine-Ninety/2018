@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4990.robot;
 
+import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import org.usfirst.frc.team4990.robot.commands.ControllerCheck;
 import org.usfirst.frc.team4990.robot.commands.DriveDpiToggle;
 import org.usfirst.frc.team4990.robot.commands.TeleopElevatorController;
