@@ -35,22 +35,16 @@ public class Robot extends TimedRobot {
 		STAY, FORWARD, FORWARD_AND_UP_LEFT, FORWARD_AND_UP_RIGHT
 	};
 
-	static public SendableChooser<StartingPosition> autoChooser;
-	static public StartingPosition startPos = StartingPosition.FORWARD;
+	public static SendableChooser<StartingPosition> autoChooser;
+	public static StartingPosition startPos = StartingPosition.FORWARD;
 
-	static public SendableChooser<Boolean> ejectBoxChooser;
-	static public Boolean ejectBoxSelection = false;
+	public static SendableChooser<Boolean> ejectBoxChooser;
+	public static Boolean ejectBoxSelection = false;
 
-	public Command autonomusCommand;
+	public static Command autonomusCommand;
 
 	public static OI oi;
 	public static RobotMap robotMap;
-
-	/**
-	 * COMPLETE credit goes to Deep Blue Robotics. Link:
-	 * https://github.com/DeepBlueRobotics/RobotCode2018/blob/master/Robot2018/src/main/java/org/usfirst/frc/team199/Robot2018/Robot.java
-	 * Benjamin has received permission to use this code. Thank you team 199!
-	 */
 
 	public static SmartDashboardController smartDashboardController = new SmartDashboardController();
 
@@ -68,9 +62,9 @@ public class Robot extends TimedRobot {
 
 		// CameraServer.getInstance().startAutomaticCapture();
 
-		smartDashboardController.updateAutoDashboard();
+		SmartDashboardController.updateAutoDashboard();
 
-		smartDashboardController.smartDashboardInit();
+		SmartDashboardController.smartDashboardInit();
 
 		resetSensors();
 
@@ -93,7 +87,7 @@ public class Robot extends TimedRobot {
 			startPos = autoChooser.getSelected();
 			ejectBoxSelection = ejectBoxChooser.getSelected();
 			smartDashboardController.smartDashboardPeriodic();
-			smartDashboardController.updateAutoDashboard();
+			SmartDashboardController.updateAutoDashboard();
 		}
 
 	}
