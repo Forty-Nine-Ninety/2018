@@ -2,6 +2,8 @@ package org.usfirst.frc.team4990.robot;
 
 import org.usfirst.frc.team4990.robot.commands.AutonomusCommand;
 import org.usfirst.frc.team4990.robot.SmartDashboardController;
+
+import edu.wpi.first.wpilibj.CameraServer;
 //This entire robot code is dedicated to Kyler Rosen, a friend, visionary, and a hero to the empire that is the Freshmen Union
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -56,7 +58,7 @@ public class Robot extends TimedRobot {
 		robotMap = new RobotMap();
 		oi = new OI();
 
-		// CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
 
 		SmartDashboardController.updateAutoDashboard();
 

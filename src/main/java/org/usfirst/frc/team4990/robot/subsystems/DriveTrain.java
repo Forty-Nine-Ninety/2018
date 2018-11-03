@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem implements PIDSource {
 	public Gearbox left, right;
-	public Command defaultCommand = new TeleopDriveTrainController();
+	public Command defaultCommand;
 	public PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
 	/**
@@ -87,7 +87,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 	@Override
 	protected void initDefaultCommand() {
 		// if (DriverStation.getInstance().isOperatorControl()) {
-		this.setDefaultCommand(defaultCommand);
+		this.setDefaultCommand(defaultCommand=new TeleopDriveTrainController());
 		// }
 	}
 

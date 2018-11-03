@@ -21,8 +21,7 @@ public class Elevator extends Subsystem {
 	
 	public String status = "Initializing"; 
 	
-	public Command defaultCommand = new TeleopElevatorController();
-
+	public Command defaultCommand;
 	/**
 	 * Initializes elevator.
 	 * @author Class of '21 (created in 2018 season)
@@ -132,6 +131,6 @@ public class Elevator extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(defaultCommand);
+		this.setDefaultCommand(defaultCommand=new TeleopElevatorController());
 	}
 }
