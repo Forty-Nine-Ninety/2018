@@ -69,6 +69,7 @@ public class SmartDashboardController {
 		Robot.autoChooser.addObject("Stay", StartingPosition.STAY);
 		Robot.autoChooser.addObject("Forward and outake, robot on LEFT", StartingPosition.FORWARD_AND_UP_LEFT);
 		Robot.autoChooser.addObject("Forward and outake, robot on RIGHT", StartingPosition.FORWARD_AND_UP_RIGHT);
+		Robot.autoChooser.addObject("Testing", StartingPosition.TEST);
 
 		Robot.autoChooser.setName("AutonomusControl", "Auto Chooser");
 		Robot.startPos = Robot.autoChooser.getSelected();

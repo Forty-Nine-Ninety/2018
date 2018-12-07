@@ -14,7 +14,7 @@ public class AutonomusCommand extends CommandGroup {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Auto Logic INIT, gameData = " + gameData + "startPos = "+ s.toString());
 		
-		if (s != StartingPosition.STAY) {
+		if ((s != StartingPosition.STAY) && (s != StartingPosition.TEST)) {
 			//if there is no game message (string) OR just cross auto line
 			//System.out.println("Only Crossing Auto Line: GyroStraight((140/12), true)");
 			addSequential(new RobotDriveStraight()); //forward 11 feet?
@@ -24,6 +24,8 @@ public class AutonomusCommand extends CommandGroup {
 			addSequential(new MoveElevatorTime(2, 0.5));
 			addParallel(new MoveElevatorTime(3.2, 0.1)); //Immediately starts next command
 			addSequential(new IntakeOut(3));
+		} else if (s == StartingPosition.TEST) {
+			addSequential(new GyroStraight(0.2, 1000));
 		}
 		/*else if (gameData.charAt(0) == 'L') {
 			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());

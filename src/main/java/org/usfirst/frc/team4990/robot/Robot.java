@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 		// MID,
 		// RIGHT,
 		// ERROR,
-		STAY, FORWARD, FORWARD_AND_UP_LEFT, FORWARD_AND_UP_RIGHT
+		STAY, FORWARD, FORWARD_AND_UP_LEFT, FORWARD_AND_UP_RIGHT, TEST
 	};
 
 	public static SendableChooser<StartingPosition> autoChooser;
