@@ -105,7 +105,7 @@ public class SmartDashboardController {
 
 		// General
 		RobotMap.pdp.setName("General", "PDP");
-		RobotMap.gyro.setName("General", "SPI Gyro");
+		//RobotMap.gyro.setName("General", "SPI Gyro");
 		RobotMap.ahrs.setName("General", "AHRS Gyro");
 		RobotMap.ultrasonic.setName("General", "Ultrasonic");
 	}
@@ -138,7 +138,7 @@ public class SmartDashboardController {
 		SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
 		SmartDashboard.putNumber("Debug/Elevator Motor", RobotMap.elevator.setSpeed);
 
-		SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
+		//SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
 		SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
 		SmartDashboard.putNumber("Debug/Ultrasonic", RobotMap.ultrasonic.getRangeInches());
 
