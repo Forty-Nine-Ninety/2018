@@ -77,7 +77,6 @@ public class RobotMap {
 	public static Intake intake;
 	public static Elevator elevator;
 	public static Scaler scaler;
-	
 	public static Ultrasonic ultrasonic;
 	public static AHRS ahrs;
 
@@ -126,7 +125,6 @@ public class RobotMap {
 		intake = new Intake();
 		elevator = new Elevator();
 		scaler = new Scaler(scalerTalon);
-
 		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches);		
 		ahrs = new AHRS(SPI.Port.kMXP); 
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
