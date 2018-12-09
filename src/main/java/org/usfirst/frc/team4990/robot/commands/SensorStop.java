@@ -10,6 +10,16 @@ import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.command.Command;
 
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import com.kauailabs.navx.frc.AHRS;
+import org.usfirst.frc.team4990.robot.subsystems.LimitSwitch;
+
+
 public class SensorStop extends Command {
 	
 	static double stopDistance = SmartDashboardController.getConst("UltrasonicStop/DefaultStopDistance", 20); // inches?
@@ -17,17 +27,25 @@ public class SensorStop extends Command {
 	double endCondition;
 	SensorBase sensor;
 	Method method;
+	public HashMap<Class, Method> sensorMethods;
 
-	public HashMap<Class, Method> sensorMethods = new HashMap<Class, Method>(){{
-		put(Ultrasonic.class, Ultrasonic.getRangeInches);
-		put(Encoder.class, Encoder.getDistance);
-		put(AHRS.class, AHRS.getDistance);
-		put(ADXRS450_Gyro.class, ADXRS450_Gyro.getAngle);
-		put(LimitSwitch.class, LimitSwitch.getValue);
-		put(AnalogInput.class, AnalogInput.getValue);
-		put(DigitalInput.class, DigitalInput.get);
-	}};
-	
+
+	public SensorStop() {
+		try {
+			sensorMethods = new HashMap<Class, Method>(){{
+				put(Ultrasonic.class, Ultrasonic.class.getMethod("getRangeInches"));
+				put(Encoder.class, Encoder.class.getMethod("getDistance"));
+				put(AHRS.class, AHRS.class.getMethod("getDistance"));
+				put(ADXRS450_Gyro.class, ADXRS450_Gyro.class.getMethod("getAngle"));
+				put(LimitSwitch.class, LimitSwitch.class.getMethod("getValue"));
+				put(AnalogInput.class, AnalogInput.class.getMethod("getValue"));
+				put(DigitalInput.class, DigitalInput.class.getMethod("get"));
+			}};
+		}
+		catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Command for stopping when robot becomes in range of object.
@@ -35,9 +53,11 @@ public class SensorStop extends Command {
 	 */
 	
 	public SensorStop(SensorBase sensor, double endCondition, Command command) {
+		this();
 		this.sensor = sensor;
 		this.endCondition = endCondition;
 		this.command = command;
+
 		if (sensorMethods.containsKey(sensor.getClass())) {
 			try {
 				method = sensorMethods.get(sensor.getClass());
