@@ -5,52 +5,66 @@ import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GyroTurn extends PIDCommand {
+public class GyroTurn extends Command implements PIDOutput, PIDSource{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
-    double kTargetAngleDegrees;
-    
+
     /* The following PID Controller coefficients will need to be tuned 
      to match the dynamics of your drive system.  Note that the      
      SmartDashboard in Test mode has support for helping you tune    
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
-
-	/**
-	 * Turns left or right
-	 * @param degrees Degrees to turn (Positive = right, negative = left)
-	 */
 	
-	public GyroTurn(double degrees) {
-		super("TurnController", SmartDashboardController.getConst("GyroTurn/kP", 0.03), SmartDashboardController.getConst("GyroTurn/kI", 0),
-				SmartDashboardController.getConst("GyroTurn/kD", 0));
-		kTargetAngleDegrees = degrees;
-		requires(RobotMap.driveTrain);
+	PIDController turnController = new PIDController(SmartDashboardController.getConst("tP", 0.2), 
+	SmartDashboardController.getConst("tI", 0), 
+	SmartDashboardController.getConst("tD", 0), (PIDSource) ahrs, this);
+	double speed;
+
+	public GyroTurn(double speed, double timeout) {
+		this.setTimeout(timeout);
+		this.speed = SmartDashboardController.getConst("GyroStraight-speed", speed);
 	}
 
 	public void initialize() {
-		this.setInputRange(-SmartDashboardController.getConst("GyroTurn/inputRange", 180.0f),
-				SmartDashboardController.getConst("GyroTurn/inputRange", 180.0f));
-	    this.getPIDController().setOutputRange(-1.0, 1.0);
-		this.getPIDController().setAbsoluteTolerance(SmartDashboardController.getConst("GyroTurn/absoluteTolerance", 3));
-	    
-	    this.getPIDController().setContinuous(true);
-	    this.setName("DriveSystem", "RotateController");
-	    LiveWindow.add(this);
-	    
-	    this.setSetpoint(kTargetAngleDegrees);
+		System.out.println("Initalizing GyroStraight");
+		ahrs.setPIDSourceType(PIDSourceType.kDisplacement);
+	    this.setName("DriveSystem", "GyroStraight");    
+	    SmartDashboard.putData(this);
+
 		ahrs.zeroYaw();
+		turnController.setInputRange(-180, 180);
+		turnController.setOutputRange(-1, 1);
+		turnController.setName("DriveSystem", "turnController");
+		SmartDashboard.putData(turnController);
+	  
+		dt.left.encoder.reset();
+		dt.right.encoder.reset();
+		
+		turnController.setPercentTolerance(2);
+		turnController.setSetpoint(0);
+		turnController.enable();
+		turnController.setEnabled(true);
+		
 	}
 
 	public void execute() {
-		
+		System.out.println("speed = " + speed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
+		this.pidOutput(this.turnController.get(), speed);
+		if(this.turnController.isEnabled() == false) {
+			turnController.setEnabled(true);
+		}
 	}
 	
 	public void end() {
-		//PIDCommands automatically disable PID loops.
+
+		turnController.disable();
 	}
 	
 	public void interrupted() {
@@ -58,19 +72,34 @@ public class GyroTurn extends PIDCommand {
 	}
 	
 	public boolean isFinished() {
-		return this.getPIDController().onTarget();
+		return this.isTimedOut();
+	}
+	
+	public void pidOutput(double turnOutput, double speed) {
+		dt.left.setSpeed(speed + turnOutput);
+		dt.right.setSpeed(speed - turnOutput);
+		dt.periodic();
 	}
 
 
 	@Override
-	protected double returnPIDInput() {
-		return ahrs.getAngle();
+	public void setPIDSourceType(PIDSourceType pidSource) {
+
 	}
 
 	@Override
-	protected void usePIDOutput(double output) {
-		dt.left.setSpeed(output);
-		dt.right.setSpeed(-output);
-		
+	public PIDSourceType getPIDSourceType() {
+		return null;
+	}
+
+	@Override
+	public double pidGet() {
+		return ahrs.pidGet();
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		SmartDashboard.putNumber("turnController-output", output);
+		SmartDashboard.putNumber("turnController-error", turnController.getError());
 	}
 }
