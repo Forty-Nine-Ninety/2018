@@ -105,7 +105,6 @@ public class SmartDashboardController {
 
 		// General
 		RobotMap.pdp.setName("General", "PDP");
-		//RobotMap.gyro.setName("General", "SPI Gyro");
 		RobotMap.ahrs.setName("General", "AHRS Gyro");
 		RobotMap.ultrasonic.setName("General", "Ultrasonic");
 	}
