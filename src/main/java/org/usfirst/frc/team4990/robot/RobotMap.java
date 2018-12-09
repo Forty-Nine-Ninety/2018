@@ -17,7 +17,6 @@ import org.usfirst.frc.team4990.robot.subsystems.Scaler;
 import org.usfirst.frc.team4990.robot.subsystems.TalonMotorController;
 import com.kauailabs.navx.frc.AHRS;
 
-//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -80,8 +79,6 @@ public class RobotMap {
 
 	public static Ultrasonic ultrasonic;
 	public static AHRS ahrs;
-
-	//public static ADXRS450_Gyro gyro;
 	
 	public RobotMap() {
 		
@@ -131,11 +128,5 @@ public class RobotMap {
 		ahrs = new AHRS(SPI.Port.kMXP); 
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
 		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
-
-		/*
-		gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-		//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
-		//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
-		*/
 	} 
 }
