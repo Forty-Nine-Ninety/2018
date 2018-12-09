@@ -18,14 +18,14 @@ public class SensorStop extends Command {
 	SensorBase sensor;
 	Method method;
 
-	public HashMap<String, String> sensorMethods = new HashMap<String, String>(){{
-		put("Ultrasonic", "getRangeInches");
-		put("Encoder", "getDistance");
-		put("AHRS","getAngle");
-		put("ADXRS450_Gyro","getAngle");
-		put("LimitSwitch", "getValue");
-		put("AnalogInput", "getValue");
-		put("DigitalInput","get");
+	public HashMap<Class, Method> sensorMethods = new HashMap<Class, Method>(){{
+		put(Ultrasonic.class, Ultrasonic.getRangeInches);
+		put(Encoder.class, Encoder.getDistance);
+		put(AHRS.class, AHRS.getDistance);
+		put(ADXRS450_Gyro.class, ADXRS450_Gyro.getAngle);
+		put(LimitSwitch.class, LimitSwitch.getValue);
+		put(AnalogInput.class, AnalogInput.getValue);
+		put(DigitalInput.class, DigitalInput.get);
 	}};
 	
 
@@ -38,9 +38,9 @@ public class SensorStop extends Command {
 		this.sensor = sensor;
 		this.endCondition = endCondition;
 		this.command = command;
-		if (sensorMethods.containsKey(sensor.getClass().getName())) {
+		if (sensorMethods.containsKey(sensor.getClass())) {
 			try {
-				method = sensor.getClass().getDeclaredMethod(sensorMethods.get(sensor.getClass().getName()));
+				method = sensorMethods.get(sensor.getClass());
 				System.out.println(method.invoke(sensor));
 			} catch (Exception e) {
 				e.printStackTrace();
