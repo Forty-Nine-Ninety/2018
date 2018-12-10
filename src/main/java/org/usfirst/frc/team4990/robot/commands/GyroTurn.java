@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GyroTurn extends Command implements PIDOutput, PIDSource{
+public class GyroTurn extends Command implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
 
@@ -22,26 +22,26 @@ public class GyroTurn extends Command implements PIDOutput, PIDSource{
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(SmartDashboardController.getConst("tP", 0.2), 
-	SmartDashboardController.getConst("tI", 0), 
-	SmartDashboardController.getConst("tD", 0), (PIDSource) ahrs, this);
+	PIDController turnController = new PIDController(SmartDashboardController.getConst("gyroTurn/tP", 0.2), 
+	SmartDashboardController.getConst("gyroTurn/tI", 0), 
+	SmartDashboardController.getConst("gyroTurn/tD", 0), (PIDSource) ahrs, this);
 	double speed;
 
 	public GyroTurn(double speed, double timeout) {
 		this.setTimeout(timeout);
-		this.speed = SmartDashboardController.getConst("GyroStraight-speed", speed);
+		this.speed = SmartDashboardController.getConst("gyroTurn/speed", speed);
 	}
 
 	public void initialize() {
-		System.out.println("Initalizing GyroStraight");
+		System.out.println("Initalizing GyroTurn");
 		ahrs.setPIDSourceType(PIDSourceType.kDisplacement);
-	    this.setName("DriveSystem", "GyroStraight");    
+	    this.setName("DriveSystem", "GyroTurn");    
 	    SmartDashboard.putData(this);
 
 		ahrs.zeroYaw();
-		turnController.setInputRange(-180, 180);
+		turnController.setInputRange(-360, 360);
 		turnController.setOutputRange(-1, 1);
-		turnController.setName("DriveSystem", "turnController");
+		turnController.setName("DriveSystem", "gyroTurn/turnController");
 		SmartDashboard.putData(turnController);
 	  
 		dt.left.encoder.reset();
@@ -49,6 +49,7 @@ public class GyroTurn extends Command implements PIDOutput, PIDSource{
 		
 		turnController.setPercentTolerance(2);
 		turnController.setSetpoint(0);
+		turnController.setContinuous(true);
 		turnController.enable();
 		turnController.setEnabled(true);
 		
@@ -56,14 +57,15 @@ public class GyroTurn extends Command implements PIDOutput, PIDSource{
 
 	public void execute() {
 		System.out.println("speed = " + speed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
-		this.pidOutput(this.turnController.get(), speed);
+		dt.left.setSpeed(this.turnController.get());
+		dt.right.setSpeed(-this.turnController.get());
+		dt.periodic();
 		if(this.turnController.isEnabled() == false) {
 			turnController.setEnabled(true);
 		}
 	}
 	
 	public void end() {
-
 		turnController.disable();
 	}
 	
@@ -74,32 +76,10 @@ public class GyroTurn extends Command implements PIDOutput, PIDSource{
 	public boolean isFinished() {
 		return this.isTimedOut();
 	}
-	
-	public void pidOutput(double turnOutput, double speed) {
-		dt.left.setSpeed(speed + turnOutput);
-		dt.right.setSpeed(speed - turnOutput);
-		dt.periodic();
-	}
-
-
-	@Override
-	public void setPIDSourceType(PIDSourceType pidSource) {
-
-	}
-
-	@Override
-	public PIDSourceType getPIDSourceType() {
-		return null;
-	}
-
-	@Override
-	public double pidGet() {
-		return ahrs.pidGet();
-	}
 
 	@Override
 	public void pidWrite(double output) {
-		SmartDashboard.putNumber("turnController-output", output);
-		SmartDashboard.putNumber("turnController-error", turnController.getError());
+		SmartDashboard.putNumber("gyroTurn/output", output);
+		SmartDashboard.putNumber("gyroTurn/error", turnController.getError());
 	}
 }
