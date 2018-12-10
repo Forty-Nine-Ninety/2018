@@ -27,9 +27,10 @@ public class GyroTurn extends Command implements PIDOutput{
 	SmartDashboardController.getConst("gyroTurn/tD", 0), (PIDSource) ahrs, this);
 	double speed;
 
-	public GyroTurn(double speed, double timeout) {
+	public GyroTurn(double target, double maxSpeed, double timeout) {
 		this.setTimeout(timeout);
-		this.speed = SmartDashboardController.getConst("gyroTurn/speed", speed);
+		this.speed = SmartDashboardController.getConst("gyroTurn/speed", maxSpeed);
+		turnController.setSetpoint(target);
 	}
 
 	public void initialize() {
@@ -40,7 +41,7 @@ public class GyroTurn extends Command implements PIDOutput{
 
 		ahrs.zeroYaw();
 		turnController.setInputRange(-360, 360);
-		turnController.setOutputRange(-1, 1);
+		turnController.setOutputRange(-speed, speed);
 		turnController.setName("DriveSystem", "gyroTurn/turnController");
 		SmartDashboard.putData(turnController);
 	  
@@ -48,7 +49,6 @@ public class GyroTurn extends Command implements PIDOutput{
 		dt.right.encoder.reset();
 		
 		turnController.setPercentTolerance(2);
-		turnController.setSetpoint(0);
 		turnController.setContinuous(true);
 		turnController.enable();
 		turnController.setEnabled(true);
