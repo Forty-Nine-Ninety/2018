@@ -101,6 +101,6 @@ public class SensorStop extends Command {
 	}
 	
 	public void interrupted() {
-		command.cancel();
+		end();
 	}
 }
