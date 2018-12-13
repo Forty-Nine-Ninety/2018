@@ -76,5 +76,6 @@ gradle-app.setting
 **/build/
 /build/jars/**
 dist/FRCUserProgram.jar
+.gradle
 
 # End of https://www.gitignore.io/api/java,macos,gradle
