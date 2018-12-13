@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GyroStraight extends Command implements PIDOutput, PIDSource{
+public class GyroStraight extends Command implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
 
@@ -22,14 +22,14 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(SmartDashboardController.getConst("tP", 0.2), 
-	SmartDashboardController.getConst("tI", 0), 
-	SmartDashboardController.getConst("tD", 0), (PIDSource) ahrs, this);
+	PIDController straightController = new PIDController(SmartDashboardController.getConst("GyroStraight/tP", 0.008), 
+	SmartDashboardController.getConst("GyroStraight/tI", 0), 
+	SmartDashboardController.getConst("GyroStraight/tD", 0.03), (PIDSource) ahrs, this);
 	double speed;
 
 	public GyroStraight(double speed, double timeout) {
 		this.setTimeout(timeout);
-		this.speed = SmartDashboardController.getConst("GyroStraight-speed", speed);
+		this.speed = speed;
 	}
 
 	public void initialize() {
@@ -38,33 +38,32 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 	    this.setName("DriveSystem", "GyroStraight");    
 	    SmartDashboard.putData(this);
 
-		ahrs.zeroYaw();
-		turnController.setInputRange(-180, 180);
-		turnController.setOutputRange(-1, 1);
-		turnController.setName("DriveSystem", "turnController");
-		SmartDashboard.putData(turnController);
+		straightController.setInputRange(-180, 180);
+		straightController.setOutputRange(-1, 1);
+		straightController.setName("DriveSystem", "straightController");
+		SmartDashboard.putData(straightController);
 	  
+		ahrs.reset();
 		dt.left.encoder.reset();
 		dt.right.encoder.reset();
 		
-		turnController.setPercentTolerance(2);
-		turnController.setSetpoint(0);
-		turnController.enable();
-		turnController.setEnabled(true);
+		straightController.setPercentTolerance(2);
+		straightController.setSetpoint(0);
+		straightController.enable();
+		straightController.setEnabled(true);
 		
 	}
 
 	public void execute() {
-		System.out.println("speed = " + speed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
-		this.pidOutput(this.turnController.get(), speed);
-		if(this.turnController.isEnabled() == false) {
-			turnController.setEnabled(true);
+		System.out.println("speed = " + speed + ", turnOutput = " + this.straightController.get() + ", ahrs = " + ahrs.pidGet() + ", isEnabled = "+straightController.isEnabled());
+		this.pidOutput(this.straightController.get(), speed);
+		if(this.straightController.isEnabled() == false) {
+			straightController.setEnabled(true);
 		}
 	}
 	
 	public void end() {
-
-		turnController.disable();
+		straightController.disable();
 	}
 	
 	public void interrupted() {
@@ -81,25 +80,9 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 		dt.periodic();
 	}
 
-
-	@Override
-	public void setPIDSourceType(PIDSourceType pidSource) {
-
-	}
-
-	@Override
-	public PIDSourceType getPIDSourceType() {
-		return null;
-	}
-
-	@Override
-	public double pidGet() {
-		return ahrs.pidGet();
-	}
-
 	@Override
 	public void pidWrite(double output) {
 		SmartDashboard.putNumber("turnController-output", output);
-		SmartDashboard.putNumber("turnController-error", turnController.getError());
+		SmartDashboard.putNumber("turnController-error", straightController.getError());
 	}
 }

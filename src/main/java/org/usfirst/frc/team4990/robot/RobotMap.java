@@ -17,7 +17,6 @@ import org.usfirst.frc.team4990.robot.subsystems.Scaler;
 import org.usfirst.frc.team4990.robot.subsystems.TalonMotorController;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -41,56 +40,44 @@ public class RobotMap {
 	
 	public static F310Gamepad driveGamepad;
 	public static F310Gamepad opGamepad;
+
 	public static TalonMotorController leftFrontDriveTalon;
 	public static TalonMotorController leftRearDriveTalon;
 	public static TalonMotorController rightFrontDriveTalon;
 	public static TalonMotorController rightRearDriveTalon;
+	public static TalonMotorController intakeTalonA;
+	public static TalonMotorController intakeTalonB;
+	public static TalonMotorController elevatorTalon;
+	public static TalonMotorController scalerTalon;
 	
+	public static DigitalOutput ultrasonicDigitalOutput;
+	public static DigitalInput ultrasonicEchoDigitalInput;
 	public static DigitalInput leftEncoderPortA;
 	public static DigitalInput leftEncoderPortB;
 	public static DigitalInput rightEncoderPortA;
 	public static DigitalInput rightEncoderPortB;
-	
+	public static DigitalInput elevatorLimitSwitchTopInput;
+	public static DigitalInput elevatorLimitSwitchBottomInput;
+	public static AnalogInput intakeDistanceAnalogInput;
+
 	public static Encoder leftEncoder;
 	public static Encoder rightEncoder;
+
+	public static LimitSwitch elevatorLimitSwitchTop;
+	public static LimitSwitch elevatorLimitSwitchBottom;
 	
 	public static Gearbox leftGearbox;
 	public static Gearbox rightGearbox;
 	
 	public static SpeedControllerGroup leftMotorGroup;
 	public static SpeedControllerGroup rightMotorGroup;
-	//public static DifferentialDrive differentialDrive;
 	
 	public static DriveTrain driveTrain;
-	
-	public static TalonMotorController intakeTalonA;
-	public static TalonMotorController intakeTalonB;
-	
-	public static AnalogInput intakeDistanceAnalogInput;
-	
 	public static Intake intake;
-	
-	public static TalonMotorController elevatorTalon;
-	
-	public static DigitalInput elevatorLimitSwitchTopInput;
-	public static DigitalInput elevatorLimitSwitchBottomInput;
-	
-	public static LimitSwitch elevatorLimitSwitchTop;
-	public static LimitSwitch elevatorLimitSwitchBottom;
-	
 	public static Elevator elevator;
-	
-	public static TalonMotorController scalerTalon;
-	
 	public static Scaler scaler;
-	
-	public static DigitalOutput ultrasonicDigitalOutput;
-	public static DigitalInput ultrasonicEchoDigitalInput;
-	
+
 	public static Ultrasonic ultrasonic;
-	
-	public static ADXRS450_Gyro gyro;
-	
 	public static AHRS ahrs;
 	
 	public RobotMap() {
@@ -104,14 +91,26 @@ public class RobotMap {
 		leftRearDriveTalon = new TalonMotorController(2);
 		rightFrontDriveTalon = new TalonMotorController(3);
 		rightRearDriveTalon = new TalonMotorController(4);
+		intakeTalonA = new TalonMotorController(8);
+		intakeTalonB = new TalonMotorController(7);
+		elevatorTalon = new TalonMotorController(6);
+		scalerTalon = new TalonMotorController(9);
 		
+		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
+		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
 		leftEncoderPortA = new DigitalInput(0);
 		leftEncoderPortB = new DigitalInput(1);
 		rightEncoderPortA = new DigitalInput(2);
 		rightEncoderPortB = new DigitalInput(3);
+		elevatorLimitSwitchTopInput = new DigitalInput(6);
+		elevatorLimitSwitchBottomInput = new DigitalInput(7);
+		intakeDistanceAnalogInput = new AnalogInput(0);
 		
 		leftEncoder = new Encoder(leftEncoderPortA, leftEncoderPortB);
 		rightEncoder = new Encoder(rightEncoderPortA, rightEncoderPortB);
+
+		elevatorLimitSwitchTop = new LimitSwitch(elevatorLimitSwitchTopInput);
+		elevatorLimitSwitchBottom = new LimitSwitch(elevatorLimitSwitchBottomInput);
 		
 		leftGearbox = new Gearbox(leftFrontDriveTalon, leftRearDriveTalon, leftEncoder);
 		rightGearbox = new Gearbox(rightFrontDriveTalon, rightRearDriveTalon, rightEncoder);
@@ -121,37 +120,11 @@ public class RobotMap {
 		//differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 					
 		driveTrain = new DriveTrain(leftGearbox, rightGearbox);
-		
-		intakeTalonA = new TalonMotorController(8);
-		intakeTalonB = new TalonMotorController(7);
-		
-		intakeDistanceAnalogInput = new AnalogInput(0);
-		
 		intake = new Intake();
-		
-		elevatorTalon = new TalonMotorController(6);
-		
-		elevatorLimitSwitchTopInput = new DigitalInput(6);
-		elevatorLimitSwitchBottomInput = new DigitalInput(7);
-		
-		elevatorLimitSwitchTop = new LimitSwitch(elevatorLimitSwitchTopInput);
-		elevatorLimitSwitchBottom = new LimitSwitch(elevatorLimitSwitchBottomInput);
-		
 		elevator = new Elevator();
-		
-		scalerTalon = new TalonMotorController(9);
-		
 		scaler = new Scaler(scalerTalon);
 		
-		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
-		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
-		
-		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches); 
-	
-		gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-		//use gyro.getAngle() to return heading (returns number -n to n) and reset() to reset angle
-		//gyro details: http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/ADXRS450_Gyro.html
-		
+		ultrasonic = new Ultrasonic(ultrasonicDigitalOutput, ultrasonicEchoDigitalInput, Ultrasonic.Unit.kInches);		
 		ahrs = new AHRS(SPI.Port.kMXP); 
 		//navX-MXP RoboRIO extension and 9-axis gyro thingy
 		//for simple gyro angles: use ahrs.getAngle() to get heading (returns number -n to n) and reset() to reset angle (and drift)
