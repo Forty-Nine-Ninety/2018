@@ -22,9 +22,9 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(SmartDashboardController.getConst("tP", 0.2), 
-	SmartDashboardController.getConst("tI", 0), 
-	SmartDashboardController.getConst("tD", 0), (PIDSource) ahrs, this);
+	PIDController turnController = new PIDController(SmartDashboardController.getConst("GyroStraight/tP", 0.2), 
+	SmartDashboardController.getConst("GyroStraight/tI", 0), 
+	SmartDashboardController.getConst("GyroStraight/tD", 0), (PIDSource) ahrs, this);
 	double speed;
 
 	public GyroStraight(double speed, double timeout) {
@@ -38,17 +38,17 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 	    this.setName("DriveSystem", "GyroStraight");    
 	    SmartDashboard.putData(this);
 
-		ahrs.zeroYaw();
 		turnController.setInputRange(-180, 180);
 		turnController.setOutputRange(-1, 1);
 		turnController.setName("DriveSystem", "turnController");
 		SmartDashboard.putData(turnController);
 	  
+		ahrs.reset();
 		dt.left.encoder.reset();
 		dt.right.encoder.reset();
 		
 		turnController.setPercentTolerance(2);
-		turnController.setSetpoint(0);
+		turnController.setSetpoint(SmartDashboardController.getConst("GyroStraight-setpoint", 0));
 		turnController.enable();
 		turnController.setEnabled(true);
 		
