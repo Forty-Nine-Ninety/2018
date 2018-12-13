@@ -211,15 +211,30 @@
               "searchBoxVisible": true
             }
           },
-          "0,2": {
+          "6,0": {
             "size": [
-              1,
+              2,
               2
             ],
             "content": {
-              "_type": "PID Controller",
-              "_source0": "network_table:///SmartDashboard/gyroTurn/turnController",
-              "_title": "SmartDashboard/gyroTurn/turnController"
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/turnController-error",
+              "_title": "SmartDashboard/turnController-error",
+              "Visible time": 10.0,
+              "SmartDashboard/turnController-error visible": true
+            }
+          },
+          "6,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/turnController-output",
+              "_title": "SmartDashboard/turnController-output",
+              "Visible time": 10.0,
+              "SmartDashboard/turnController-output visible": true
             }
           }
         }
