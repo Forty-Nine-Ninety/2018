@@ -25,7 +25,7 @@ public class AutonomusCommand extends CommandGroup {
 			addParallel(new MoveElevatorTime(3.2, 0.1)); //Immediately starts next command
 			addSequential(new IntakeOut(3));
 		} else if (s == StartingPosition.TEST) {
-			addSequential(new GyroStraight(0.2, 1000));
+			addSequential(new GyroTurn(180, 0.2, 1000));
 		}
 		/*else if (gameData.charAt(0) == 'L') {
 			System.err.println("Auto Init. Game data = " + gameData + " Position = " + s.toString());

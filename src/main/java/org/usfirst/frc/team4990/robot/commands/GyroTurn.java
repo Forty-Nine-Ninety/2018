@@ -22,9 +22,9 @@ public class GyroTurn extends Command implements PIDOutput{
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(SmartDashboardController.getConst("gyroTurn/tP", 0.2), 
-	SmartDashboardController.getConst("gyroTurn/tI", 0), 
-	SmartDashboardController.getConst("gyroTurn/tD", 0), (PIDSource) ahrs, this);
+	PIDController turnController = new PIDController(SmartDashboardController.getConst("gyroTurn/tP", 0.02), 
+	SmartDashboardController.getConst("gyroTurn/tI", 0.00002), 
+	SmartDashboardController.getConst("gyroTurn/tD", 0.06), (PIDSource) ahrs, this);
 	double maxSpeed;
 
 	public GyroTurn(double target, double maxSpeed, double timeout) {
@@ -40,7 +40,7 @@ public class GyroTurn extends Command implements PIDOutput{
 	    SmartDashboard.putData(this);
 
 		ahrs.zeroYaw();
-		turnController.setInputRange(-360, 360);
+		turnController.setInputRange(-180, 180);
 		turnController.setOutputRange(-maxSpeed, maxSpeed);
 		turnController.setName("DriveSystem", "gyroTurn/turnController");
 		SmartDashboard.putData(turnController);
