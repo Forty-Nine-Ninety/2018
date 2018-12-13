@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GyroStraight extends Command implements PIDOutput, PIDSource{
+public class GyroStraight extends Command implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
 
@@ -22,14 +22,14 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
      controllers by displaying a form where you can enter new P, I,  
      and D constants and test the mechanism.                         */
 	
-	PIDController turnController = new PIDController(SmartDashboardController.getConst("GyroStraight/tP", 0.2), 
+	PIDController turnController = new PIDController(SmartDashboardController.getConst("GyroStraight/tP", 0.008), 
 	SmartDashboardController.getConst("GyroStraight/tI", 0), 
-	SmartDashboardController.getConst("GyroStraight/tD", 0), (PIDSource) ahrs, this);
+	SmartDashboardController.getConst("GyroStraight/tD", 0.03), (PIDSource) ahrs, this);
 	double speed;
 
 	public GyroStraight(double speed, double timeout) {
 		this.setTimeout(timeout);
-		this.speed = SmartDashboardController.getConst("GyroStraight-speed", speed);
+		this.speed = speed;
 	}
 
 	public void initialize() {
@@ -48,7 +48,7 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 		dt.right.encoder.reset();
 		
 		turnController.setPercentTolerance(2);
-		turnController.setSetpoint(SmartDashboardController.getConst("GyroStraight-setpoint", 0));
+		turnController.setSetpoint(0);
 		turnController.enable();
 		turnController.setEnabled(true);
 		
@@ -63,7 +63,6 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 	}
 	
 	public void end() {
-
 		turnController.disable();
 	}
 	
@@ -79,22 +78,6 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 		dt.left.setSpeed(speed + turnOutput);
 		dt.right.setSpeed(speed - turnOutput);
 		dt.periodic();
-	}
-
-
-	@Override
-	public void setPIDSourceType(PIDSourceType pidSource) {
-
-	}
-
-	@Override
-	public PIDSourceType getPIDSourceType() {
-		return null;
-	}
-
-	@Override
-	public double pidGet() {
-		return ahrs.pidGet();
 	}
 
 	@Override
