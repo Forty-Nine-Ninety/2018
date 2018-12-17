@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.OI;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -38,9 +39,9 @@ public class TeleopDriveTrainController extends Command{
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 				*/
-		double throttle = getSquaredThrottle(RobotMap.driveGamepad.getLeftJoystickY());
+				double throttle = OI.throttleAnalogButton.getRawAxis();
 		
-		double turnSteepness = getSquaredThrottle(RobotMap.driveGamepad.getRightJoystickX());
+				double turnSteepness = OI.turnSteepnessAnalogButton.getRawAxis();
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;

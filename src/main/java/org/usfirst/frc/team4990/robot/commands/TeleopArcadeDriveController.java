@@ -1,10 +1,11 @@
 package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.*;
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Class for controlling drivetrains. NEEDS FURTHER DEVELOPMENT AND TESTING.
@@ -21,11 +22,7 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	
 	private PIDController arcController = new PIDController(0.03, 0, 0, 0, RobotMap.ahrs, this);
 	
-    double leftMotorOutput;
-    double rightMotorOutput;
-    
-    //private Counter turnSteepnessCounter = new Counter();
-			
+	double leftMotorOutput, rightMotorOutput;
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -39,14 +36,14 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 		turnController.setInputRange(-180, 180);
 		turnController.setOutputRange(-0.5, 0.5);
 		turnController.setName("TeleopDrive", "turnController");
-		LiveWindow.add(turnController);
+		SmartDashboard.putData(turnController);
 		
 		arcController.setSetpoint(0);
 		arcController.setContinuous(true);
 		arcController.setInputRange(-180, 180);
 		arcController.setOutputRange(-0.5, 0.5);
 		arcController.setName("TeleopDrive", "arcController");
-		LiveWindow.add(arcController);
+		SmartDashboard.putData(arcController);
 	}
 	
 	/**
@@ -56,9 +53,9 @@ public class TeleopArcadeDriveController extends Command implements PIDOutput{
 	 */
 	public void execute() {
 
-		double throttle = RobotMap.driveGamepad.getLeftJoystickY();
+		double throttle = OI.throttleAnalogButton.getRawAxis();
 		
-		double turnSteepness = RobotMap.driveGamepad.getRightJoystickY();
+		double turnSteepness = OI.turnSteepnessAnalogButton.getRawAxis();
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			if (driveMode != DriveMode.ARC) { //if mode changed

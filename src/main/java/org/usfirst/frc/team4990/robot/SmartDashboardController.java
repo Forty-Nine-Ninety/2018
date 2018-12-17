@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot;
 
 import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
-import org.usfirst.frc.team4990.robot.commands.RobotDriveStraight;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.Preferences;
@@ -113,9 +112,6 @@ public class SmartDashboardController {
 	public void smartDashboardPeriodic() {
 
 		SmartDashboard.putData("Debug/PDP", RobotMap.pdp);
-		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
-		SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
-		SmartDashboard.putNumber("Debug/AutoDriveTime", RobotDriveStraight.targetTime);
 
 		// SmartDashboard.putData("Debug/DifferentialDrive",
 		// RobotMap.differentialDrive);
