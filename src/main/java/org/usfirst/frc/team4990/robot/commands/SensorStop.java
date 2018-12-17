@@ -29,7 +29,7 @@ public class SensorStop extends Command {
 
 	public SensorStop() {
 		try {
-			sensorMethods = new HashMap<Class<?>, Method>(){{
+			sensorMethods = new HashMap<Class<?>, Method>(){ private static final long serialVersionUID = 1L; {
 				put(Ultrasonic.class, Ultrasonic.class.getMethod("getRangeInches"));
 				put(Encoder.class, Encoder.class.getMethod("getDistance"));
 				put(AHRS.class, AHRS.class.getMethod("getAngle"));
