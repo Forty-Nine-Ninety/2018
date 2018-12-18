@@ -102,9 +102,6 @@ public class GyroTurn extends Command implements PIDOutput{
 			else {
 				dt.left.setSpeed(this.turnController.get());
 				dt.right.setSpeed(-this.turnController.get());
-				dt.periodic();
-				if(this.turnController.isEnabled() == false) turnController.setEnabled(true);
-				return;
 			}
 		}
 		dt.periodic();
