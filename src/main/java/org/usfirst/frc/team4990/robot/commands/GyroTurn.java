@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GyroTurn extends Command implements PIDOutput{
 	AHRS ahrs = RobotMap.ahrs;
 	DriveTrain dt = RobotMap.driveTrain;
+	public final double DRIVETRAIN_WIDTH = (23 + 7 / 8) / 12;//In feet; move to Constants.java at some point maybe.
 
     /* The following PID Controller coefficients will need to be tuned 
      to match the dynamics of your drive system.  Note that the      
@@ -27,13 +28,23 @@ public class GyroTurn extends Command implements PIDOutput{
 	SmartDashboardController.getConst("gyroTurn/tD", 0.06), (PIDSource) ahrs, this);
 	double maxSpeed;
 
-	public GyroTurn(double target, double maxSpeed, double timeout) {
+	/**
+	 * @param turnRadius The radius of turn in meters.
+	 * @param isInPlace Whether to ignore turnRadius or not.
+	 */
+	public GyroTurn(double target, double maxSpeed, double timeout, double turnRadius, boolean isInPlace) {
 		this.setTimeout(timeout);
 		this.maxSpeed = SmartDashboardController.getConst("gyroTurn/speed", maxSpeed);
+		SmartDashboardController.getConst("gyroTurn/turnRadius", turnRadius);
+		SmartDashboardController.getBoolean("gyroTurn/turnInPlace", isInPlace);
 		turnController.setSetpoint(target);
 	}
 
-	public void initialize() {
+	public GyroTurn(double target, double maxSpeed, double timeout) {
+		this(target, maxSpeed, timeout, -1, true);
+	}
+
+	public void initialize() { 
 		System.out.println("Initalizing GyroTurn");
 		ahrs.setPIDSourceType(PIDSourceType.kDisplacement);
 	    this.setName("DriveSystem", "GyroTurn");    
@@ -57,12 +68,44 @@ public class GyroTurn extends Command implements PIDOutput{
 
 	public void execute() {
 		System.out.println("maxSpeed = " + maxSpeed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
-		dt.left.setSpeed(this.turnController.get());
-		dt.right.setSpeed(-this.turnController.get());
-		dt.periodic();
-		if(this.turnController.isEnabled() == false) {
-			turnController.setEnabled(true);
+		if (SmartDashboardController.getBoolean("gyroTurn/turnInPlace", true)) {
+			dt.left.setSpeed(this.turnController.get());
+			dt.right.setSpeed(-this.turnController.get());
 		}
+		else {
+			double radius = SmartDashboardController.getConst("gyroTurn/turnRadius", 0);
+			double ratio;
+			if (radius < 0) {
+				radius += DRIVETRAIN_WIDTH / 2;
+				ratio = radius / (radius + DRIVETRAIN_WIDTH);
+				if (Math.abs(ratio) < 1) {
+					dt.right.setSpeed(ratio * maxSpeed);
+					dt.left.setSpeed(maxSpeed);
+				}
+				else {
+					dt.right.setSpeed(maxSpeed);
+					dt.left.setSpeed((1 / ratio) * maxSpeed);
+				}
+			}
+			else if (radius > 0) {
+				radius -= DRIVETRAIN_WIDTH / 2;
+				ratio = radius / (radius + DRIVETRAIN_WIDTH);
+				if (Math.abs(ratio) < 1) {
+					dt.left.setSpeed(ratio * maxSpeed);
+					dt.right.setSpeed(maxSpeed);
+				}
+				else {
+					dt.left.setSpeed(maxSpeed);
+					dt.right.setSpeed((1 / ratio) * maxSpeed);
+				}
+			}
+			else {
+				dt.left.setSpeed(this.turnController.get());
+				dt.right.setSpeed(-this.turnController.get());
+			}
+		}
+		dt.periodic();
+		if(this.turnController.isEnabled() == false) turnController.setEnabled(true);
 	}
 	
 	public void end() {
