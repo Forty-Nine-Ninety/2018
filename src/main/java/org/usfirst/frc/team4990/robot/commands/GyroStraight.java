@@ -1,9 +1,7 @@
 package org.usfirst.frc.team4990.robot.commands;
 
 import org.usfirst.frc.team4990.robot.RobotMap;
-import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.SmartDashboardController;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -13,8 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GyroStraight extends Command implements PIDOutput, PIDSource{
-	AHRS ahrs = RobotMap.ahrs;
-	DriveTrain dt = RobotMap.driveTrain;
 
     /* The following PID Controller coefficients will need to be tuned 
      to match the dynamics of your drive system.  Note that the      
@@ -24,28 +20,27 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 	
 	PIDController turnController = new PIDController(SmartDashboardController.getConst("tP", 0.2), 
 	SmartDashboardController.getConst("tI", 0), 
-	SmartDashboardController.getConst("tD", 0), (PIDSource) ahrs, this);
+	SmartDashboardController.getConst("tD", 0), (PIDSource) RobotMap.ahrs, this);
 	double speed;
 
-	public GyroStraight(double speed, double timeout) {
-		this.setTimeout(timeout);
+	public GyroStraight(double speed, double distance) {
 		this.speed = SmartDashboardController.getConst("GyroStraight-speed", speed);
 	}
 
 	public void initialize() {
 		System.out.println("Initalizing GyroStraight");
-		ahrs.setPIDSourceType(PIDSourceType.kDisplacement);
+		RobotMap.ahrs.setPIDSourceType(PIDSourceType.kDisplacement);
 	    this.setName("DriveSystem", "GyroStraight");    
 	    SmartDashboard.putData(this);
 
-		ahrs.zeroYaw();
+		RobotMap.ahrs.zeroYaw();
 		turnController.setInputRange(-180, 180);
 		turnController.setOutputRange(-1, 1);
 		turnController.setName("DriveSystem", "turnController");
 		SmartDashboard.putData(turnController);
 	  
-		dt.left.encoder.reset();
-		dt.right.encoder.reset();
+		RobotMap.driveTrain.left.encoder.reset();
+		RobotMap.driveTrain.right.encoder.reset();
 		
 		turnController.setPercentTolerance(2);
 		turnController.setSetpoint(0);
@@ -55,7 +50,7 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 	}
 
 	public void execute() {
-		System.out.println("speed = " + speed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
+		System.out.println("speed = " + speed + ", turnOutput = " + this.turnController.get() + ", ahrs = " + RobotMap.ahrs.pidGet() + ", isEnabled = "+turnController.isEnabled());
 		this.pidOutput(this.turnController.get(), speed);
 		if(this.turnController.isEnabled() == false) {
 			turnController.setEnabled(true);
@@ -76,9 +71,9 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 	}
 	
 	public void pidOutput(double turnOutput, double speed) {
-		dt.left.setSpeed(speed + turnOutput);
-		dt.right.setSpeed(speed - turnOutput);
-		dt.periodic();
+		RobotMap.driveTrain.left.setSpeed(speed + turnOutput);
+		RobotMap.driveTrain.right.setSpeed(speed - turnOutput);
+		RobotMap.driveTrain.periodic();
 	}
 
 
@@ -94,7 +89,7 @@ public class GyroStraight extends Command implements PIDOutput, PIDSource{
 
 	@Override
 	public double pidGet() {
-		return ahrs.pidGet();
+		return RobotMap.ahrs.pidGet();
 	}
 
 	@Override
