@@ -12,14 +12,13 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import com.kauailabs.navx.frc.AHRS;
 
-import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.subsystems.LimitSwitch;
 
 
 public class SensorStop extends Command {
 	Command command;
 	double endCondition;
-	Class sensor;
+	Class<?> sensor;
 	Method method;
 	public enum Condition {
 		equal, not_equal, greater, less, greater_equals, less_equals
