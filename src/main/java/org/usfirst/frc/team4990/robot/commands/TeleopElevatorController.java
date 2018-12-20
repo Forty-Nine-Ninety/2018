@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4990.robot.commands;
 
 
+import org.usfirst.frc.team4990.robot.OI;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,7 +24,7 @@ public class TeleopElevatorController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		RobotMap.elevator.setElevatorPower(-1 * RobotMap.opGamepad.getRightJoystickY() + RobotMap.elevator.stopFallingSpeed);
+		RobotMap.elevator.setElevatorPower(-1 * OI.elevatorThrottleAnalogButton.getRawAxis() + RobotMap.elevator.stopFallingSpeed);
 	}
 
 	@Override

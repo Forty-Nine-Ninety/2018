@@ -74,7 +74,16 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
-/build/jars/**
+build/jars/**
+build/libs/**.**
+.gradle/4.9/**
 dist/FRCUserProgram.jar
 
 # End of https://www.gitignore.io/api/java,macos,gradle
+.gradle/4.9/fileHashes/fileHashes.lock
+*.lock
+build/libs/2018.jar
+.gradle/4.9/fileHashes/fileHashes.bin
+.gradle/4.9/taskHistory/taskHistory.bin
+.gradle/4.9/fileHashes/fileHashes.lock
+.gradle/4.9/taskHistory/taskHistory.bin

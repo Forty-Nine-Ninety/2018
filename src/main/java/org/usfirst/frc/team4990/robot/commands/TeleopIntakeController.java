@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4990.robot.commands;
 
+import org.usfirst.frc.team4990.robot.OI;
 import org.usfirst.frc.team4990.robot.RobotMap;
 import org.usfirst.frc.team4990.robot.SmartDashboardController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,8 +32,8 @@ public class TeleopIntakeController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		double tempInAxis = RobotMap.opGamepad.getLeftTrigger();
-		double tempOutAxis = RobotMap.opGamepad.getRightTrigger();
+		double tempInAxis = RobotMap.opGamepad.leftTrigger.getRawAxis();
+		double tempOutAxis = RobotMap.opGamepad.rightTrigger.getRawAxis();
 		//boolean override = RobotMap.opGamepad.getXButtonPressed();
 
 		if (dir == direction.IN /*&& ((RobotMap.intake.getAnalogInput() < 1.9 || override) || override)*/) { //left bumper = elevator UP
@@ -62,9 +63,9 @@ public class TeleopIntakeController extends Command{
 	
 	protected boolean isFinished() {
 		if (dir == direction.IN) {
-			return RobotMap.opGamepad.getLeftTrigger() < SmartDashboardController.getConst("TeleopIntakeController/triggerDeadband", 0.05);
+			return OI.intakeINAnalogButton.getRawAxis() < SmartDashboardController.getConst("TeleopIntakeController/triggerDeadband", 0.05);
 		} else {
-			return RobotMap.opGamepad.getRightTrigger() < SmartDashboardController.getConst("TeleopIntakeController/triggerDeadband", 0.05);
+			return OI.intakeOUTAnalogButton.getRawAxis() < SmartDashboardController.getConst("TeleopIntakeController/triggerDeadband", 0.05);
 		}
 	}
 

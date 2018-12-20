@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4990.robot;
 
 import org.usfirst.frc.team4990.robot.Robot.StartingPosition;
-import org.usfirst.frc.team4990.robot.commands.RobotDriveStraight;
 import org.usfirst.frc.team4990.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.Preferences;
@@ -35,6 +34,28 @@ public class SmartDashboardController {
 	}
 
 	/**
+	 * Retrieves a boolean from SmartDashbaord/Shuffleboard.
+	 * 
+	 * @param key
+	 *            string key to identify value
+	 * @param def
+	 *            value to return if no value is retrieved
+	 * @author MajikalExplosions
+	 */
+
+	public static boolean getBoolean(String key, boolean def) {
+
+		if (!preferences.containsKey("Const/" + key)) {
+			preferences.putBoolean("Const/" + key, def);
+			if (preferences.getBoolean("Const/ + key", def) != def) {
+				System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
+				return def;
+			}
+		}
+		return preferences.getBoolean("Const/" + key, def);
+	}
+
+	/**
 	 * Adds a constant to SmartDashbaord/Shuffleboard.
 	 * 
 	 * @param key
@@ -48,6 +69,25 @@ public class SmartDashboardController {
 	public static void putConst(String key, double def) {
 		preferences.putDouble("Const/" + key, def);
 		if (preferences.getDouble("Const/ + key", def) != def) {
+			System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
+		}
+
+	}
+
+	/**
+	 * Adds a boolean to SmartDashbaord/Shuffleboard.
+	 * 
+	 * @param key
+	 *            string key to identify value
+	 * @param def
+	 *            value to be stored
+	 * @author MajikalExplosions
+	 */
+
+	
+	public static void putConst(String key, boolean def) {
+		preferences.putBoolean("Const/" + key, def);
+		if (preferences.getBoolean("Const/ + key", def) != def) {
 			System.err.println("pref Key" + "Const/" + key + "already taken by a different type");
 		}
 
@@ -105,17 +145,14 @@ public class SmartDashboardController {
 
 		// General
 		RobotMap.pdp.setName("General", "PDP");
-		RobotMap.gyro.setName("General", "SPI Gyro");
+		//RobotMap.gyro.setName("General", "SPI Gyro");
 		RobotMap.ahrs.setName("General", "AHRS Gyro");
-		RobotMap.ultrasonic.setName("General", "Ultrasonic");
+		//RobotMap.ultrasonic.setName("General", "Ultrasonic");
 	}
 
 	public void smartDashboardPeriodic() {
 
 		SmartDashboard.putData("Debug/PDP", RobotMap.pdp);
-		SmartDashboard.putNumber("Debug/Throttle Input", RobotMap.driveGamepad.getLeftJoystickY());
-		SmartDashboard.putNumber("Debug/Turn Steepness Input", RobotMap.driveGamepad.getRightJoystickX());
-		SmartDashboard.putNumber("Debug/AutoDriveTime", RobotDriveStraight.targetTime);
 
 		// SmartDashboard.putData("Debug/DifferentialDrive",
 		// RobotMap.differentialDrive);
@@ -124,6 +161,9 @@ public class SmartDashboardController {
 		SmartDashboard.putNumber("Debug/Right Encoder Distance", RobotMap.driveTrain.right.getDistanceTraveled());
 		SmartDashboard.putData("Debug/Left Drive Encoder", RobotMap.driveTrain.left.encoder);
 		SmartDashboard.putData("Debug/Right Drive Encoder", RobotMap.driveTrain.right.encoder);
+
+		SmartDashboard.putNumber("DriveSystem/teleop/turnSteepness", OI.turnSteepnessAnalogButton.getRawAxis());
+		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
 
 		SmartDashboard.putBoolean("Debug/Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
 		SmartDashboard.putBoolean("Debug/Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
@@ -138,9 +178,7 @@ public class SmartDashboardController {
 		SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
 		SmartDashboard.putNumber("Debug/Elevator Motor", RobotMap.elevator.setSpeed);
 
-		SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
 		SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
-		SmartDashboard.putNumber("Debug/Ultrasonic", RobotMap.ultrasonic.getRangeInches());
 
 		SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
 		SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);
