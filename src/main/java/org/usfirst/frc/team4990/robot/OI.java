@@ -7,14 +7,10 @@
 
 package org.usfirst.frc.team4990.robot;
 
-import org.usfirst.frc.team4990.robot.commands.ControllerCheck;
-import org.usfirst.frc.team4990.robot.commands.DriveDpiToggle;
-import org.usfirst.frc.team4990.robot.commands.TeleopElevatorController;
-import org.usfirst.frc.team4990.robot.commands.TeleopIntakeController;
-import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
+import org.usfirst.frc.team4990.robot.commands.*;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -24,41 +20,17 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class OI{
 	
-	public F310Gamepad driveGamepad = RobotMap.driveGamepad;
-	Button driveA = new JoystickButton(driveGamepad, 1);
-	Button driveB = new JoystickButton(driveGamepad, 2);
-	Button driveX = new JoystickButton(driveGamepad, 3);
-	Button driveY = new JoystickButton(driveGamepad, 4);
-	Button driveBumperLeft = new JoystickButton(driveGamepad, 5);
-	Button driveBumperRight = new JoystickButton(driveGamepad, 6);
-	Button driveStart = new JoystickButton(driveGamepad, 10);
-	Button driveBack = new JoystickButton(driveGamepad, 9);
-	Button driveJoystickPressRight = new JoystickButton(driveGamepad, 12);
-	Button driveJoystickPressLeft = new JoystickButton(driveGamepad, 11);
-	JoystickAnalogButton driveTriggerLeft = new JoystickAnalogButton(driveGamepad, 2);
-	JoystickAnalogButton driveTriggerRight = new JoystickAnalogButton(driveGamepad, 3);
-	JoystickAnalogButton driveJoystickLeftX = new JoystickAnalogButton(driveGamepad, 0);
-	JoystickAnalogButton driveJoystickLeftY = new JoystickAnalogButton(driveGamepad, 1);
-	JoystickAnalogButton driveJoystickRightX = new JoystickAnalogButton(driveGamepad, 4);
-	JoystickAnalogButton driveJoystickRightY = new JoystickAnalogButton(driveGamepad, 5);
-	
-	public F310Gamepad opGamepad = RobotMap.opGamepad;
-	Button opA = new JoystickButton(opGamepad, 1);
-	Button opB = new JoystickButton(opGamepad, 2);
-	Button opX = new JoystickButton(opGamepad, 3);
-	Button opY = new JoystickButton(opGamepad, 4);
-	Button opBumperLeft = new JoystickButton(opGamepad, 5);
-	Button opBumperRight = new JoystickButton(opGamepad, 6);
-	Button opStart = new JoystickButton(opGamepad, 10);
-	Button opBack = new JoystickButton(opGamepad, 9);
-	Button opJoystickPressRight = new JoystickButton(opGamepad, 12);
-	Button opJoystickPressLeft = new JoystickButton(opGamepad, 11);
-	JoystickAnalogButton opTriggerLeft = new JoystickAnalogButton(opGamepad, 2);
-	JoystickAnalogButton opTriggerRight = new JoystickAnalogButton(opGamepad, 3);
-	JoystickAnalogButton opJoystickLeftX = new JoystickAnalogButton(opGamepad, 0);
-	JoystickAnalogButton opJoystickLeftY = new JoystickAnalogButton(opGamepad, 1);
-	JoystickAnalogButton opJoystickRightX = new JoystickAnalogButton(opGamepad, 4);
-	JoystickAnalogButton opJoystickRightY = new JoystickAnalogButton(opGamepad, 5);
+	public static JoystickAnalogButton throttleAnalogButton = RobotMap.driveGamepad.leftJoystickY;
+	public static JoystickAnalogButton turnSteepnessAnalogButton = RobotMap.driveGamepad.rightJoystickX;
+
+	public static JoystickAnalogButton elevatorThrottleAnalogButton = RobotMap.opGamepad.rightJoystickY;
+
+	public static JoystickAnalogButton intakeINAnalogButton = RobotMap.opGamepad.leftTrigger;
+	public static JoystickAnalogButton intakeOUTAnalogButton = RobotMap.opGamepad.rightTrigger;
+
+	public static Button driveSpeedToggle = RobotMap.driveGamepad.x;
+	public static Button driveControllerCheck = RobotMap.driveGamepad.start;
+	public static Button opControllerCheck = RobotMap.opGamepad.start;
 	
 	/* CREATING BUTTONS
 	One type of button is a joystick button which is any button on a
@@ -110,28 +82,21 @@ public class OI{
 	 */
 	
 	public OI() {
-		//joystick config
-		driveJoystickLeftY.setThreshold(0.0078125);
-		driveJoystickRightX.setThreshold(0.0391);
-		driveTriggerLeft.setThreshold(0.95);
-		driveTriggerRight.setThreshold(0.95);
-		
-		opJoystickRightX.setThreshold(0.0391);
-		opJoystickLeftY.setThreshold(0.0078125);
-		opTriggerLeft.setThreshold(0.01);
-		opTriggerRight.setThreshold(0.01);
+
+		intakeINAnalogButton.setThreshold(0.01);
+		intakeOUTAnalogButton.setThreshold(0.01);
 		
 		//intake
 		Command TeleopIntakeControllerOUT = new TeleopIntakeController(TeleopIntakeController.direction.OUT);
 		Command TeleopIntakeControllerIN = new TeleopIntakeController(TeleopIntakeController.direction.IN);
 		//JoystickButtonGroup intakeButtons = new JoystickButtonGroup(opTriggerLeft, opTriggerRight);
-		opTriggerLeft.whileHeld(TeleopIntakeControllerIN);
+		intakeINAnalogButton.whileHeld(TeleopIntakeControllerIN);
 		//opTriggerLeft.cancelWhenActive(TeleopIntakeControllerIN);
-		opTriggerRight.whileHeld(TeleopIntakeControllerOUT);
+		intakeOUTAnalogButton.whileHeld(TeleopIntakeControllerOUT);
 		//opTriggerRight.cancelWhenActive(TeleopIntakeControllerOUT);
 
 		//elevator
-		opJoystickRightY.whileHeld(new TeleopElevatorController());
+		elevatorThrottleAnalogButton.whileHeld(new TeleopElevatorController());
 		//opY.whenPressed(new ElevatorPID());
 		
 		//scaler
@@ -142,15 +107,12 @@ public class OI{
 		*/
 		
 		//drivetrain
-		driveX.toggleWhenPressed(new DriveDpiToggle());
+		driveSpeedToggle.toggleWhenPressed(new DriveDpiToggle());
 		//default command is (standard) joystick drive
 		
 		//controller check
-		driveStart.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
-		opStart.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
-		
-		//other
-		
+		driveControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));
+		opControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.opGamepad));
 	}
 	
 	/**
@@ -158,11 +120,12 @@ public class OI{
 	 * @author James
 	 */
 	
-	public class JoystickAnalogButton extends Button {
+	public static class JoystickAnalogButton extends Button {
 		
-		F310Gamepad m_gamepad;
+		GenericHID m_gamepad;
 		int m_axisNumber;
-		private double THRESHOLD = 0;
+		double m_threshold = 0;
+		Boolean m_inverted = false;
 
 		/**
 		 * Create a button for triggering commands off a joystick's analog axis
@@ -173,7 +136,7 @@ public class OI{
 		 * @param axisNumber
 		 *            The axis number
 		 */
-		public JoystickAnalogButton(F310Gamepad gamepad, int axisNumber) {
+		public JoystickAnalogButton(GenericHID gamepad, int axisNumber) {
 			m_gamepad = gamepad;
 			m_axisNumber = axisNumber;
 		}
@@ -185,12 +148,15 @@ public class OI{
 		 * @param axisNumber The axis number
 		 * @param threshold The threshold to trigger above (positive) or below (negative)
 		 */
-		public JoystickAnalogButton(F310Gamepad joystick, int axisNumber, double threshold) {
-			m_gamepad = joystick;
-			m_axisNumber = axisNumber;
-			THRESHOLD = threshold;
+		public JoystickAnalogButton(GenericHID joystick, int axisNumber, double threshold) {
+			this(joystick, axisNumber);
+			m_threshold = Math.abs(threshold);
 		}
 
+		public JoystickAnalogButton(GenericHID joystick, int axisNumber, double threshold, Boolean inverted) {
+			this(joystick, axisNumber, threshold);
+			m_inverted = true;
+		}
 		/**
 		 * Set the value above which triggers should occur (for positive thresholds)
 		 *  or below which triggers should occur (for negative thresholds)
@@ -199,7 +165,7 @@ public class OI{
 		 * @param threshold the threshold value (1 to -1)
 		 */
 		public void setThreshold(double threshold){
-			THRESHOLD = threshold;
+			m_threshold = Math.abs(threshold);
 		}
 		 
 		/**
@@ -207,7 +173,21 @@ public class OI{
 		 * @return the threshold value
 		 */
 		public double getThreshold(){
-			return THRESHOLD;
+			return m_threshold;
+		}
+
+		/**
+		 * @return the m_inverted
+		 */
+		public Boolean getInverted() {
+			return m_inverted;
+		}
+
+		/**
+		 * @param m_inverted the m_inverted to set
+		 */
+		public void setInverted(Boolean m_inverted) {
+			this.m_inverted = m_inverted;
 		}
 		
 		/**
@@ -216,7 +196,24 @@ public class OI{
 		 */
 
 		public boolean get() {
-				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > THRESHOLD;    //Return true if axis value is less than negative threshold
+				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold;    //Return true if axis value is less than negative threshold
+		}
+		
+		/**
+		 * Returns double value of axis.
+		 * @return double value of axis.
+		 */
+		public double getRawAxis() {
+			if (!m_inverted) { //not inverted
+				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold ? 
+				m_gamepad.getRawAxis(m_axisNumber) 
+				: 0;
+			} else { //inverted
+				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold ?
+				-m_gamepad.getRawAxis(m_axisNumber) 
+				: 0;
+			}
+			
 		}
 	}
 	
