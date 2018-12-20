@@ -104,9 +104,9 @@ public class SmartDashboardController {
 
 		// General
 		RobotMap.pdp.setName("General", "PDP");
-		RobotMap.gyro.setName("General", "SPI Gyro");
+		//RobotMap.gyro.setName("General", "SPI Gyro");
 		RobotMap.ahrs.setName("General", "AHRS Gyro");
-		RobotMap.ultrasonic.setName("General", "Ultrasonic");
+		//RobotMap.ultrasonic.setName("General", "Ultrasonic");
 	}
 
 	public void smartDashboardPeriodic() {
@@ -121,6 +121,9 @@ public class SmartDashboardController {
 		SmartDashboard.putData("Debug/Left Drive Encoder", RobotMap.driveTrain.left.encoder);
 		SmartDashboard.putData("Debug/Right Drive Encoder", RobotMap.driveTrain.right.encoder);
 
+		SmartDashboard.putNumber("DriveSystem/teleop/turnSteepness", OI.turnSteepnessAnalogButton.getRawAxis());
+		SmartDashboard.putNumber("DriveSystem/teleop/throttle", OI.throttleAnalogButton.getRawAxis());
+
 		SmartDashboard.putBoolean("Debug/Box In", RobotMap.intake.isBoxPosition(Intake.BoxPosition.IN));
 		SmartDashboard.putBoolean("Debug/Box Out", RobotMap.intake.isBoxPosition(Intake.BoxPosition.OUT));
 		SmartDashboard.putBoolean("Debug/Box In and Out At The Same Time",
@@ -134,9 +137,7 @@ public class SmartDashboardController {
 		SmartDashboard.putBoolean("Debug/Elevator Bottom Limit Switch", RobotMap.elevator.isBottomSwitched());
 		SmartDashboard.putNumber("Debug/Elevator Motor", RobotMap.elevator.setSpeed);
 
-		SmartDashboard.putData("Debug/SPI Gyro", RobotMap.gyro);
 		SmartDashboard.putData("Debug/AHRS Gyro", RobotMap.ahrs);
-		SmartDashboard.putNumber("Debug/Ultrasonic", RobotMap.ultrasonic.getRangeInches());
 
 		SmartDashboard.putData("Debug/DriveTrainSubsystem", RobotMap.driveTrain);
 		SmartDashboard.putData("Debug/ElevatorSubsystem", RobotMap.elevator);

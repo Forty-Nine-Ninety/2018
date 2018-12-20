@@ -30,7 +30,7 @@ public class F310Gamepad extends Joystick {
 	public JoystickAnalogButton leftTrigger = new JoystickAnalogButton(this, 2, 0.95);
 	public JoystickAnalogButton rightTrigger = new JoystickAnalogButton(this, 3, 0.95);
 	public JoystickAnalogButton leftJoystickX = new JoystickAnalogButton(this, 0);
-	public JoystickAnalogButton leftJoystickY = new JoystickAnalogButton(this, 1, 0.0078125, true);
+	public JoystickAnalogButton leftJoystickY = new JoystickAnalogButton(this, 1, 0.0078126, true);
 	public JoystickAnalogButton rightJoystickX = new JoystickAnalogButton(this, 4, 0.0391);
 	public JoystickAnalogButton rightJoystickY = new JoystickAnalogButton(this, 5);
 

@@ -1,0 +1,240 @@
+{
+  "dividerPosition": 0.18520859671302148,
+  "tabPane": [
+    {
+      "title": "Main",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "/SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 120.0,
+        "showGrid": true,
+        "hgap": 8.0,
+        "vgap": 8.0,
+        "tiles": {
+          "4,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "/FMSInfo"
+            }
+          },
+          "7,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "PDP",
+              "_source0": "network_table:///SmartDashboard/Debug/PDP",
+              "_title": "/SmartDashboard/Debug/PDP",
+              "showIndicatorText": true
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/DriveTeam/Auto Chooser",
+              "_title": "/SmartDashboard/DriveTeam/Auto Chooser"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Debug/Elevator Bottom Limit Switch",
+              "_title": "Bottom Limit Switch",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Debug/Elevator Top Limit Switch",
+              "_title": "Top Limit Switch",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
+            }
+          },
+          "8,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTeam/Auto Chooser/selected",
+              "_title": "/SmartDashboard/Drive/Selected Starting Position"
+            }
+          },
+          "4,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Large Text",
+              "_source0": "network_table:///SmartDashboard/Elevator/Status",
+              "_title": "SmartDashboard/Elevator/Status"
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///LiveWindow/General/AHRS Gyro",
+              "_title": "/LiveWindow/General/AHRS Gyro",
+              "majorTickSpace": 45.0,
+              "startAngle": 180.0,
+              "tickMarkRingVisible": true
+            }
+          },
+          "0,0": {
+            "size": [
+              4,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "showControls": true,
+              "showCrosshair": true,
+              "crosshairColor": "#FFFFFFFF",
+              "compression": 84.0,
+              "fps": 20,
+              "imageWidth": 400,
+              "imageHeight": 300
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Preferences",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              3,
+              5
+            ],
+            "content": {
+              "_type": "Robot Preferences",
+              "_source0": "network_table:///Preferences",
+              "_title": "/Preferences",
+              "searchBoxVisible": true
+            }
+          },
+          "3,0": {
+            "size": [
+              3,
+              5
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///LiveWindow",
+              "_title": "LiveWindow"
+            }
+          },
+          "6,0": {
+            "size": [
+              3,
+              5
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard",
+              "_title": "SmartDashboard"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 3",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "4,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Debug/Right Encoder Distance",
+              "_title": "SmartDashboard/Debug/Right Encoder Distance"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "PID Controller",
+              "_source0": "network_table:///SmartDashboard/turnController",
+              "_title": "SmartDashboard/turnController"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///SmartDashboard/Debug/AHRS Gyro",
+              "_title": "SmartDashboard/Debug/AHRS Gyro",
+              "majorTickSpace": 45.0,
+              "startAngle": 180.0,
+              "tickMarkRingVisible": true
+            }
+          },
+          "1,0": {
+            "size": [
+              3,
+              5
+            ],
+            "content": {
+              "_type": "Robot Preferences",
+              "_source0": "network_table:///Preferences",
+              "_title": "Preferences",
+              "searchBoxVisible": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}

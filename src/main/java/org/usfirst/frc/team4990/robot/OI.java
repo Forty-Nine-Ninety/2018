@@ -150,7 +150,7 @@ public class OI{
 		 */
 		public JoystickAnalogButton(GenericHID joystick, int axisNumber, double threshold) {
 			this(joystick, axisNumber);
-			m_threshold = threshold;
+			m_threshold = Math.abs(threshold);
 		}
 
 		public JoystickAnalogButton(GenericHID joystick, int axisNumber, double threshold, Boolean inverted) {
@@ -165,7 +165,7 @@ public class OI{
 		 * @param threshold the threshold value (1 to -1)
 		 */
 		public void setThreshold(double threshold){
-			m_threshold = threshold;
+			m_threshold = Math.abs(threshold);
 		}
 		 
 		/**
@@ -204,7 +204,16 @@ public class OI{
 		 * @return double value of axis.
 		 */
 		public double getRawAxis() {
-			return m_inverted ? -m_gamepad.getRawAxis(m_axisNumber) : m_gamepad.getRawAxis(m_axisNumber);
+			if (!m_inverted) { //not inverted
+				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold ? 
+				m_gamepad.getRawAxis(m_axisNumber) 
+				: 0;
+			} else { //inverted
+				return Math.abs(m_gamepad.getRawAxis(m_axisNumber)) > m_threshold ?
+				-m_gamepad.getRawAxis(m_axisNumber) 
+				: 0;
+			}
+			
 		}
 	}
 	

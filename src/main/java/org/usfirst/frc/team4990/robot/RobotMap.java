@@ -80,7 +80,7 @@ public class RobotMap {
 	
 	public static Elevator elevator;
 	
-	public static TalonMotorController scalerTalon;
+	//public static TalonMotorController scalerTalon;
 	
 	public static Scaler scaler;
 	
@@ -139,9 +139,9 @@ public class RobotMap {
 		
 		elevator = new Elevator();
 		
-		scalerTalon = new TalonMotorController(9);
+		//scalerTalon = new TalonMotorController(9);
 		
-		scaler = new Scaler(scalerTalon);
+		//scaler = new Scaler(scalerTalon);
 		
 		ultrasonicDigitalOutput = new DigitalOutput(4); //PING
 		ultrasonicEchoDigitalInput = new DigitalInput(5); //ECHO
