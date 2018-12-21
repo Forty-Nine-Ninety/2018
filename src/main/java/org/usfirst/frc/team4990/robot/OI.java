@@ -29,6 +29,7 @@ public class OI{
 	public static JoystickAnalogButton intakeOUTAnalogButton = RobotMap.opGamepad.rightTrigger;
 
 	public static Button driveSpeedToggle = RobotMap.driveGamepad.x;
+	public static Button turnSpeedToggle = RobotMap.driveGamepad.b;
 	public static Button driveControllerCheck = RobotMap.driveGamepad.start;
 	public static Button opControllerCheck = RobotMap.opGamepad.start;
 	
@@ -107,8 +108,9 @@ public class OI{
 		*/
 		
 		//drivetrain
-		driveSpeedToggle.toggleWhenPressed(new DriveDpiToggle());
+		driveSpeedToggle.toggleWhenPressed(new DriveSpeedToggle());
 		//default command is (standard) joystick drive
+		turnSpeedToggle.toggleWhenPressed(new TurnSpeedToggle());
 		
 		//controller check
 		driveControllerCheck.toggleWhenPressed(new ControllerCheck(RobotMap.driveGamepad));

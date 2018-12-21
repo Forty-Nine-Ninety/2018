@@ -9,20 +9,20 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 
-public class DriveDpiToggle extends Command {
-	public DriveDpiToggle() {
+public class DriveSpeedToggle extends Command {
+	public DriveSpeedToggle() {
 	}
 	
 	public void initialize() {
 		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/lowThrottleMultiplier",
-				0.25);
-		System.out.println("DriveTrain Multiplier: " + TeleopDriveTrainController.currentThrottleMultiplier);
+				0.5);
+		System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
 	}
 	
 	public void end() {
-		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/maxThrottleMultiplier",
+		TeleopDriveTrainController.currentThrottleMultiplier = SmartDashboardController.getConst("DriveDpiToggle/defaultThrottleMultiplier",
 				1.0);
-		System.out.println("DriveTrain Multiplier: " + TeleopDriveTrainController.currentThrottleMultiplier);
+		System.out.println("Throttle Speed: " + TeleopDriveTrainController.currentThrottleMultiplier + "x");
 	}
 	
 	public void interrupted() {

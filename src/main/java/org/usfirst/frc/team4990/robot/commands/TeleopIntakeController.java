@@ -32,8 +32,8 @@ public class TeleopIntakeController extends Command{
 	 * @author Class of '21 (created in 2018 season)
 	 */
 	public void execute() {
-		double tempInAxis = RobotMap.opGamepad.leftTrigger.getRawAxis();
-		double tempOutAxis = RobotMap.opGamepad.rightTrigger.getRawAxis();
+		double tempInAxis = OI.intakeINAnalogButton.getRawAxis();
+		double tempOutAxis = OI.intakeOUTAnalogButton.getRawAxis();
 		//boolean override = RobotMap.opGamepad.getXButtonPressed();
 
 		if (dir == direction.IN /*&& ((RobotMap.intake.getAnalogInput() < 1.9 || override) || override)*/) { //left bumper = elevator UP

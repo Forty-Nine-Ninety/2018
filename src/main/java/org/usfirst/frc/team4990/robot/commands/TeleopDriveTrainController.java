@@ -14,9 +14,11 @@ public class TeleopDriveTrainController extends Command{
 	
 	public DriveMode driveMode;	
 	
-	public static double currentThrottleMultiplier = 1;
+	public static double currentThrottleMultiplier = 1.0;
 
 	public static boolean oldStickShapingMethod = false;
+
+	public static double currentTurnSteepnessMultiplier = 1.0;
 	
 	/**
 	 * Constructor for TeleopDriveTrainController
@@ -39,9 +41,9 @@ public class TeleopDriveTrainController extends Command{
 				RobotMap.driveGamepad.getRightJoystickX(),
 				this.lastTurnSteepness);
 				*/
-				double throttle = OI.throttleAnalogButton.getRawAxis();
+				double throttle = getSquaredThrottle(OI.throttleAnalogButton.getRawAxis() * currentThrottleMultiplier);
 		
-				double turnSteepness = OI.turnSteepnessAnalogButton.getRawAxis();
+				double turnSteepness = getSquaredThrottle(OI.turnSteepnessAnalogButton.getRawAxis());
 		
 		if (throttle != 0 && turnSteepness != 0) { //arc turn
 			driveMode = DriveMode.ARC;
@@ -59,7 +61,8 @@ public class TeleopDriveTrainController extends Command{
 			 * since the right motor will spin in the opposite direction from the left
 			 */
 			driveMode = DriveMode.TURN;
-			RobotMap.driveTrain.setSpeed(turnSteepness, -turnSteepness);
+			RobotMap.driveTrain.setSpeed(turnSteepness * currentTurnSteepnessMultiplier, -turnSteepness * 
+			currentTurnSteepnessMultiplier);
 			
 		} else {
 			driveMode = DriveMode.NONE;
@@ -73,7 +76,7 @@ public class TeleopDriveTrainController extends Command{
 	 * @return squared number provided with same sign
 	 */
 	public double getSquaredThrottle(double throttleInput) {
-		return throttleInput * throttleInput * Math.signum(throttleInput) * currentThrottleMultiplier;
+		return throttleInput * throttleInput * Math.signum(throttleInput);
 	}
 	
 	/**
